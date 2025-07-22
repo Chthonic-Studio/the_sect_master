@@ -10,8 +10,7 @@ const Definitions = preload("res://Scripts/Data/Definitions.gd")
 # --- Cultivation State ---
 @export_category("Cultivation State")
 @export var cultivation_realm: Definitions.CultivationRealm = Definitions.CultivationRealm.QI_GATHERING
-@export_range(0, 100, 1)
-var realm_progress: int = 0 # Progress to next realm (0-100, or larger if you want)
+@export_range(0, 100, 1) var realm_progress: int = 0 # Progress to next realm (0-100, or larger if you want)
 @export var lifespan: int = 0
 
 # --- Techniques & Skills ---
@@ -23,7 +22,7 @@ var realm_progress: int = 0 # Progress to next realm (0-100, or larger if you wa
 @export_range(0, 100, 1)
 var qi_deviation_risk: int = 0
 @export_range(0, 100, 1)
-var breakthrough_failure_chance: int = 0
+var breakthrough_modifier: int = 0
 
 # --- Elemental/Other Affinities ---
 @export_category("Affinities")
@@ -33,7 +32,7 @@ var breakthrough_failure_chance: int = 0
 func clamp_cultivation_stats() -> void:
 	realm_progress = clamp(realm_progress, 0, 100)
 	qi_deviation_risk = clamp(qi_deviation_risk, 0, 100)
-	breakthrough_failure_chance = clamp(breakthrough_failure_chance, 0, 100)
+	breakthrough_modifier = clamp(breakthrough_modifier, 0, 100)
 	# For elemental_affinity, optionally clamp values 0-100 for all
 
 # Override get_summary() for cultivators
@@ -44,7 +43,7 @@ func get_summary() -> String:
 		realm_progress,
 		lifespan,
 		qi_deviation_risk,
-		breakthrough_failure_chance
+		breakthrough_modifier
 	]
 
 # --- How & Where to Use ---

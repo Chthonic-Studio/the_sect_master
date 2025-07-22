@@ -12,6 +12,4 @@ offset_right = 1600.0
 offset_bottom = 900.0
 grow_horizontal = 1
 grow_vertical = 1
-size_flags_horizontal = 3
-size_flags_vertical = 3
 metadata/_edit_use_anchors_ = true
