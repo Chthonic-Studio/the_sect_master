@@ -1,0 +1,115 @@
+# CharacterResource.gd
+# Generic resource for all characters in the game (player, NPCs, sect members, rivals)
+# - Use as the base for all character data. Extend for specialized types if needed.
+
+extends Resource
+class_name CharacterResource
+
+## === ENUMS ===
+enum CultureGroup { WESTERN, TRADITIONAL }
+enum SpiritualRootType { NONE, COMMON, SUPERIOR, HEAVENLY, MUTATED, DEMONIC, GHOSTLY }
+enum Gender { MALE, FEMALE, OTHER }
+
+# === Unique ID (assigned automatically by CharacterManager) ===
+@export var id: int = 0 ## DO NOT assign manually; always use CharacterManager for creation.
+
+# === Basic Info ===
+@export_category("Basic Info")
+@export var first_name: String = "" ## Character's display first name
+@export var last_name: String = ""## Character's display last name
+@export var culture: CultureGroup = CultureGroup.TRADITIONAL
+@export var gender: Gender = Gender.MALE
+@export var age: int = 18
+@export var title: String = ""
+@export var renown: int = 0
+@export var renown_title: String = "Unknown"
+@export var reputation: String = ""
+@export var spiritual_root: SpiritualRootType = SpiritualRootType.NONE ## Enum dropdown
+@export var traits: Array[String] = []
+
+# === Core Stats ===
+@export_category("Core Stats")
+@export_range(0, 99000000, 1)
+var hp: int = 100
+@export_range(0, 99000000, 1)
+var qi: int = 100
+@export_range(0, 100, 1)
+var potential: int = 50
+@export_range(0, 100, 1)
+var strength: int = 10
+@export_range(0, 100, 1)
+var intelligence: int = 10
+@export_range(0, 100, 1)
+var agility: int = 10
+@export_range(0, 100, 1)
+var perception: int = 10
+@export_range(0, 100, 1)
+var constitution: int = 10
+
+# === Hidden Personality Values ===
+@export_category("Hidden Personality Values")
+@export_range(0, 100, 1)
+var ambition: int = 50
+@export_range(0, 100, 1)
+var loyalty: int = 50
+@export_range(0, 100, 1)
+var greed: int = 50
+@export_range(0, 100, 1)
+var patience: int = 50
+@export_range(0, 100, 1)
+var aggression: int = 50
+@export_range(0, 100, 1)
+var cunning: int = 50
+@export_range(0, 100, 1)
+var diligence: int = 50
+@export_range(0, 100, 1)
+var courage: int = 50
+@export_range(0, 100, 1)
+var spirituality: int = 50
+@export_range(0, 100, 1)
+var resourcefulness: int = 50
+@export_range(0, 100, 1)
+var humility: int = 50
+@export_range(0, 100, 1)
+var charisma: int = 50
+@export_range(0, 100, 1)
+var empathy: int = 50
+@export_range(0, 100, 1)
+var discipline: int = 50
+@export_range(0, 100, 1)
+var curiosity: int = 50
+
+# Add more personality stats as needed...
+
+# === Utility Functions ===
+
+func clamp_stats() -> void:
+	hp = clamp(hp, 0, 99000000)
+	qi = clamp(qi, 0, 99000000)
+	potential = clamp(potential, 0, 100)
+	strength = clamp(strength, 0, 100)
+	intelligence = clamp(intelligence, 0, 100)
+	agility = clamp(agility, 0, 100)
+	perception = clamp(perception, 0, 100)
+	constitution = clamp(constitution, 0, 100)
+	ambition = clamp(ambition, 0, 100)
+	loyalty = clamp(loyalty, 0, 100)
+	greed = clamp(greed, 0, 100)
+	patience = clamp(patience, 0, 100)
+	aggression = clamp(aggression, 0, 100)
+	cunning = clamp(cunning, 0, 100)
+	diligence = clamp(diligence, 0, 100)
+	courage = clamp(courage, 0, 100)
+	spirituality = clamp(spirituality, 0, 100)
+	resourcefulness = clamp(resourcefulness, 0, 100)
+	humility = clamp(humility, 0, 100)
+	charisma = clamp(charisma, 0, 100)
+	empathy = clamp(empathy, 0, 100)
+	discipline = clamp(discipline, 0, 100)
+	curiosity = clamp(curiosity, 0, 100)
+	renown = max(renown, 0)
+
+func get_summary() -> String:
+	return "%s %s (ID: %d) | HP: %d | Qi: %d | STR: %d | INT: %d | POT: %d | Agg: %d | Char: %d | Renown: %d" % [
+		first_name, last_name, id, hp, qi, strength, intelligence, potential, aggression, charisma, renown
+	]

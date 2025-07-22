@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtpetb7nmbejg"]
+
+[ext_resource type="PackedScene" uid="uid://b7pavuul7xpr3" path="res://Scenes/main_ui.tscn" id="1_jjgbg"]
+
+[node name="Main" type="Node2D"]
+
+[node name="MainUI" parent="." instance=ExtResource("1_jjgbg")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1600.0
+offset_bottom = 900.0
+grow_horizontal = 1
+grow_vertical = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true

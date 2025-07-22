@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7pavuul7xpr3"]
+
+[ext_resource type="Script" uid="uid://botlytmuf60df" path="res://Scripts/System/MainDebugMenu.gd" id="1_gmh8u"]
+
+[sub_resource type="Theme" id="Theme_rvjxe"]
+
+[node name="MainUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="DebugMenu" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(300, 450)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 0.469375
+anchor_bottom = 1.0
+grow_vertical = 0
+script = ExtResource("1_gmh8u")
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DebugMenu"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="AddMortal" type="Button" parent="DebugMenu/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_rvjxe")
+text = "Add Random Mortal"
+
+[node name="AddCultivator" type="Button" parent="DebugMenu/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_rvjxe")
+text = "Add Random Cultivator"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="DebugMenu"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Label" type="Label" parent="DebugMenu/VBoxContainer2"]
+layout_mode = 2
+
+[connection signal="pressed" from="DebugMenu/VBoxContainer/AddMortal" to="DebugMenu" method="_on_spawn_mortal_pressed"]
+[connection signal="pressed" from="DebugMenu/VBoxContainer/AddCultivator" to="DebugMenu" method="_on_spawn_cultivator_pressed"]

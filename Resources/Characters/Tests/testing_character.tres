@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=2 format=3 uid="uid://bbxcyi5hw3yb2"]
+
+[ext_resource type="Script" uid="uid://dx3bm5n8dobbr" path="res://Resources/Characters/CharacterResource.gd" id="1_4yjry"]
+
+[resource]
+script = ExtResource("1_4yjry")
+id = 0
+first_name = ""
+last_name = ""
+culture = 1
+title = ""
+renown = 0
+renown_title = "Unknown"
+reputation = ""
+spiritual_root = 0
+hp = 100
+qi = 100
+potential = 92
+strength = 10
+intelligence = 10
+agility = 10
+perception = 10
+constitution = 10
+ambition = 50
+loyalty = 50
+greed = 50
+patience = 50
+aggression = 50
+cunning = 50
+diligence = 50
+courage = 50
+spirituality = 50
+resourcefulness = 50
+humility = 50
+charisma = 50
+empathy = 50
+discipline = 50
+curiosity = 50
+metadata/_custom_type_script = "uid://dx3bm5n8dobbr"
