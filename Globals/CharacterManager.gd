@@ -39,17 +39,32 @@ func create_character(type: String = "mortal", position: Vector2 = Vector2.ZERO)
 	else:
 		resource = CharacterResource.new()
 	# Name and gender
-	var gender = CharacterResource.Gender.values()[randi() % 2] # MALE or FEMALE for now
-	var culture = CharacterResource.CultureGroup.values()[randi() % 2] # WESTERN/TRADITIONAL
+	var gender = CharacterResource.Gender.values()[randi() % 2]
+	var culture = CharacterResource.CultureGroup.values()[randi() % 2]
 	var name_data = NameGenerator.generate_name(culture, gender)
 	resource.first_name = name_data["first_name"]
 	resource.last_name = name_data["last_name"]
 	resource.gender = gender
 	resource.culture = culture
-	# Stats
+	# --- Name display logic ---
+	if culture == CharacterResource.CultureGroup.TRADITIONAL:
+		resource.name_display = "%s %s" % [resource.last_name, resource.first_name]
+	else:
+		resource.name_display = "%s %s" % [resource.first_name, resource.last_name]
+	# --- Random Age ---
+	resource.age = randi_range(15, 30)
+	# --- Random Spiritual Root ---
+	resource.spiritual_root = _random_spiritual_root(type)
+	# --- Stats ---
+	resource.max_hp = _roll_stat()
+	resource.max_qi = _roll_stat()
+	resource.current_hp = resource.max_hp
+	resource.current_qi = resource.max_qi
 	resource.strength = _roll_stat()
 	resource.intelligence = _roll_stat()
 	resource.agility = _roll_stat()
+	resource.perception = _roll_stat()
+	resource.constitution = _roll_stat()
 	resource.potential = _roll_stat(40, 80)
 	# Traits
 	resource.traits = _assign_placeholder_traits()
@@ -58,16 +73,51 @@ func create_character(type: String = "mortal", position: Vector2 = Vector2.ZERO)
 		resource.clamp_stats()
 	if resource.has_method("clamp_cultivation_stats"):
 		resource.clamp_cultivation_stats()
-	# Create Node2D
 	var char_node = Character.instantiate()
 	char_node.character_resource = resource
 	char_node.position = position
-	# Track
 	all_character_nodes.append(char_node)
 	all_character_resources.append(resource)
-	# Register with ID map, etc. if needed
 	register_character(resource)
 	return char_node
+
+# Helper for spiritual root probabilities
+func _random_spiritual_root(type: String) -> int:
+	var roots = [
+		CharacterResource.SpiritualRootType.NONE,
+		CharacterResource.SpiritualRootType.COMMON,
+		CharacterResource.SpiritualRootType.SUPERIOR,
+		CharacterResource.SpiritualRootType.HEAVENLY,
+		CharacterResource.SpiritualRootType.MUTATED,
+		CharacterResource.SpiritualRootType.DEMONIC,
+		CharacterResource.SpiritualRootType.GHOSTLY
+	]
+	var probs = []
+	if type == "cultivator":
+		# Remove NONE, normalize others so sum is 100
+		# Original: [0, 20, 10, 3, 3, 3, 1] (skip 0)
+		probs = [20, 10, 3, 3, 3, 1]
+		var total = 20 + 10 + 3 + 3 + 3 + 1
+		var norm_probs = []
+		for p in probs:
+			norm_probs.append(p * 100 / total)
+		var r = randf() * 100
+		var acc = 0
+		for i in range(len(norm_probs)):
+			acc += norm_probs[i]
+			if r < acc:
+				return roots[i + 1] # +1 to skip NONE
+		return roots[1] # default to COMMON
+	else:
+		# Mortals: [60, 20, 10, 3, 3, 3, 1]
+		probs = [60, 20, 10, 3, 3, 3, 1]
+		var r = randf() * 100
+		var acc = 0
+		for i in range(len(probs)):
+			acc += probs[i]
+			if r < acc:
+				return roots[i]
+		return roots[0] # default to NONE
 
 # Utility: Get all characters, optionally filter by type
 func get_characters(type: String = "") -> Array:

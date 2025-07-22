@@ -17,22 +17,27 @@ enum Gender { MALE, FEMALE, OTHER }
 @export_category("Basic Info")
 @export var first_name: String = "" ## Character's display first name
 @export var last_name: String = ""## Character's display last name
+@export var name_display: String = "" # Display name for UI, set at creation
 @export var culture: CultureGroup = CultureGroup.TRADITIONAL
 @export var gender: Gender = Gender.MALE
 @export var age: int = 18
 @export var title: String = ""
 @export var renown: int = 0
 @export var renown_title: String = "Unknown"
-@export var reputation: String = ""
+@export var reputation: String = "None"
 @export var spiritual_root: SpiritualRootType = SpiritualRootType.NONE ## Enum dropdown
 @export var traits: Array[String] = []
 
 # === Core Stats ===
 @export_category("Core Stats")
 @export_range(0, 99000000, 1)
-var hp: int = 100
+var max_hp: int = 100
 @export_range(0, 99000000, 1)
-var qi: int = 100
+var max_qi: int = 100
+@export_range(0, 99000000, 1)
+var current_hp: int = 100
+@export_range(0, 99000000, 1)
+var current_qi: int = 100
 @export_range(0, 100, 1)
 var potential: int = 50
 @export_range(0, 100, 1)
@@ -84,8 +89,10 @@ var curiosity: int = 50
 # === Utility Functions ===
 
 func clamp_stats() -> void:
-	hp = clamp(hp, 0, 99000000)
-	qi = clamp(qi, 0, 99000000)
+	max_hp = clamp(max_hp, 0, 99000000)
+	max_qi = clamp(max_qi, 0, 99000000)
+	current_hp = clamp(current_hp, 0, max_hp)
+	current_qi = clamp(current_qi, 0, max_qi)
 	potential = clamp(potential, 0, 100)
 	strength = clamp(strength, 0, 100)
 	intelligence = clamp(intelligence, 0, 100)
@@ -108,8 +115,3 @@ func clamp_stats() -> void:
 	discipline = clamp(discipline, 0, 100)
 	curiosity = clamp(curiosity, 0, 100)
 	renown = max(renown, 0)
-
-func get_summary() -> String:
-	return "%s %s (ID: %d) | HP: %d | Qi: %d | STR: %d | INT: %d | POT: %d | Agg: %d | Char: %d | Renown: %d" % [
-		first_name, last_name, id, hp, qi, strength, intelligence, potential, aggression, charisma, renown
-	]
