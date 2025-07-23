@@ -9,6 +9,7 @@ class_name IdleAction
 func can_perform(character: Node) -> bool:
 	return true
 
+# This function now correctly overrides the parent's placeholder.
 func start_action(character: Node) -> void:
-	_timer = randf_range(min_duration, max_duration)
-	emit_signal("action_started", action_name)
+	# It calls the parent's helper function with its own duration.
+	_start_timer(min_duration, max_duration)

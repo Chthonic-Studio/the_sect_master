@@ -224,7 +224,7 @@ text = "Past Action"
 layout_mode = 2
 text = "Eat Desire"
 
-[node name="Idle" type="Label" parent="DebugHbox/CharSpawnDebug/VBoxContainer4"]
+[node name="TrainingDesire" type="Label" parent="DebugHbox/CharSpawnDebug/VBoxContainer4"]
 layout_mode = 2
 text = "Training Desire"
 

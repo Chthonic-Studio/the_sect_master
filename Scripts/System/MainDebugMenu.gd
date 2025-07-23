@@ -9,6 +9,14 @@ class_name MainDebugMenu
 @export var spawn_offset: Vector2 = Vector2(40, 0)
 var spawn_count: int = 0
 
+# Action Logging
+var current_action_name: String = "None"
+var past_action_name: String = "None"
+
+# AI Desire Values
+var eat_desire_val: int = 0.0
+var training_desire_val: int  = 0.0
+
 var last_spawned_character: Node2D = null
 
 func _ready() -> void:
@@ -33,13 +41,16 @@ func _spawn_character(type: String, pos: Vector2) -> void:
 		get_tree().current_scene.add_child(char_node)
 		last_spawned_character = char_node
 		_update_info_panel()
+		_connect_to_ai_signal() # Add this call
 	else:
 		push_error("Failed to create character of type: %s" % type)
 
-func _update_info_panel() -> void:
+func _update_info_panel(action_name: String = "") -> void:
 	if not last_spawned_character:
 		return
 	var res = last_spawned_character.character_resource
+	var ai_node = last_spawned_character.get_node_or_null("UtilityAI")
+	
 	# Basic Info
 	$DebugHbox/CharSpawnDebug/VBoxContainer2/Name.text = "Name: %s" % res.name_display
 	$DebugHbox/CharSpawnDebug/VBoxContainer2/Age.text = "Age: %d" % res.age
@@ -81,6 +92,31 @@ func _update_info_panel() -> void:
 	$DebugHbox/CharSpawnDebug/VBoxContainer4/QiDeviationRisk.text = "Qi Deviation Risk: %d" % (res.qi_deviation_risk if is_cultivator else 0)
 	$DebugHbox/CharSpawnDebug/VBoxContainer4/BreakthroughModifier.text = "Breakthrough Mod: %d" % (res.breakthrough_modifier if is_cultivator else 0)
 	$DebugHbox/CharSpawnDebug/VBoxContainer4/Affinities.text = "Affinities: %s" % (str(res.elemental_affinity) if is_cultivator else "-")
+	# AI Debuging Fields
+
+	if ai_node and ai_node.current_action:
+		current_action_name = ai_node.current_action.action_name
+	$DebugHbox/CharSpawnDebug/VBoxContainer4/CurrentAction.text = "Action: %s" % current_action_name
+	$DebugHbox/CharSpawnDebug/VBoxContainer4/PastAction.text = "Past Action: %s" % past_action_name
+
+	# --- Desire Scores ---
+	if ai_node:
+		for desire in ai_node.desires:
+			if desire is EatDesire:
+				eat_desire_val = desire.get_utility(last_spawned_character)
+			elif desire is TrainingDesire:
+				training_desire_val = desire.get_utility(last_spawned_character)
+
+	$DebugHbox/CharSpawnDebug/VBoxContainer4/EatDesire.text = "Eat Desire: %d" % eat_desire_val
+	$DebugHbox/CharSpawnDebug/VBoxContainer4/TrainingDesire.text = "Train Desire: %d" % training_desire_val
+	
+# Add this function to connect to the AI's signal
+func _connect_to_ai_signal() -> void:
+	if last_spawned_character:
+		var ai_node = last_spawned_character.get_node_or_null("UtilityAI")
+		if ai_node and not ai_node.is_connected("action_changed", Callable(self, "_update_info_panel")):
+			ai_node.connect("action_changed", Callable(self, "_update_info_panel"))
+
 # --- How & Where to Use ---
 # 1. Attach this script to your VBoxContainer debug menu node in your main scene.
 # 2. Add two Buttons as children: "SpawnMortalButton" and "SpawnCultivatorButton".
