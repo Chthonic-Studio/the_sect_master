@@ -68,6 +68,8 @@ func create_character(type: String = "mortal", position: Vector2 = Vector2.ZERO)
 	resource.potential = _roll_stat(40, 80)
 	# Traits
 	resource.traits = _assign_placeholder_traits()
+	# --- Randomize personality stats ---
+	resource.randomize_personality_stats()
 	# Clamp stats (safe)
 	if resource.has_method("clamp_stats"):
 		resource.clamp_stats()

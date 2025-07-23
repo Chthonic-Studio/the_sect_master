@@ -53,36 +53,36 @@ var constitution: int = 10
 
 # === Hidden Personality Values ===
 @export_category("Hidden Personality Values")
-@export_range(0, 100, 1)
-var ambition: int = 50
-@export_range(0, 100, 1)
-var loyalty: int = 50
-@export_range(0, 100, 1)
-var greed: int = 50
-@export_range(0, 100, 1)
-var patience: int = 50
-@export_range(0, 100, 1)
-var aggression: int = 50
-@export_range(0, 100, 1)
-var cunning: int = 50
-@export_range(0, 100, 1)
-var diligence: int = 50
-@export_range(0, 100, 1)
-var courage: int = 50
-@export_range(0, 100, 1)
-var spirituality: int = 50
-@export_range(0, 100, 1)
-var resourcefulness: int = 50
-@export_range(0, 100, 1)
-var humility: int = 50
-@export_range(0, 100, 1)
-var charisma: int = 50
-@export_range(0, 100, 1)
-var empathy: int = 50
-@export_range(0, 100, 1)
-var discipline: int = 50
-@export_range(0, 100, 1)
-var curiosity: int = 50
+@export_range(-100, 100, 1)
+var ambition: int = 0
+@export_range(-100, 100, 1)
+var loyalty: int = 0
+@export_range(-100, 100, 1)
+var greed: int = 0
+@export_range(-100, 100, 1)
+var patience: int = 0
+@export_range(-100, 100, 1)
+var aggression: int = 0
+@export_range(-100, 100, 1)
+var cunning: int = 0
+@export_range(-100, 100, 1)
+var diligence: int = 0
+@export_range(-100, 100, 1)
+var courage: int = 0
+@export_range(-100, 100, 1)
+var spirituality: int = 0
+@export_range(-100, 100, 1)
+var resourcefulness: int = 0
+@export_range(-100, 100, 1)
+var humility: int = 0
+@export_range(-100, 100, 1)
+var charisma: int = 0
+@export_range(-100, 100, 1)
+var empathy: int = 0
+@export_range(-100, 100, 1)
+var discipline: int = 0
+@export_range(-100, 100, 1)
+var curiosity: int = 0
 
 # Add more personality stats as needed...
 
@@ -99,19 +99,35 @@ func clamp_stats() -> void:
 	agility = clamp(agility, 0, 100)
 	perception = clamp(perception, 0, 100)
 	constitution = clamp(constitution, 0, 100)
-	ambition = clamp(ambition, 0, 100)
-	loyalty = clamp(loyalty, 0, 100)
-	greed = clamp(greed, 0, 100)
-	patience = clamp(patience, 0, 100)
-	aggression = clamp(aggression, 0, 100)
-	cunning = clamp(cunning, 0, 100)
-	diligence = clamp(diligence, 0, 100)
-	courage = clamp(courage, 0, 100)
-	spirituality = clamp(spirituality, 0, 100)
-	resourcefulness = clamp(resourcefulness, 0, 100)
-	humility = clamp(humility, 0, 100)
-	charisma = clamp(charisma, 0, 100)
-	empathy = clamp(empathy, 0, 100)
-	discipline = clamp(discipline, 0, 100)
-	curiosity = clamp(curiosity, 0, 100)
-	renown = max(renown, 0)
+	ambition = clamp(ambition, -100, 100)
+	loyalty = clamp(loyalty, -100, 100)
+	greed = clamp(greed, -100, 100)
+	patience = clamp(patience, -100, 100)
+	aggression = clamp(aggression, -100, 100)
+	cunning = clamp(cunning, -100, 100)
+	diligence = clamp(diligence, -100, 100)
+	courage = clamp(courage, -100, 100)
+	spirituality = clamp(spirituality, -100, 100)
+	resourcefulness = clamp(resourcefulness, -100, 100)
+	humility = clamp(humility, -100, 100)
+	charisma = clamp(charisma, -100, 100)
+	empathy = clamp(empathy, -100, 100)
+	discipline = clamp(discipline, -100, 100)
+	curiosity = clamp(curiosity, -100, 100)
+
+func randomize_personality_stats() -> void:
+	ambition = randi_range(-100, 100)
+	loyalty = randi_range(-100, 100)
+	greed = randi_range(-100, 100)
+	patience = randi_range(-100, 100)
+	aggression = randi_range(-100, 100)
+	cunning = randi_range(-100, 100)
+	diligence = randi_range(-100, 100)
+	courage = randi_range(-100, 100)
+	spirituality = randi_range(-100, 100)
+	resourcefulness = randi_range(-100, 100)
+	humility = randi_range(-100, 100)
+	charisma = randi_range(-100, 100)
+	empathy = randi_range(-100, 100)
+	discipline = randi_range(-100, 100)
+	curiosity = randi_range(-100, 100)

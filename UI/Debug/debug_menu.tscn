@@ -208,5 +208,25 @@ layout_mode = 2
 text = "Affinities"
 autowrap_mode = 3
 
+[node name="HSeparator" type="HSeparator" parent="DebugHbox/CharSpawnDebug/VBoxContainer4"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="CurrentAction" type="Label" parent="DebugHbox/CharSpawnDebug/VBoxContainer4"]
+layout_mode = 2
+text = "Current Action"
+
+[node name="PastAction" type="Label" parent="DebugHbox/CharSpawnDebug/VBoxContainer4"]
+layout_mode = 2
+text = "Past Action"
+
+[node name="EatDesire" type="Label" parent="DebugHbox/CharSpawnDebug/VBoxContainer4"]
+layout_mode = 2
+text = "Eat Desire"
+
+[node name="Idle" type="Label" parent="DebugHbox/CharSpawnDebug/VBoxContainer4"]
+layout_mode = 2
+text = "Training Desire"
+
 [connection signal="pressed" from="DebugHbox/CharSpawnDebug/VBoxContainer/AddMortal" to="." method="_on_spawn_mortal_pressed"]
 [connection signal="pressed" from="DebugHbox/CharSpawnDebug/VBoxContainer/AddCultivator" to="." method="_on_spawn_cultivator_pressed"]

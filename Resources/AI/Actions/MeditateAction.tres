@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="MeditateAction" load_steps=2 format=3 uid="uid://dbrmsmrx1chji"]
+
+[ext_resource type="Script" uid="uid://ck5jfp6di3rl0" path="res://Resources/AI/Actions/MeditateAction.gd" id="1_j3sfy"]
+
+[resource]
+script = ExtResource("1_j3sfy")
+min_duration = 3.0
+max_duration = 7.0
+action_name = ""
+metadata/_custom_type_script = "uid://ck5jfp6di3rl0"

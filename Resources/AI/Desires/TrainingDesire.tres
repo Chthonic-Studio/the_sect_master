@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="TrainingDesire" load_steps=2 format=3 uid="uid://dgl05bhtusa5t"]
+
+[ext_resource type="Script" uid="uid://biwey5rhtw4m7" path="res://Resources/AI/Desires/TrainingDesire.gd" id="1_og1qp"]
+
+[resource]
+script = ExtResource("1_og1qp")
+desire_name = ""
+metadata/_custom_type_script = "uid://biwey5rhtw4m7"
