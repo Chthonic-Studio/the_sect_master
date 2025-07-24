@@ -30,7 +30,9 @@ enum Gender { MALE, FEMALE, OTHER }
 
 # === Core Stats ===
 @export_category("Core Stats")
-@export var desire_cooldowns: Dictionary = {} # Stores temporary desire modifiers, e.g., {"Training": 100}
+# --- NEW: Desire Modifier System ---
+@export var desire_modifiers: Dictionary = {} # Stores current desire values, e.g., {"Training": -50.0}
+@export var desire_growth_rates: Dictionary = {} # Stores calculated growth rates, e.g., {"Training": 1.5}
 @export_range(0, 99000000, 1)
 var max_hp: int = 100
 @export_range(0, 99000000, 1)

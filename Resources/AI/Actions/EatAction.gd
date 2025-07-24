@@ -10,7 +10,6 @@ func can_perform(character: Node) -> bool:
 	return true
 
 func start_action(character: Node) -> void:
-	print("Starting EatAction with min_duration: %.2f, max_duration: %.2f" % [min_duration, max_duration])
 	_start_timer(min_duration, max_duration)
 
 func end_action(character: Node) -> void:
@@ -18,8 +17,7 @@ func end_action(character: Node) -> void:
 
 	var res = character.character_resource
 	if res:
-		var heal_amount = res.max_hp * 0.25
+		# Heal the character by a percentage of their max HP.
+		var heal_amount = int(res.max_hp * 0.25)
 		res.current_hp = clamp(res.current_hp + heal_amount, 0, res.max_hp)
 		print("%s finished eating. HP is now %d/%d." % [res.name_display, res.current_hp, res.max_hp])
-		# This is a duplicate print statement.
-		print("%s finished eating. HP is now %d." % [res.name_display, res.current_hp])

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://tyl1agdbeibi"]
+[gd_scene load_steps=19 format=3 uid="uid://tyl1agdbeibi"]
 
 [ext_resource type="Script" uid="uid://b1hu5qhw4vmf5" path="res://Scripts/Characters/Character.gd" id="1_0y7nr"]
 [ext_resource type="Script" uid="uid://copacn8vlgcdq" path="res://Scripts/AI/UtilityAI.gd" id="2_jo2ib"]
@@ -7,13 +7,34 @@
 [ext_resource type="Resource" uid="uid://bw5dycslpiea6" path="res://Resources/AI/Actions/EatAction.tres" id="5_p3cti"]
 [ext_resource type="Resource" uid="uid://dbrmsmrx1chji" path="res://Resources/AI/Actions/MeditateAction.tres" id="6_fgiha"]
 [ext_resource type="Script" uid="uid://df4lpqvih8ejr" path="res://Resources/AI/UtilityDesireResource.gd" id="7_6s7kk"]
+[ext_resource type="Resource" uid="uid://ufmyurlw3khe" path="res://Resources/AI/Actions/WanderAction.tres" id="7_nxr2n"]
 [ext_resource type="Resource" uid="uid://dcra3r8f04tyu" path="res://Resources/AI/Desires/EatDesire.tres" id="8_0tob0"]
+[ext_resource type="Resource" uid="uid://cyygcj4vfsm23" path="res://Resources/AI/Actions/StudyAction.tres" id="8_uis85"]
 [ext_resource type="Resource" uid="uid://dgl05bhtusa5t" path="res://Resources/AI/Desires/TrainingDesire.tres" id="9_cw27m"]
+[ext_resource type="Resource" uid="uid://dn64tukh63kvy" path="res://Resources/AI/Actions/SocializeAction.tres" id="9_d4e0j"]
+[ext_resource type="Script" uid="uid://6mjsais4i4xl" path="res://Scripts/AI/FSM/IdleState.gd" id="10_6s7kk"]
+[ext_resource type="Script" uid="uid://djsqo7dphniwu" path="res://Scripts/AI/FSM/ChoosingActionState.gd" id="11_0tob0"]
+[ext_resource type="Script" uid="uid://udca55v00b73" path="res://Scripts/AI/FSM/PerformingActionState.gd" id="12_cw27m"]
+[ext_resource type="Resource" uid="uid://0ypgmrjqv2vp" path="res://Resources/AI/Desires/StudyDesire.tres" id="13_nn15e"]
+[ext_resource type="Script" uid="uid://dqbrv1rh4jcgj" path="res://Scripts/AI/FSM/InterruptedState.gd" id="13_xxe07"]
+[ext_resource type="Resource" uid="uid://c0ylms3r0rrk1" path="res://Resources/AI/Desires/SocializeDesire.tres" id="14_wcxyp"]
 
 [node name="Character" type="Node2D"]
 script = ExtResource("1_0y7nr")
 
 [node name="UtilityAI" type="Node" parent="."]
 script = ExtResource("2_jo2ib")
-actions = Array[ExtResource("3_omicx")]([ExtResource("4_8au8k"), ExtResource("5_p3cti"), ExtResource("6_fgiha")])
-desires = Array[ExtResource("7_6s7kk")]([ExtResource("8_0tob0"), ExtResource("9_cw27m")])
+actions = Array[ExtResource("3_omicx")]([ExtResource("4_8au8k"), ExtResource("5_p3cti"), ExtResource("6_fgiha"), ExtResource("7_nxr2n"), ExtResource("8_uis85"), ExtResource("9_d4e0j")])
+desires = Array[ExtResource("7_6s7kk")]([ExtResource("8_0tob0"), ExtResource("9_cw27m"), ExtResource("13_nn15e"), ExtResource("14_wcxyp")])
+
+[node name="Idle" type="Node" parent="UtilityAI"]
+script = ExtResource("10_6s7kk")
+
+[node name="ChoosingAction" type="Node" parent="UtilityAI"]
+script = ExtResource("11_0tob0")
+
+[node name="PerformingAction" type="Node" parent="UtilityAI"]
+script = ExtResource("12_cw27m")
+
+[node name="Interrupted" type="Node" parent="UtilityAI"]
+script = ExtResource("13_xxe07")

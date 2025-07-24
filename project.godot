@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 CharManager="*res://Globals/CharacterManager.gd"
+TimeManager="*res://Globals/TimeManager.gd"
+DesireManager="*res://Globals/DesireManager.gd"
 
 [display]
 

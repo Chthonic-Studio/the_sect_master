@@ -4,7 +4,6 @@
 # Place in res://scripts/managers/ and autoload as "CharacterManager".
 
 extends Node
-class_name CharacterManager
 
 # === Internal: Next unique character ID
 var _next_id: int = 10000001
@@ -70,11 +69,17 @@ func create_character(type: String = "mortal", position: Vector2 = Vector2.ZERO)
 	resource.traits = _assign_placeholder_traits()
 	# --- Randomize personality stats ---
 	resource.randomize_personality_stats()
+	
+	# --- DELEGATE TO DESIRE MANAGER ---
+	# Tell the new manager to set up the desires for this character.
+	DesireManager.initialize_desires_for_character(resource)
+	
 	# Clamp stats (safe)
 	if resource.has_method("clamp_stats"):
 		resource.clamp_stats()
 	if resource.has_method("clamp_cultivation_stats"):
 		resource.clamp_cultivation_stats()
+		
 	var char_node = Character.instantiate()
 	char_node.character_resource = resource
 	char_node.position = position
@@ -204,24 +209,3 @@ func repopulate_characters(characters: Array) -> void:
 	for char in characters:
 		if char and char.has_method("get"): # Defensive check
 			_characters[char.id] = char
-
-func _on_day_passed(year: int, season: int, period: int, day: int) -> void:
-	# Loop through all characters and update their stats.
-	for res in all_character_resources:
-		if res:
-			# --- New: Decay Desire Cooldowns ---
-			if not res.desire_cooldowns.is_empty():
-				var desires_to_decay = res.desire_cooldowns.keys()
-				for desire_name in desires_to_decay:
-					# Reduce cooldown by a fixed amount each day.
-					res.desire_cooldowns[desire_name] = max(0, res.desire_cooldowns[desire_name] - 15)
-					# If cooldown reaches zero, remove it to keep the dictionary clean.
-					if res.desire_cooldowns[desire_name] == 0:
-						res.desire_cooldowns.erase(desire_name)
-
-# --- How & Where to Use ---
-# 1. Place in res://scripts/managers/character_manager.gd and autoload as "CharacterManager".
-# 2. Register every CharacterResource after creation or loading: CharacterManager.register_character(char_resource)
-# 3. To resolve an ID, use: var char = CharacterManager.get_character_by_id(id)
-# 4. Batch operations: CharacterManager.batch_manage_members("exists", [id1, id2, id3])
-# 5. After loading all characters from disk, call repopulate_characters(all_loaded_characters)

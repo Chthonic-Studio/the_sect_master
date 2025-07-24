@@ -5,7 +5,6 @@
 # Add as Autoload Singleton named "TimeManager" in Project Settings > Autoload.
 
 extends Node
-class_name TimeManager
 
 # === Calendar Definitions ===
 const SEASONS = ["Early Spring", "Mid Spring", "Late Spring", "Early Summer", "Mid Summer", "Late Summer", "Early Autumn", "Mid Autumn", "Late Autumn", "Early Winter", "Mid Winter", "Late Winter"]
@@ -132,10 +131,3 @@ func get_date_string() -> String:
 func get_full_season_string() -> String:
 	# E.g., "Late Spring"
 	return "%s %s" % [PERIODS[period], SEASONS_BASE[season]]
-
-# === How & Where to Use ===
-# - Place this script at res://scripts/managers/time_manager.gd
-# - Add it as an Autoload Singleton (Project Settings > Autoload > Path: scripts/managers/time_manager.gd, Node Name: TimeManager)
-# - Use signals (day_passed, period_passed, year_passed, etc.) to trigger game events, resource updates, etc.
-# - Call set_speed(0/1/2) for 1x/3x/7x, pause_time(), resume_time(), or toggle_pause() from UI or game logic.
-# - Use get_date_string() for UI.

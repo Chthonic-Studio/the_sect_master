@@ -2,14 +2,13 @@
 # Abstract base for all character actions in Utility AI system.
 # Extend for concrete actions (Eat, Meditate, Idle, etc).
 
-extends Resource
-class_name UtilityActionResource
+class_name UtilityActionResource extends Resource
 
 signal action_started(action_name)
 signal action_completed(action_name)
 
 @export var action_name: String = "" # Name used for desire/action mapping and debug
-@export_range(0, 200, 5) var cooldown_to_apply: int = 100 # How much this action suppresses the desire.
+@export_range(-200, 0, 5) var satiation_value: int = -100 # How much this action reduces the desire modifier.
 
 var _timer := 0.0
 
@@ -22,10 +21,7 @@ func can_perform(character: Node) -> bool:
 	return true
 
 # Called when an action is chosen. Child classes MUST override this.
-# This ensures every action defines how it should start.
 func start_action(character: Node) -> void:
-	# This function must be overridden by child actions (e.g., IdleAction).
-	# It should call _start_timer() with its own duration values.
 	push_error("Base start_action() called. Child class must override this method.")
 
 # Processes the action's duration. Called every frame by the AI.
@@ -39,22 +35,16 @@ func process_action(character: Node, delta: float) -> bool:
 
 # Called when action ends. Child classes can override this for cleanup/effects.
 func end_action(character: Node) -> void:
-	# --- New Cooldown Logic ---
 	var res = character.character_resource
-	if res and cooldown_to_apply > 0:
-		# Add the cooldown value to the character's personal dictionary.
-		# This will suppress the desire that triggered this action.
-		res.desire_cooldowns[action_name] = res.desire_cooldowns.get(action_name, 0) + cooldown_to_apply
-		print("Applied cooldown of %d to '%s' for %s." % [cooldown_to_apply, action_name, res.name_display])
-
-	# Child classes can still add their own logic using super().
+	if res and satiation_value != 0:
+		# Apply the satiation value to the desire modifier.
+		# This makes the character less likely to perform this action again immediately.
+		res.desire_modifiers[action_name] = res.desire_modifiers.get(action_name, 0) + satiation_value
+		print("Applied satiation of %d to '%s' for %s." % [satiation_value, action_name, res.name_display])
 	pass
 
 # --- Helper Function (for children to use) ---
-
 func _start_timer(min_duration: float, max_duration: float) -> void:
 	var final_max = max(min_duration, max_duration)
-	
 	_timer = randf_range(min_duration, final_max)
-
 	emit_signal("action_started", action_name)
