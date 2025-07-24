@@ -4,5 +4,5 @@
 
 [resource]
 script = ExtResource("1_k7vg5")
-desire_name = ""
+desire_name = "Eat"
 metadata/_custom_type_script = "uid://cksio66o0a2oq"

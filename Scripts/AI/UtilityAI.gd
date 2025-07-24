@@ -42,24 +42,29 @@ func _process(delta: float) -> void:
 	if not character:
 		return
 
-	# --- AI Decision Loop ---
-	# 1. If no action is being performed, it's time to choose a new one.
-	if not current_action:
-		_select_next_action()
+	# If an action IS currently being performed, process it and do nothing else.
+	if current_action:
+		# The process_action function returns 'true' when it's finished.
+		var is_action_finished = current_action.process_action(character, delta)
+		
+		if is_action_finished:
+			# The action has just finished. Time for cleanup.
+			# Store the name of the action that just completed.
+			previous_action_name = current_action.action_name
+			
+			# Call the action's end function to apply any effects (e.g., restore HP).
+			current_action.end_action(character)
+			
+			# Set current_action to null. The duplicated resource will be freed from memory.
+			current_action = null
+		
+		# VERY IMPORTANT: We return here to ensure we don't try to pick a new
+		# action in the same frame that we are processing or finishing one.
 		return
 
-	# 2. If an action IS being performed, process it.
-	# The process_action function returns 'true' when it's finished.
-	if current_action.process_action(character, delta):
-		# 3. The action has just finished. Time for cleanup and state change.
-		# Store the name of the action that just completed.
-		previous_action_name = current_action.action_name
-		
-		# Call the action's end function to apply any effects (e.g., restore HP).
-		current_action.end_action(character)
-		
-		# Set current_action to null. This tells the AI to pick a new action on the next frame.
-		current_action = null
+	# If we reach this point, it means current_action is null.
+	# It is time to choose a new action.
+	_select_next_action()
 
 
 # This function evaluates all desires and selects the best possible action.
@@ -69,59 +74,55 @@ func _select_next_action() -> void:
 	print("\n--- AI TICK: %s is choosing an action ---" % char_name)
 	
 	var best_utility := -INF # Start with a very low score
-	var best_action: UtilityActionResource = null
+	var best_action_template: UtilityActionResource = null # We will find the best TEMPLATE
 
 	# --- Step 1: Evaluate all desires ---
-	# We loop through each desire to find out what the character wants to do most.
 	print("1. Evaluating desires...")
 	if desires.is_empty():
 		print("  [WARNING] No desires assigned to this AI. Cannot make decisions.")
 	
 	for desire in desires:
-		var utility_score = desire.get_utility(character)
+		var utility_score = desire.get_final_utility(character)
 		print("  - Desire '%s' utility score: %.2f" % [desire.desire_name, utility_score])
 		
-		# If this desire's score is the highest we've seen so far...
 		if utility_score > best_utility:
-			# ...find the action that corresponds to this desire.
-			print("    > This is a new highest score. Checking for a matching action...")
-			var corresponding_action = _find_action_for_desire(desire.desire_name)
+			var corresponding_action_template = _find_action_for_desire(desire.desire_name)
 			
-			# Check if that action exists and if the character can currently perform it.
-			if not corresponding_action:
-				print("    [WARNING] No action found with name: '%s'. Check 'action_name' in your Action resources." % desire.desire_name)
-				continue # Skip to the next desire
+			if not corresponding_action_template:
+				print("    [WARNING] No action found with name: '%s'." % desire.desire_name)
+				continue
 
-			print("    > Found action: '%s'. Checking if it can be performed." % corresponding_action.action_name)
-			# Check if the character can currently perform it.
-			if corresponding_action.can_perform(character):
-				print("    [SUCCESS] '%s' can be performed. It is now the best candidate." % corresponding_action.action_name)
-				# If so, this is our new top candidate.
+			if corresponding_action_template.can_perform(character):
 				best_utility = utility_score
-				best_action = corresponding_action
+				best_action_template = corresponding_action_template
 			else:
-				print("    [INFO] '%s' cannot be performed right now." % corresponding_action.action_name)
+				print("    [INFO] '%s' cannot be performed right now." % corresponding_action_template.action_name)
 
 	# --- Step 2: Choose the final action ---
 	print("\n2. Making final decision...")
-	print("   - Best candidate action: '%s' with utility: %.2f" % [best_action.action_name if best_action else "None", best_utility])
-	
-	# If we found a valid action and its score is meaningful (greater than 0)...
-	if best_action and best_utility > 0:
-		print("   [DECISION] Selecting '%s' as the current action." % best_action.action_name)
-		current_action = best_action
+	var chosen_template: UtilityActionResource = null
+	if best_action_template:
+		print("   [DECISION] Selecting '%s' as the current action." % best_action_template.action_name)
+		chosen_template = best_action_template
 	else:
-		# ...otherwise, the character has no pressing needs. Default to Idle.
-		print("   [DECISION] No pressing desires. Defaulting to 'Idle'.")
-		current_action = _find_action_for_desire("Idle")
+		print("   [DECISION] No valid actions could be performed. Defaulting to 'Idle'.")
+		chosen_template = _find_action_for_desire("Idle")
 
-	# --- Step 3: Start the chosen action ---
-	if current_action:
+	# --- Step 3: Instantiate and Start the chosen action ---
+	if chosen_template:
+		# We DUPLICATE the chosen template to create a unique instance.
+		current_action = chosen_template.duplicate()
+		
+		# --- REASON FOR CHANGE ---
+		# We now explicitly call our new init() function on the duplicated
+		# instance. This guarantees that the action's internal _timer is
+		# reset to 0 before we proceed, ensuring a clean start.
+		current_action.init()
+		
 		print("3. Starting action: '%s'" % current_action.action_name)
 		current_action.start_action(character)
 		emit_signal("action_changed", current_action.action_name)
 	else:
-		# This is a fallback in case even the "Idle" action is missing.
 		print("[ERROR] Could not select an action! Even the 'Idle' action is missing or invalid.")
 		push_warning("AI could not select an action. No valid actions found, including Idle.")
 

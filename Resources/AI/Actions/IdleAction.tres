@@ -6,5 +6,5 @@
 script = ExtResource("1_renqs")
 min_duration = 2.0
 max_duration = 5.0
-action_name = ""
+action_name = "Idle"
 metadata/_custom_type_script = "uid://bo1x2c6kgdkj"

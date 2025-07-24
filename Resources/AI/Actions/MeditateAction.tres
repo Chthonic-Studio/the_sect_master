@@ -6,5 +6,5 @@
 script = ExtResource("1_j3sfy")
 min_duration = 3.0
 max_duration = 7.0
-action_name = ""
+action_name = "Training"
 metadata/_custom_type_script = "uid://ck5jfp6di3rl0"

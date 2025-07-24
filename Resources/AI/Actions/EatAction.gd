@@ -7,19 +7,19 @@ class_name EatAction
 @export var max_duration: float = 2.0
 
 func can_perform(character: Node) -> bool:
-	# For now, anyone can eat if they are not at full health.
-	# Later, we could check for a food resource in their inventory.
-	var res = character.character_resource
-	return res and res.current_hp < res.max_hp
+	return true
 
-# This function now correctly overrides the parent's placeholder.
 func start_action(character: Node) -> void:
-	# It calls the parent's helper function with its own duration.
+	print("Starting EatAction with min_duration: %.2f, max_duration: %.2f" % [min_duration, max_duration])
 	_start_timer(min_duration, max_duration)
 
 func end_action(character: Node) -> void:
-	# Example effect: Restore some HP when eating finishes.
+	super.end_action(character)
+
 	var res = character.character_resource
 	if res:
-		res.current_hp = clamp(res.current_hp + 15, 0, res.max_hp)
+		var heal_amount = res.max_hp * 0.25
+		res.current_hp = clamp(res.current_hp + heal_amount, 0, res.max_hp)
+		print("%s finished eating. HP is now %d/%d." % [res.name_display, res.current_hp, res.max_hp])
+		# This is a duplicate print statement.
 		print("%s finished eating. HP is now %d." % [res.name_display, res.current_hp])

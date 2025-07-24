@@ -205,6 +205,20 @@ func repopulate_characters(characters: Array) -> void:
 		if char and char.has_method("get"): # Defensive check
 			_characters[char.id] = char
 
+func _on_day_passed(year: int, season: int, period: int, day: int) -> void:
+	# Loop through all characters and update their stats.
+	for res in all_character_resources:
+		if res:
+			# --- New: Decay Desire Cooldowns ---
+			if not res.desire_cooldowns.is_empty():
+				var desires_to_decay = res.desire_cooldowns.keys()
+				for desire_name in desires_to_decay:
+					# Reduce cooldown by a fixed amount each day.
+					res.desire_cooldowns[desire_name] = max(0, res.desire_cooldowns[desire_name] - 15)
+					# If cooldown reaches zero, remove it to keep the dictionary clean.
+					if res.desire_cooldowns[desire_name] == 0:
+						res.desire_cooldowns.erase(desire_name)
+
 # --- How & Where to Use ---
 # 1. Place in res://scripts/managers/character_manager.gd and autoload as "CharacterManager".
 # 2. Register every CharacterResource after creation or loading: CharacterManager.register_character(char_resource)

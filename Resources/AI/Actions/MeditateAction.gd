@@ -16,8 +16,11 @@ func start_action(character: Node) -> void:
 	_start_timer(min_duration, max_duration)
 
 func end_action(character: Node) -> void:
-	# Example effect: Restore some Qi when meditation finishes.
+	# Call parent to apply cooldown.
+	super.end_action(character)
+
+	# Basic training can slightly increase stats over a long time.
+	# For now, we'll just print a message.
 	var res = character.character_resource
 	if res:
-		res.current_qi = clamp(res.current_qi + 10, 0, res.max_qi)
-		print("%s finished meditating. Qi is now %d." % [res.name_display, res.current_qi])
+		print("%s finished a basic training session." % res.name_display)
