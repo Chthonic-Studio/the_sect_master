@@ -1,15 +1,9 @@
-# UtilityAI.gd
-# Attach to the Character node in the scene.
-# Manages arrays of UtilityActionResource and UtilityDesireResource.
-# Handles the core AI loop: action selection, execution, and transitions.
-
-extends Node
+extends Node 
 class_name UtilityAI
 
 # Emitted when a new action is chosen, so the UI can update.
 signal action_changed(new_action_name)
 
-# --- EXPORTS (Assign these in the Inspector on your Character scene) ---
 # An array of all possible actions this character can perform.
 @export var actions: Array[UtilityActionResource] = []
 # An array of all desires that drive this character's decisions.
@@ -20,28 +14,13 @@ signal action_changed(new_action_name)
 var current_action: UtilityActionResource = null
 # The name of the last action that was completed.
 var previous_action_name: String = "None"
-# A reference to the parent Character node this AI is controlling.
 var character: Node = null
 
-# --- HOW & WHERE TO USE ---
-# 1. Attach this script to your main Character scene (e.g., the root of Character.tscn).
-# 2. In the Godot Inspector, populate the 'Actions' and 'Desires' arrays.
-#    - Drag and drop your action .tres files (e.g., IdleAction.tres, EatAction.tres) into the 'Actions' array.
-#    - Drag and drop your desire .tres files (e.g., EatDesire.tres, TrainingDesire.tres) into the 'Desires' array.
-# 3. The AI will now run automatically.
-
 func _ready() -> void:
-	# Store a reference to the parent node for easy access.
 	character = get_parent()
-	if not character:
-		push_error("UtilityAI must be a child of a Character node.")
 
 # The main AI tick, called every frame.
 func _process(delta: float) -> void:
-	# If the character reference is missing, do nothing.
-	if not character:
-		return
-
 	# If an action IS currently being performed, process it and do nothing else.
 	if current_action:
 		# The process_action function returns 'true' when it's finished.
@@ -113,10 +92,6 @@ func _select_next_action() -> void:
 		# We DUPLICATE the chosen template to create a unique instance.
 		current_action = chosen_template.duplicate()
 		
-		# --- REASON FOR CHANGE ---
-		# We now explicitly call our new init() function on the duplicated
-		# instance. This guarantees that the action's internal _timer is
-		# reset to 0 before we proceed, ensuring a clean start.
 		current_action.init()
 		
 		print("3. Starting action: '%s'" % current_action.action_name)

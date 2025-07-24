@@ -53,13 +53,6 @@ func end_action(character: Node) -> void:
 # --- Helper Function (for children to use) ---
 
 func _start_timer(min_duration: float, max_duration: float) -> void:
-	# --- REASON FOR CHANGE ---
-	# We are adding a critical safeguard. This 'assert' will cause the game to pause
-	# with an error if an action ever tries to start with a non-positive duration.
-	# This immediately tells us if the duration values from the child action are invalid.
-	assert(min_duration > 0 and max_duration > 0, "Action '%s' was started with a zero or negative duration." % action_name)
-	
-	# We also ensure max_duration is always greater than or equal to min_duration.
 	var final_max = max(min_duration, max_duration)
 	
 	_timer = randf_range(min_duration, final_max)
