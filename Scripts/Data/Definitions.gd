@@ -5,10 +5,9 @@
 # 2. Use 'extends Resource' so it can be loaded or referenced easily.
 # 3. Use as a singleton if needed, or simply preload/import where necessary.
 
-extends Resource
-class_name Definitions
+extends Node
 
-# --- Cultivation Realms (Xianxia progression stages) ---
+# --- Cultivation Realms ---
 enum CultivationRealm {
 	QI_GATHERING,
 	QI_BUILDING,

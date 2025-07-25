@@ -14,8 +14,8 @@ var current_action_name: String = "None"
 var past_action_name: String = "None"
 
 # AI Desire Values
-var eat_desire_val: int = 0.0
-var training_desire_val: int  = 0.0
+var eat_desire_val: int = 0
+var training_desire_val: int  = 0
 
 var last_spawned_character: Node2D = null
 
@@ -85,7 +85,9 @@ func _update_info_panel(action_name: String = "") -> void:
 	$DebugHbox/CharSpawnDebug/VBoxContainer3/Curiosity.text = "Curiosity: %d" % res.curiosity
 	# Cultivator-only fields
 	var is_cultivator = res is CultivatorResource
-	$DebugHbox/CharSpawnDebug/VBoxContainer4/Realm.text = "Realm: %s" % (str(res.cultivation_realm) if is_cultivator else "-")
+	if res is CultivatorResource:
+		var cultivation_realm = Definitions.cultivation_realm_to_string( res.cultivation_realm )
+		$DebugHbox/CharSpawnDebug/VBoxContainer4/Realm.text = "Realm: %s" % (cultivation_realm if is_cultivator else "-")
 	$DebugHbox/CharSpawnDebug/VBoxContainer4/RealmProgress.text = "Realm Progress: %d" % (res.realm_progress if is_cultivator else 0)
 	$DebugHbox/CharSpawnDebug/VBoxContainer4/Lifespan.text = "Lifespan: %d" % (res.lifespan if is_cultivator else 0)
 	$DebugHbox/CharSpawnDebug/VBoxContainer4/Techniques.text = "Techniques: %s" % (", ".join(res.learned_techniques) if is_cultivator else "-")
@@ -116,10 +118,3 @@ func _connect_to_ai_signal() -> void:
 		var ai_node = last_spawned_character.get_node_or_null("UtilityAI")
 		if ai_node and not ai_node.is_connected("action_changed", Callable(self, "_update_info_panel")):
 			ai_node.connect("action_changed", Callable(self, "_update_info_panel"))
-
-# --- How & Where to Use ---
-# 1. Attach this script to your VBoxContainer debug menu node in your main scene.
-# 2. Add two Buttons as children: "SpawnMortalButton" and "SpawnCultivatorButton".
-# 3. Optionally connect the buttons in the editor, or let _ready() auto-connect by node name.
-# 4. Pressing a button spawns a character at an offset position and adds it to the current scene.
-# 5. Use for debugging character generation and stat/trait display.

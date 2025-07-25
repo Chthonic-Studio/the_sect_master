@@ -1,6 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://b7pavuul7xpr3"]
+[gd_scene load_steps=5 format=3 uid="uid://b7pavuul7xpr3"]
 
 [ext_resource type="PackedScene" uid="uid://cqxyblypix0tk" path="res://UI/Debug/debug_menu.tscn" id="1_gmh8u"]
+[ext_resource type="Texture2D" uid="uid://c54gsjs220b0y" path="res://Assets/UI/Menus/PlayerCharacterMenu.png" id="2_f28it"]
+[ext_resource type="FontFile" uid="uid://ckbwkux4q6q8i" path="res://Assets/Fonts/Beholden/Beholden-Bold.ttf" id="3_dcbcb"]
+
+[sub_resource type="Theme" id="Theme_tbbry"]
+/styles/Black = null
 
 [node name="MainUI" type="Control"]
 layout_mode = 3
@@ -22,3 +27,117 @@ anchor_bottom = 0.0
 offset_right = 300.0
 offset_bottom = 450.0
 grow_vertical = 1
+
+[node name="PlayerCharacterMenu" type="Control" parent="."]
+custom_minimum_size = Vector2(650, 150)
+layout_mode = 1
+anchor_top = 0.833333
+anchor_right = 0.40625
+anchor_bottom = 1.0
+grow_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="SectMasterPortrait" type="TextureRect" parent="PlayerCharacterMenu"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_f28it")
+
+[node name="SectMasterName" type="Label" parent="PlayerCharacterMenu"]
+layout_mode = 0
+offset_left = 107.0
+offset_top = 24.0
+offset_right = 373.0
+offset_bottom = 47.0
+theme = SubResource("Theme_tbbry")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_dcbcb")
+theme_override_font_sizes/font_size = 25
+text = "Sect Master Name"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlayerCharacterMenu"]
+layout_mode = 0
+offset_left = 399.0
+offset_top = 19.0
+offset_right = 624.0
+offset_bottom = 142.0
+
+[node name="Label" type="Label" parent="PlayerCharacterMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Stats"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PlayerCharacterMenu/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlayerCharacterMenu/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = -3
+
+[node name="Label" type="Label" parent="PlayerCharacterMenu/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "Strength"
+
+[node name="Label2" type="Label" parent="PlayerCharacterMenu/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "Agility"
+
+[node name="Label3" type="Label" parent="PlayerCharacterMenu/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "Constitution"
+
+[node name="Label4" type="Label" parent="PlayerCharacterMenu/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "Intelligence"
+
+[node name="Label5" type="Label" parent="PlayerCharacterMenu/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "Strength"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="PlayerCharacterMenu/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = -3
+
+[node name="Label" type="Label" parent="PlayerCharacterMenu/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "15"
+
+[node name="Label2" type="Label" parent="PlayerCharacterMenu/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "15"
+
+[node name="Label3" type="Label" parent="PlayerCharacterMenu/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "15"
+
+[node name="Label4" type="Label" parent="PlayerCharacterMenu/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "15"
+
+[node name="Label5" type="Label" parent="PlayerCharacterMenu/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "15"

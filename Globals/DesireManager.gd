@@ -41,7 +41,7 @@ func _calculate_growth_rate(res: CharacterResource, desire_name: String) -> floa
 		"Training":
 			# Diligent and ambitious characters recover their will to train faster.
 			# Cultivators get a significant bonus.
-			var is_cultivator_bonus = 1.5 if res is CultivatorResource else 1.0
+			var is_cultivator_bonus = 0.5 if res is CultivatorResource else 0.2
 			var diligence_mod = res.diligence / 25.0  # Range: -4 to 4
 			var ambition_mod = res.ambition / 50.0   # Range: -2 to 2
 			return max(0.5, (base_growth + diligence_mod + ambition_mod) * is_cultivator_bonus)

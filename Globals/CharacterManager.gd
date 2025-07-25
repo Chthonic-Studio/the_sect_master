@@ -31,12 +31,18 @@ func _assign_placeholder_traits() -> Array[String]:
 
 # Creates a new mortal or cultivator character node, fully initialized
 # type: "mortal" or "cultivator"
-func create_character(type: String = "mortal", position: Vector2 = Vector2.ZERO) -> Node2D:
+# position: Where to place the character in the scene
+# overrides: A dictionary of properties to set on the new character resource
+func create_character(type: String = "mortal", position: Vector2 = Vector2.ZERO, overrides: Dictionary = {}) -> Node2D:
 	var resource
 	if type == "cultivator":
 		resource = CultivatorResource.new()
 	else:
 		resource = CharacterResource.new()
+	# --- Assign unique ID ---
+	resource.id = _next_id
+	_next_id += 1
+	
 	# Name and gender
 	var gender = CharacterResource.Gender.values()[randi() % 2]
 	var culture = CharacterResource.CultureGroup.values()[randi() % 2]
@@ -70,6 +76,14 @@ func create_character(type: String = "mortal", position: Vector2 = Vector2.ZERO)
 	# --- Randomize personality stats ---
 	resource.randomize_personality_stats()
 	
+	# --- Apply Overrides ---
+	for key in overrides.keys():
+		# CORRECTED LINE: Use the 'in' keyword to check for property existence on a Resource.
+		if key in resource:
+			resource.set(key, overrides[key])
+		else:
+			push_warning("CharacterManager: Property '%s' not found on resource." % key)
+
 	# --- DELEGATE TO DESIRE MANAGER ---
 	# Tell the new manager to set up the desires for this character.
 	DesireManager.initialize_desires_for_character(resource)
@@ -145,7 +159,11 @@ func get_characters(type: String = "") -> Array:
 # Call after creating/loading a CharacterResource to track it by ID.
 func register_character(character: CharacterResource) -> void:
 	if not character: return
-	_characters[character.id] = character
+	if not _characters.has(character.id):
+		_characters[character.id] = character
+	else:
+		push_warning("CharacterManager: Character with ID %d already registered." % character.id)
+
 
 # === Unregister a CharacterResource (e.g., on deletion)
 func unregister_character(character_id: int) -> void:
@@ -157,7 +175,7 @@ func create_character_resource(stat_overrides := {}) -> CharacterResource:
 	char.id = _next_id
 	_next_id += 1
 	for key in stat_overrides:
-		if char.has_property(key):
+		if key in char:
 			char.set(key, stat_overrides[key])
 	char.clamp_stats()
 	register_character(char)
