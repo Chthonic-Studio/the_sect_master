@@ -1,0 +1,252 @@
+[gd_scene load_steps=9 format=3 uid="uid://bcbw0dimiqd0w"]
+
+[ext_resource type="Script" uid="uid://deskgy41sov31" path="res://Scripts/UI/PlayerCharacterMenu.gd" id="1_ake1p"]
+[ext_resource type="Texture2D" uid="uid://c54gsjs220b0y" path="res://Assets/UI/Menus/PlayerCharacterMenu.png" id="2_vvw65"]
+[ext_resource type="FontFile" uid="uid://ckbwkux4q6q8i" path="res://Assets/Fonts/Beholden/Beholden-Bold.ttf" id="3_tl64v"]
+[ext_resource type="Texture2D" uid="uid://bv8hd1oixqqcm" path="res://Assets/UI/Icons/SpiritualRoot_Common.png" id="4_qvs3y"]
+[ext_resource type="Texture2D" uid="uid://63nc6bl7qom1" path="res://Assets/UI/Icons/Traits/Charismatic.png" id="5_n2v3p"]
+[ext_resource type="Texture2D" uid="uid://cev1s5ga36m42" path="res://Assets/UI/Icons/Traits/Righteous.png" id="6_wqqq8"]
+[ext_resource type="Texture2D" uid="uid://beof781fvjcin" path="res://Assets/UI/Icons/Traits/Perceptive.png" id="7_vlmpk"]
+
+[sub_resource type="Theme" id="Theme_tbbry"]
+/styles/Black = null
+
+[node name="PlayerCharacterMenu" type="Control"]
+custom_minimum_size = Vector2(650, 150)
+layout_mode = 3
+anchor_top = 0.833333
+anchor_right = 0.40625
+anchor_bottom = 1.0
+grow_vertical = 0
+script = ExtResource("1_ake1p")
+metadata/_edit_use_anchors_ = true
+
+[node name="SectMasterPortrait" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_vvw65")
+
+[node name="SectMasterName" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.143077
+anchor_top = 0.113335
+anchor_right = 0.552308
+anchor_bottom = 0.306669
+offset_bottom = -3.0
+theme = SubResource("Theme_tbbry")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_tl64v")
+theme_override_font_sizes/font_size = 25
+text = "Sect Master Name"
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+anchor_left = 0.613846
+anchor_top = 0.126667
+anchor_right = 0.96
+anchor_bottom = 0.946667
+offset_left = -3.05176e-05
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Stats"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = -3
+
+[node name="Health" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "Health"
+horizontal_alignment = 2
+
+[node name="Qi" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "Qi"
+horizontal_alignment = 2
+
+[node name="Strength" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "Strength"
+horizontal_alignment = 2
+
+[node name="Agility" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "Agility"
+horizontal_alignment = 2
+
+[node name="Constitution" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "Constitution"
+horizontal_alignment = 2
+
+[node name="Intelligence" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "Intelligence"
+horizontal_alignment = 2
+
+[node name="Perception" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "Perception"
+horizontal_alignment = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = -3
+
+[node name="HealthValue" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "15/15"
+
+[node name="QiValue" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "10/10"
+
+[node name="StrengthValue" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "15"
+
+[node name="AgilityValue" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "15"
+
+[node name="ConstitutionValue" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "15"
+
+[node name="IntelligenceValue" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "15"
+
+[node name="PerceptionValue" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "15"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 93.0
+offset_top = 65.0003
+offset_right = 133.0
+offset_bottom = 105.0
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("4_qvs3y")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 0
+anchor_left = 0.14
+anchor_top = 0.253335
+anchor_right = 0.470769
+anchor_bottom = 0.366669
+offset_right = -88.0
+theme_override_constants/separation = 15
+metadata/_edit_use_anchors_ = true
+
+[node name="Renown" type="Label" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Renown"
+
+[node name="Reputation" type="Label" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Reputation"
+
+[node name="CultivationRealm" type="Label" parent="."]
+layout_mode = 0
+offset_left = 157.0
+offset_top = 65.0003
+offset_right = 285.0
+offset_bottom = 82.0003
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_tl64v")
+text = "Cultivation Realm"
+
+[node name="TraitsScrollContainer" type="ScrollContainer" parent="."]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 0
+offset_left = 28.0
+offset_top = 111.0
+offset_right = 323.0
+offset_bottom = 141.0
+
+[node name="TraitsHBox" type="HBoxContainer" parent="TraitsScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="TraitsScrollContainer/TraitsHBox"]
+layout_mode = 2
+texture = ExtResource("5_n2v3p")
+
+[node name="TextureRect2" type="TextureRect" parent="TraitsScrollContainer/TraitsHBox"]
+layout_mode = 2
+texture = ExtResource("6_wqqq8")
+
+[node name="TextureRect3" type="TextureRect" parent="TraitsScrollContainer/TraitsHBox"]
+layout_mode = 2
+texture = ExtResource("7_vlmpk")
+
+[node name="Age" type="Label" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
+offset_left = 329.0
+offset_top = 43.0003
+offset_right = 429.0
+offset_bottom = 64.0003
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Age: "
+
+[node name="Gender" type="Label" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
+offset_left = 328.0
+offset_top = 67.0003
+offset_right = 428.0
+offset_bottom = 88.0003
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Gender: "

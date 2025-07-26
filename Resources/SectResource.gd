@@ -5,12 +5,16 @@
 extends Resource
 class_name SectResource
 
+# --- NEW: Enum for cultural naming conventions ---
+enum CultureGroup { WESTERN, TRADITIONAL }
+
 # === Basic Info ===
 @export_category("Basic Info")
 @export var sect_name: String = ""
 @export_range(0, 1000, 1)
 var prestige: int = 0
 @export var description: String = ""
+@export var culture: CultureGroup = CultureGroup.TRADITIONAL # NEW: Sect's cultural origin
 
 # === Extensible Resources ===
 # Dictionary: resource_name (String) -> amount (int)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://b7pavuul7xpr3"]
+[gd_scene load_steps=10 format=3 uid="uid://b7pavuul7xpr3"]
 
 [ext_resource type="PackedScene" uid="uid://cqxyblypix0tk" path="res://UI/Debug/debug_menu.tscn" id="1_gmh8u"]
+[ext_resource type="Script" uid="uid://deskgy41sov31" path="res://Scripts/UI/PlayerCharacterMenu.gd" id="2_bhqku"]
 [ext_resource type="Texture2D" uid="uid://c54gsjs220b0y" path="res://Assets/UI/Menus/PlayerCharacterMenu.png" id="2_f28it"]
 [ext_resource type="FontFile" uid="uid://ckbwkux4q6q8i" path="res://Assets/Fonts/Beholden/Beholden-Bold.ttf" id="3_dcbcb"]
 [ext_resource type="Texture2D" uid="uid://bv8hd1oixqqcm" path="res://Assets/UI/Icons/SpiritualRoot_Common.png" id="4_dcbcb"]
@@ -39,6 +40,7 @@ anchor_top = 0.833333
 anchor_right = 0.40625
 anchor_bottom = 1.0
 grow_vertical = 0
+script = ExtResource("2_bhqku")
 metadata/_edit_use_anchors_ = true
 
 [node name="SectMasterPortrait" type="TextureRect" parent="PlayerCharacterMenu"]
@@ -251,6 +253,7 @@ texture = ExtResource("7_qnjnk")
 
 [node name="Age" type="Label" parent="PlayerCharacterMenu"]
 custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
 offset_left = 329.0
 offset_top = 43.0003
 offset_right = 429.0
@@ -259,8 +262,9 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Age: "
 
-[node name="Age2" type="Label" parent="PlayerCharacterMenu"]
+[node name="Gender" type="Label" parent="PlayerCharacterMenu"]
 custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
 offset_left = 328.0
 offset_top = 67.0003
 offset_right = 428.0
