@@ -1,9 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://b7pavuul7xpr3"]
+[gd_scene load_steps=9 format=3 uid="uid://b7pavuul7xpr3"]
 
 [ext_resource type="PackedScene" uid="uid://cqxyblypix0tk" path="res://UI/Debug/debug_menu.tscn" id="1_gmh8u"]
 [ext_resource type="Texture2D" uid="uid://c54gsjs220b0y" path="res://Assets/UI/Menus/PlayerCharacterMenu.png" id="2_f28it"]
 [ext_resource type="FontFile" uid="uid://ckbwkux4q6q8i" path="res://Assets/Fonts/Beholden/Beholden-Bold.ttf" id="3_dcbcb"]
 [ext_resource type="Texture2D" uid="uid://bv8hd1oixqqcm" path="res://Assets/UI/Icons/SpiritualRoot_Common.png" id="4_dcbcb"]
+[ext_resource type="Texture2D" uid="uid://63nc6bl7qom1" path="res://Assets/UI/Icons/Traits/Charismatic.png" id="5_ylo01"]
+[ext_resource type="Texture2D" uid="uid://cev1s5ga36m42" path="res://Assets/UI/Icons/Traits/Righteous.png" id="6_bhqku"]
+[ext_resource type="Texture2D" uid="uid://beof781fvjcin" path="res://Assets/UI/Icons/Traits/Perceptive.png" id="7_qnjnk"]
 
 [sub_resource type="Theme" id="Theme_tbbry"]
 /styles/Black = null
@@ -181,10 +184,10 @@ text = "15"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PlayerCharacterMenu"]
 layout_mode = 0
-offset_left = 90.0
-offset_top = 60.0003
-offset_right = 130.0
-offset_bottom = 100.0
+offset_left = 93.0
+offset_top = 65.0003
+offset_right = 133.0
+offset_bottom = 105.0
 
 [node name="TextureRect" type="TextureRect" parent="PlayerCharacterMenu/HBoxContainer"]
 layout_mode = 2
@@ -214,10 +217,54 @@ text = "Reputation"
 
 [node name="CultivationRealm" type="Label" parent="PlayerCharacterMenu"]
 layout_mode = 0
-offset_left = 321.0
-offset_top = 27.0003
-offset_right = 435.0
-offset_bottom = 44.0003
+offset_left = 157.0
+offset_top = 65.0003
+offset_right = 285.0
+offset_bottom = 82.0003
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_dcbcb")
 text = "Cultivation Realm"
+
+[node name="TraitsScrollContainer" type="ScrollContainer" parent="PlayerCharacterMenu"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 0
+offset_left = 28.0
+offset_top = 111.0
+offset_right = 323.0
+offset_bottom = 141.0
+
+[node name="TraitsHBox" type="HBoxContainer" parent="PlayerCharacterMenu/TraitsScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="PlayerCharacterMenu/TraitsScrollContainer/TraitsHBox"]
+layout_mode = 2
+texture = ExtResource("5_ylo01")
+
+[node name="TextureRect2" type="TextureRect" parent="PlayerCharacterMenu/TraitsScrollContainer/TraitsHBox"]
+layout_mode = 2
+texture = ExtResource("6_bhqku")
+
+[node name="TextureRect3" type="TextureRect" parent="PlayerCharacterMenu/TraitsScrollContainer/TraitsHBox"]
+layout_mode = 2
+texture = ExtResource("7_qnjnk")
+
+[node name="Age" type="Label" parent="PlayerCharacterMenu"]
+custom_minimum_size = Vector2(100, 0)
+offset_left = 329.0
+offset_top = 43.0003
+offset_right = 429.0
+offset_bottom = 64.0003
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Age: "
+
+[node name="Age2" type="Label" parent="PlayerCharacterMenu"]
+custom_minimum_size = Vector2(100, 0)
+offset_left = 328.0
+offset_top = 67.0003
+offset_right = 428.0
+offset_bottom = 88.0003
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Gender: "
