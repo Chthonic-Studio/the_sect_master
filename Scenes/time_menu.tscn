@@ -1,0 +1,108 @@
+[gd_scene load_steps=11 format=3 uid="uid://bqana5ott1yt8"]
+
+[ext_resource type="FontFile" uid="uid://ckbwkux4q6q8i" path="res://Assets/Fonts/Beholden/Beholden-Bold.ttf" id="1_8kxo1"]
+[ext_resource type="FontFile" uid="uid://b3w6nhtuyhlg0" path="res://Assets/Fonts/Beholden/Beholden-Medium.ttf" id="2_j5l5v"]
+[ext_resource type="Texture2D" uid="uid://bm7i63ts4772l" path="res://Assets/UI/TimeButtons.png" id="3_fsnwo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nxk4p"]
+atlas = ExtResource("3_fsnwo")
+region = Rect2(0, 0, 30, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1g0ov"]
+atlas = ExtResource("3_fsnwo")
+region = Rect2(0, 30, 30, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_28h05"]
+atlas = ExtResource("3_fsnwo")
+region = Rect2(30, 0, 30, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uk0ds"]
+atlas = ExtResource("3_fsnwo")
+region = Rect2(30, 30, 30, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7jin"]
+atlas = ExtResource("3_fsnwo")
+region = Rect2(60, 0, 30, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c28q3"]
+atlas = ExtResource("3_fsnwo")
+region = Rect2(60, 30, 30, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p66pi"]
+atlas = ExtResource("3_fsnwo")
+region = Rect2(90, 0, 30, 30)
+
+[node name="TimeMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -227.0
+offset_bottom = 73.0
+grow_horizontal = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.220264
+anchor_right = 1.00441
+anchor_bottom = 0.753425
+offset_right = -1.52588e-05
+grow_horizontal = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="DateContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="CurrentDate" type="Label" parent="VBoxContainer/DateContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("1_8kxo1")
+theme_override_font_sizes/font_size = 20
+text = "01, Spring, 1050"
+
+[node name="GameYear" type="Label" parent="VBoxContainer/DateContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_fonts/font = ExtResource("2_j5l5v")
+theme_override_font_sizes/font_size = 18
+text = "Year 1"
+horizontal_alignment = 1
+
+[node name="SpeedMenu" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="SpeedLabel" type="Label" parent="VBoxContainer/SpeedMenu"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "1x Speed"
+horizontal_alignment = 1
+
+[node name="NormalSpeed" type="TextureButton" parent="VBoxContainer/SpeedMenu"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture_normal = SubResource("AtlasTexture_nxk4p")
+texture_disabled = SubResource("AtlasTexture_1g0ov")
+
+[node name="x3Speed" type="TextureButton" parent="VBoxContainer/SpeedMenu"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture_normal = SubResource("AtlasTexture_28h05")
+texture_disabled = SubResource("AtlasTexture_uk0ds")
+
+[node name="x6Speed" type="TextureButton" parent="VBoxContainer/SpeedMenu"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture_normal = SubResource("AtlasTexture_r7jin")
+texture_disabled = SubResource("AtlasTexture_c28q3")
+
+[node name="Pause" type="TextureButton" parent="VBoxContainer/SpeedMenu"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+texture_normal = SubResource("AtlasTexture_p66pi")
