@@ -29,7 +29,12 @@ layout_mode = 1
 
 [node name="TimeMenu" parent="." instance=ExtResource("3_f28it")]
 layout_mode = 1
-offset_left = -236.0
+anchors_preset = -1
+anchor_left = 0.8525
+anchor_bottom = 0.0811111
+offset_left = 0.0
+offset_bottom = 0.0
+metadata/_edit_use_anchors_ = true
 
 [node name="SectManagementMenu" parent="." instance=ExtResource("4_dcbcb")]
 layout_mode = 1

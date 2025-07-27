@@ -19,15 +19,16 @@ var prestige: int = 0
 # === Extensible Resources ===
 # Dictionary: resource_name (String) -> amount (int)
 @export var resources: Dictionary = {
-	"spirit_qi": 0,
-	"materials": 0,
-	"food": 0
+	"spirit_stones": 1000,
+	"materials": 500,
+	"food": 200,
+	"gold": 1000
 }
 # Add/remove resource types by modifying this dictionary as needed.
 
 # === Member List (IDs) ===
 # Store CharacterResource IDs (int) instead of direct references for safe serialization.
-@export var member_ids: Array = [] # Array[int]
+@export var member_ids: Array[int] = [] # Array[int]
 
 # === Placeholders for future systems ===
 @export var belief_id: int = 0 # Placeholder for beliefs system
