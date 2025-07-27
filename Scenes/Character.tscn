@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://tyl1agdbeibi"]
+[gd_scene load_steps=21 format=3 uid="uid://tyl1agdbeibi"]
 
 [ext_resource type="Script" uid="uid://b1hu5qhw4vmf5" path="res://Scripts/Characters/Character.gd" id="1_0y7nr"]
 [ext_resource type="Script" uid="uid://copacn8vlgcdq" path="res://Scripts/AI/UtilityAI.gd" id="2_jo2ib"]
@@ -19,6 +19,10 @@
 [ext_resource type="Script" uid="uid://dqbrv1rh4jcgj" path="res://Scripts/AI/FSM/InterruptedState.gd" id="13_xxe07"]
 [ext_resource type="Resource" uid="uid://c0ylms3r0rrk1" path="res://Resources/AI/Desires/SocializeDesire.tres" id="14_wcxyp"]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_nxr2n"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nxr2n"]
+
 [node name="Character" type="Node2D"]
 script = ExtResource("1_0y7nr")
 
@@ -38,3 +42,17 @@ script = ExtResource("12_cw27m")
 
 [node name="Interrupted" type="Node" parent="UtilityAI"]
 script = ExtResource("13_xxe07")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_nxr2n")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 13.0
+offset_bottom = 14.0
+
+[node name="Collider" type="Area2D" parent="."]
+disable_mode = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collider"]
+position = Vector2(6, 7)
+shape = SubResource("CircleShape2D_nxr2n")

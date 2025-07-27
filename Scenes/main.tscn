@@ -1,10 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://dtpetb7nmbejg"]
+[gd_scene load_steps=4 format=3 uid="uid://dtpetb7nmbejg"]
 
 [ext_resource type="Script" uid="uid://d3355u3cumcaf" path="res://Scripts/System/Game.gd" id="1_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://b7pavuul7xpr3" path="res://Scenes/main_ui.tscn" id="1_jjgbg"]
+[ext_resource type="PackedScene" uid="uid://dhhfd0fntqncs" path="res://Scenes/lower_realm.tscn" id="3_8gbba"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_bo1nx")
+
+[node name="LowerRealms" parent="." instance=ExtResource("3_8gbba")]
 
 [node name="MainUI" parent="." instance=ExtResource("1_jjgbg")]
 anchors_preset = 0
