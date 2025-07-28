@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bg6a38imdx6qq"]
+
+[ext_resource type="FontFile" uid="uid://ckbwkux4q6q8i" path="res://Assets/Fonts/Beholden/Beholden-Bold.ttf" id="1_murnp"]
+
+[node name="DialogueOption" type="Label"]
+custom_minimum_size = Vector2(480, 0)
+theme_override_fonts/font = ExtResource("1_murnp")
+theme_override_font_sizes/font_size = 17
+text = "1. This is an example response option"
+autowrap_mode = 3

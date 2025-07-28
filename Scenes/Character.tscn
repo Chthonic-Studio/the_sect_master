@@ -24,6 +24,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_nxr2n"]
 
 [node name="Character" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_0y7nr")
 
 [node name="UtilityAI" type="Node" parent="."]

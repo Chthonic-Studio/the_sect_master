@@ -1,9 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://b7pavuul7xpr3"]
+[gd_scene load_steps=13 format=3 uid="uid://b7pavuul7xpr3"]
 
 [ext_resource type="PackedScene" uid="uid://cqxyblypix0tk" path="res://UI/Debug/debug_menu.tscn" id="1_gmh8u"]
 [ext_resource type="PackedScene" uid="uid://bcbw0dimiqd0w" path="res://Scenes/player_character_menu.tscn" id="2_kqhp1"]
+[ext_resource type="FontFile" uid="uid://ckbwkux4q6q8i" path="res://Assets/Fonts/Beholden/Beholden-Bold.ttf" id="3_dcbcb"]
 [ext_resource type="PackedScene" uid="uid://bqana5ott1yt8" path="res://Scenes/time_menu.tscn" id="3_f28it"]
 [ext_resource type="PackedScene" uid="uid://kurb6okvib6m" path="res://Scenes/sect_management_menu.tscn" id="4_dcbcb"]
+[ext_resource type="PackedScene" uid="uid://b5d63u61765f0" path="res://Scenes/dialogue_menu.tscn" id="5_7okpu"]
+[ext_resource type="Texture2D" uid="uid://63nc6bl7qom1" path="res://Assets/UI/Icons/Traits/Charismatic.png" id="5_ylo01"]
+[ext_resource type="Texture2D" uid="uid://cev1s5ga36m42" path="res://Assets/UI/Icons/Traits/Righteous.png" id="6_bhqku"]
+[ext_resource type="Texture2D" uid="uid://bk3qjn1isp66p" path="res://Assets/UI/Menus/CharacterMenu.png" id="6_ylo01"]
+[ext_resource type="Texture2D" uid="uid://de1fykd8cf5qy" path="res://Assets/UI/Menus/CharacterMenuTab.png" id="7_h8hf5"]
+[ext_resource type="Texture2D" uid="uid://beof781fvjcin" path="res://Assets/UI/Icons/Traits/Perceptive.png" id="7_qnjnk"]
+[ext_resource type="Texture2D" uid="uid://bv8hd1oixqqcm" path="res://Assets/UI/Icons/SpiritualRoot_Common.png" id="9_kk5cu"]
 
 [node name="MainUI" type="Control"]
 layout_mode = 3
@@ -16,6 +24,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="DebugMenu" parent="." instance=ExtResource("1_gmh8u")]
+visible = false
 layout_mode = 1
 anchor_left = 0.21
 anchor_top = 0.0
@@ -38,3 +47,211 @@ metadata/_edit_use_anchors_ = true
 
 [node name="SectManagementMenu" parent="." instance=ExtResource("4_dcbcb")]
 layout_mode = 1
+
+[node name="DialogueMenu" parent="." instance=ExtResource("5_7okpu")]
+
+[node name="CharacterMenu" type="Control" parent="."]
+z_index = 1
+y_sort_enabled = true
+anchors_preset = 0
+anchor_right = 0.25
+anchor_bottom = 0.722222
+metadata/_edit_use_anchors_ = true
+
+[node name="CharacterMenuBG" type="TextureRect" parent="CharacterMenu"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("6_ylo01")
+
+[node name="CharacterMenuTabs" type="HBoxContainer" parent="CharacterMenu"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 261.0
+offset_right = 377.0
+offset_bottom = 297.0
+theme_override_constants/separation = 7
+alignment = 1
+
+[node name="OverviewButton" type="TextureButton" parent="CharacterMenu/CharacterMenuTabs"]
+layout_mode = 2
+texture_normal = ExtResource("7_h8hf5")
+
+[node name="Label" type="Label" parent="CharacterMenu/CharacterMenuTabs/OverviewButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0625
+anchor_top = 0.263889
+anchor_right = 0.9375
+anchor_bottom = 0.736111
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "Overview"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="CultivationButton" type="TextureButton" parent="CharacterMenu/CharacterMenuTabs"]
+layout_mode = 2
+texture_normal = ExtResource("7_h8hf5")
+
+[node name="Label" type="Label" parent="CharacterMenu/CharacterMenuTabs/CultivationButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0625
+anchor_top = 0.263889
+anchor_right = 0.9375
+anchor_bottom = 0.736111
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 13
+text = "Cultivation"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="RelationshipsButton" type="TextureButton" parent="CharacterMenu/CharacterMenuTabs"]
+layout_mode = 2
+texture_normal = ExtResource("7_h8hf5")
+
+[node name="Label" type="Label" parent="CharacterMenu/CharacterMenuTabs/RelationshipsButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0625
+anchor_top = 0.263889
+anchor_right = 0.9375
+anchor_bottom = 0.736111
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 11
+text = "Relationships"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="InventoryButton" type="TextureButton" parent="CharacterMenu/CharacterMenuTabs"]
+layout_mode = 2
+texture_normal = ExtResource("7_h8hf5")
+
+[node name="Label" type="Label" parent="CharacterMenu/CharacterMenuTabs/InventoryButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0625
+anchor_top = 0.263889
+anchor_right = 0.9375
+anchor_bottom = 0.736111
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "Inventory"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="LogsButton" type="TextureButton" parent="CharacterMenu/CharacterMenuTabs"]
+layout_mode = 2
+texture_normal = ExtResource("7_h8hf5")
+
+[node name="Label" type="Label" parent="CharacterMenu/CharacterMenuTabs/LogsButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0625
+anchor_top = 0.263889
+anchor_right = 0.9375
+anchor_bottom = 0.736111
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "Logs"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="CharacterName" type="Label" parent="CharacterMenu"]
+layout_mode = 0
+offset_left = 126.0
+offset_top = 92.0
+offset_right = 352.0
+offset_bottom = 113.0
+theme_override_fonts/font = ExtResource("3_dcbcb")
+theme_override_font_sizes/font_size = 19
+text = "Character Name"
+
+[node name="CharacterPosition" type="Label" parent="CharacterMenu"]
+layout_mode = 0
+offset_left = 125.0
+offset_top = 121.0
+offset_right = 365.0
+offset_bottom = 138.0
+theme_override_font_sizes/font_size = 15
+text = "Position and Sect (if any)"
+
+[node name="CharacterMainInfoHbox" type="HBoxContainer" parent="CharacterMenu"]
+layout_mode = 0
+offset_left = 122.0
+offset_top = 143.0
+offset_right = 329.0
+offset_bottom = 183.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CharacterMenu/CharacterMainInfoHbox"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Age" type="Label" parent="CharacterMenu/CharacterMainInfoHbox/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Age"
+
+[node name="Renown" type="Label" parent="CharacterMenu/CharacterMainInfoHbox/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Renown"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CharacterMenu/CharacterMainInfoHbox"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Reputation" type="Label" parent="CharacterMenu/CharacterMainInfoHbox/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Reputation"
+
+[node name="Reputation2" type="Label" parent="CharacterMenu/CharacterMainInfoHbox/VBoxContainer2"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Currently in Jade Pavilion City"
+autowrap_mode = 3
+
+[node name="CultivationRealm" type="TextureRect" parent="CharacterMenu/CharacterMainInfoHbox"]
+layout_mode = 2
+texture = ExtResource("9_kk5cu")
+
+[node name="TraitsScrollContainer" type="ScrollContainer" parent="CharacterMenu"]
+custom_minimum_size = Vector2(0, 30)
+offset_left = 41.0
+offset_top = 191.0
+offset_right = 336.0
+offset_bottom = 221.0
+
+[node name="TraitsHBox" type="HBoxContainer" parent="CharacterMenu/TraitsScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="CharacterMenu/TraitsScrollContainer/TraitsHBox"]
+layout_mode = 2
+texture = ExtResource("5_ylo01")
+
+[node name="TextureRect2" type="TextureRect" parent="CharacterMenu/TraitsScrollContainer/TraitsHBox"]
+layout_mode = 2
+texture = ExtResource("6_bhqku")
+
+[node name="TextureRect3" type="TextureRect" parent="CharacterMenu/TraitsScrollContainer/TraitsHBox"]
+layout_mode = 2
+texture = ExtResource("7_qnjnk")
