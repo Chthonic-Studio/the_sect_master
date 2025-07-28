@@ -1,7 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://b7pavuul7xpr3"]
+[gd_scene load_steps=15 format=3 uid="uid://b7pavuul7xpr3"]
 
 [ext_resource type="PackedScene" uid="uid://cqxyblypix0tk" path="res://UI/Debug/debug_menu.tscn" id="1_gmh8u"]
-[ext_resource type="PackedScene" uid="uid://bcbw0dimiqd0w" path="res://Scenes/player_character_menu.tscn" id="2_kqhp1"]
+[ext_resource type="PackedScene" uid="uid://bcbw0dimiqd0w" path="res://Scenes/CharacterMenuScenes/player_character_menu.tscn" id="2_kqhp1"]
 [ext_resource type="FontFile" uid="uid://ckbwkux4q6q8i" path="res://Assets/Fonts/Beholden/Beholden-Bold.ttf" id="3_dcbcb"]
 [ext_resource type="PackedScene" uid="uid://bqana5ott1yt8" path="res://Scenes/time_menu.tscn" id="3_f28it"]
 [ext_resource type="PackedScene" uid="uid://kurb6okvib6m" path="res://Scenes/sect_management_menu.tscn" id="4_dcbcb"]
@@ -12,6 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://de1fykd8cf5qy" path="res://Assets/UI/Menus/CharacterMenuTab.png" id="7_h8hf5"]
 [ext_resource type="Texture2D" uid="uid://beof781fvjcin" path="res://Assets/UI/Icons/Traits/Perceptive.png" id="7_qnjnk"]
 [ext_resource type="Texture2D" uid="uid://bv8hd1oixqqcm" path="res://Assets/UI/Icons/SpiritualRoot_Common.png" id="9_kk5cu"]
+[ext_resource type="Texture2D" uid="uid://cp35tfn00iww4" path="res://Assets/UI/Icons/Cultivation/Cultivation_QiBuilding.png" id="10_b8m8p"]
+[ext_resource type="PackedScene" uid="uid://h4igrotpatnq" path="res://Scenes/CharacterMenuScenes/relationship_entry.tscn" id="14_niwvw"]
 
 [node name="MainUI" type="Control"]
 layout_mode = 3
@@ -173,6 +175,13 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="CharacterPortrait" type="TextureRect" parent="CharacterMenu"]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 118.0
+offset_right = 105.0
+offset_bottom = 174.0
+
 [node name="CharacterName" type="Label" parent="CharacterMenu"]
 layout_mode = 0
 offset_left = 126.0
@@ -196,49 +205,42 @@ text = "Position and Sect (if any)"
 layout_mode = 0
 offset_left = 122.0
 offset_top = 143.0
-offset_right = 329.0
-offset_bottom = 183.0
+offset_right = 362.0
+offset_bottom = 191.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CharacterMenu/CharacterMainInfoHbox"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Age" type="Label" parent="CharacterMenu/CharacterMainInfoHbox/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "Age"
 
-[node name="Renown" type="Label" parent="CharacterMenu/CharacterMainInfoHbox/VBoxContainer"]
+[node name="Location" type="Label" parent="CharacterMenu/CharacterMainInfoHbox/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
-text = "Renown"
+text = "Location"
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CharacterMenu/CharacterMainInfoHbox"]
-custom_minimum_size = Vector2(100, 0)
+[node name="CultivationIcons" type="HBoxContainer" parent="CharacterMenu/CharacterMainInfoHbox"]
 layout_mode = 2
 
-[node name="Reputation" type="Label" parent="CharacterMenu/CharacterMainInfoHbox/VBoxContainer2"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "Reputation"
-
-[node name="Reputation2" type="Label" parent="CharacterMenu/CharacterMainInfoHbox/VBoxContainer2"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "Currently in Jade Pavilion City"
-autowrap_mode = 3
-
-[node name="CultivationRealm" type="TextureRect" parent="CharacterMenu/CharacterMainInfoHbox"]
+[node name="SpiritualRootType" type="TextureRect" parent="CharacterMenu/CharacterMainInfoHbox/CultivationIcons"]
 layout_mode = 2
 texture = ExtResource("9_kk5cu")
 
+[node name="CultivationRealm" type="TextureRect" parent="CharacterMenu/CharacterMainInfoHbox/CultivationIcons"]
+layout_mode = 2
+texture = ExtResource("10_b8m8p")
+
 [node name="TraitsScrollContainer" type="ScrollContainer" parent="CharacterMenu"]
 custom_minimum_size = Vector2(0, 30)
-offset_left = 41.0
-offset_top = 191.0
-offset_right = 336.0
-offset_bottom = 221.0
+layout_mode = 0
+offset_left = 36.0
+offset_top = 192.0
+offset_right = 355.0
+offset_bottom = 222.0
 
 [node name="TraitsHBox" type="HBoxContainer" parent="CharacterMenu/TraitsScrollContainer"]
 layout_mode = 2
@@ -255,3 +257,299 @@ texture = ExtResource("6_bhqku")
 [node name="TextureRect3" type="TextureRect" parent="CharacterMenu/TraitsScrollContainer/TraitsHBox"]
 layout_mode = 2
 texture = ExtResource("7_qnjnk")
+
+[node name="TextureButton" type="TextureButton" parent="CharacterMenu"]
+layout_mode = 2
+offset_left = 154.0
+offset_top = 222.0
+offset_right = 249.0
+offset_bottom = 256.0
+size_flags_vertical = 8
+texture_normal = ExtResource("7_h8hf5")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="CharacterMenu/TextureButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_dcbcb")
+theme_override_font_sizes/font_size = 17
+text = "Talk With"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TabsContainer" type="Control" parent="CharacterMenu"]
+anchors_preset = 0
+offset_left = 41.0
+offset_top = 348.0
+offset_right = 347.0
+offset_bottom = 602.0
+
+[node name="ActiveTabName" type="Label" parent="CharacterMenu/TabsContainer"]
+layout_mode = 0
+anchor_left = -0.0196078
+anchor_top = -0.106299
+anchor_right = 0.232026
+anchor_bottom = -0.0393701
+theme_override_fonts/font = ExtResource("3_dcbcb")
+theme_override_font_sizes/font_size = 12
+text = "Tab Name"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="OverviewContainer" type="MarginContainer" parent="CharacterMenu/TabsContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="MainVbox" type="VBoxContainer" parent="CharacterMenu/TabsContainer/OverviewContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Reputation" type="Label" parent="CharacterMenu/TabsContainer/OverviewContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Reputation"
+autowrap_mode = 3
+
+[node name="Renown" type="Label" parent="CharacterMenu/TabsContainer/OverviewContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Renown"
+autowrap_mode = 3
+
+[node name="Lifespan" type="Label" parent="CharacterMenu/TabsContainer/OverviewContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Lifespan"
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="CurrentDesires" type="Label" parent="CharacterMenu/TabsContainer/OverviewContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Current Top 5 Desires"
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="CurrentAction" type="Label" parent="CharacterMenu/TabsContainer/OverviewContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Action being performed"
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="CultivationContainer" type="MarginContainer" parent="CharacterMenu/TabsContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="MainVbox" type="VBoxContainer" parent="CharacterMenu/TabsContainer/CultivationContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Potential" type="Label" parent="CharacterMenu/TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Potential"
+autowrap_mode = 3
+
+[node name="CurrentRealm" type="Label" parent="CharacterMenu/TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Current Realm"
+autowrap_mode = 3
+
+[node name="RealmProgress" type="Label" parent="CharacterMenu/TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "RealmProgress"
+autowrap_mode = 3
+
+[node name="Purpose" type="Label" parent="CharacterMenu/TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Cultivation Purpose"
+autowrap_mode = 3
+
+[node name="StateOfMind" type="Label" parent="CharacterMenu/TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "State of Mind"
+autowrap_mode = 3
+
+[node name="QiDeviationRisk" type="Label" parent="CharacterMenu/TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Qi Deviation Risk"
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="BreakthroughModifier" type="Label" parent="CharacterMenu/TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Breakthrough Modifier"
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Afinities" type="Label" parent="CharacterMenu/TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Elemental Affinities"
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="CultivationTimeline" type="Label" parent="CharacterMenu/TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Cultivation Timeline"
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="RelationshipsContainer" type="MarginContainer" parent="CharacterMenu/TabsContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.011811
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="SortingVbox" type="VBoxContainer" parent="CharacterMenu/TabsContainer/RelationshipsContainer"]
+layout_mode = 2
+
+[node name="SortingButtons" type="HBoxContainer" parent="CharacterMenu/TabsContainer/RelationshipsContainer/SortingVbox"]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="CharacterMenu/TabsContainer/RelationshipsContainer/SortingVbox/SortingButtons"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_dcbcb")
+text = "Name"
+
+[node name="SortAscending" type="Button" parent="CharacterMenu/TabsContainer/RelationshipsContainer/SortingVbox/SortingButtons"]
+custom_minimum_size = Vector2(20, 16)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CharacterMenu/TabsContainer/RelationshipsContainer/SortingVbox/SortingButtons/SortAscending"]
+custom_minimum_size = Vector2(20, 16)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "↑"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SortDescending" type="Button" parent="CharacterMenu/TabsContainer/RelationshipsContainer/SortingVbox/SortingButtons"]
+custom_minimum_size = Vector2(20, 16)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CharacterMenu/TabsContainer/RelationshipsContainer/SortingVbox/SortingButtons/SortDescending"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "↓"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RelationshipsScroll" type="ScrollContainer" parent="CharacterMenu/TabsContainer/RelationshipsContainer/SortingVbox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CharacterMenu/TabsContainer/RelationshipsContainer/SortingVbox/RelationshipsScroll"]
+layout_mode = 2
+
+[node name="RelationshipEntry" parent="CharacterMenu/TabsContainer/RelationshipsContainer/SortingVbox/RelationshipsScroll/VBoxContainer" instance=ExtResource("14_niwvw")]
+layout_mode = 2
+
+[node name="InventoryContainer" type="MarginContainer" parent="CharacterMenu/TabsContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="InventoryScroll" type="ScrollContainer" parent="CharacterMenu/TabsContainer/InventoryContainer"]
+layout_mode = 2
+
+[node name="InventoryGrid" type="GridContainer" parent="CharacterMenu/TabsContainer/InventoryContainer/InventoryScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 4
+
+[node name="Placeholder" type="ColorRect" parent="CharacterMenu/TabsContainer/InventoryContainer/InventoryScroll/InventoryGrid"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+
+[node name="Placeholder2" type="ColorRect" parent="CharacterMenu/TabsContainer/InventoryContainer/InventoryScroll/InventoryGrid"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+
+[node name="Placeholder3" type="ColorRect" parent="CharacterMenu/TabsContainer/InventoryContainer/InventoryScroll/InventoryGrid"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+
+[node name="Placeholder4" type="ColorRect" parent="CharacterMenu/TabsContainer/InventoryContainer/InventoryScroll/InventoryGrid"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+
+[node name="LogsContainer" type="MarginContainer" parent="CharacterMenu/TabsContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="LogVbox" type="VBoxContainer" parent="CharacterMenu/TabsContainer/LogsContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CharacterMenu/TabsContainer/LogsContainer/LogVbox"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+text = "- [Date/Hour] This is a text log to show how the text would look like here"
+autowrap_mode = 3

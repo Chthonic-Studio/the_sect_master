@@ -22,6 +22,7 @@
 [sub_resource type="SpriteFrames" id="SpriteFrames_nxr2n"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nxr2n"]
+radius = 15.0
 
 [node name="Character" type="Node2D"]
 y_sort_enabled = true
@@ -48,12 +49,12 @@ script = ExtResource("13_xxe07")
 sprite_frames = SubResource("SpriteFrames_nxr2n")
 
 [node name="ColorRect" type="ColorRect" parent="."]
-offset_right = 13.0
-offset_bottom = 14.0
+offset_right = 21.0
+offset_bottom = 20.0
 
 [node name="Collider" type="Area2D" parent="."]
 disable_mode = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collider"]
-position = Vector2(6, 7)
+position = Vector2(11, 10)
 shape = SubResource("CircleShape2D_nxr2n")

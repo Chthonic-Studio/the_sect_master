@@ -1,12 +1,12 @@
 [gd_scene load_steps=9 format=3 uid="uid://bcbw0dimiqd0w"]
 
-[ext_resource type="Script" uid="uid://deskgy41sov31" path="res://Scripts/UI/PlayerCharacterMenu.gd" id="1_ake1p"]
-[ext_resource type="Texture2D" uid="uid://c54gsjs220b0y" path="res://Assets/UI/Menus/PlayerCharacterMenu.png" id="2_vvw65"]
-[ext_resource type="FontFile" uid="uid://ckbwkux4q6q8i" path="res://Assets/Fonts/Beholden/Beholden-Bold.ttf" id="3_tl64v"]
-[ext_resource type="Texture2D" uid="uid://bv8hd1oixqqcm" path="res://Assets/UI/Icons/SpiritualRoot_Common.png" id="4_qvs3y"]
-[ext_resource type="Texture2D" uid="uid://63nc6bl7qom1" path="res://Assets/UI/Icons/Traits/Charismatic.png" id="5_n2v3p"]
-[ext_resource type="Texture2D" uid="uid://cev1s5ga36m42" path="res://Assets/UI/Icons/Traits/Righteous.png" id="6_wqqq8"]
-[ext_resource type="Texture2D" uid="uid://beof781fvjcin" path="res://Assets/UI/Icons/Traits/Perceptive.png" id="7_vlmpk"]
+[ext_resource type="Script" uid="uid://deskgy41sov31" path="res://Scripts/UI/PlayerCharacterMenu.gd" id="1_172o2"]
+[ext_resource type="Texture2D" uid="uid://c54gsjs220b0y" path="res://Assets/UI/Menus/PlayerCharacterMenu.png" id="2_1l244"]
+[ext_resource type="FontFile" uid="uid://ckbwkux4q6q8i" path="res://Assets/Fonts/Beholden/Beholden-Bold.ttf" id="3_sxq7j"]
+[ext_resource type="Texture2D" uid="uid://bv8hd1oixqqcm" path="res://Assets/UI/Icons/SpiritualRoot_Common.png" id="4_ukkd3"]
+[ext_resource type="Texture2D" uid="uid://63nc6bl7qom1" path="res://Assets/UI/Icons/Traits/Charismatic.png" id="5_s13po"]
+[ext_resource type="Texture2D" uid="uid://cev1s5ga36m42" path="res://Assets/UI/Icons/Traits/Righteous.png" id="6_3x0ja"]
+[ext_resource type="Texture2D" uid="uid://beof781fvjcin" path="res://Assets/UI/Icons/Traits/Perceptive.png" id="7_5qr5q"]
 
 [sub_resource type="Theme" id="Theme_tbbry"]
 /styles/Black = null
@@ -18,14 +18,14 @@ anchor_top = 0.833333
 anchor_right = 0.40625
 anchor_bottom = 1.0
 grow_vertical = 0
-script = ExtResource("1_ake1p")
+script = ExtResource("1_172o2")
 metadata/_edit_use_anchors_ = true
 
 [node name="SectMasterPortrait" type="TextureRect" parent="."]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
-texture = ExtResource("2_vvw65")
+texture = ExtResource("2_1l244")
 
 [node name="SectMasterName" type="Label" parent="."]
 layout_mode = 1
@@ -37,7 +37,7 @@ anchor_bottom = 0.306669
 offset_bottom = -3.0
 theme = SubResource("Theme_tbbry")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_tl64v")
+theme_override_fonts/font = ExtResource("3_sxq7j")
 theme_override_font_sizes/font_size = 25
 text = "Sect Master Name"
 metadata/_edit_use_anchors_ = true
@@ -171,7 +171,7 @@ offset_bottom = 105.0
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
 layout_mode = 2
-texture = ExtResource("4_qvs3y")
+texture = ExtResource("4_ukkd3")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
 layout_mode = 0
@@ -202,7 +202,7 @@ offset_top = 65.0003
 offset_right = 285.0
 offset_bottom = 82.0003
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("3_tl64v")
+theme_override_fonts/font = ExtResource("3_sxq7j")
 text = "Cultivation Realm"
 
 [node name="TraitsScrollContainer" type="ScrollContainer" parent="."]
@@ -219,15 +219,15 @@ theme_override_constants/separation = 0
 
 [node name="TextureRect" type="TextureRect" parent="TraitsScrollContainer/TraitsHBox"]
 layout_mode = 2
-texture = ExtResource("5_n2v3p")
+texture = ExtResource("5_s13po")
 
 [node name="TextureRect2" type="TextureRect" parent="TraitsScrollContainer/TraitsHBox"]
 layout_mode = 2
-texture = ExtResource("6_wqqq8")
+texture = ExtResource("6_3x0ja")
 
 [node name="TextureRect3" type="TextureRect" parent="TraitsScrollContainer/TraitsHBox"]
 layout_mode = 2
-texture = ExtResource("7_vlmpk")
+texture = ExtResource("7_5qr5q")
 
 [node name="Age" type="Label" parent="."]
 custom_minimum_size = Vector2(100, 0)
