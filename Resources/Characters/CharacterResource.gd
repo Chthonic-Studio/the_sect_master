@@ -2,8 +2,7 @@
 # Generic resource for all characters in the game (player, NPCs, sect members, rivals)
 # - Use as the base for all character data. Extend for specialized types if needed.
 
-extends Resource
-class_name CharacterResource
+class_name CharacterResource extends Resource
 
 ## === ENUMS ===
 enum CultureGroup { WESTERN, TRADITIONAL }
@@ -27,6 +26,10 @@ enum Gender { MALE, FEMALE, OTHER }
 @export var reputation: String = "None"
 @export var spiritual_root: SpiritualRootType = SpiritualRootType.NONE ## Enum dropdown
 @export var traits: Array[String] = []
+
+# === NEW: Social Relationships ===
+@export_category("Social")
+@export var relationships: Dictionary = {} # {character_id: int, relationship_value: int}
 
 # === Core Stats ===
 @export_category("Core Stats")

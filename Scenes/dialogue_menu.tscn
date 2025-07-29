@@ -1,18 +1,27 @@
-[gd_scene load_steps=6 format=3 uid="uid://b5d63u61765f0"]
+[gd_scene load_steps=7 format=3 uid="uid://b5d63u61765f0"]
 
 [ext_resource type="Texture2D" uid="uid://bw4mx3th0usji" path="res://Assets/UI/Dialogue/DialogueMenu.png" id="1_gxk5b"]
+[ext_resource type="Script" uid="uid://cq61bdp243b7m" path="res://Scripts/UI/DialogueMenu.gd" id="1_hxfn7"]
 [ext_resource type="FontFile" uid="uid://ckbwkux4q6q8i" path="res://Assets/Fonts/Beholden/Beholden-Bold.ttf" id="2_hxfn7"]
 [ext_resource type="FontFile" uid="uid://bruoxia6uq78h" path="res://Assets/Fonts/Beholden/Beholden-Italic.ttf" id="3_13ivw"]
 [ext_resource type="PackedScene" uid="uid://cx02hj3mxr7ew" path="res://Scenes/dialogue_entry.tscn" id="4_ta3pk"]
 [ext_resource type="PackedScene" uid="uid://bg6a38imdx6qq" path="res://Scenes/dialogue_option.tscn" id="5_xlqrp"]
 
-[node name="DialogueMenu" type="Control"]
+[node name="DialogueMenu" type="Control" node_paths=PackedStringArray("player_name_label", "speaker_name_label", "speaker_title_label", "dialogue_history_container", "options_container")]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 438.0
 offset_top = 179.0
 offset_right = 1288.0
 offset_bottom = 629.0
+script = ExtResource("1_hxfn7")
+player_name_label = NodePath("Portraits/PlayerName")
+speaker_name_label = NodePath("Portraits/TargetName")
+speaker_title_label = NodePath("Portraits/TargetName/TargetTitle")
+dialogue_history_container = NodePath("DialogueHistory/DialogueVbox")
+options_container = NodePath("OptionsScroll/OptionsVbox")
+dialogue_entry_prefab = ExtResource("4_ta3pk")
+dialogue_option_prefab = ExtResource("5_xlqrp")
 
 [node name="DialogueMenuBG" type="TextureRect" parent="."]
 layout_mode = 0
@@ -52,6 +61,7 @@ text = "+50"
 metadata/_edit_use_anchors_ = true
 
 [node name="PlayerMargin" type="MarginContainer" parent="Portraits"]
+layout_mode = 0
 offset_left = 7.0
 offset_top = 195.0
 offset_right = 174.0
@@ -84,6 +94,7 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="PlayerName" type="Label" parent="Portraits"]
+layout_mode = 0
 offset_top = 324.0
 offset_right = 178.0
 offset_bottom = 344.0
@@ -92,6 +103,7 @@ horizontal_alignment = 1
 
 [node name="PlayerTitle" type="Label" parent="Portraits/PlayerName"]
 custom_minimum_size = Vector2(188, 0)
+layout_mode = 0
 offset_left = -5.0
 offset_top = 26.0
 offset_right = 183.0

@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://b7pavuul7xpr3"]
+[gd_scene load_steps=8 format=3 uid="uid://b7pavuul7xpr3"]
 
 [ext_resource type="PackedScene" uid="uid://cqxyblypix0tk" path="res://UI/Debug/debug_menu.tscn" id="1_gmh8u"]
+[ext_resource type="Script" uid="uid://duoieb4i0eexh" path="res://Scripts/UI/MainUI.gd" id="1_ylo01"]
 [ext_resource type="PackedScene" uid="uid://bcbw0dimiqd0w" path="res://Scenes/CharacterMenuScenes/player_character_menu.tscn" id="2_kqhp1"]
 [ext_resource type="PackedScene" uid="uid://bqana5ott1yt8" path="res://Scenes/time_menu.tscn" id="3_f28it"]
 [ext_resource type="PackedScene" uid="uid://kurb6okvib6m" path="res://Scenes/sect_management_menu.tscn" id="4_dcbcb"]
@@ -16,6 +17,8 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("1_ylo01")
 
 [node name="DebugMenu" parent="." instance=ExtResource("1_gmh8u")]
 visible = false
@@ -27,7 +30,7 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 1
 
-[node name="PlayerCharacterMenu2" parent="." instance=ExtResource("2_kqhp1")]
+[node name="PlayerCharacterMenu" parent="." instance=ExtResource("2_kqhp1")]
 layout_mode = 1
 
 [node name="TimeMenu" parent="." instance=ExtResource("3_f28it")]
@@ -46,4 +49,3 @@ layout_mode = 1
 
 [node name="CharacterMenu" parent="." instance=ExtResource("6_7okpu")]
 layout_mode = 1
-anchors_preset = -1

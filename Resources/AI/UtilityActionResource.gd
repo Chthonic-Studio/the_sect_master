@@ -40,7 +40,7 @@ func end_action(character: Node) -> void:
 		# Apply the satiation value to the desire modifier.
 		# This makes the character less likely to perform this action again immediately.
 		res.desire_modifiers[action_name] = res.desire_modifiers.get(action_name, 0) + satiation_value
-		print("Applied satiation of %d to '%s' for %s." % [satiation_value, action_name, res.name_display])
+		# print("Applied satiation of %d to '%s' for %s." % [satiation_value, action_name, res.name_display])
 	pass
 
 # --- Helper Function (for children to use) ---

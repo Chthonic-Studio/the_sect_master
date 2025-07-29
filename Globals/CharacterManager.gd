@@ -99,7 +99,7 @@ func create_character(type: String = "mortal", position: Vector2 = Vector2.ZERO,
 	char_node.position = position
 	all_character_nodes.append(char_node)
 	all_character_resources.append(resource)
-	register_character(resource)
+	register_character(resource) # This will now handle relationship setup
 	return char_node
 
 # Helper for spiritual root probabilities
@@ -159,15 +159,29 @@ func get_characters(type: String = "") -> Array:
 # Call after creating/loading a CharacterResource to track it by ID.
 func register_character(character: CharacterResource) -> void:
 	if not character: return
-	if not _characters.has(character.id):
-		_characters[character.id] = character
-	else:
+	if _characters.has(character.id):
 		push_warning("CharacterManager: Character with ID %d already registered." % character.id)
+		return
+
+	# --- NEW: Initialize relationships with all existing characters ---
+	for existing_char_id in _characters:
+		var existing_char_res = _characters[existing_char_id]
+		# Add the new character to the existing character's relationship dict
+		existing_char_res.relationships[character.id] = 0
+		# Add the existing character to the new character's relationship dict
+		character.relationships[existing_char_id] = 0
+	
+	_characters[character.id] = character
 
 
 # === Unregister a CharacterResource (e.g., on deletion)
 func unregister_character(character_id: int) -> void:
 	_characters.erase(character_id)
+	# NEW: Remove this character from all other characters' relationship lists
+	for char_res in _characters.values():
+		if char_res.relationships.has(character_id):
+			char_res.relationships.erase(character_id)
+
 
 # === Create and register a new CharacterResource with stat overrides
 func create_character_resource(stat_overrides := {}) -> CharacterResource:

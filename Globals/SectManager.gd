@@ -46,6 +46,13 @@ func create_sect(name: String, culture: int, initial_resources: Dictionary = {})
 func get_sect_by_id(sect_id: int) -> SectResource:
 	return _sects.get(sect_id, null)
 
+# NEW: Utility to find which sect a character belongs to.
+func get_sect_by_character_id(character_id: int) -> SectResource:
+	for sect in _sects.values():
+		if sect.member_ids.has(character_id):
+			return sect
+	return null
+
 # Adds a character ID to a specific sect.
 func add_member_to_sect(sect_id: int, character_id: int) -> void:
 	var sect = get_sect_by_id(sect_id)

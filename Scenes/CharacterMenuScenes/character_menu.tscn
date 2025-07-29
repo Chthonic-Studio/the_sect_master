@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://r07loget3sd2"]
+[gd_scene load_steps=12 format=3 uid="uid://r07loget3sd2"]
 
 [ext_resource type="Texture2D" uid="uid://bk3qjn1isp66p" path="res://Assets/UI/Menus/CharacterMenu.png" id="1_276k7"]
+[ext_resource type="Script" uid="uid://b771waexgdbg0" path="res://Scripts/UI/CharacterMenu.gd" id="1_lewf3"]
 [ext_resource type="Texture2D" uid="uid://de1fykd8cf5qy" path="res://Assets/UI/Menus/CharacterMenuTab.png" id="2_lewf3"]
 [ext_resource type="FontFile" uid="uid://ckbwkux4q6q8i" path="res://Assets/Fonts/Beholden/Beholden-Bold.ttf" id="3_8p8uc"]
 [ext_resource type="Texture2D" uid="uid://bv8hd1oixqqcm" path="res://Assets/UI/Icons/SpiritualRoot_Common.png" id="4_1wgbc"]
@@ -11,13 +12,46 @@
 [ext_resource type="PackedScene" uid="uid://h4igrotpatnq" path="res://Scenes/CharacterMenuScenes/relationship_entry.tscn" id="9_mkyjq"]
 [ext_resource type="PackedScene" uid="uid://di67sejxt8fk7" path="res://Scenes/CharacterMenuScenes/log_entry.tscn" id="10_p8l6q"]
 
-[node name="CharacterMenu" type="Control"]
+[node name="CharacterMenu" type="Control" node_paths=PackedStringArray("character_name_label", "character_position_label", "age_label", "location_label", "spiritual_root_icon", "cultivation_realm_icon", "traits_container", "talk_button", "close_button", "back_button", "overview_tab", "cultivation_tab", "relationships_tab", "inventory_tab", "logs_tab", "overview_button", "cultivation_button", "relationships_button", "inventory_button", "logs_button", "overview_reputation_label", "overview_renown_label", "overview_lifespan_label", "overview_desires_label", "overview_action_label", "cultivation_potential_label", "cultivation_realm_label", "cultivation_progress_label", "cultivation_deviation_label", "cultivation_breakthrough_label", "cultivation_affinities_label", "relationships_list_container")]
 z_index = 1
 y_sort_enabled = true
 layout_mode = 3
-anchors_preset = 0
 anchor_right = 0.25
 anchor_bottom = 0.722222
+script = ExtResource("1_lewf3")
+character_name_label = NodePath("CharacterName")
+character_position_label = NodePath("CharacterPosition")
+age_label = NodePath("CharacterMainInfoHbox/VBoxContainer/Age")
+location_label = NodePath("CharacterMainInfoHbox/VBoxContainer/Location")
+spiritual_root_icon = NodePath("CharacterMainInfoHbox/CultivationIcons/SpiritualRootType")
+cultivation_realm_icon = NodePath("CharacterMainInfoHbox/CultivationIcons/CultivationRealm")
+traits_container = NodePath("TraitsScrollContainer/TraitsHBox")
+talk_button = NodePath("TalkWithButton")
+close_button = NodePath("MenuCloseButton")
+back_button = NodePath("MenuBackButton")
+overview_tab = NodePath("TabsContainer/OverviewContainer")
+cultivation_tab = NodePath("TabsContainer/CultivationContainer")
+relationships_tab = NodePath("TabsContainer/RelationshipsContainer")
+inventory_tab = NodePath("TabsContainer/InventoryContainer")
+logs_tab = NodePath("TabsContainer/LogsContainer")
+overview_button = NodePath("CharacterMenuTabs/OverviewButton")
+cultivation_button = NodePath("CharacterMenuTabs/CultivationButton")
+relationships_button = NodePath("CharacterMenuTabs/RelationshipsButton")
+inventory_button = NodePath("CharacterMenuTabs/InventoryButton")
+logs_button = NodePath("CharacterMenuTabs/LogsButton")
+overview_reputation_label = NodePath("TabsContainer/OverviewContainer/MainVbox/Reputation")
+overview_renown_label = NodePath("TabsContainer/OverviewContainer/MainVbox/Renown")
+overview_lifespan_label = NodePath("TabsContainer/OverviewContainer/MainVbox/Lifespan")
+overview_desires_label = NodePath("TabsContainer/OverviewContainer/MainVbox/CurrentDesires")
+overview_action_label = NodePath("TabsContainer/OverviewContainer/MainVbox/CurrentAction")
+cultivation_potential_label = NodePath("TabsContainer/CultivationContainer/MainVbox/Potential")
+cultivation_realm_label = NodePath("TabsContainer/CultivationContainer/MainVbox/CurrentRealm")
+cultivation_progress_label = NodePath("TabsContainer/CultivationContainer/MainVbox/RealmProgress")
+cultivation_deviation_label = NodePath("TabsContainer/CultivationContainer/MainVbox/QiDeviationRisk")
+cultivation_breakthrough_label = NodePath("TabsContainer/CultivationContainer/MainVbox/BreakthroughModifier")
+cultivation_affinities_label = NodePath("TabsContainer/CultivationContainer/MainVbox/Afinities")
+relationships_list_container = NodePath("TabsContainer/RelationshipsContainer/SortingVbox/RelationshipsScroll/VBoxContainer")
+relationship_entry_prefab = ExtResource("9_mkyjq")
 metadata/_edit_use_anchors_ = true
 
 [node name="CharacterMenuBG" type="TextureRect" parent="."]
@@ -170,6 +204,7 @@ offset_bottom = 68.0
 flat = true
 
 [node name="MenuBackButton" type="Button" parent="."]
+layout_mode = 0
 offset_left = 4.0
 offset_top = 17.0
 offset_right = 30.0

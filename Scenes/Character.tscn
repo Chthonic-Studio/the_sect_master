@@ -24,9 +24,10 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_nxr2n"]
 radius = 15.0
 
-[node name="Character" type="Node2D"]
+[node name="Character" type="Node2D" node_paths=PackedStringArray("collider_area")]
 y_sort_enabled = true
 script = ExtResource("1_0y7nr")
+collider_area = NodePath("Collider")
 
 [node name="UtilityAI" type="Node" parent="."]
 script = ExtResource("2_jo2ib")

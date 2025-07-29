@@ -24,6 +24,8 @@ TimeManager="*res://Globals/TimeManager.gd"
 DesireManager="*res://Globals/DesireManager.gd"
 SectManager="*res://Globals/SectManager.gd"
 PlayerManager="*res://Globals/PlayerManager.gd"
+UIManager="*res://Globals/UIManager.gd"
+DialogueManager="*res://Globals/DialogueManager.gd"
 
 [display]
 
