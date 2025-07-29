@@ -1,0 +1,530 @@
+[gd_scene load_steps=11 format=3 uid="uid://r07loget3sd2"]
+
+[ext_resource type="Texture2D" uid="uid://bk3qjn1isp66p" path="res://Assets/UI/Menus/CharacterMenu.png" id="1_276k7"]
+[ext_resource type="Texture2D" uid="uid://de1fykd8cf5qy" path="res://Assets/UI/Menus/CharacterMenuTab.png" id="2_lewf3"]
+[ext_resource type="FontFile" uid="uid://ckbwkux4q6q8i" path="res://Assets/Fonts/Beholden/Beholden-Bold.ttf" id="3_8p8uc"]
+[ext_resource type="Texture2D" uid="uid://bv8hd1oixqqcm" path="res://Assets/UI/Icons/SpiritualRoot_Common.png" id="4_1wgbc"]
+[ext_resource type="Texture2D" uid="uid://cp35tfn00iww4" path="res://Assets/UI/Icons/Cultivation/Cultivation_QiBuilding.png" id="5_6rk8o"]
+[ext_resource type="Texture2D" uid="uid://63nc6bl7qom1" path="res://Assets/UI/Icons/Traits/Charismatic.png" id="6_4pbp6"]
+[ext_resource type="Texture2D" uid="uid://cev1s5ga36m42" path="res://Assets/UI/Icons/Traits/Righteous.png" id="7_xydel"]
+[ext_resource type="Texture2D" uid="uid://beof781fvjcin" path="res://Assets/UI/Icons/Traits/Perceptive.png" id="8_t3c1i"]
+[ext_resource type="PackedScene" uid="uid://h4igrotpatnq" path="res://Scenes/CharacterMenuScenes/relationship_entry.tscn" id="9_mkyjq"]
+[ext_resource type="PackedScene" uid="uid://di67sejxt8fk7" path="res://Scenes/CharacterMenuScenes/log_entry.tscn" id="10_p8l6q"]
+
+[node name="CharacterMenu" type="Control"]
+z_index = 1
+y_sort_enabled = true
+layout_mode = 3
+anchors_preset = 0
+anchor_right = 0.25
+anchor_bottom = 0.722222
+metadata/_edit_use_anchors_ = true
+
+[node name="CharacterMenuBG" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_276k7")
+
+[node name="CharacterMenuTabs" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 261.0
+offset_right = 377.0
+offset_bottom = 297.0
+theme_override_constants/separation = 7
+alignment = 1
+
+[node name="OverviewButton" type="TextureButton" parent="CharacterMenuTabs"]
+layout_mode = 2
+texture_normal = ExtResource("2_lewf3")
+
+[node name="Label" type="Label" parent="CharacterMenuTabs/OverviewButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0625
+anchor_top = 0.263889
+anchor_right = 0.9375
+anchor_bottom = 0.736111
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "Overview"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="CultivationButton" type="TextureButton" parent="CharacterMenuTabs"]
+layout_mode = 2
+texture_normal = ExtResource("2_lewf3")
+
+[node name="Label" type="Label" parent="CharacterMenuTabs/CultivationButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0625
+anchor_top = 0.263889
+anchor_right = 0.9375
+anchor_bottom = 0.736111
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 13
+text = "Cultivation"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="RelationshipsButton" type="TextureButton" parent="CharacterMenuTabs"]
+layout_mode = 2
+texture_normal = ExtResource("2_lewf3")
+
+[node name="Label" type="Label" parent="CharacterMenuTabs/RelationshipsButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0625
+anchor_top = 0.263889
+anchor_right = 0.9375
+anchor_bottom = 0.736111
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 11
+text = "Relationships"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="InventoryButton" type="TextureButton" parent="CharacterMenuTabs"]
+layout_mode = 2
+texture_normal = ExtResource("2_lewf3")
+
+[node name="Label" type="Label" parent="CharacterMenuTabs/InventoryButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0625
+anchor_top = 0.263889
+anchor_right = 0.9375
+anchor_bottom = 0.736111
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "Inventory"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="LogsButton" type="TextureButton" parent="CharacterMenuTabs"]
+layout_mode = 2
+texture_normal = ExtResource("2_lewf3")
+
+[node name="Label" type="Label" parent="CharacterMenuTabs/LogsButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0625
+anchor_top = 0.263889
+anchor_right = 0.9375
+anchor_bottom = 0.736111
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+text = "Logs"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="CharacterPortrait" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 118.0
+offset_right = 105.0
+offset_bottom = 174.0
+
+[node name="CharacterName" type="Label" parent="."]
+layout_mode = 0
+offset_left = 126.0
+offset_top = 92.0
+offset_right = 352.0
+offset_bottom = 113.0
+theme_override_fonts/font = ExtResource("3_8p8uc")
+theme_override_font_sizes/font_size = 19
+text = "Character Name"
+
+[node name="CharacterPosition" type="Label" parent="."]
+layout_mode = 0
+offset_left = 125.0
+offset_top = 121.0
+offset_right = 365.0
+offset_bottom = 138.0
+theme_override_font_sizes/font_size = 15
+text = "Position and Sect (if any)"
+
+[node name="MenuCloseButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 369.0
+offset_top = 19.0
+offset_right = 395.0
+offset_bottom = 68.0
+flat = true
+
+[node name="MenuBackButton" type="Button" parent="."]
+offset_left = 4.0
+offset_top = 17.0
+offset_right = 30.0
+offset_bottom = 66.0
+theme_override_fonts/font = ExtResource("3_8p8uc")
+theme_override_font_sizes/font_size = 30
+text = "<"
+flat = true
+
+[node name="CharacterMainInfoHbox" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 122.0
+offset_top = 143.0
+offset_right = 362.0
+offset_bottom = 191.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CharacterMainInfoHbox"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Age" type="Label" parent="CharacterMainInfoHbox/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Age"
+
+[node name="Location" type="Label" parent="CharacterMainInfoHbox/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Location"
+
+[node name="CultivationIcons" type="HBoxContainer" parent="CharacterMainInfoHbox"]
+layout_mode = 2
+
+[node name="SpiritualRootType" type="TextureRect" parent="CharacterMainInfoHbox/CultivationIcons"]
+layout_mode = 2
+texture = ExtResource("4_1wgbc")
+
+[node name="CultivationRealm" type="TextureRect" parent="CharacterMainInfoHbox/CultivationIcons"]
+layout_mode = 2
+texture = ExtResource("5_6rk8o")
+
+[node name="TraitsScrollContainer" type="ScrollContainer" parent="."]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 0
+offset_left = 36.0
+offset_top = 192.0
+offset_right = 355.0
+offset_bottom = 222.0
+
+[node name="TraitsHBox" type="HBoxContainer" parent="TraitsScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="TraitsScrollContainer/TraitsHBox"]
+layout_mode = 2
+texture = ExtResource("6_4pbp6")
+
+[node name="TextureRect2" type="TextureRect" parent="TraitsScrollContainer/TraitsHBox"]
+layout_mode = 2
+texture = ExtResource("7_xydel")
+
+[node name="TextureRect3" type="TextureRect" parent="TraitsScrollContainer/TraitsHBox"]
+layout_mode = 2
+texture = ExtResource("8_t3c1i")
+
+[node name="TalkWithButton" type="TextureButton" parent="."]
+layout_mode = 2
+offset_left = 154.0
+offset_top = 222.0
+offset_right = 249.0
+offset_bottom = 256.0
+size_flags_vertical = 8
+texture_normal = ExtResource("2_lewf3")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="TalkWithButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_8p8uc")
+theme_override_font_sizes/font_size = 17
+text = "Talk With"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TabsContainer" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 41.0
+offset_top = 348.0
+offset_right = 347.0
+offset_bottom = 602.0
+
+[node name="ActiveTabName" type="Label" parent="TabsContainer"]
+layout_mode = 0
+anchor_left = -0.0196078
+anchor_top = -0.106299
+anchor_right = 0.232026
+anchor_bottom = -0.0393701
+theme_override_fonts/font = ExtResource("3_8p8uc")
+theme_override_font_sizes/font_size = 12
+text = "Tab Name"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="OverviewContainer" type="MarginContainer" parent="TabsContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="MainVbox" type="VBoxContainer" parent="TabsContainer/OverviewContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Reputation" type="Label" parent="TabsContainer/OverviewContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Reputation"
+autowrap_mode = 3
+
+[node name="Renown" type="Label" parent="TabsContainer/OverviewContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Renown"
+autowrap_mode = 3
+
+[node name="Lifespan" type="Label" parent="TabsContainer/OverviewContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Lifespan"
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="CurrentDesires" type="Label" parent="TabsContainer/OverviewContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Current Top 5 Desires"
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="CurrentAction" type="Label" parent="TabsContainer/OverviewContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Action being performed"
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="CultivationContainer" type="MarginContainer" parent="TabsContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="MainVbox" type="VBoxContainer" parent="TabsContainer/CultivationContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Potential" type="Label" parent="TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Potential"
+autowrap_mode = 3
+
+[node name="CurrentRealm" type="Label" parent="TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Current Realm"
+autowrap_mode = 3
+
+[node name="RealmProgress" type="Label" parent="TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "RealmProgress"
+autowrap_mode = 3
+
+[node name="Purpose" type="Label" parent="TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Cultivation Purpose"
+autowrap_mode = 3
+
+[node name="StateOfMind" type="Label" parent="TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "State of Mind"
+autowrap_mode = 3
+
+[node name="QiDeviationRisk" type="Label" parent="TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Qi Deviation Risk"
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="BreakthroughModifier" type="Label" parent="TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Breakthrough Modifier"
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Afinities" type="Label" parent="TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Elemental Affinities"
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="CultivationTimeline" type="Label" parent="TabsContainer/CultivationContainer/MainVbox"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Cultivation Timeline"
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="RelationshipsContainer" type="MarginContainer" parent="TabsContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.011811
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="SortingVbox" type="VBoxContainer" parent="TabsContainer/RelationshipsContainer"]
+layout_mode = 2
+
+[node name="SortingButtons" type="HBoxContainer" parent="TabsContainer/RelationshipsContainer/SortingVbox"]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="TabsContainer/RelationshipsContainer/SortingVbox/SortingButtons"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_8p8uc")
+text = "Name"
+
+[node name="SortAscending" type="Button" parent="TabsContainer/RelationshipsContainer/SortingVbox/SortingButtons"]
+custom_minimum_size = Vector2(20, 16)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/RelationshipsContainer/SortingVbox/SortingButtons/SortAscending"]
+custom_minimum_size = Vector2(20, 16)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "↑"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SortDescending" type="Button" parent="TabsContainer/RelationshipsContainer/SortingVbox/SortingButtons"]
+custom_minimum_size = Vector2(20, 16)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabsContainer/RelationshipsContainer/SortingVbox/SortingButtons/SortDescending"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "↓"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RelationshipsScroll" type="ScrollContainer" parent="TabsContainer/RelationshipsContainer/SortingVbox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabsContainer/RelationshipsContainer/SortingVbox/RelationshipsScroll"]
+layout_mode = 2
+
+[node name="RelationshipEntry" parent="TabsContainer/RelationshipsContainer/SortingVbox/RelationshipsScroll/VBoxContainer" instance=ExtResource("9_mkyjq")]
+layout_mode = 2
+
+[node name="InventoryContainer" type="MarginContainer" parent="TabsContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="InventoryScroll" type="ScrollContainer" parent="TabsContainer/InventoryContainer"]
+layout_mode = 2
+
+[node name="InventoryGrid" type="GridContainer" parent="TabsContainer/InventoryContainer/InventoryScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 4
+
+[node name="Placeholder" type="ColorRect" parent="TabsContainer/InventoryContainer/InventoryScroll/InventoryGrid"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+
+[node name="Placeholder2" type="ColorRect" parent="TabsContainer/InventoryContainer/InventoryScroll/InventoryGrid"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+
+[node name="Placeholder3" type="ColorRect" parent="TabsContainer/InventoryContainer/InventoryScroll/InventoryGrid"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+
+[node name="Placeholder4" type="ColorRect" parent="TabsContainer/InventoryContainer/InventoryScroll/InventoryGrid"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+
+[node name="LogsContainer" type="MarginContainer" parent="TabsContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="LogVbox" type="VBoxContainer" parent="TabsContainer/LogsContainer"]
+layout_mode = 2
+
+[node name="Label" parent="TabsContainer/LogsContainer/LogVbox" instance=ExtResource("10_p8l6q")]
+layout_mode = 2
