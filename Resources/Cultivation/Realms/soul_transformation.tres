@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CultivationRealmResource" load_steps=3 format=3 uid="uid://dfikq52f0rhi7"]
+
+[ext_resource type="Texture2D" uid="uid://b4und7a5jeu85" path="res://Assets/UI/Icons/Cultivation/Cultivation_SoulTransformation.png" id="1_blp5n"]
+[ext_resource type="Script" uid="uid://df1qxx2eujs1g" path="res://Resources/Cultivation/CultivationRealmResource.gd" id="2_pssdm"]
+
+[resource]
+script = ExtResource("2_pssdm")
+realm_id = &"5"
+display_name = "Soul Transformation"
+icon = ExtResource("1_blp5n")
+next_realm_id = &"6"
+realm_tier = 5
+base_breakthrough_chance = 0.8
+lifespan_bonus = 50
+stat_bonuses = {}
+metadata/_custom_type_script = "uid://df1qxx2eujs1g"

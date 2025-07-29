@@ -117,6 +117,9 @@ func _on_tab_selected(selected_tab: Container) -> void:
 
 # --- UI Population Logic ---
 func _populate_header() -> void:
+	# REASON FOR CHANGE:
+	# This function is now solely responsible for all header elements, including icons.
+	# It correctly shows/hides cultivation-related icons based on character type.
 	character_name_label.text = current_character.name_display
 	
 	var sect = SectManager.get_sect_by_character_id(current_character.id)
@@ -127,6 +130,20 @@ func _populate_header() -> void:
 	
 	age_label.text = "Age: %d" % current_character.age
 	location_label.text = "Location: Unknown" # Placeholder for now
+
+	if current_character is CultivatorResource:
+		var realm: CultivationRealmResource = CultivationManager.get_realm(current_character.cultivation_realm)
+		if realm:
+			cultivation_realm_icon.texture = realm.icon
+		else:
+			cultivation_realm_icon.texture = null
+		
+		cultivation_realm_icon.show()
+		spiritual_root_icon.show() # TODO: Add logic for spiritual root icon
+	else:
+		# For mortals, hide cultivation-specific icons in the header.
+		cultivation_realm_icon.hide()
+		spiritual_root_icon.hide()
 
 func _populate_overview_tab() -> void:
 	overview_reputation_label.text = "Reputation: %s" % current_character.reputation
@@ -142,12 +159,22 @@ func _populate_overview_tab() -> void:
 	overview_action_label.text = "Current Action: (Not Implemented)"
 
 func _populate_cultivation_tab() -> void:
+	# REASON FOR CHANGE:
+	# This function now only manages elements within the Cultivation Tab.
+	# It no longer incorrectly tries to update the header icon.
 	if current_character is CultivatorResource:
 		cultivation_tab.show()
 		cultivation_button.show()
+		
 		cultivation_potential_label.text = "Potential: %d" % current_character.potential
-		var realm_name = Definitions.cultivation_realm_to_string(current_character.cultivation_realm)
-		cultivation_realm_label.text = "Realm: %s" % realm_name
+		
+		# Get the realm resource to display its name.
+		var realm: CultivationRealmResource = CultivationManager.get_realm(current_character.cultivation_realm)
+		if realm:
+			cultivation_realm_label.text = "Realm: %s" % realm.display_name
+		else:
+			cultivation_realm_label.text = "Realm: Unknown"
+			
 		cultivation_progress_label.text = "Progress: %d%%" % current_character.realm_progress
 		cultivation_deviation_label.text = "Qi Deviation Risk: %d%%" % current_character.qi_deviation_risk
 		cultivation_breakthrough_label.text = "Breakthrough Modifier: %d%%" % current_character.breakthrough_modifier
@@ -181,7 +208,6 @@ func _populate_relationships_tab() -> void:
 			relationships_list_container.add_child(entry)
 
 # --- Placeholder for testing ---
-# Creates a sample dialogue for testing. THIS IS WHERE THE FIX IS.
 func _create_test_dialogue_for_character(character: CharacterResource) -> DialogueResource:
 	var dialogue = DialogueResource.new()
 	dialogue.dialogue_id = "test_greeting"
@@ -199,7 +225,6 @@ func _create_test_dialogue_for_character(character: CharacterResource) -> Dialog
 	# --- Create Nodes ---
 	var start_node = DialogueNodeResource.new()
 	start_node.text = "Hello, Sect Master. You wished to speak with me?"
-	# THE FIX: We explicitly cast the array to the correct type.
 	start_node.options = [option1, option2] as Array[DialogueOptionResource]
 
 	var about_self_node = DialogueNodeResource.new()

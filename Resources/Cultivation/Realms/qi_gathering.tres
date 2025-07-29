@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CultivationRealmResource" load_steps=3 format=3 uid="uid://djgb7ntg68mfh"]
+
+[ext_resource type="Texture2D" uid="uid://csa1ttdjk4tba" path="res://Assets/UI/Icons/Cultivation/Cultivation_QiGathering.png" id="1_jgi25"]
+[ext_resource type="Script" uid="uid://df1qxx2eujs1g" path="res://Resources/Cultivation/CultivationRealmResource.gd" id="1_vy2xn"]
+
+[resource]
+script = ExtResource("1_vy2xn")
+realm_id = &"0"
+display_name = "Qi Gathering"
+icon = ExtResource("1_jgi25")
+next_realm_id = &"1"
+base_breakthrough_chance = 0.8
+lifespan_bonus = 10
+stat_bonuses = {}
+metadata/_custom_type_script = "uid://df1qxx2eujs1g"

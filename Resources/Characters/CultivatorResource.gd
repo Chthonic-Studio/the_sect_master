@@ -5,11 +5,10 @@
 extends CharacterResource
 class_name CultivatorResource
 
-const Definitions = preload("res://Scripts/Data/Definitions.gd")
-
 # --- Cultivation State ---
 @export_category("Cultivation State")
-@export var cultivation_realm: Definitions.CultivationRealm = Definitions.CultivationRealm.QI_GATHERING
+# NEW: This is now a StringName ID that references a CultivationRealmResource.
+@export var cultivation_realm: StringName
 @export_range(0, 100, 1) var realm_progress: int = 0 # Progress to next realm (0-100, or larger if you want)
 @export var lifespan: int = 0
 
@@ -37,17 +36,14 @@ func clamp_cultivation_stats() -> void:
 
 # Override get_summary() for cultivators
 func get_summary() -> String:
-	return "%s | Realm: %s | Progress: %d%% | Lifespan: %d/%d | Qi Dev Risk: %d | Breakthrough Fail: %d" % [
+	var realm_res = CultivationManager.get_realm(cultivation_realm)
+	var realm_name = realm_res.display_name if realm_res else "Unknown Realm"
+	
+	return "%s | Realm: %s | Progress: %d%% | Lifespan: %d | Qi Dev Risk: %d | Breakthrough Mod: %d" % [
 		first_name + " " + last_name,
-		Definitions.cultivation_realm_to_string(cultivation_realm),
+		realm_name,
 		realm_progress,
 		lifespan,
 		qi_deviation_risk,
 		breakthrough_modifier
 	]
-
-# --- How & Where to Use ---
-# 1. Place this at res://scripts/data/cultivator_resource.gd
-# 2. Use for any character who can cultivate (Sect Master, elders, etc.)
-# 3. Reference Definitions for enums/affinities in logic/UI.
-# 4. When creating Cultivators, use CharacterManager as before, but instantiate CultivatorResource.

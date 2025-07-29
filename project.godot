@@ -26,6 +26,8 @@ SectManager="*res://Globals/SectManager.gd"
 PlayerManager="*res://Globals/PlayerManager.gd"
 UIManager="*res://Globals/UIManager.gd"
 DialogueManager="*res://Globals/DialogueManager.gd"
+TraitManager="*res://Globals/TraitManager.gd"
+CultivationManager="*res://Globals/CultivationManager.gd"
 
 [display]
 

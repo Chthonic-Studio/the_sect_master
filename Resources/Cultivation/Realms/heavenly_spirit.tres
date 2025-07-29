@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CultivationRealmResource" load_steps=3 format=3 uid="uid://kdawohhhfwuh"]
+
+[ext_resource type="Texture2D" uid="uid://degd4kbu1mrvk" path="res://Assets/UI/Icons/Cultivation/Cultivation_HeavenlySpirit.png" id="1_4sudy"]
+[ext_resource type="Script" uid="uid://df1qxx2eujs1g" path="res://Resources/Cultivation/CultivationRealmResource.gd" id="2_si63d"]
+
+[resource]
+script = ExtResource("2_si63d")
+realm_id = &"4"
+display_name = "Heavenly Spirit"
+icon = ExtResource("1_4sudy")
+next_realm_id = &"5"
+realm_tier = 4
+base_breakthrough_chance = 0.8
+lifespan_bonus = 50
+stat_bonuses = {}
+metadata/_custom_type_script = "uid://df1qxx2eujs1g"

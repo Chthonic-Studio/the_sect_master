@@ -11,7 +11,7 @@
 [sub_resource type="Theme" id="Theme_tbbry"]
 /styles/Black = null
 
-[node name="PlayerCharacterMenu" type="Control"]
+[node name="PlayerCharacterMenu" type="Control" node_paths=PackedStringArray("name_label", "age_label", "gender_label", "realm_label", "renown_label", "reputation_label", "realm_icon", "spiritual_root_icon", "health_label", "qi_label", "strength_label", "agility_label", "constitution_label", "intelligence_label", "perception_label", "traits_container")]
 custom_minimum_size = Vector2(650, 150)
 layout_mode = 3
 anchor_top = 0.833333
@@ -19,6 +19,22 @@ anchor_right = 0.40625
 anchor_bottom = 1.0
 grow_vertical = 0
 script = ExtResource("1_172o2")
+name_label = NodePath("SectMasterName")
+age_label = NodePath("Age")
+gender_label = NodePath("Gender")
+realm_label = NodePath("CultivationRealm")
+renown_label = NodePath("HBoxContainer2/Renown")
+reputation_label = NodePath("HBoxContainer2/Reputation")
+realm_icon = NodePath("HBoxContainer/CultivationRealm")
+spiritual_root_icon = NodePath("HBoxContainer/SpiritualRoot")
+health_label = NodePath("VBoxContainer/HBoxContainer/VBoxContainer2/HealthValue")
+qi_label = NodePath("VBoxContainer/HBoxContainer/VBoxContainer2/QiValue")
+strength_label = NodePath("VBoxContainer/HBoxContainer/VBoxContainer2/StrengthValue")
+agility_label = NodePath("VBoxContainer/HBoxContainer/VBoxContainer2/AgilityValue")
+constitution_label = NodePath("VBoxContainer/HBoxContainer/VBoxContainer2/ConstitutionValue")
+intelligence_label = NodePath("VBoxContainer/HBoxContainer/VBoxContainer2/IntelligenceValue")
+perception_label = NodePath("VBoxContainer/HBoxContainer/VBoxContainer2/PerceptionValue")
+traits_container = NodePath("TraitsScrollContainer/TraitsHBox")
 metadata/_edit_use_anchors_ = true
 
 [node name="SectMasterPortrait" type="TextureRect" parent="."]
@@ -169,7 +185,11 @@ offset_top = 65.0003
 offset_right = 133.0
 offset_bottom = 105.0
 
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+[node name="SpiritualRoot" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("4_ukkd3")
+
+[node name="CultivationRealm" type="TextureRect" parent="HBoxContainer"]
 layout_mode = 2
 texture = ExtResource("4_ukkd3")
 
@@ -197,10 +217,10 @@ text = "Reputation"
 
 [node name="CultivationRealm" type="Label" parent="."]
 layout_mode = 0
-offset_left = 157.0
-offset_top = 65.0003
-offset_right = 285.0
-offset_bottom = 82.0003
+offset_left = 187.0
+offset_top = 76.0003
+offset_right = 315.0
+offset_bottom = 93.0003
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_sxq7j")
 text = "Cultivation Realm"

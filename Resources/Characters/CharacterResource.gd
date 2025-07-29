@@ -25,7 +25,16 @@ enum Gender { MALE, FEMALE, OTHER }
 @export var renown_title: String = "Unknown"
 @export var reputation: String = "None"
 @export var spiritual_root: SpiritualRootType = SpiritualRootType.NONE ## Enum dropdown
-@export var traits: Array[String] = []
+
+# --- NEW: Trait System ---
+# This array holds the StringName IDs of the traits this character has.
+# Example: ["Righteous", "BodyOfIron"]
+@export var traits: Array[StringName] = []
+
+# --- NEW: Flag System ---
+# Dynamic flags for temporary states (e.g., "OnMission", "Imprisoned").
+@export var flags: Array[StringName] = []
+
 
 # === NEW: Social Relationships ===
 @export_category("Social")
@@ -93,6 +102,23 @@ var curiosity: int = 0
 # Add more personality stats as needed...
 
 # === Utility Functions ===
+
+# --- NEW: Trait & Flag Helpers ---
+func has_trait(trait_id: StringName) -> bool:
+	return traits.has(trait_id)
+
+func has_flag(flag_name: StringName) -> bool:
+	return flags.has(flag_name)
+
+func add_trait(trait_id: StringName) -> void:
+	if not has_trait(trait_id):
+		traits.append(trait_id)
+		# NOTE: You would apply the trait's effects here or via a manager.
+
+func remove_trait(trait_id: StringName) -> void:
+	if has_trait(trait_id):
+		traits.erase(trait_id)
+		# NOTE: You would remove the trait's effects here.
 
 func clamp_stats() -> void:
 	max_hp = clamp(max_hp, 0, 99000000)

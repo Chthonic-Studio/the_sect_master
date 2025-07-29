@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CultivationRealmResource" load_steps=3 format=3 uid="uid://bvc4u8v1ajq4a"]
+
+[ext_resource type="Texture2D" uid="uid://cou4qm2q18vgd" path="res://Assets/UI/Icons/Cultivation/Cultivation_DemiGod.png" id="1_ti7ob"]
+[ext_resource type="Script" uid="uid://df1qxx2eujs1g" path="res://Resources/Cultivation/CultivationRealmResource.gd" id="2_mtwer"]
+
+[resource]
+script = ExtResource("2_mtwer")
+realm_id = &"8"
+display_name = "Demi God"
+icon = ExtResource("1_ti7ob")
+next_realm_id = &"9"
+realm_tier = 8
+base_breakthrough_chance = 0.8
+lifespan_bonus = 50
+stat_bonuses = {}
+metadata/_custom_type_script = "uid://df1qxx2eujs1g"

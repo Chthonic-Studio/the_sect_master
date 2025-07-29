@@ -85,9 +85,6 @@ func _update_info_panel(action_name: String = "") -> void:
 	$DebugHbox/CharSpawnDebug/VBoxContainer3/Curiosity.text = "Curiosity: %d" % res.curiosity
 	# Cultivator-only fields
 	var is_cultivator = res is CultivatorResource
-	if res is CultivatorResource:
-		var cultivation_realm = Definitions.cultivation_realm_to_string( res.cultivation_realm )
-		$DebugHbox/CharSpawnDebug/VBoxContainer4/Realm.text = "Realm: %s" % (cultivation_realm if is_cultivator else "-")
 	$DebugHbox/CharSpawnDebug/VBoxContainer4/RealmProgress.text = "Realm Progress: %d" % (res.realm_progress if is_cultivator else 0)
 	$DebugHbox/CharSpawnDebug/VBoxContainer4/Lifespan.text = "Lifespan: %d" % (res.lifespan if is_cultivator else 0)
 	$DebugHbox/CharSpawnDebug/VBoxContainer4/Techniques.text = "Techniques: %s" % (", ".join(res.learned_techniques) if is_cultivator else "-")

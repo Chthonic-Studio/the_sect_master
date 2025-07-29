@@ -20,8 +20,11 @@ func setup_initial_player(parent_node: Node) -> void:
 	player_sect_id = SectManager.create_random_sect()
 
 	# 2. Create the Sect Master Character
+	# --- FIX ---
+	# We now use a StringName for the realm_id, not an enum.
+	# The StringName must match the .tres file name of the realm resource (e.g., "GoldenCore.tres").
 	var overrides = {
-		"cultivation_realm": Definitions.CultivationRealm.GOLDEN_CORE,
+		"cultivation_realm": &"GoldenCore", # Using StringName literal `&"..."` for the ID.
 		"age": randi_range(80, 150) # Golden Core cultivators are older
 	}
 	player_character_node = CharManager.create_character("cultivator", Vector2(100, 200), overrides)

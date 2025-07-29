@@ -7,19 +7,6 @@
 
 extends Node
 
-# --- Cultivation Realms ---
-enum CultivationRealm {
-	QI_GATHERING,
-	QI_BUILDING,
-	GOLDEN_CORE,
-	NASCENT_SOUL,
-	HEAVENLY_SPIRIT,
-	SOUL_TRANSFORMATION,
-	ORIGIN_SELF,
-	ASTRAL_BODY,
-	DEMI_GOD
-}
-
 # --- Elements (for affinities, techniques, etc.) ---
 enum Element {
 	NONE,
@@ -32,8 +19,5 @@ enum Element {
 }
 
 # --- Utility: Get string names for enums (for UI/debug) ---
-static func cultivation_realm_to_string(realm: int) -> String:
-	return CultivationRealm.keys()[realm]
-
 static func element_to_string(element: int) -> String:
 	return Element.keys()[element]
