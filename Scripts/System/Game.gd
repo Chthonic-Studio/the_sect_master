@@ -2,6 +2,15 @@ class_name Game extends Node
 
 # --- Initialization ---
 func _ready() -> void:
+	# REASON FOR CHANGE:
+	# This new logic safely waits for all necessary managers to be ready.
+	# It checks if a manager is already ready before awaiting its signal,
+	# which prevents the game from getting stuck in a deadlock.
+	if not CultivationManager.is_ready:
+		await CultivationManager.manager_ready
+	if not TraitManager.is_ready:
+		await TraitManager.manager_ready
+		
 	initialize_game_world()
 
 func initialize_game_world() -> void:
@@ -10,8 +19,9 @@ func initialize_game_world() -> void:
 		PlayerManager.setup_initial_player(self)
 		_spawn_test_characters()
 		
+		# This ensures the debug menu correctly displays the player character's info at start
 		var debug_menu = find_child("MainDebugMenu", true, false)
-		if debug_menu:
+		if debug_menu and PlayerManager.player_character_node:
 			debug_menu.last_spawned_character = PlayerManager.player_character_node
 			debug_menu._update_info_panel()
 
@@ -21,13 +31,15 @@ func initialize_game_world() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		# This will print every time you click, regardless of where.
-		print("--- GLOBAL CLICK DETECTED ---")
+		# print("--- GLOBAL CLICK DETECTED ---")
 		# The 'is_handled()' method tells us if a node (usually UI) has already processed and "stopped" this event.
 		if get_viewport().is_input_handled():
-			print("Input was handled by the UI tree. It will not reach the game world.")
+			# print("Input was handled by the UI tree. It will not reach the game world.")
+			pass
 		else:
-			print("Input was NOT handled by the UI tree. It should reach game world nodes.")
-		print("--------------------------")
+			# print("Input was NOT handled by the UI tree. It should reach game world nodes.")
+			pass
+		# print("--------------------------")
 
 # --- Test Character Spawning Logic ---
 # Creates the specific set of characters needed for testing the UI.

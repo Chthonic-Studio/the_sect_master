@@ -31,16 +31,6 @@ func add_trait_to_character(character_id: int, trait_id: StringName) -> bool:
 		return true
 	return false
 	
-## Example of spawning a specific character
-#var custom_traits = [&"Righteous", &"BodyOfIron", &"HeroOfTheSect"]
-#var overrides = {"traits": custom_traits, "age": 50}
-#CharManager.create_character("cultivator", Vector2.ZERO, overrides)
-
-## Example of adding/removing a trait from a character with ID 10000001
-#var char_id = 10000001
-#CharManager.add_trait_to_character(char_id, &"Cursed")
-#CharManager.remove_trait_from_character(char_id, &"Righteous")
-
 # Removes a trait from a character after creation and removes its effects.
 func remove_trait_from_character(character_id: int, trait_id: StringName) -> bool:
 	var char_res = get_character_by_id(character_id)
@@ -69,10 +59,16 @@ func create_character(type: String = "mortal", position: Vector2 = Vector2.ZERO,
 	var resource
 	if type == "cultivator":
 		resource = CultivatorResource.new()
-		# For cultivators, set the starting realm.
-		var first_realm = CultivationManager.get_first_realm()
-		if first_realm:
-			resource.cultivation_realm = first_realm.realm_id
+		# REASON FOR CHANGE:
+		# This logic now correctly waits until the CultivationManager is ready before
+		# attempting to assign the starting realm. This fixes the bug where
+		# cultivators were created with no realm attached.
+		if not overrides.has("cultivation_realm"):
+			var first_realm = CultivationManager.get_first_realm()
+			if first_realm:
+				resource.cultivation_realm = first_realm.realm_id
+			else:
+				push_error("CharacterManager: Could not get first realm for new cultivator.")
 	else:
 		resource = CharacterResource.new()
 	# --- Assign unique ID ---
@@ -110,11 +106,9 @@ func create_character(type: String = "mortal", position: Vector2 = Vector2.ZERO,
 	
 	# --- Trait Assignment ---
 	if overrides.has("traits"):
-		# If specific traits are provided, use them.
 		resource.traits = overrides["traits"]
-		overrides.erase("traits") # Remove from overrides to prevent property set warning
+		overrides.erase("traits") 
 	else:
-		# Otherwise, assign random placeholder traits.
 		resource.traits = _assign_placeholder_traits()
 		
 	# --- Randomize personality stats ---

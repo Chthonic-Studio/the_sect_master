@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="TraitResource" load_steps=3 format=3 uid="uid://c5fk23xndpr38"]
+
+[ext_resource type="Texture2D" uid="uid://chqgo5hkat5jj" path="res://Assets/UI/Icons/Traits/Calm.png" id="1_bhv6u"]
+[ext_resource type="Script" uid="uid://bcwp0k7bgruy6" path="res://Resources/Characters/Traits/TraitResource.gd" id="1_d8qe5"]
+
+[resource]
+script = ExtResource("1_d8qe5")
+trait_id = &"17"
+display_name = "Calm"
+description = "A calm person"
+icon = ExtResource("1_bhv6u")
+type = 0
+stat_effects = {
+"aggression": -5,
+"discipline": 5,
+"patience": 10
+}
+desire_growth_modifiers = {}
+flags = Array[StringName]([])
+metadata/_custom_type_script = "uid://bcwp0k7bgruy6"

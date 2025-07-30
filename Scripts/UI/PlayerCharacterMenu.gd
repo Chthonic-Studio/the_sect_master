@@ -1,22 +1,18 @@
 # PlayerCharacterMenu.gd
-# Manages the UI display for the player's character (Sect Master).
-# Attach this script to the "PlayerCharacterMenu" Control node in main_ui.tscn.
+# Manages the UI for the player's character status panel.
+# Place on the root Control node of player_character_menu.tscn.
 
 extends Control
-class_name PlayerCharacterMenu
 
-# --- UI Node References ---
-@export_category("Personal Information")
+# === Node References (set these in the Inspector) ===
 @export var name_label: Label
-@export var age_label: Label 
+@export var age_label: Label
 @export var gender_label: Label
 @export var realm_label: Label
 @export var renown_label: Label
 @export var reputation_label: Label
-@export_category("Icons")
 @export var realm_icon: TextureRect
 @export var spiritual_root_icon: TextureRect
-@export_category("Stats")
 @export var health_label: Label
 @export var qi_label: Label
 @export var strength_label: Label
@@ -24,74 +20,70 @@ class_name PlayerCharacterMenu
 @export var constitution_label: Label
 @export var intelligence_label: Label
 @export var perception_label: Label
-@export_category("Traits")
 @export var traits_container: HBoxContainer
 
+var _current_character: CharacterResource
 
+# --- Initialization ---
 func _ready() -> void:
-	# Connect to the PlayerManager's signal. When it emits, we update the UI.
-	# This decouples the UI from the game's startup logic.
-	PlayerManager.connect("player_initialized", Callable(self, "update_display"))
-	
-	# Initial update in case the player is already initialized when this UI loads.
-	update_display()
+	# Defer UI updates until the PlayerManager has finished its setup.
+	PlayerManager.connect("player_initialized", Callable(self, "_on_player_initialized"), CONNECT_ONE_SHOT)
+	# Hide the menu initially until it's populated.
+	hide()
 
+# --- Signal Handlers ---
 
-# --- Main Update Function ---
+# Called once the player's character is created and ready.
+func _on_player_initialized() -> void:
+	_current_character = PlayerManager.player_character_resource
+	if _current_character:
+		update_all_fields()
+		show() # Show the menu now that it has data.
+		# TODO: Connect to signals on the character resource to update UI when stats change.
+	else:
+		push_error("PlayerCharacterMenu: Player character resource not found after initialization!")
 
-# Pulls data from the PlayerManager and updates all UI elements.
-func update_display() -> void:
-	var res = PlayerManager.player_character_resource
+# --- UI Update Logic ---
+
+# Updates all displayed fields with data from the CharacterResource.
+func update_all_fields() -> void:
+	if not _current_character: return
+
+	name_label.text = _current_character.name_display
+	age_label.text = "Age: %d" % _current_character.age
+	gender_label.text = "Gender: %s" % CharacterResource.Gender.keys()[_current_character.gender]
 	
-	# If there's no player resource yet, do nothing.
-	if not res:
-		return
-		
-	# --- Update Basic Info ---
-	name_label.text = res.name_display
-	age_label.text = "Age: %d" % res.age
-	# FIX: The Gender enum is part of the CharacterResource class, not a key on the instance.
-	gender_label.text = "Gender: %s" % CharacterResource.Gender.keys()[res.gender]
-	renown_label.text = res.renown_title
-	reputation_label.text = res.reputation
+	renown_label.text = "Renown: %s" % _current_character.renown_title
+	reputation_label.text = "Reputation: %s" % _current_character.reputation
 	
-	# --- Update Core Stats ---
-	health_label.text = "%d/%d" % [res.current_hp, res.max_hp]
-	qi_label.text = "%d/%d" % [res.current_qi, res.max_qi]
-	strength_label.text = str(res.strength)
-	agility_label.text = str(res.agility)
-	constitution_label.text = str(res.constitution)
-	intelligence_label.text = str(res.intelligence)
-	perception_label.text = str(res.perception)
+	health_label.text = "%d/%d" % [_current_character.current_hp, _current_character.max_hp]
+	qi_label.text = "%d/%d" % [_current_character.current_qi, _current_character.max_qi]
 	
-	# --- Update Cultivator Info (if applicable) ---
-	if res is CultivatorResource:
-		var realm_res: CultivationRealmResource = CultivationManager.get_realm(res.cultivation_realm)
+	strength_label.text = str(_current_character.strength)
+	agility_label.text = str(_current_character.agility)
+	constitution_label.text = str(_current_character.constitution)
+	intelligence_label.text = str(_current_character.intelligence)
+	perception_label.text = str(_current_character.perception)
+	
+	# REASON FOR CHANGE:
+	# Added logic to set the spiritual root icon. It calls our new helper function
+	# in Definitions.gd to get the correct texture based on the character's data.
+	# This icon will now always be visible for the player character.
+	spiritual_root_icon.texture = Definitions.get_spiritual_root_icon(_current_character.spiritual_root)
+	
+	# --- CULTIVATION REALM LOGIC ---
+	if _current_character is CultivatorResource:
+		var realm_res: CultivationRealmResource = CultivationManager.get_realm(_current_character.cultivation_realm)
 		if realm_res:
 			realm_label.text = realm_res.display_name
 			realm_icon.texture = realm_res.icon
 		else:
 			realm_label.text = "Unknown Realm"
 			realm_icon.texture = null
+		realm_label.show()
+		realm_icon.show()
 	else:
-		realm_label.text = "Mortal"
-		realm_icon.texture = null
-		
-	# --- Update Traits ---
-	for child in traits_container.get_children():
-		child.queue_free()
+		realm_label.hide()
+		realm_icon.hide()
 	
-	for trait_id in res.traits:
-		var trait_res = TraitManager.get_trait(trait_id)
-		if trait_res and trait_res.icon:
-			var trait_icon_rect = TextureRect.new()
-			trait_icon_rect.texture = trait_res.icon
-			trait_icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-			trait_icon_rect.custom_minimum_size = Vector2(32, 32) # Set a fixed size for icons
-			trait_icon_rect.tooltip_text = "[b]%s[/b]\n%s" % [trait_res.display_name, trait_res.description]
-			traits_container.add_child(trait_icon_rect)
-
-# --- How & Where to Use ---
-# 1. Attach this script to the "PlayerCharacterMenu" node in `main_ui.tscn`.
-# 2. Ensure PlayerManager, CultivationManager, and TraitManager are set up as Autoloads.
-# 3. The script will automatically connect and update the UI when the player is created.
+	# TODO: Add logic for traits icons.

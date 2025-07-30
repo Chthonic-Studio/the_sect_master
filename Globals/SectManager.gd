@@ -101,17 +101,15 @@ func _calculate_and_apply_consumption(sect_id: int) -> void:
 		
 		# For cultivators, increase cost based on realm.
 		if char_res is CultivatorResource:
-			# --- FIX ---
-			# 1. Get the full realm resource using the ID from the character.
+			# REASON FOR CHANGE: No code change needed, but this now correctly calls
+			# the instance method on the CultivationManager singleton.
 			var realm_res: CultivationRealmResource = CultivationManager.get_realm(char_res.cultivation_realm)
 			
 			if realm_res:
-				# 2. Use the new `realm_tier` property for the calculation. This is now an integer.
 				var realm_level = realm_res.realm_tier
 				var multiplier = pow(2, realm_level)
 				food_cost *= multiplier
 				gold_cost *= multiplier
-			# --- END FIX ---
 		
 		total_food_consumption += food_cost
 		total_gold_consumption += gold_cost

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="TraitResource" load_steps=3 format=3 uid="uid://bfcynbr3xf28j"]
+
+[ext_resource type="Script" uid="uid://bcwp0k7bgruy6" path="res://Resources/Characters/Traits/TraitResource.gd" id="1_7h78a"]
+[ext_resource type="Texture2D" uid="uid://erccpay7upej" path="res://Assets/UI/Icons/Traits/Dogmatic.png" id="1_20840"]
+
+[resource]
+script = ExtResource("1_7h78a")
+trait_id = &"15"
+display_name = "Altruistic"
+description = "An altruistic person"
+icon = ExtResource("1_20840")
+type = 0
+stat_effects = {
+"empathy": 10,
+"greed": -5,
+"loyalty": 5
+}
+desire_growth_modifiers = {}
+flags = Array[StringName]([])
+metadata/_custom_type_script = "uid://bcwp0k7bgruy6"

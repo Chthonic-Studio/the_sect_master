@@ -21,17 +21,17 @@ enum TraitType { PERSONALITY, COMMON, SPECIAL, HIDDEN }
 @export var type: TraitType = TraitType.PERSONALITY
 
 @export_category("Stat Modifications")
-# Direct stat changes. Use stat names from CharacterResource.
-# Example: {"strength": 10, "loyalty": -5, "qi_deviation_risk": -5}
+## Direct stat changes. Use stat names from CharacterResource.
+## Example: {"strength": 10, "loyalty": -5, "qi_deviation_risk": -5}
 @export var stat_effects: Dictionary = {}
 
 @export_category("AI & Behavior")
-# Modifiers for the Utility AI desire growth rates.
-# Example: {"Training": 0.5, "Socialize": -0.2}
+## Modifiers for the Utility AI desire growth rates.
+## Example: {"Training": 0.5, "Socialize": -0.2}
 @export var desire_growth_modifiers: Dictionary = {}
 
-# Flags that can be checked by other systems.
-# Example: ["IS_INFAMOUS", "CANNOT_BE_EXPELLED"]
+## Flags that can be checked by other systems.
+## Example: ["IS_INFAMOUS", "CANNOT_BE_EXPELLED"]
 @export var flags: Array[StringName] = []
 
 func _init():

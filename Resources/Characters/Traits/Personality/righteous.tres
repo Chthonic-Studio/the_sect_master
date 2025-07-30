@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TraitResource" load_steps=2 format=3 uid="uid://ck8imk3mrygmy"]
+
+[ext_resource type="Script" uid="uid://bcwp0k7bgruy6" path="res://Resources/Characters/Traits/TraitResource.gd" id="1_lltji"]
+
+[resource]
+script = ExtResource("1_lltji")
+trait_id = &""
+display_name = ""
+description = ""
+type = 0
+stat_effects = {}
+desire_growth_modifiers = {}
+flags = Array[StringName]([])
+metadata/_custom_type_script = "uid://bcwp0k7bgruy6"

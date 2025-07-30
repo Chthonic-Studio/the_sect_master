@@ -117,9 +117,6 @@ func _on_tab_selected(selected_tab: Container) -> void:
 
 # --- UI Population Logic ---
 func _populate_header() -> void:
-	# REASON FOR CHANGE:
-	# This function is now solely responsible for all header elements, including icons.
-	# It correctly shows/hides cultivation-related icons based on character type.
 	character_name_label.text = current_character.name_display
 	
 	var sect = SectManager.get_sect_by_character_id(current_character.id)
@@ -131,6 +128,12 @@ func _populate_header() -> void:
 	age_label.text = "Age: %d" % current_character.age
 	location_label.text = "Location: Unknown" # Placeholder for now
 
+	# REASON FOR CHANGE:
+	# We now set the spiritual root icon here, ensuring it's visible for all
+	# character types, including mortals, as requested.
+	spiritual_root_icon.texture = Definitions.get_spiritual_root_icon(current_character.spiritual_root)
+	spiritual_root_icon.show()
+
 	if current_character is CultivatorResource:
 		var realm: CultivationRealmResource = CultivationManager.get_realm(current_character.cultivation_realm)
 		if realm:
@@ -139,11 +142,9 @@ func _populate_header() -> void:
 			cultivation_realm_icon.texture = null
 		
 		cultivation_realm_icon.show()
-		spiritual_root_icon.show() # TODO: Add logic for spiritual root icon
 	else:
 		# For mortals, hide cultivation-specific icons in the header.
 		cultivation_realm_icon.hide()
-		spiritual_root_icon.hide()
 
 func _populate_overview_tab() -> void:
 	overview_reputation_label.text = "Reputation: %s" % current_character.reputation
@@ -159,16 +160,12 @@ func _populate_overview_tab() -> void:
 	overview_action_label.text = "Current Action: (Not Implemented)"
 
 func _populate_cultivation_tab() -> void:
-	# REASON FOR CHANGE:
-	# This function now only manages elements within the Cultivation Tab.
-	# It no longer incorrectly tries to update the header icon.
 	if current_character is CultivatorResource:
 		cultivation_tab.show()
 		cultivation_button.show()
 		
 		cultivation_potential_label.text = "Potential: %d" % current_character.potential
 		
-		# Get the realm resource to display its name.
 		var realm: CultivationRealmResource = CultivationManager.get_realm(current_character.cultivation_realm)
 		if realm:
 			cultivation_realm_label.text = "Realm: %s" % realm.display_name

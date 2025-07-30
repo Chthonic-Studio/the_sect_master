@@ -4,6 +4,9 @@
 
 extends Node
 
+signal manager_ready
+var is_ready: bool = false
+
 # Directory where your CultivationRealmResource .tres files are stored.
 const REALM_RESOURCE_DIR = "res://Resources/Cultivation/Realms/"
 
@@ -13,26 +16,28 @@ var _first_realm_id: StringName # The starting point of the cultivation journey.
 
 func _ready() -> void:
 	_load_all_realms()
-	emit_signal("ready") # Announce that the manager is ready for use.
+	is_ready = true
+	emit_signal("manager_ready")
 
 # --- Public API ---
 
+# REASON FOR CHANGE: Removed 'static'. Functions are now instance methods on the
+# singleton, giving them direct access to '_realms' and '_first_realm_id'.
+# This is the standard and correct way to implement singletons in Godot.
+
 # Gets a realm resource by its ID.
-static func get_realm(realm_id: StringName) -> CultivationRealmResource:
-	if not Engine.has_singleton("CultivationManager"): return null
-	return Engine.get_singleton("CultivationManager")._realms.get(realm_id, null)
+func get_realm(realm_id: StringName) -> CultivationRealmResource:
+	return _realms.get(realm_id, null)
 
 # Gets the very first realm in the progression.
-static func get_first_realm() -> CultivationRealmResource:
-	if not Engine.has_singleton("CultivationManager"): return null
-	var manager = Engine.get_singleton("CultivationManager")
-	if manager._first_realm_id.is_empty():
-		push_error("CultivationManager: _first_realm_id is empty. Cannot get first realm.")
+func get_first_realm() -> CultivationRealmResource:
+	if not is_ready or _first_realm_id.is_empty():
+		push_error("CultivationManager: Cannot get first realm. Manager not ready or first realm not identified.")
 		return null
-	return manager.get_realm(manager._first_realm_id)
+	return get_realm(_first_realm_id)
 
 # Gets the next realm in the sequence for a given character.
-static func get_next_realm(character_res: CultivatorResource) -> CultivationRealmResource:
+func get_next_realm(character_res: CultivatorResource) -> CultivationRealmResource:
 	if not character_res: return null
 	var current_realm = get_realm(character_res.cultivation_realm)
 	if current_realm and not current_realm.next_realm_id.is_empty():
@@ -40,7 +45,7 @@ static func get_next_realm(character_res: CultivatorResource) -> CultivationReal
 	return null
 
 # Calculates the final breakthrough chance for a character.
-static func calculate_breakthrough_chance(character_res: CultivatorResource) -> float:
+func calculate_breakthrough_chance(character_res: CultivatorResource) -> float:
 	var next_realm = get_next_realm(character_res)
 	if not next_realm:
 		return 0.0 # No next realm to break through to.
@@ -70,12 +75,10 @@ func _load_all_realms() -> void:
 			if res and not realm_id.is_empty():
 				res.realm_id = realm_id
 				_realms[realm_id] = res
-				print("CultivationManager: Loaded realm '%s' with tier %d." % [realm_id, res.realm_tier])
 		file_name = dir.get_next()
 	
 	dir.list_dir_end()
 
-	# --- FIX: New, more robust logic to find the first realm ---
 	var found_first_realm = false
 	for realm in _realms.values():
 		if realm.realm_tier == 0:

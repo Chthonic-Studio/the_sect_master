@@ -25,7 +25,7 @@ gender_label = NodePath("Gender")
 realm_label = NodePath("CultivationRealm")
 renown_label = NodePath("HBoxContainer2/Renown")
 reputation_label = NodePath("HBoxContainer2/Reputation")
-realm_icon = NodePath("HBoxContainer/CultivationRealm")
+realm_icon = NodePath("HBoxContainer/CultivationRealmIcon")
 spiritual_root_icon = NodePath("HBoxContainer/SpiritualRoot")
 health_label = NodePath("VBoxContainer/HBoxContainer/VBoxContainer2/HealthValue")
 qi_label = NodePath("VBoxContainer/HBoxContainer/VBoxContainer2/QiValue")
@@ -189,7 +189,7 @@ offset_bottom = 105.0
 layout_mode = 2
 texture = ExtResource("4_ukkd3")
 
-[node name="CultivationRealm" type="TextureRect" parent="HBoxContainer"]
+[node name="CultivationRealmIcon" type="TextureRect" parent="HBoxContainer"]
 layout_mode = 2
 texture = ExtResource("4_ukkd3")
 
