@@ -1,14 +1,20 @@
-[gd_resource type="Resource" script_class="TraitResource" load_steps=2 format=3 uid="uid://cxfbbsclwdyvp"]
+[gd_resource type="Resource" script_class="TraitResource" load_steps=3 format=3 uid="uid://cxfbbsclwdyvp"]
 
 [ext_resource type="Script" uid="uid://bcwp0k7bgruy6" path="res://Resources/Characters/Traits/TraitResource.gd" id="1_5kbq3"]
+[ext_resource type="Texture2D" uid="uid://cx8se5samoeb4" path="res://Assets/UI/Icons/Traits/Vengeful.png" id="1_brspy"]
 
 [resource]
 script = ExtResource("1_5kbq3")
-trait_id = &""
-display_name = ""
-description = ""
+trait_id = &"18"
+display_name = "Vengeful"
+description = "A vengeful person"
+icon = ExtResource("1_brspy")
 type = 0
-stat_effects = {}
+stat_effects = {
+"aggression": 10,
+"cunning": 10,
+"empathy": 10
+}
 desire_growth_modifiers = {}
 flags = Array[StringName]([])
 metadata/_custom_type_script = "uid://bcwp0k7bgruy6"

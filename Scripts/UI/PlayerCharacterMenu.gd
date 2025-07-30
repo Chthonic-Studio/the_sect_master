@@ -65,13 +65,8 @@ func update_all_fields() -> void:
 	intelligence_label.text = str(_current_character.intelligence)
 	perception_label.text = str(_current_character.perception)
 	
-	# REASON FOR CHANGE:
-	# Added logic to set the spiritual root icon. It calls our new helper function
-	# in Definitions.gd to get the correct texture based on the character's data.
-	# This icon will now always be visible for the player character.
 	spiritual_root_icon.texture = Definitions.get_spiritual_root_icon(_current_character.spiritual_root)
 	
-	# --- CULTIVATION REALM LOGIC ---
 	if _current_character is CultivatorResource:
 		var realm_res: CultivationRealmResource = CultivationManager.get_realm(_current_character.cultivation_realm)
 		if realm_res:
@@ -86,4 +81,27 @@ func update_all_fields() -> void:
 		realm_label.hide()
 		realm_icon.hide()
 	
-	# TODO: Add logic for traits icons.
+	# REASON FOR CHANGE:
+	# This new section dynamically populates the trait icons. It clears any old
+	# icons, loops through the character's traits, fetches the corresponding
+	# TraitResource, and creates a TextureRect for each icon, complete with a helpful tooltip.
+	_populate_trait_icons(traits_container, _current_character)
+
+# --- Helper for populating trait icons (can be reused) ---
+func _populate_trait_icons(container: HBoxContainer, character_res: CharacterResource) -> void:
+	# Clear previous trait icons
+	for child in container.get_children():
+		child.queue_free()
+		
+	if not character_res: return
+
+	for trait_id in character_res.traits:
+		var trait_res = TraitManager.get_trait(trait_id)
+		if trait_res and trait_res.icon:
+			var icon_rect = TextureRect.new()
+			icon_rect.texture = trait_res.icon
+			icon_rect.custom_minimum_size = Vector2(32, 32) # Standardize icon size
+			icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			icon_rect.tooltip_text = "[b]%s[/b]\n%s" % [trait_res.display_name, trait_res.description]
+			container.add_child(icon_rect)

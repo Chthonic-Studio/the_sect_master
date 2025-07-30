@@ -1,237 +1,281 @@
-# CharacterMenu.gd
-# Controls the character menu UI, populating it with character data.
-# Attach this script to the root node of character_menu.tscn.
+# CharacterManager.gd
+# Singleton for managing CharacterResource instances by unique ID.
+# Provides ID resolution, registration, and modular batch operations.
+# Place in res://scripts/managers/ and autoload as "CharacterManager".
 
-extends Control
+extends Node
 
-# === Node References (Drag-and-drop these in the Inspector) ===
-@export_group("Header")
-@export var character_name_label: Label
-@export var character_position_label: Label
-@export var age_label: Label
-@export var location_label: Label
-@export var spiritual_root_icon: TextureRect
-@export var cultivation_realm_icon: TextureRect
-@export var traits_container: HBoxContainer
+# === Internal: Next unique character ID
+var _next_id: int = 10000001
 
-@export_group("Buttons")
-@export var talk_button: TextureButton
-@export var close_button: Button
-@export var back_button: Button
+# === Internal: ID -> CharacterResource mapping
+var _characters: Dictionary = {} # int: CharacterResource
 
-@export_group("Tab Containers")
-@export var overview_tab: Container
-@export var cultivation_tab: Container
-@export var relationships_tab: Container
-@export var inventory_tab: Container
-@export var logs_tab: Container
+const Character = preload("res://Scenes/Character.tscn")
+const CharacterResource = preload("res://Resources/Characters/CharacterResource.gd")
+const CultivatorResource = preload("res://Resources/Characters/CultivatorResource.gd")
+const NameGenerator = preload("res://Scripts/Characters/NameGenerator.gd")
 
-@export_group("Tab Buttons")
-@export var overview_button: TextureButton
-@export var cultivation_button: TextureButton
-@export var relationships_button: TextureButton
-@export var inventory_button: TextureButton
-@export var logs_button: TextureButton
+# Holds references to character nodes and resources
+var all_character_nodes: Array = []
+var all_character_resources: Array = []
 
-@export_group("Overview Tab")
-@export var overview_reputation_label: Label
-@export var overview_renown_label: Label
-@export var overview_lifespan_label: Label
-@export var overview_desires_label: Label
-@export var overview_action_label: Label
+# --- Public API for Trait Management ---
 
-@export_group("Cultivation Tab")
-@export var cultivation_potential_label: Label
-@export var cultivation_realm_label: Label
-@export var cultivation_progress_label: Label
-@export var cultivation_deviation_label: Label
-@export var cultivation_breakthrough_label: Label
-@export var cultivation_affinities_label: Label
+# REASON FOR CHANGE:
+# This function is now just a convenient wrapper. It finds the character resource
+# and tells it to add the trait, delegating the actual work.
+func add_trait_to_character(character_id: int, trait_id: StringName) -> bool:
+	var char_res = get_character_by_id(character_id)
+	if char_res:
+		char_res.add_trait(trait_id)
+		return true
+	push_warning("CharacterManager: Could not find character with ID %d to add trait." % character_id)
+	return false
 
-@export_group("Relationships Tab")
-@export var relationships_list_container: VBoxContainer # The container for relationship_entry instances
+# REASON FOR CHANGE:
+# This function is also simplified to delegate the removal logic to the
+# CharacterResource instance.
+func remove_trait_from_character(character_id: int, trait_id: StringName) -> bool:
+	var char_res = get_character_by_id(character_id)
+	if char_res:
+		char_res.remove_trait(trait_id)
+		return true
+	push_warning("CharacterManager: Could not find character with ID %d to remove trait." % character_id)
+	return false
 
-@export_group("Prefabs")
-@export var relationship_entry_prefab: PackedScene # The relationship_entry.tscn
-# @export var trait_icon_prefab: PackedScene # Future prefab for trait icons
 
-var current_character: CharacterResource
-var all_tabs: Array
+# Generate a random stat (e.g., 10-30 for base stats)
+func _roll_stat(min_val: int = 10, max_val: int = 30) -> int:
+	return randi_range(min_val, max_val)
 
-func _ready() -> void:
-	# --- Connect Signals ---
-	close_button.pressed.connect(UIManager.hide_character_menu)
-	back_button.pressed.connect(UIManager.show_previous_character)
-	talk_button.pressed.connect(_on_talk_with_button_pressed)
+# This function fetches personality traits, shuffles them, and returns exactly three
+# unique trait IDs (as StringNames) for assignment.
+func _assign_initial_personality_traits() -> Array[StringName]:
+	var personality_traits: Array = TraitManager.get_traits_by_type(TraitResource.TraitType.PERSONALITY)
 	
-	# --- Tab Setup ---
-	all_tabs = [overview_tab, cultivation_tab, relationships_tab, inventory_tab, logs_tab]
-	overview_button.pressed.connect(_on_tab_selected.bind(overview_tab))
-	cultivation_button.pressed.connect(_on_tab_selected.bind(cultivation_tab))
-	relationships_button.pressed.connect(_on_tab_selected.bind(relationships_tab))
-	inventory_button.pressed.connect(_on_tab_selected.bind(inventory_tab))
-	logs_button.pressed.connect(_on_tab_selected.bind(logs_tab))
-
-# --- Public API (called by UIManager) ---
-func populate_data(character_res: CharacterResource) -> void:
-	current_character = character_res
-	if not is_instance_of(current_character, CharacterResource):
-		push_error("CharacterMenu: Invalid resource provided.")
-		hide()
-		return
-
-	# --- Populate UI ---
-	_populate_header()
-	_populate_overview_tab()
-	_populate_cultivation_tab()
-	_populate_relationships_tab()
-	# _populate_inventory_tab() # Future
-	# _populate_logs_tab() # Future
-	
-	# Default to the overview tab every time a new character is selected
-	_on_tab_selected(overview_tab)
-
-# Hides the menu.
-func hide_menu() -> void:
-	current_character = null
-	hide()
-
-# --- Signal Handlers ---
-
-func _on_talk_with_button_pressed() -> void:
-	if not is_instance_valid(current_character):
-		return
+	if personality_traits.size() < 3:
+		push_error("CharacterManager: Not enough personality traits to assign 3. Check your trait resources.")
+		return []
 		
-	# Create a temporary dialogue resource for testing.
-	var test_dialogue = _create_test_dialogue_for_character(current_character)
+	personality_traits.shuffle()
 	
-	# Start the dialogue using the manager.
-	DialogueManager.start_dialogue(current_character, test_dialogue)
-	
-	# Optionally hide the character menu when dialogue starts.
-	hide_menu()
+	var assigned_traits: Array[StringName] = []
+	for i in range(3):
+		assigned_traits.append(personality_traits[i].trait_id)
+		
+	return assigned_traits
 
-func _on_tab_selected(selected_tab: Container) -> void:
-	for tab in all_tabs:
-		tab.visible = (tab == selected_tab)
-
-# --- UI Population Logic ---
-func _populate_header() -> void:
-	character_name_label.text = current_character.name_display
+# Creates a new mortal or cultivator character node, fully initialized
+# type: "mortal" or "cultivator"
+# position: Where to place the character in the scene
+# overrides: A dictionary of properties to set on the new character resource
+func create_character(type: String = "mortal", position: Vector2 = Vector2.ZERO, overrides: Dictionary = {}) -> Node2D:
+	var resource
+	if type == "cultivator":
+		resource = CultivatorResource.new()
+		if not overrides.has("cultivation_realm"):
+			var first_realm = CultivationManager.get_first_realm()
+			if first_realm:
+				resource.cultivation_realm = first_realm.realm_id
+			else:
+				push_error("CharacterManager: Could not get first realm for new cultivator.")
+	else:
+		resource = CharacterResource.new()
+	# --- Assign unique ID ---
+	resource.id = _next_id
+	_next_id += 1
 	
-	var sect = SectManager.get_sect_by_character_id(current_character.id)
-	var sect_name = "Unaffiliated"
-	if sect:
-		sect_name = sect.sect_name
-	character_position_label.text = "%s - %s" % [current_character.title if current_character.title else "Wanderer", sect_name]
+	# Name and gender
+	var gender = CharacterResource.Gender.values()[randi() % 2]
+	var culture = CharacterResource.CultureGroup.values()[randi() % 2]
+	var name_data = NameGenerator.generate_name(culture, gender)
+	resource.first_name = name_data["first_name"]
+	resource.last_name = name_data["last_name"]
+	resource.gender = gender
+	resource.culture = culture
+	# --- Name display logic ---
+	if culture == CharacterResource.CultureGroup.TRADITIONAL:
+		resource.name_display = "%s %s" % [resource.last_name, resource.first_name]
+	else:
+		resource.name_display = "%s %s" % [resource.first_name, resource.last_name]
+	# --- Random Age ---
+	resource.age = randi_range(15, 30)
+	# --- Random Spiritual Root ---
+	resource.spiritual_root = _random_spiritual_root(type)
+	# --- Stats ---
+	resource.max_hp = _roll_stat()
+	resource.max_qi = _roll_stat()
+	resource.current_hp = resource.max_hp
+	resource.current_qi = resource.max_qi
+	resource.strength = _roll_stat()
+	resource.intelligence = _roll_stat()
+	resource.agility = _roll_stat()
+	resource.perception = _roll_stat()
+	resource.constitution = _roll_stat()
+	resource.potential = _roll_stat(40, 80)
 	
-	age_label.text = "Age: %d" % current_character.age
-	location_label.text = "Location: Unknown" # Placeholder for now
-
+	# --- Trait Assignment ---
 	# REASON FOR CHANGE:
-	# We now set the spiritual root icon here, ensuring it's visible for all
-	# character types, including mortals, as requested.
-	spiritual_root_icon.texture = Definitions.get_spiritual_root_icon(current_character.spiritual_root)
-	spiritual_root_icon.show()
-
-	if current_character is CultivatorResource:
-		var realm: CultivationRealmResource = CultivationManager.get_realm(current_character.cultivation_realm)
-		if realm:
-			cultivation_realm_icon.texture = realm.icon
-		else:
-			cultivation_realm_icon.texture = null
-		
-		cultivation_realm_icon.show()
-	else:
-		# For mortals, hide cultivation-specific icons in the header.
-		cultivation_realm_icon.hide()
-
-func _populate_overview_tab() -> void:
-	overview_reputation_label.text = "Reputation: %s" % current_character.reputation
-	overview_renown_label.text = "Renown: %s (%d)" % [current_character.renown_title, current_character.renown]
+	# The logic for applying stat effects has been removed from this function.
+	# We now get the list of trait IDs and simply call the new `add_trait` method
+	# on the resource itself, which now contains all the necessary logic.
+	var initial_traits = overrides.get("traits", _assign_initial_personality_traits())
+	if overrides.has("traits"):
+		overrides.erase("traits")
 	
-	if current_character is CultivatorResource:
-		overview_lifespan_label.text = "Lifespan: %d years" % current_character.lifespan
-	else:
-		overview_lifespan_label.text = "Lifespan: Mortal"
+	for trait_id in initial_traits:
+		resource.add_trait(trait_id)
 		
-	# TODO: Get current desires and action from AI node
-	overview_desires_label.text = "Top Desire: (Not Implemented)"
-	overview_action_label.text = "Current Action: (Not Implemented)"
-
-func _populate_cultivation_tab() -> void:
-	if current_character is CultivatorResource:
-		cultivation_tab.show()
-		cultivation_button.show()
-		
-		cultivation_potential_label.text = "Potential: %d" % current_character.potential
-		
-		var realm: CultivationRealmResource = CultivationManager.get_realm(current_character.cultivation_realm)
-		if realm:
-			cultivation_realm_label.text = "Realm: %s" % realm.display_name
-		else:
-			cultivation_realm_label.text = "Realm: Unknown"
-			
-		cultivation_progress_label.text = "Progress: %d%%" % current_character.realm_progress
-		cultivation_deviation_label.text = "Qi Deviation Risk: %d%%" % current_character.qi_deviation_risk
-		cultivation_breakthrough_label.text = "Breakthrough Modifier: %d%%" % current_character.breakthrough_modifier
-		
-		var affinities_text = "Affinities: "
-		for element in current_character.elemental_affinity:
-			affinities_text += "%s (%d) " % [element, current_character.elemental_affinity[element]]
-		cultivation_affinities_label.text = affinities_text
-	else:
-		# Hide the cultivation tab and button for non-cultivators
-		cultivation_tab.hide()
-		cultivation_button.hide()
-
-func _populate_relationships_tab() -> void:
-	for child in relationships_list_container.get_children():
-		child.queue_free()
+	# --- Randomize personality stats ---
+	resource.randomize_personality_stats()
 	
-	if not current_character or not relationship_entry_prefab:
+	# --- Apply Overrides ---
+	for key in overrides.keys():
+		if key in resource:
+			resource.set(key, overrides[key])
+		else:
+			push_warning("CharacterManager: Property '%s' not found on resource." % key)
+
+	# --- DELEGATE TO DESIRE MANAGER ---
+	DesireManager.initialize_desires_for_character(resource)
+	
+	# Clamp stats (safe)
+	if resource.has_method("clamp_stats"):
+		resource.clamp_stats()
+	if resource.has_method("clamp_cultivation_stats"):
+		resource.clamp_cultivation_stats()
+		
+	var char_node = Character.instantiate()
+	char_node.character_resource = resource
+	char_node.position = position
+	all_character_nodes.append(char_node)
+	all_character_resources.append(resource)
+	register_character(resource)
+	return char_node
+
+# Helper for spiritual root probabilities
+func _random_spiritual_root(type: String) -> int:
+	var roots = [
+		CharacterResource.SpiritualRootType.NONE,
+		CharacterResource.SpiritualRootType.COMMON,
+		CharacterResource.SpiritualRootType.SUPERIOR,
+		CharacterResource.SpiritualRootType.HEAVENLY,
+		CharacterResource.SpiritualRootType.MUTATED,
+		CharacterResource.SpiritualRootType.DEMONIC,
+		CharacterResource.SpiritualRootType.GHOSTLY
+	]
+	var probs = []
+	if type == "cultivator":
+		# Remove NONE, normalize others so sum is 100
+		# Original: [0, 20, 10, 3, 3, 3, 1] (skip 0)
+		probs = [20, 10, 3, 3, 3, 1]
+		var total = 20 + 10 + 3 + 3 + 3 + 1
+		var norm_probs = []
+		for p in probs:
+			norm_probs.append(p * 100 / total)
+		var r = randf() * 100
+		var acc = 0
+		for i in range(len(norm_probs)):
+			acc += norm_probs[i]
+			if r < acc:
+				return roots[i + 1] # +1 to skip NONE
+		return roots[1] # default to COMMON
+	else:
+		# Mortals: [60, 20, 10, 3, 3, 3, 1]
+		probs = [60, 20, 10, 3, 3, 3, 1]
+		var r = randf() * 100
+		var acc = 0
+		for i in range(len(probs)):
+			acc += probs[i]
+			if r < acc:
+				return roots[i]
+		return roots[0] # default to NONE
+
+# Utility: Get all characters, optionally filter by type
+func get_characters(type: String = "") -> Array:
+	var result := []
+	if type == "cultivator":
+		for c in all_character_nodes:
+			if c.character_resource is CultivatorResource:
+				result.append(c)
+	elif type == "mortal":
+		for c in all_character_nodes:
+			if c.character_resource is CharacterResource and not (c.character_resource is CultivatorResource):
+				result.append(c)
+	else:
+		result = all_character_nodes.duplicate()
+	return result
+
+# === Register a CharacterResource instance
+func register_character(character: CharacterResource) -> void:
+	if not character: return
+	if _characters.has(character.id):
+		push_warning("CharacterManager: Character with ID %d already registered." % character.id)
 		return
-		
-	for char_id in current_character.relationships:
-		var other_char = CharManager.get_character_by_id(char_id)
-		var relationship_value = current_character.relationships[char_id]
-		
-		if other_char:
-			var entry = relationship_entry_prefab.instantiate()
-			entry.find_child("CharacterName").text = other_char.name_display
-			var value_label = entry.find_child("RelationshipValue")
-			value_label.text = "%+d" % relationship_value
-			value_label.modulate = Color.GREEN if relationship_value > 0 else (Color.RED if relationship_value < 0 else Color.WHITE)
-			relationships_list_container.add_child(entry)
 
-# --- Placeholder for testing ---
-func _create_test_dialogue_for_character(character: CharacterResource) -> DialogueResource:
-	var dialogue = DialogueResource.new()
-	dialogue.dialogue_id = "test_greeting"
-	dialogue.start_node_key = "start"
-
-	# --- Create Options ---
-	var option1 = DialogueOptionResource.new()
-	option1.text = "Tell me about yourself."
-	option1.destination_node_key = "about_self"
-
-	var option2 = DialogueOptionResource.new()
-	option2.text = "Goodbye."
-	option2.closes_dialogue = true
-
-	# --- Create Nodes ---
-	var start_node = DialogueNodeResource.new()
-	start_node.text = "Hello, Sect Master. You wished to speak with me?"
-	start_node.options = [option1, option2] as Array[DialogueOptionResource]
-
-	var about_self_node = DialogueNodeResource.new()
-	about_self_node.text = "My name is %s. I am currently trying my best to cultivate and bring honor to the sect." % character.name_display
-	about_self_node.options = [option2] as Array[DialogueOptionResource]
-
-	# Add nodes to the dialogue's dictionary.
-	dialogue.nodes = {
-		"start": start_node,
-		"about_self": about_self_node
-	}
+	for existing_char_id in _characters:
+		var existing_char_res = _characters[existing_char_id]
+		existing_char_res.relationships[character.id] = 0
+		character.relationships[existing_char_id] = 0
 	
-	return dialogue
+	_characters[character.id] = character
+
+
+# === Unregister a CharacterResource (e.g., on deletion)
+func unregister_character(character_id: int) -> void:
+	_characters.erase(character_id)
+	for char_res in _characters.values():
+		if char_res.relationships.has(character_id):
+			char_res.relationships.erase(character_id)
+
+
+# === Create and register a new CharacterResource with stat overrides
+func create_character_resource(stat_overrides := {}) -> CharacterResource:
+	var char = CharacterResource.new()
+	char.id = _next_id
+	_next_id += 1
+	for key in stat_overrides:
+		if key in char:
+			char.set(key, stat_overrides[key])
+	char.clamp_stats()
+	register_character(char)
+	return char
+
+# === Resolve a character ID to its CharacterResource, or null if not found
+func get_character_by_id(character_id: int) -> CharacterResource:
+	return _characters.get(character_id, null)
+
+# === Batch member management function for modular operations
+func batch_manage_members(op: String, ids: Array) -> Array:
+	var results := []
+	match op:
+		"add":
+			for id in ids:
+				if not _characters.has(id):
+					results.append(false)
+				else:
+					results.append(true)
+		"remove":
+			for id in ids:
+				results.append(_characters.erase(id))
+		"get":
+			for id in ids:
+				results.append(_characters.get(id, null))
+		"exists":
+			for id in ids:
+				results.append(_characters.has(id))
+		_:
+			push_warning("Unsupported batch op: %s" % op)
+	return results
+
+# === Set next available ID (for loading from save)
+func set_next_id(new_id: int) -> void:
+	_next_id = new_id
+
+# === On load: repopulate the manager with all CharacterResources in your game
+func repopulate_characters(characters: Array) -> void:
+	_characters.clear()
+	for char in characters:
+		if char and char.has_method("get"): # Defensive check
+			_characters[char.id] = char

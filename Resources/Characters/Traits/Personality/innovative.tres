@@ -1,14 +1,19 @@
-[gd_resource type="Resource" script_class="TraitResource" load_steps=2 format=3 uid="uid://dys0uov1ila6l"]
+[gd_resource type="Resource" script_class="TraitResource" load_steps=3 format=3 uid="uid://dys0uov1ila6l"]
 
+[ext_resource type="Texture2D" uid="uid://buuenqgrm6gk" path="res://Assets/UI/Icons/Traits/Innovative.png" id="1_hjwby"]
 [ext_resource type="Script" uid="uid://bcwp0k7bgruy6" path="res://Resources/Characters/Traits/TraitResource.gd" id="1_rcmjv"]
 
 [resource]
 script = ExtResource("1_rcmjv")
-trait_id = &""
-display_name = ""
-description = ""
+trait_id = &"14"
+display_name = "Innovative"
+description = "An innovative person"
+icon = ExtResource("1_hjwby")
 type = 0
-stat_effects = {}
+stat_effects = {
+"curiosity": 20,
+"intelligence": 2
+}
 desire_growth_modifiers = {}
 flags = Array[StringName]([])
 metadata/_custom_type_script = "uid://bcwp0k7bgruy6"

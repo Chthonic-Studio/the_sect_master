@@ -4,9 +4,6 @@
 
 extends Node
 
-# REASON FOR CHANGE:
-# Added a readiness flag and custom signal, consistent with CultivationManager,
-# to prevent future race conditions.
 signal manager_ready
 var is_ready: bool = false
 
@@ -23,13 +20,23 @@ func _ready() -> void:
 	_load_all_traits()
 	is_ready = true
 	emit_signal("manager_ready")
+
 # --- Public API ---
 
 # Retrieves a trait resource by its ID.
-static func get_trait(trait_id: StringName) -> TraitResource:
-	if not Engine.has_singleton("TraitManager"): return null
-	var manager = Engine.get_singleton("TraitManager")
-	return manager.traits.get(trait_id, null)
+# This static function can be called from anywhere using TraitManager.get_trait("id").
+func get_trait(trait_id: StringName) -> TraitResource:
+	return traits.get(trait_id, null)
+
+func get_traits_by_type(p_trait_type: TraitResource.TraitType) -> Array[TraitResource]:
+	var filtered_traits: Array[TraitResource] = []
+	for i in traits.values():
+		if i.type == p_trait_type:
+			filtered_traits.append(i)
+	
+	# REASON FOR CHANGE: This print will tell us exactly how many traits this function found and is about to return.
+	print("TraitManager DEBUG: get_traits_by_type is returning %d traits of type %s." % [filtered_traits.size(), TraitResource.TraitType.keys()[p_trait_type]])
+	return filtered_traits
 
 # --- Internal Logic ---
 
@@ -59,4 +66,5 @@ func _load_all_traits() -> void:
 		else:
 			push_warning("Could not open trait directory: %s" % dir_path)
 	
-	print("TraitManager: Loaded %d traits." % traits.size())
+	# REASON FOR CHANGE: This print will confirm that the loading process has completed and show the total number of traits loaded into the dictionary.
+	print("TraitManager DEBUG: Finished loading. Total traits in dictionary: %d" % traits.size())

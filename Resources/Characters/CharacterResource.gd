@@ -110,15 +110,71 @@ func has_trait(trait_id: StringName) -> bool:
 func has_flag(flag_name: StringName) -> bool:
 	return flags.has(flag_name)
 
+# REASON FOR CHANGE:
+# This is the new home for trait logic. This function adds a trait and immediately
+# calls a helper to apply its effects directly to this resource's data.
+# --- HOW & WHERE TO USE ---
+# Call this function to add a trait to a character.
+# Example: `character_resource.add_trait(&"Brave")`
 func add_trait(trait_id: StringName) -> void:
-	if not has_trait(trait_id):
-		traits.append(trait_id)
-		# NOTE: You would apply the trait's effects here or via a manager.
-
-func remove_trait(trait_id: StringName) -> void:
 	if has_trait(trait_id):
+		return # Already has this trait, do nothing.
+
+	var trait_res: TraitResource = TraitManager.get_trait(trait_id)
+	if not trait_res:
+		push_warning("Attempted to add non-existent trait '%s' to character %d." % [trait_id, id])
+		return
+
+	traits.append(trait_id)
+	_apply_trait_effects(trait_res)
+
+# REASON FOR CHANGE:
+# This function handles the removal of a trait and its effects, keeping the
+# logic encapsulated within the CharacterResource.
+func remove_trait(trait_id: StringName) -> void:
+	if not has_trait(trait_id):
+		return # Doesn't have this trait, do nothing.
+
+	var trait_res: TraitResource = TraitManager.get_trait(trait_id)
+	if not trait_res:
+		# Still try to remove the ID, but warn that effects can't be reversed.
+		push_warning("Attempted to remove non-existent trait '%s' from character %d. Effects will not be reversed." % [trait_id, id])
 		traits.erase(trait_id)
-		# NOTE: You would remove the trait's effects here.
+		return
+
+	traits.erase(trait_id)
+	_remove_trait_effects(trait_res)
+
+# REASON FOR CHANGE:
+# This private helper function contains the logic for applying a trait's stat
+# modifiers and flags. It's called by `add_trait`.
+func _apply_trait_effects(trait_res: TraitResource) -> void:
+	# Apply stat effects
+	for stat_name in trait_res.stat_effects:
+		if stat_name:
+			set(stat_name, get(stat_name) + trait_res.stat_effects[stat_name])
+
+	# Add flags
+	for flag_name in trait_res.flags:
+		if not flags.has(flag_name):
+			flags.append(flag_name)
+	
+	# NOTE: Desire growth rate modifiers are handled by DesireManager when it
+	# recalculates rates, as it's a more complex calculation.
+
+# REASON FOR CHANGE:
+# This private helper function reverses the effects of a trait, ensuring that
+# removing a trait correctly updates the character's stats.
+func _remove_trait_effects(trait_res: TraitResource) -> void:
+	# Remove stat effects (by subtracting the original bonus)
+	for stat_name in trait_res.stat_effects:
+		if stat_name:
+			set(stat_name, get(stat_name) - trait_res.stat_effects[stat_name])
+
+	# Remove flags
+	for flag_name in trait_res.flags:
+		if flags.has(flag_name):
+			flags.erase(flag_name)
 
 func clamp_stats() -> void:
 	max_hp = clamp(max_hp, 0, 99000000)

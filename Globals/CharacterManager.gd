@@ -22,22 +22,20 @@ var all_character_resources: Array = []
 
 # --- Public API for Trait Management ---
 
-# Adds a trait to a character after creation and applies its effects.
 func add_trait_to_character(character_id: int, trait_id: StringName) -> bool:
 	var char_res = get_character_by_id(character_id)
-	if char_res and char_res.has_method("add_trait"):
+	if char_res:
 		char_res.add_trait(trait_id)
-		# NOTE: The logic to apply effects should be inside the resource's add_trait method.
 		return true
+	push_warning("CharacterManager: Could not find character with ID %d to add trait." % character_id)
 	return false
-	
-# Removes a trait from a character after creation and removes its effects.
+
 func remove_trait_from_character(character_id: int, trait_id: StringName) -> bool:
 	var char_res = get_character_by_id(character_id)
-	if char_res and char_res.has_method("remove_trait"):
+	if char_res:
 		char_res.remove_trait(trait_id)
-		# NOTE: The logic to remove effects should be inside the resource's remove_trait method.
 		return true
+	push_warning("CharacterManager: Could not find character with ID %d to remove trait." % character_id)
 	return false
 
 
@@ -45,11 +43,25 @@ func remove_trait_from_character(character_id: int, trait_id: StringName) -> boo
 func _roll_stat(min_val: int = 10, max_val: int = 30) -> int:
 	return randi_range(min_val, max_val)
 
-# Assign a few placeholder traits (extend this for real trait logic)
-func _assign_placeholder_traits() -> Array[StringName]:
-	# Now returns StringName
-	var trait_pool = [&"brave", &"loyal", &"curious", &"ambitious", &"honest", &"cunning"]
-	return [trait_pool[randi() % trait_pool.size()]]
+# This function fetches personality traits, shuffles them, and returns exactly three
+# unique trait IDs (as StringNames) for assignment.
+func _assign_initial_personality_traits() -> Array[StringName]:
+	var personality_traits: Array = TraitManager.get_traits_by_type(TraitResource.TraitType.PERSONALITY)
+	
+	# REASON FOR CHANGE: This print will confirm how many traits the CharacterManager receives from the TraitManager before it tries to use them.
+	print("CharacterManager DEBUG: Received %d personality traits from TraitManager." % personality_traits.size())
+
+	if personality_traits.size() < 3:
+		push_error("CharacterManager: Not enough personality traits to assign 3. Check your trait resources.")
+		return []
+		
+	personality_traits.shuffle()
+	
+	var assigned_traits: Array[StringName] = []
+	for i in range(3):
+		assigned_traits.append(personality_traits[i].trait_id)
+		
+	return assigned_traits
 
 # Creates a new mortal or cultivator character node, fully initialized
 # type: "mortal" or "cultivator"
@@ -59,10 +71,6 @@ func create_character(type: String = "mortal", position: Vector2 = Vector2.ZERO,
 	var resource
 	if type == "cultivator":
 		resource = CultivatorResource.new()
-		# REASON FOR CHANGE:
-		# This logic now correctly waits until the CultivationManager is ready before
-		# attempting to assign the starting realm. This fixes the bug where
-		# cultivators were created with no realm attached.
 		if not overrides.has("cultivation_realm"):
 			var first_realm = CultivationManager.get_first_realm()
 			if first_realm:
@@ -105,11 +113,12 @@ func create_character(type: String = "mortal", position: Vector2 = Vector2.ZERO,
 	resource.potential = _roll_stat(40, 80)
 	
 	# --- Trait Assignment ---
+	var initial_traits = overrides.get("traits", _assign_initial_personality_traits())
 	if overrides.has("traits"):
-		resource.traits = overrides["traits"]
-		overrides.erase("traits") 
-	else:
-		resource.traits = _assign_placeholder_traits()
+		overrides.erase("traits")
+	
+	for trait_id in initial_traits:
+		resource.add_trait(trait_id)
 		
 	# --- Randomize personality stats ---
 	resource.randomize_personality_stats()

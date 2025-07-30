@@ -1,14 +1,20 @@
-[gd_resource type="Resource" script_class="TraitResource" load_steps=2 format=3 uid="uid://d3xn26063yhnr"]
+[gd_resource type="Resource" script_class="TraitResource" load_steps=3 format=3 uid="uid://d3xn26063yhnr"]
 
 [ext_resource type="Script" uid="uid://bcwp0k7bgruy6" path="res://Resources/Characters/Traits/TraitResource.gd" id="1_iltu3"]
+[ext_resource type="Texture2D" uid="uid://j27bx1xqpem5" path="res://Assets/UI/Icons/Traits/Hedonist.png" id="1_raa5n"]
 
 [resource]
 script = ExtResource("1_iltu3")
-trait_id = &""
-display_name = ""
-description = ""
+trait_id = &"8"
+display_name = "Hedonist"
+description = "A hedonistic person"
+icon = ExtResource("1_raa5n")
 type = 0
-stat_effects = {}
+stat_effects = {
+"charisma": 10,
+"diligence": -10,
+"greed": 10
+}
 desire_growth_modifiers = {}
 flags = Array[StringName]([])
 metadata/_custom_type_script = "uid://bcwp0k7bgruy6"
