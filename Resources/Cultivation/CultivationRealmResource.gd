@@ -11,21 +11,21 @@ extends Resource
 class_name CultivationRealmResource
 
 @export_category("Identification")
-@export var realm_id: StringName # Unique ID, e.g., "GoldenCore". Should match the filename.
-@export var display_name: String # Name for UI, e.g., "Golden Core".
-@export var icon: Texture2D # UI Icon for this realm.
+@export var realm_id: StringName ## Unique ID, e.g., "GoldenCore". Should match the filename.
+@export var display_name: String ## Name for UI, e.g., "Golden Core".
+@export var icon: Texture2D ## UI Icon for this realm.
 
 @export_category("Progression & Stats")
-# The ID of the next realm in the sequence. Leave empty for the final realm.
+## The ID of the next realm in the sequence. Leave empty for the final realm.
 @export var next_realm_id: StringName 
 # --- NEW ---
-# The numerical tier of this realm for calculations (0 for the first, 1 for the second, etc.).
+## The numerical tier of this realm for calculations (0 for the first, 1 for the second, etc.).
 @export var realm_tier: int = 0
-@export_range(0.0, 1.0, 0.01) var base_breakthrough_chance: float = 0.8 # Base success chance (e.g., 0.8 = 80%).
-@export var lifespan_bonus: int = 50 # Additional years of life this realm grants.
+@export_range(0.0, 1.0, 0.01) var base_breakthrough_chance: float = 0.8 ## Base success chance (e.g., 0.8 = 80%).
+@export var lifespan_bonus: int = 50 ## Additional years of life this realm grants.
 
-# Stat bonuses granted upon entering this realm. These are CUMULATIVE.
-# Example: {"max_qi": 100, "strength": 5}
+## Stat bonuses granted upon entering this realm. These are CUMULATIVE.
+## Example: {"max_qi": 100, "strength": 5}
 @export var stat_bonuses: Dictionary = {}
 
 func _init():

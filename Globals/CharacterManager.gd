@@ -48,9 +48,6 @@ func _roll_stat(min_val: int = 10, max_val: int = 30) -> int:
 func _assign_initial_personality_traits() -> Array[StringName]:
 	var personality_traits: Array = TraitManager.get_traits_by_type(TraitResource.TraitType.PERSONALITY)
 	
-	# REASON FOR CHANGE: This print will confirm how many traits the CharacterManager receives from the TraitManager before it tries to use them.
-	print("CharacterManager DEBUG: Received %d personality traits from TraitManager." % personality_traits.size())
-
 	if personality_traits.size() < 3:
 		push_error("CharacterManager: Not enough personality traits to assign 3. Check your trait resources.")
 		return []
@@ -113,11 +110,20 @@ func create_character(type: String = "mortal", position: Vector2 = Vector2.ZERO,
 	resource.potential = _roll_stat(40, 80)
 	
 	# --- Trait Assignment ---
-	var initial_traits = overrides.get("traits", _assign_initial_personality_traits())
+	# REASON FOR CHANGE:
+	# This section was flawed. It called `add_trait` but never assigned the initial
+	# list of traits to the resource's `traits` property. The fix is to first
+	# assign the generated or overridden traits to `resource.traits`, and then
+	# iterate through that now-populated list to apply the effects using `add_trait`.
 	if overrides.has("traits"):
+		resource.traits = overrides.get("traits")
 		overrides.erase("traits")
-	
-	for trait_id in initial_traits:
+	else:
+		resource.traits = _assign_initial_personality_traits()
+		
+	# Now that resource.traits is populated, we can iterate to apply effects.
+	# Note: add_trait has a check to prevent duplicates, so this is safe.
+	for trait_id in resource.traits:
 		resource.add_trait(trait_id)
 		
 	# --- Randomize personality stats ---

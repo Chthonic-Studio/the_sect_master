@@ -12,8 +12,8 @@ var traits: Dictionary = {}
 
 # Directories where your trait .tres files are stored.
 const TRAIT_DIRECTORIES := [
-	"res://Resources/Traits/Personality/",
-	"res://Resources/Traits/Common/"
+	"res://Resources/Characters/Traits/Personality/",
+	"res://Resources/Characters/Traits/Common/"
 ]
 
 func _ready() -> void:

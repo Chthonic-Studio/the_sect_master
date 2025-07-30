@@ -229,7 +229,7 @@ text = "Cultivation Realm"
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 0
 offset_left = 28.0
-offset_top = 111.0
+offset_top = 109.0
 offset_right = 323.0
 offset_bottom = 141.0
 

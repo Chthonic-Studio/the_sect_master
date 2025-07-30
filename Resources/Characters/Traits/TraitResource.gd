@@ -14,10 +14,10 @@ class_name TraitResource
 enum TraitType { PERSONALITY, COMMON, SPECIAL, HIDDEN }
 
 @export_category("Identification")
-@export var trait_id: StringName # Unique ID, e.g., "Righteous" or "BodyOfIron". MUST MATCH THE FILE NAME.
-@export var display_name: String # Name for UI, e.g., "Righteous".
-@export_multiline var description: String # Tooltip description.
-@export var icon: Texture2D # Icon to display in the UI.
+@export var trait_id: StringName ## Unique ID, e.g., "Righteous" or "BodyOfIron". MUST MATCH THE FILE NAME.
+@export var display_name: String ## Name for UI, e.g., "Righteous".
+@export_multiline var description: String ## Tooltip description.
+@export var icon: Texture2D ## Icon to display in the UI.
 @export var type: TraitType = TraitType.PERSONALITY
 
 @export_category("Stat Modifications")

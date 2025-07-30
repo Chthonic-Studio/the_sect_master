@@ -66,15 +66,18 @@ func update_all_fields() -> void:
 	perception_label.text = str(_current_character.perception)
 	
 	spiritual_root_icon.texture = Definitions.get_spiritual_root_icon(_current_character.spiritual_root)
+	spiritual_root_icon.tooltip_text = Definitions.get_spiritual_root_name(_current_character.spiritual_root)
 	
 	if _current_character is CultivatorResource:
 		var realm_res: CultivationRealmResource = CultivationManager.get_realm(_current_character.cultivation_realm)
 		if realm_res:
 			realm_label.text = realm_res.display_name
 			realm_icon.texture = realm_res.icon
+			realm_icon.tooltip_text = realm_res.display_name
 		else:
 			realm_label.text = "Unknown Realm"
 			realm_icon.texture = null
+			realm_icon.tooltip_text = "Unknown Realm"
 		realm_label.show()
 		realm_icon.show()
 	else:

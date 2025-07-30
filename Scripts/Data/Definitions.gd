@@ -32,6 +32,16 @@ const SPIRITUAL_ROOT_ICONS := {
 	CharacterResource.SpiritualRootType.GHOSTLY: preload("res://Assets/UI/Icons/SpiritualRoot_Ghostly.png")
 }
 
+const SPIRITUAL_ROOT_NAMES := {
+	CharacterResource.SpiritualRootType.NONE: "None",
+	CharacterResource.SpiritualRootType.COMMON: "Common Root",
+	CharacterResource.SpiritualRootType.SUPERIOR: "Superior Root",
+	CharacterResource.SpiritualRootType.HEAVENLY: "Heavenly Root",
+	CharacterResource.SpiritualRootType.MUTATED: "Mutated Root",
+	CharacterResource.SpiritualRootType.DEMONIC: "Demonic Root",
+	CharacterResource.SpiritualRootType.GHOSTLY: "Ghostly Root"
+}
+
 
 # --- Utility: Get string names for enums (for UI/debug) ---
 static func element_to_string(element: int) -> String:
@@ -42,3 +52,6 @@ static func element_to_string(element: int) -> String:
 # correct icon texture for a given spiritual root type.
 static func get_spiritual_root_icon(root_type: CharacterResource.SpiritualRootType) -> Texture2D:
 	return SPIRITUAL_ROOT_ICONS.get(root_type, null)
+
+static func get_spiritual_root_name(root_type: CharacterResource.SpiritualRootType) -> String:
+	return SPIRITUAL_ROOT_NAMES.get(root_type, "Unknown Root")
