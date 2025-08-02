@@ -314,6 +314,7 @@ horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="OverviewContainer" type="MarginContainer" parent="TabsContainer"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -366,7 +367,6 @@ autowrap_mode = 3
 metadata/_edit_use_anchors_ = true
 
 [node name="CultivationContainer" type="MarginContainer" parent="TabsContainer"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

@@ -1,0 +1,1147 @@
+[gd_scene load_steps=9 format=3 uid="uid://cfhivhto5vgxu"]
+
+[ext_resource type="Texture2D" uid="uid://dbc8yxjgepj8m" path="res://Assets/UI/Menus/MainMenuBG.png" id="1_0qgbs"]
+[ext_resource type="FontFile" uid="uid://ckbwkux4q6q8i" path="res://Assets/Fonts/Beholden/Beholden-Bold.ttf" id="2_adu2g"]
+[ext_resource type="PackedScene" uid="uid://cqye1gjj188d5" path="res://Scenes/MainMenu/main_menu_tab_button.tscn" id="3_0l8wx"]
+[ext_resource type="PackedScene" uid="uid://dfs0cm38gvqjn" path="res://Scenes/MainMenu/sect_member_entry.tscn" id="4_n5jej"]
+[ext_resource type="FontFile" uid="uid://c6ngcdc504mos" path="res://Assets/Fonts/Beholden/Beholden-Regular.ttf" id="5_n5jej"]
+[ext_resource type="FontFile" uid="uid://bruoxia6uq78h" path="res://Assets/Fonts/Beholden/Beholden-Italic.ttf" id="6_2r307"]
+[ext_resource type="PackedScene" uid="uid://4fk2trcagrux" path="res://Scenes/MainMenu/building_list_candidate_entry.tscn" id="7_2r307"]
+[ext_resource type="FontFile" uid="uid://b3w6nhtuyhlg0" path="res://Assets/Fonts/Beholden/Beholden-Medium.ttf" id="7_omq0y"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 426.0
+offset_top = 89.0
+offset_right = 1476.0
+offset_bottom = 609.0
+
+[node name="MainMenuBG" type="TextureRect" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1010.0
+offset_bottom = -480.0
+texture = ExtResource("1_0qgbs")
+metadata/_edit_use_anchors_ = true
+
+[node name="CloseMenuButton" type="Button" parent="."]
+layout_mode = 0
+anchor_left = 0.407619
+anchor_top = 0.00192308
+anchor_right = 0.581905
+anchor_bottom = 0.0576923
+offset_bottom = -4.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_adu2g")
+theme_override_font_sizes/font_size = 20
+text = "Close Menu"
+flat = true
+metadata/_edit_use_anchors_ = true
+
+[node name="CurrentMenuName" type="Label" parent="."]
+layout_mode = 0
+offset_left = 300.0
+offset_top = 40.0
+offset_right = 767.0
+offset_bottom = 63.0
+theme_override_fonts/font = ExtResource("2_adu2g")
+theme_override_font_sizes/font_size = 22
+text = "Current Menu Name"
+horizontal_alignment = 1
+
+[node name="MenuContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 107.0
+offset_right = 933.0
+offset_bottom = 427.0
+
+[node name="MenuVbox" type="VBoxContainer" parent="MenuContainer"]
+layout_mode = 2
+
+[node name="MenuSubTabs" type="HBoxContainer" parent="MenuContainer/MenuVbox"]
+layout_mode = 2
+
+[node name="MainMenuTabButton" parent="MenuContainer/MenuVbox/MenuSubTabs" instance=ExtResource("3_0l8wx")]
+layout_mode = 2
+
+[node name="MenuContent" type="Control" parent="MenuContainer/MenuVbox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Menu_SectMembers" type="Control" parent="MenuContainer/MenuVbox/MenuContent"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="SectMembers_List" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="SortOptions" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/SectMembers_List"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/SectMembers_List/SortOptions"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="SortByName" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/SectMembers_List/SortOptions"]
+layout_mode = 2
+text = "Sort by Name"
+
+[node name="SortByRealm" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/SectMembers_List/SortOptions"]
+layout_mode = 2
+text = "Sort by Realm
+"
+
+[node name="SortByAge" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/SectMembers_List/SortOptions"]
+layout_mode = 2
+text = "Sort by Age"
+
+[node name="SortByPosition" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/SectMembers_List/SortOptions"]
+layout_mode = 2
+text = "Sort by Position
+"
+
+[node name="SortByRenown" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/SectMembers_List/SortOptions"]
+layout_mode = 2
+text = "Sort by Renown"
+
+[node name="SortByReputation" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/SectMembers_List/SortOptions"]
+layout_mode = 2
+text = "Sort by Reputation"
+
+[node name="ShowCultivators" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/SectMembers_List/SortOptions"]
+layout_mode = 2
+text = "Show Cultivators"
+
+[node name="ShowMortals" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/SectMembers_List/SortOptions"]
+layout_mode = 2
+text = "Show Mortals"
+
+[node name="HSeparator2" type="HSeparator" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/SectMembers_List/SortOptions"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="SectMembersScroll" type="ScrollContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/SectMembers_List"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SectMembersVbox" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/SectMembers_List/SectMembersScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SectMemberEntry" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/SectMembers_List/SectMembersScroll/SectMembersVbox" instance=ExtResource("4_n5jej")]
+layout_mode = 2
+
+[node name="SectMembers_Assignments" type="Control" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Assignments" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/SectMembers_Assignments"]
+layout_mode = 0
+anchor_right = 0.0986602
+anchor_bottom = 0.0588235
+offset_right = -41.0
+text = "Assignments"
+metadata/_edit_use_anchors_ = true
+
+[node name="Menu_Buildings" type="Control" parent="MenuContainer/MenuVbox/MenuContent"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LowerRealmBuildings" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BuildingInfo" type="Control" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings"]
+custom_minimum_size = Vector2(230, 0)
+layout_mode = 2
+
+[node name="BuildingInfoVbox" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.017301
+anchor_right = 1.0
+anchor_bottom = 1.0173
+offset_top = 5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="BuildingName" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingInfoVbox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+theme_override_font_sizes/font_size = 19
+text = "Selected Building Name"
+horizontal_alignment = 1
+
+[node name="BuildingDescription" type="RichTextLabel" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingInfoVbox"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("5_n5jej")
+theme_override_fonts/italics_font = ExtResource("6_2r307")
+theme_override_fonts/bold_font = ExtResource("2_adu2g")
+theme_override_font_sizes/italics_font_size = 17
+theme_override_font_sizes/normal_font_size = 17
+theme_override_font_sizes/bold_font_size = 18
+bbcode_enabled = true
+text = "Lorem Ipsum Dolor Sit Amet Example Description of What the selected building is "
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingInfoVbox"]
+layout_mode = 2
+
+[node name="CharacterPortrait" type="TextureRect" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingInfoVbox/HBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingInfoVbox/HBoxContainer"]
+layout_mode = 2
+
+[node name="PersonInCharge" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingInfoVbox/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_vertical = 6
+text = "Person In Charge"
+autowrap_mode = 3
+
+[node name="LeaderEfficiency" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingInfoVbox/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Leader Efficiency"
+
+[node name="EfficiencyValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingInfoVbox/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "99"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingInfoVbox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Upgrade Building"
+horizontal_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingInfoVbox"]
+layout_mode = 2
+
+[node name="UpgradeBuilding" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingInfoVbox/HBoxContainer2"]
+custom_minimum_size = Vector2(100, 25)
+layout_mode = 2
+
+[node name="UpgradeCostValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingInfoVbox/HBoxContainer2/UpgradeBuilding"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.16
+anchor_right = 0.7
+anchor_bottom = 0.84
+grow_horizontal = 2
+grow_vertical = 2
+text = "Gold Cost"
+metadata/_edit_use_anchors_ = true
+
+[node name="UpgradeBuilding2" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingInfoVbox/HBoxContainer2"]
+custom_minimum_size = Vector2(100, 25)
+layout_mode = 2
+flat = true
+
+[node name="UpgradeCostValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingInfoVbox/HBoxContainer2/UpgradeBuilding2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.16
+anchor_right = 0.7
+anchor_bottom = 0.84
+grow_horizontal = 2
+grow_vertical = 2
+text = "Confirm"
+metadata/_edit_use_anchors_ = true
+
+[node name="UpgradeModifiers" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingInfoVbox"]
+custom_minimum_size = Vector2(230, 0)
+layout_mode = 2
+text = "Upgrade Modifiers (eg: +10 cost, +15 income)"
+autowrap_mode = 3
+
+[node name="BuildingLeaderSelector" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingLeaderSelector"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+theme_override_font_sizes/font_size = 17
+text = "Available Leaders"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingLeaderSelector"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingLeaderSelector/HBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Name"
+
+[node name="Label2" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingLeaderSelector/HBoxContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Est. Proficiency"
+
+[node name="ListOfCandidates" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingLeaderSelector"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BuildingList_CandidateEntry" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingInfo/BuildingLeaderSelector/ListOfCandidates" instance=ExtResource("7_2r307")]
+layout_mode = 2
+
+[node name="BuildingScroll" type="ScrollContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="BuildingHBoxRow4" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="BuildingGridItem" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4"]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BuildingName" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+theme_override_font_sizes/font_size = 19
+text = "Main Hall"
+horizontal_alignment = 1
+
+[node name="Cost" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem"]
+layout_mode = 2
+
+[node name="MonthlyCost" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem/Cost"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Cost:"
+horizontal_alignment = 1
+
+[node name="MonthlyCostValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem/Cost"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Income" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem"]
+layout_mode = 2
+
+[node name="MonthlyIncome" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem/Income"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Income:"
+horizontal_alignment = 1
+
+[node name="MonthlyIncomeValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem/Income"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Efficiency" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem"]
+layout_mode = 2
+
+[node name="Efficiency" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem/Efficiency"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Efficiency:"
+horizontal_alignment = 1
+
+[node name="EfficiencyValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem/Efficiency"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Button" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_omq0y")
+theme_override_font_sizes/font_size = 18
+text = "Details"
+
+[node name="BuildingGridItem2" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4"]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BuildingName" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+theme_override_font_sizes/font_size = 19
+text = "Sect Gate"
+horizontal_alignment = 1
+
+[node name="Cost" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem2"]
+layout_mode = 2
+
+[node name="MonthlyCost" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem2/Cost"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Cost:"
+horizontal_alignment = 1
+
+[node name="MonthlyCostValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem2/Cost"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Income" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem2"]
+layout_mode = 2
+
+[node name="MonthlyIncome" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem2/Income"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Income:"
+horizontal_alignment = 1
+
+[node name="MonthlyIncomeValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem2/Income"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Efficiency" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem2"]
+layout_mode = 2
+
+[node name="Efficiency" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem2/Efficiency"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Efficiency:"
+horizontal_alignment = 1
+
+[node name="EfficiencyValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem2/Efficiency"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Button" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_omq0y")
+theme_override_font_sizes/font_size = 18
+text = "Details"
+
+[node name="BuildingGridItem3" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4"]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BuildingName" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem3"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+theme_override_font_sizes/font_size = 19
+text = "Defensive Formation"
+horizontal_alignment = 1
+
+[node name="Cost" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem3"]
+layout_mode = 2
+
+[node name="MonthlyCost" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem3/Cost"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Cost:"
+horizontal_alignment = 1
+
+[node name="MonthlyCostValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem3/Cost"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Income" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem3"]
+layout_mode = 2
+
+[node name="MonthlyIncome" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem3/Income"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Income:"
+horizontal_alignment = 1
+
+[node name="MonthlyIncomeValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem3/Income"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Efficiency" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem3"]
+layout_mode = 2
+
+[node name="Efficiency" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem3/Efficiency"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Efficiency:"
+horizontal_alignment = 1
+
+[node name="EfficiencyValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem3/Efficiency"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Button" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow4/BuildingGridItem3"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_omq0y")
+theme_override_font_sizes/font_size = 18
+text = "Details"
+
+[node name="BuildingHBoxRow" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="BuildingGridItem" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow"]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BuildingName" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+theme_override_font_sizes/font_size = 19
+text = "Qi Gathering Array"
+horizontal_alignment = 1
+
+[node name="Cost" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem"]
+layout_mode = 2
+
+[node name="MonthlyCost" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem/Cost"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Cost:"
+horizontal_alignment = 1
+
+[node name="MonthlyCostValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem/Cost"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Income" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem"]
+layout_mode = 2
+
+[node name="MonthlyIncome" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem/Income"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Income:"
+horizontal_alignment = 1
+
+[node name="MonthlyIncomeValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem/Income"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Efficiency" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem"]
+layout_mode = 2
+
+[node name="Efficiency" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem/Efficiency"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Efficiency:"
+horizontal_alignment = 1
+
+[node name="EfficiencyValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem/Efficiency"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Button" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_omq0y")
+theme_override_font_sizes/font_size = 18
+text = "Details"
+
+[node name="BuildingGridItem2" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow"]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BuildingName" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+theme_override_font_sizes/font_size = 18
+text = "Martial Arts Pavilion"
+horizontal_alignment = 1
+
+[node name="Cost" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem2"]
+layout_mode = 2
+
+[node name="MonthlyCost" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem2/Cost"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Cost:"
+horizontal_alignment = 1
+
+[node name="MonthlyCostValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem2/Cost"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Income" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem2"]
+layout_mode = 2
+
+[node name="MonthlyIncome" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem2/Income"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Income:"
+horizontal_alignment = 1
+
+[node name="MonthlyIncomeValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem2/Income"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Efficiency" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem2"]
+layout_mode = 2
+
+[node name="Efficiency" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem2/Efficiency"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Efficiency:"
+horizontal_alignment = 1
+
+[node name="EfficiencyValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem2/Efficiency"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Button" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_omq0y")
+theme_override_font_sizes/font_size = 18
+text = "Details"
+
+[node name="BuildingGridItem3" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow"]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BuildingName" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem3"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+theme_override_font_sizes/font_size = 19
+text = "Alchemy Lab"
+horizontal_alignment = 1
+
+[node name="Cost" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem3"]
+layout_mode = 2
+
+[node name="MonthlyCost" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem3/Cost"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Cost:"
+horizontal_alignment = 1
+
+[node name="MonthlyCostValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem3/Cost"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Income" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem3"]
+layout_mode = 2
+
+[node name="MonthlyIncome" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem3/Income"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Income:"
+horizontal_alignment = 1
+
+[node name="MonthlyIncomeValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem3/Income"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Efficiency" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem3"]
+layout_mode = 2
+
+[node name="Efficiency" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem3/Efficiency"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Efficiency:"
+horizontal_alignment = 1
+
+[node name="EfficiencyValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem3/Efficiency"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Button" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow/BuildingGridItem3"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_omq0y")
+theme_override_font_sizes/font_size = 18
+text = "Details"
+
+[node name="BuildingHBoxRow2" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="BuildingGridItem" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2"]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BuildingName" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+theme_override_font_sizes/font_size = 19
+text = "Arms Foundry"
+horizontal_alignment = 1
+
+[node name="Cost" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem"]
+layout_mode = 2
+
+[node name="MonthlyCost" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem/Cost"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Cost:"
+horizontal_alignment = 1
+
+[node name="MonthlyCostValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem/Cost"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Income" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem"]
+layout_mode = 2
+
+[node name="MonthlyIncome" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem/Income"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Income:"
+horizontal_alignment = 1
+
+[node name="MonthlyIncomeValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem/Income"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Efficiency" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem"]
+layout_mode = 2
+
+[node name="Efficiency" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem/Efficiency"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Efficiency:"
+horizontal_alignment = 1
+
+[node name="EfficiencyValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem/Efficiency"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Button" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_omq0y")
+theme_override_font_sizes/font_size = 18
+text = "Details"
+
+[node name="BuildingGridItem2" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2"]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BuildingName" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+theme_override_font_sizes/font_size = 19
+text = "Herb Garden"
+horizontal_alignment = 1
+
+[node name="Cost" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem2"]
+layout_mode = 2
+
+[node name="MonthlyCost" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem2/Cost"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Cost:"
+horizontal_alignment = 1
+
+[node name="MonthlyCostValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem2/Cost"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Income" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem2"]
+layout_mode = 2
+
+[node name="MonthlyIncome" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem2/Income"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Income:"
+horizontal_alignment = 1
+
+[node name="MonthlyIncomeValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem2/Income"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Efficiency" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem2"]
+layout_mode = 2
+
+[node name="Efficiency" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem2/Efficiency"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Efficiency:"
+horizontal_alignment = 1
+
+[node name="EfficiencyValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem2/Efficiency"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Button" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_omq0y")
+theme_override_font_sizes/font_size = 18
+text = "Details"
+
+[node name="BuildingGridItem3" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2"]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BuildingName" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem3"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+theme_override_font_sizes/font_size = 19
+text = "Scripture Library"
+horizontal_alignment = 1
+
+[node name="Cost" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem3"]
+layout_mode = 2
+
+[node name="MonthlyCost" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem3/Cost"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Cost:"
+horizontal_alignment = 1
+
+[node name="MonthlyCostValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem3/Cost"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Income" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem3"]
+layout_mode = 2
+
+[node name="MonthlyIncome" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem3/Income"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Income:"
+horizontal_alignment = 1
+
+[node name="MonthlyIncomeValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem3/Income"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Efficiency" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem3"]
+layout_mode = 2
+
+[node name="Efficiency" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem3/Efficiency"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Efficiency:"
+horizontal_alignment = 1
+
+[node name="EfficiencyValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem3/Efficiency"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Button" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow2/BuildingGridItem3"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_omq0y")
+theme_override_font_sizes/font_size = 18
+text = "Details"
+
+[node name="BuildingHBoxRow3" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="BuildingGridItem" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3"]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BuildingName" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+theme_override_font_sizes/font_size = 19
+text = "General Dormitories"
+horizontal_alignment = 1
+
+[node name="Cost" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem"]
+layout_mode = 2
+
+[node name="MonthlyCost" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem/Cost"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Cost:"
+horizontal_alignment = 1
+
+[node name="MonthlyCostValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem/Cost"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Income" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem"]
+layout_mode = 2
+
+[node name="MonthlyIncome" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem/Income"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Income:"
+horizontal_alignment = 1
+
+[node name="MonthlyIncomeValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem/Income"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Efficiency" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem"]
+layout_mode = 2
+
+[node name="Efficiency" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem/Efficiency"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Efficiency:"
+horizontal_alignment = 1
+
+[node name="EfficiencyValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem/Efficiency"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Button" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_omq0y")
+theme_override_font_sizes/font_size = 18
+text = "Details"
+
+[node name="BuildingGridItem2" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3"]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BuildingName" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+theme_override_font_sizes/font_size = 19
+text = "Disciple Dormitories"
+horizontal_alignment = 1
+
+[node name="Cost" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem2"]
+layout_mode = 2
+
+[node name="MonthlyCost" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem2/Cost"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Cost:"
+horizontal_alignment = 1
+
+[node name="MonthlyCostValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem2/Cost"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Income" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem2"]
+layout_mode = 2
+
+[node name="MonthlyIncome" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem2/Income"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Income:"
+horizontal_alignment = 1
+
+[node name="MonthlyIncomeValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem2/Income"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Efficiency" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem2"]
+layout_mode = 2
+
+[node name="Efficiency" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem2/Efficiency"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Efficiency:"
+horizontal_alignment = 1
+
+[node name="EfficiencyValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem2/Efficiency"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Button" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_omq0y")
+theme_override_font_sizes/font_size = 18
+text = "Details"
+
+[node name="BuildingGridItem3" type="VBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3"]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BuildingName" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem3"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+theme_override_font_sizes/font_size = 19
+text = "Sect Treasury"
+horizontal_alignment = 1
+
+[node name="Cost" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem3"]
+layout_mode = 2
+
+[node name="MonthlyCost" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem3/Cost"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Cost:"
+horizontal_alignment = 1
+
+[node name="MonthlyCostValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem3/Cost"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Income" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem3"]
+layout_mode = 2
+
+[node name="MonthlyIncome" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem3/Income"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Monthly Income:"
+horizontal_alignment = 1
+
+[node name="MonthlyIncomeValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem3/Income"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Efficiency" type="HBoxContainer" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem3"]
+layout_mode = 2
+
+[node name="Efficiency" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem3/Efficiency"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_adu2g")
+text = "Efficiency:"
+horizontal_alignment = 1
+
+[node name="EfficiencyValue" type="Label" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem3/Efficiency"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "99"
+horizontal_alignment = 2
+
+[node name="Button" type="Button" parent="MenuContainer/MenuVbox/MenuContent/Menu_Buildings/LowerRealmBuildings/BuildingScroll/VBoxContainer/BuildingHBoxRow3/BuildingGridItem3"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_omq0y")
+theme_override_font_sizes/font_size = 18
+text = "Details"

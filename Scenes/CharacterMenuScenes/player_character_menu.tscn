@@ -194,13 +194,14 @@ layout_mode = 2
 texture = ExtResource("4_ukkd3")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="."]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.14
 anchor_top = 0.253335
-anchor_right = 0.470769
-anchor_bottom = 0.366669
+anchor_right = 0.632308
+anchor_bottom = 0.366668
 offset_right = -88.0
-theme_override_constants/separation = 15
+theme_override_constants/separation = 20
 metadata/_edit_use_anchors_ = true
 
 [node name="Renown" type="Label" parent="HBoxContainer2"]
@@ -217,9 +218,9 @@ text = "Reputation"
 
 [node name="CultivationRealm" type="Label" parent="."]
 layout_mode = 0
-offset_left = 187.0
+offset_left = 190.0
 offset_top = 76.0003
-offset_right = 315.0
+offset_right = 318.0
 offset_bottom = 93.0003
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_sxq7j")
@@ -252,10 +253,10 @@ texture = ExtResource("7_5qr5q")
 [node name="Age" type="Label" parent="."]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 0
-offset_left = 329.0
-offset_top = 43.0003
-offset_right = 429.0
-offset_bottom = 64.0003
+offset_left = 354.0
+offset_top = 44.0003
+offset_right = 454.0
+offset_bottom = 65.0003
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Age: "
@@ -263,10 +264,10 @@ text = "Age: "
 [node name="Gender" type="Label" parent="."]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 0
-offset_left = 328.0
-offset_top = 67.0003
-offset_right = 428.0
-offset_bottom = 88.0003
+offset_left = 353.0
+offset_top = 68.0003
+offset_right = 453.0
+offset_bottom = 89.0003
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Gender: "

@@ -74,19 +74,19 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 2
 alignment = 1
 
-[node name="BuildingsButton" type="TextureButton" parent="ManagementVbox/HBoxContainer"]
+[node name="AdministrationButton" type="TextureButton" parent="ManagementVbox/HBoxContainer"]
 layout_mode = 2
-texture_normal = ExtResource("3_jwhx1")
+texture_normal = ExtResource("8_eqlcr")
 
-[node name="Label" type="Label" parent="ManagementVbox/HBoxContainer/BuildingsButton"]
+[node name="Label" type="Label" parent="ManagementVbox/HBoxContainer/AdministrationButton"]
 layout_mode = 0
-offset_left = 3.0
-offset_top = 28.0
-offset_right = 77.0
-offset_bottom = 45.0
+offset_left = 1.0
+offset_top = 29.0002
+offset_right = 81.0
+offset_bottom = 43.0002
 theme_override_fonts/font = ExtResource("2_i1iuv")
-theme_override_font_sizes/font_size = 12
-text = "Buildings"
+theme_override_font_sizes/font_size = 11
+text = "Administration"
 horizontal_alignment = 1
 
 [node name="SectMembersButton" type="TextureButton" parent="ManagementVbox/HBoxContainer"]
@@ -104,6 +104,21 @@ theme_override_font_sizes/font_size = 12
 text = "Sect Members"
 horizontal_alignment = 1
 
+[node name="BuildingsButton" type="TextureButton" parent="ManagementVbox/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("3_jwhx1")
+
+[node name="Label" type="Label" parent="ManagementVbox/HBoxContainer/BuildingsButton"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 28.0
+offset_right = 77.0
+offset_bottom = 45.0
+theme_override_fonts/font = ExtResource("2_i1iuv")
+theme_override_font_sizes/font_size = 12
+text = "Buildings"
+horizontal_alignment = 1
+
 [node name="EconomyButton" type="TextureButton" parent="ManagementVbox/HBoxContainer"]
 layout_mode = 2
 texture_normal = ExtResource("5_458f1")
@@ -119,11 +134,15 @@ theme_override_font_sizes/font_size = 12
 text = "Economy"
 horizontal_alignment = 1
 
-[node name="InventoryButton" type="TextureButton" parent="ManagementVbox/HBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="ManagementVbox"]
+layout_mode = 2
+alignment = 1
+
+[node name="InventoryButton" type="TextureButton" parent="ManagementVbox/HBoxContainer2"]
 layout_mode = 2
 texture_normal = ExtResource("6_xa1kw")
 
-[node name="Label" type="Label" parent="ManagementVbox/HBoxContainer/InventoryButton"]
+[node name="Label" type="Label" parent="ManagementVbox/HBoxContainer2/InventoryButton"]
 layout_mode = 0
 offset_left = 3.0
 offset_top = 28.0
@@ -133,10 +152,6 @@ theme_override_fonts/font = ExtResource("2_i1iuv")
 theme_override_font_sizes/font_size = 12
 text = "Inventory"
 horizontal_alignment = 1
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="ManagementVbox"]
-layout_mode = 2
-alignment = 1
 
 [node name="DiplomacyButton" type="TextureButton" parent="ManagementVbox/HBoxContainer2"]
 layout_mode = 2
@@ -151,21 +166,6 @@ offset_bottom = 45.0
 theme_override_fonts/font = ExtResource("2_i1iuv")
 theme_override_font_sizes/font_size = 12
 text = "Diplomacy"
-horizontal_alignment = 1
-
-[node name="PrestigeButton" type="TextureButton" parent="ManagementVbox/HBoxContainer2"]
-layout_mode = 2
-texture_normal = ExtResource("8_eqlcr")
-
-[node name="Label" type="Label" parent="ManagementVbox/HBoxContainer2/PrestigeButton"]
-layout_mode = 0
-offset_left = 3.0
-offset_top = 28.0
-offset_right = 77.0
-offset_bottom = 45.0
-theme_override_fonts/font = ExtResource("2_i1iuv")
-theme_override_font_sizes/font_size = 12
-text = "Prestige"
 horizontal_alignment = 1
 
 [node name="HelpButton" type="TextureButton" parent="ManagementVbox/HBoxContainer2"]

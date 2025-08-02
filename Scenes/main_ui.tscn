@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b7pavuul7xpr3"]
+[gd_scene load_steps=9 format=3 uid="uid://b7pavuul7xpr3"]
 
 [ext_resource type="PackedScene" uid="uid://cqxyblypix0tk" path="res://UI/Debug/debug_menu.tscn" id="1_gmh8u"]
 [ext_resource type="Script" uid="uid://duoieb4i0eexh" path="res://Scripts/UI/MainUI.gd" id="1_ylo01"]
@@ -7,10 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://kurb6okvib6m" path="res://Scenes/sect_management_menu.tscn" id="4_dcbcb"]
 [ext_resource type="PackedScene" uid="uid://b5d63u61765f0" path="res://Scenes/dialogue_menu.tscn" id="5_7okpu"]
 [ext_resource type="PackedScene" uid="uid://r07loget3sd2" path="res://Scenes/CharacterMenuScenes/character_menu.tscn" id="6_7okpu"]
-[ext_resource type="Texture2D" uid="uid://dbc8yxjgepj8m" path="res://Assets/UI/Menus/MainMenuBG.png" id="8_bhqku"]
-[ext_resource type="FontFile" uid="uid://ckbwkux4q6q8i" path="res://Assets/Fonts/Beholden/Beholden-Bold.ttf" id="9_pumb7"]
-[ext_resource type="PackedScene" uid="uid://cqye1gjj188d5" path="res://Scenes/MainMenu/main_menu_tab_button.tscn" id="10_h8hf5"]
-[ext_resource type="PackedScene" uid="uid://dfs0cm38gvqjn" path="res://Scenes/MainMenu/sect_member_entry.tscn" id="11_kk5cu"]
+[ext_resource type="PackedScene" uid="uid://cfhivhto5vgxu" path="res://Scenes/MainMenu/main_menu.tscn" id="8_bhqku"]
 
 [node name="MainUI" type="Control"]
 layout_mode = 3
@@ -55,142 +52,18 @@ visible = false
 [node name="CharacterMenu" parent="." instance=ExtResource("6_7okpu")]
 layout_mode = 1
 
-[node name="MainMenu" type="Control" parent="."]
-anchors_preset = 0
-offset_left = 426.0
-offset_top = 89.0
-offset_right = 1476.0
-offset_bottom = 609.0
-
-[node name="MainMenuBG" type="TextureRect" parent="MainMenu"]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -1010.0
-offset_bottom = -480.0
-texture = ExtResource("8_bhqku")
-metadata/_edit_use_anchors_ = true
-
-[node name="CloseMenuButton" type="Button" parent="MainMenu"]
-layout_mode = 0
-anchor_left = 0.407619
-anchor_top = 0.00192308
-anchor_right = 0.581905
-anchor_bottom = 0.0576923
-offset_bottom = -4.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("9_pumb7")
-theme_override_font_sizes/font_size = 20
-text = "Close Menu"
-flat = true
-metadata/_edit_use_anchors_ = true
-
-[node name="CurrentMenuName" type="Label" parent="MainMenu"]
-layout_mode = 0
-offset_left = 300.0
-offset_top = 40.0
-offset_right = 767.0
-offset_bottom = 63.0
-theme_override_fonts/font = ExtResource("9_pumb7")
-theme_override_font_sizes/font_size = 22
-text = "Current Menu Name"
-horizontal_alignment = 1
-
-[node name="MenuContainer" type="MarginContainer" parent="MainMenu"]
-layout_mode = 0
-offset_left = 112.0
-offset_top = 107.0
-offset_right = 933.0
-offset_bottom = 427.0
-
-[node name="MenuVbox" type="VBoxContainer" parent="MainMenu/MenuContainer"]
-layout_mode = 2
-
-[node name="MenuSubTabs" type="HBoxContainer" parent="MainMenu/MenuContainer/MenuVbox"]
-layout_mode = 2
-
-[node name="MainMenuTabButton" parent="MainMenu/MenuContainer/MenuVbox/MenuSubTabs" instance=ExtResource("10_h8hf5")]
-layout_mode = 2
-
-[node name="MenuContent" type="Control" parent="MainMenu/MenuContainer/MenuVbox"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Menu_SectMembers" type="Control" parent="MainMenu/MenuContainer/MenuVbox/MenuContent"]
+[node name="MainMenu" parent="." instance=ExtResource("8_bhqku")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = -1
+anchor_left = 0.26625
+anchor_top = 0.0988889
+anchor_right = 0.9225
+anchor_bottom = 0.676667
+offset_left = -3.05176e-05
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
 metadata/_edit_use_anchors_ = true
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MainMenu/MenuContainer/MenuVbox/MenuContent/Menu_SectMembers"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 15
-
-[node name="SortOptions" type="VBoxContainer" parent="MainMenu/MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/HBoxContainer"]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-
-[node name="HSeparator" type="HSeparator" parent="MainMenu/MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/HBoxContainer/SortOptions"]
-custom_minimum_size = Vector2(0, 25)
-layout_mode = 2
-
-[node name="SortByName" type="Button" parent="MainMenu/MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/HBoxContainer/SortOptions"]
-layout_mode = 2
-text = "Sort by Name"
-
-[node name="SortByRealm" type="Button" parent="MainMenu/MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/HBoxContainer/SortOptions"]
-layout_mode = 2
-text = "Sort by Realm
-"
-
-[node name="SortByAge" type="Button" parent="MainMenu/MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/HBoxContainer/SortOptions"]
-layout_mode = 2
-text = "Sort by Age"
-
-[node name="SortByPosition" type="Button" parent="MainMenu/MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/HBoxContainer/SortOptions"]
-layout_mode = 2
-text = "Sort by Position
-"
-
-[node name="SortByRenown" type="Button" parent="MainMenu/MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/HBoxContainer/SortOptions"]
-layout_mode = 2
-text = "Sort by Renown"
-
-[node name="SortByReputation" type="Button" parent="MainMenu/MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/HBoxContainer/SortOptions"]
-layout_mode = 2
-text = "Sort by Reputation"
-
-[node name="ShowCultivators" type="Button" parent="MainMenu/MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/HBoxContainer/SortOptions"]
-layout_mode = 2
-text = "Show Cultivators"
-
-[node name="ShowMortals" type="Button" parent="MainMenu/MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/HBoxContainer/SortOptions"]
-layout_mode = 2
-text = "Show Mortals"
-
-[node name="HSeparator2" type="HSeparator" parent="MainMenu/MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/HBoxContainer/SortOptions"]
-custom_minimum_size = Vector2(0, 25)
-layout_mode = 2
-
-[node name="SectMembersScroll" type="ScrollContainer" parent="MainMenu/MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="SectMembersVbox" type="VBoxContainer" parent="MainMenu/MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/HBoxContainer/SectMembersScroll"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="SectMemberEntry" parent="MainMenu/MenuContainer/MenuVbox/MenuContent/Menu_SectMembers/HBoxContainer/SectMembersScroll/SectMembersVbox" instance=ExtResource("11_kk5cu")]
-layout_mode = 2
 
 [node name="GeneralLogMenu" type="Control" parent="."]
 anchors_preset = 0
