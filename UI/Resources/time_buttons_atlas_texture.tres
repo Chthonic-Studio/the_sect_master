@@ -1,7 +1,0 @@
-[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://c1i5qcshn1ny0"]
-
-[ext_resource type="Texture2D" uid="uid://bm7i63ts4772l" path="res://Assets/UI/TimeButtons.png" id="1_xthgp"]
-
-[resource]
-atlas = ExtResource("1_xthgp")
-region = Rect2(60, 0, 30, 30)

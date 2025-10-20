@@ -1,9 +1,0 @@
-[gd_scene format=3 uid="uid://cx02hj3mxr7ew"]
-
-[node name="DialogueEntry" type="Label"]
-custom_minimum_size = Vector2(360, 0)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_constants/line_spacing = -5
-theme_override_font_sizes/font_size = 17
-text = "Target Name: Lorem Ipsum Dolor Sit Amet"
-autowrap_mode = 3

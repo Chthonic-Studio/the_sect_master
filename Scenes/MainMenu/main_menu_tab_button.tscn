@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cqye1gjj188d5"]
-
-[ext_resource type="FontFile" uid="uid://b3w6nhtuyhlg0" path="res://Assets/Fonts/Beholden/Beholden-Medium.ttf" id="1_hwylq"]
-
-[node name="MainMenuTabButton" type="Button"]
-theme_override_fonts/font = ExtResource("1_hwylq")
-theme_override_font_sizes/font_size = 18
-text = "Menu Tab Button"

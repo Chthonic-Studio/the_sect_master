@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=4 uid="uid://clxqnfftltspf"]
-
-[ext_resource type="TileSet" uid="uid://mqjhhb5rmu2j" path="res://Tilesets/RA_Atlantis.tres" id="1_uhrdi"]
-
-[node name="QiGatheringArray" type="TileMapLayer"]
-position = Vector2(25, 49)
-scale = Vector2(1.5, 1.5)
-tile_map_data = PackedByteArray("AAABAAEAAQBAABgAAAADAAEAAQAQAAIAAAADAAIAAQAQAAMAAAD//wEAAQAQAAIAAAD//wIAAQAQAAMAAAABAP7/AQAYAAIAAAABAP//AQAYAAMAAAA=")
-tile_set = ExtResource("1_uhrdi")

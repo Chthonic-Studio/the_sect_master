@@ -11,35 +11,10 @@ config_version=5
 [application]
 
 config/name="The Sect Master"
-run/main_scene="uid://dtpetb7nmbejg"
-config/features=PackedStringArray("4.4", "GL Compatibility")
+config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
-
-[autoload]
-
-GameManager="*res://Globals/GameManager.gd"
-Definitions="*res://Scripts/Data/Definitions.gd"
-CharManager="*res://Globals/CharacterManager.gd"
-TimeManager="*res://Globals/TimeManager.gd"
-TraitManager="*res://Globals/TraitManager.gd"
-DesireManager="*res://Globals/DesireManager.gd"
-SectManager="*res://Globals/SectManager.gd"
-PlayerManager="*res://Globals/PlayerManager.gd"
-UIManager="*res://Globals/UIManager.gd"
-DialogueManager="*res://Globals/DialogueManager.gd"
-CultivationManager="*res://Globals/CultivationManager.gd"
-
-[display]
-
-window/size/viewport_width=1600
-window/size/viewport_height=900
-
-[gui]
-
-theme/custom_font="uid://c6ngcdc504mos"
 
 [rendering]
 
-textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

@@ -1,8 +1,0 @@
-[gd_scene format=3 uid="uid://di67sejxt8fk7"]
-
-[node name="LogEntry" type="Label"]
-custom_minimum_size = Vector2(280, 0)
-offset_right = 280.0
-offset_bottom = 37.0
-text = "- [Date/Hour] This is a text log to show how the text would look like here"
-autowrap_mode = 3

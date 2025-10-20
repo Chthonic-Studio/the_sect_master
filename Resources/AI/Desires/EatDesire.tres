@@ -1,8 +1,0 @@
-[gd_resource type="Resource" script_class="EatDesire" load_steps=2 format=3 uid="uid://dcra3r8f04tyu"]
-
-[ext_resource type="Script" uid="uid://cksio66o0a2oq" path="res://Resources/AI/Desires/EatDesire.gd" id="1_k7vg5"]
-
-[resource]
-script = ExtResource("1_k7vg5")
-desire_name = "Eat"
-metadata/_custom_type_script = "uid://cksio66o0a2oq"
