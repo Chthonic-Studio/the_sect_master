@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SpiritualRoot" load_steps=3 format=3 uid="uid://ylmlxe1johnf"]
+
+[ext_resource type="Texture2D" uid="uid://c33gn2dwjhtk1" path="res://Assets/UI/Icons/SpiritualRoot_Common.png" id="1_d46h8"]
+[ext_resource type="Script" uid="uid://dhwd2x827rle3" path="res://Scripts/Characters/Resources/spiritual_root.gd" id="2_a212p"]
+
+[resource]
+script = ExtResource("2_a212p")
+root_id = 1
+root_name = "Common Spiritual Root"
+root_image = ExtResource("1_d46h8")
+metadata/_custom_type_script = "uid://dhwd2x827rle3"

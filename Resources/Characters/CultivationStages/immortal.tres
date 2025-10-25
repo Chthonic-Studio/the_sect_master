@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CultivationStage" load_steps=3 format=3 uid="uid://b5pleeq7ydxn1"]
+
+[ext_resource type="Texture2D" uid="uid://cubitq14i4snb" path="res://Assets/UI/Icons/Cultivation/Cultivation_Immortal.png" id="1_jybo5"]
+[ext_resource type="Script" uid="uid://frq6ktgv34l4" path="res://Scripts/Characters/Resources/cultivation_stage.gd" id="2_atpwq"]
+
+[resource]
+script = ExtResource("2_atpwq")
+stage_name = "Immortal"
+icon = ExtResource("1_jybo5")
+metadata/_custom_type_script = "uid://frq6ktgv34l4"

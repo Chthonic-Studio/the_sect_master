@@ -12,10 +12,12 @@ class_name CharacterData
 @export var char_age: int = 5
 @export var potential: int = 1
 @export var current_hp: int = 100 
-@export var current_stamina: int = 100
+@export var max_hp: int = 100
+@export var current_qi: int = 100
+@export var max_qi: int = 100
 
 ## Reference to the character's progression state
-@export var cultivation_state: Cultivation
+@onready var cultivation_state: Cultivation
 
 ## --- Current Attributes (Dynamic Runtime Values) ---
 ## Primary Combat/Ability Attributes

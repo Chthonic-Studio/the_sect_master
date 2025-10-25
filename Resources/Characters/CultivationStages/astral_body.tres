@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CultivationStage" load_steps=3 format=3 uid="uid://dd2o04cuj7opj"]
+
+[ext_resource type="Texture2D" uid="uid://bofbvkmfuenvu" path="res://Assets/UI/Icons/Cultivation/Cultivation_AstralBody.png" id="1_alu50"]
+[ext_resource type="Script" uid="uid://frq6ktgv34l4" path="res://Scripts/Characters/Resources/cultivation_stage.gd" id="2_i23ff"]
+
+[resource]
+script = ExtResource("2_i23ff")
+stage_name = "Astral Body"
+icon = ExtResource("1_alu50")
+metadata/_custom_type_script = "uid://frq6ktgv34l4"

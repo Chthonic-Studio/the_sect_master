@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="RootSpawnTableDef" load_steps=3 format=3 uid="uid://drclviosg43c4"]
+
+[ext_resource type="Script" uid="uid://dxm8h7rderk3o" path="res://Scripts/Characters/Resources/root_spawn_entry.gd" id="1_gvjt1"]
+[ext_resource type="Script" uid="uid://bm4yj7s6emnw4" path="res://Scripts/Characters/Resources/root_spawn_table_def.gd" id="2_k78ej"]
+
+[resource]
+script = ExtResource("2_k78ej")
+metadata/_custom_type_script = "uid://bm4yj7s6emnw4"
