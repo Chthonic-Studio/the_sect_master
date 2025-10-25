@@ -5,8 +5,6 @@ signal character_spawned(character: Node)
 var char_ids: Dictionary = {}
 var active_characters: Dictionary = {} # Key: char_id, Value: CharacterData
 
-@export var factory: Node # Assign your character_factory.gd node in the editor or _ready
-
 # Utility: Ensures unique IDs
 func _generate_unique_char_id() -> int:
 	var tries := 0
@@ -19,10 +17,8 @@ func _generate_unique_char_id() -> int:
 	return -1
 
 func spawn_new_character() -> Char:
-	# 1. Generate the new character node using the factory
 	var character_node: Char = CharacterFactory.generate_new_character()
 	
-	# 2. Assign a unique char_id (overrides factory's random if needed)
 	var data = character_node.data
 	if not data:
 		push_error("Character node missing 'data' property.")

@@ -11,15 +11,8 @@ func _ready() -> void:
 		push_error("Character scene is missing required 'Data' or 'AI' child nodes.")
 		set_process(false)
 		return
-		
-	CharacterManager.spawn_new_character()
 
 ## PUBLIC API for external systems (e.g., the player or a mission manager)
-
-func start_cultivation() -> void:
-	# Called by the AI or a player command
-	# print("Character %s starts cultivating." % data.char_definition.char_fullname)
-	# The actual cultivation logic/scene change would start here.
 
 # Physics movement loop
 func _physics_process(delta: float) -> void:
