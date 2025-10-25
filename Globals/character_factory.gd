@@ -2,7 +2,7 @@ extends Node
 
 @export var name_pool: NamePoolDef = preload("res://Resources/Characters/name_pool.tres")
 @export var root_spawn_table: RootSpawnTableDef = preload("res://Resources/Characters/root_table_def.tres")
-@export var trait_pool: Resource # Optional: assign a TraitPoolDef resource in inspector
+@export var trait_pool: Resource = preload("res://Resources/Characters/trait_pool.tres")
 @export var character_scene: PackedScene = preload("res://Scenes/character.tscn")
 
 # Local RNG used for all randomization
@@ -11,7 +11,6 @@ var _rng_inited: bool = false
 
 func _ready() -> void:
 	_ensure_rng()
-	CharacterManager.spawn_new_character()
 
 # Ensure RNG is seeded once per runtime
 func _ensure_rng() -> void:
@@ -19,10 +18,6 @@ func _ensure_rng() -> void:
 		_rng.randomize()
 		_rng_inited = true
 
-# Create and initialize a Character scene instance.
-# - char_id: unique integer supplied by CharacterManager._generate_unique_char_id()
-# - params: optional overrides (gender, first_name, last_name, traits, potential, specific stats, etc.)
-# Returns the instantiated Character node (Scenes/character.tscn) or null on failure.
 func create_character(char_id: int, params: Dictionary = {}) -> Node:
 	_ensure_rng()
 
