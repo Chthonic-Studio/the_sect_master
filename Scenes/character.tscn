@@ -12,8 +12,10 @@ script = ExtResource("1_ushfy")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_owm7s")
 
-[node name="Data" type="Node" parent="."]
+[node name="Data" type="Node" parent="." node_paths=PackedStringArray("cultivation", "ai")]
 script = ExtResource("3_ejsiy")
+cultivation = NodePath("../Cultivation")
+ai = NodePath("../AI")
 
 [node name="AI" type="Node" parent="."]
 script = ExtResource("4_2mse5")

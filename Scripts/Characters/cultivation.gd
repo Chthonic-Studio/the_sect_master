@@ -26,24 +26,54 @@ var healing_affinity: int = 0
 ## --- References to Definitions ---
 var stage_definitions: Array[CultivationStage]
 
+# Cache a reference to the owning CharacterData
+var _data: CharacterData
+
+func _ready() -> void:
+	_data = get_parent().get_node_or_null("Data") as CharacterData
+	if not _data:
+		push_error("Cultivation requires a sibling 'Data' node.")
+		set_process(false)
+		return
+
+	# If already initialized, run initialization immediately. Otherwise, wait for the signal.
+	if _data.is_initialized():
+		if _data.char_definition and _data.char_definition.cultivation_path:
+			initialize_cultivation(_data.char_definition.cultivation_path)
+	else:
+		# Connect to initialized signal and receive the definition when ready
+		_data.connect("initialized", Callable(self, "_on_data_initialized"))
+
+func _on_data_initialized(definition: CharacterDefinition) -> void:
+	if not definition:
+		push_error("Cultivation received empty definition on initialization.")
+		return
+	if definition.cultivation_path:
+		initialize_cultivation(definition.cultivation_path)
+
+# Initialize cultivation path and immediately apply current stage modifiers
 func initialize_cultivation(path_def: CultivationPathDef) -> void:
+	if not path_def:
+		push_error("initialize_cultivation called with null path_def.")
+		return
 	stage_definitions = path_def.stages
 	_apply_current_stage_modifiers()
 
 func _apply_current_stage_modifiers() -> void:
-	if current_stage_index >= stage_definitions.size():
+	if not stage_definitions or current_stage_index >= stage_definitions.size():
 		return
 
 	var current_stage = stage_definitions[current_stage_index]
 
-	# Apply health, qi, lifespan
+	# Apply health and qi modifiers
 	max_health += current_stage.health_modifier
 	max_qi += current_stage.qi_modifier
-	# If you want to affect character lifespan, call a function on the owner (CharacterData)
-	if get_parent().has_method("apply_lifespan_modifier"):
-		get_parent().apply_lifespan_modifier(current_stage.lifespan_modifier)
 
-	# Apply stat modifiers dynamically (matches resource export vars)
+	# Apply lifespan modifier on CharacterData (safer than calling parent)
+	if _data and _data.has_method("apply_lifespan_modifier"):
+		_data.apply_lifespan_modifier(current_stage.lifespan_modifier)
+
+	# Apply stat modifiers dynamically via CharacterData.modify_stat
 	var stat_modifiers = [
 		["strength", "strength_modifier"],
 		["constitution", "constitution_modifier"],
@@ -52,13 +82,12 @@ func _apply_current_stage_modifiers() -> void:
 		["wisdom", "wisdom_modifier"],
 		["charisma", "charisma_modifier"]
 	]
-	var data = get_parent().data
 	for pair in stat_modifiers:
 		var stat = pair[0]
 		var mod_name = pair[1]
 		var amount = current_stage.get(mod_name)
-		if amount != 0 and data.has_method("modify_stat"):
-			data.modify_stat(stat, amount)
+		if amount != 0 and _data and _data.has_method("modify_stat"):
+			_data.modify_stat(stat, amount)
 
 	# Apply all affinities
 	var affinity_modifiers = [
@@ -78,11 +107,13 @@ func _apply_current_stage_modifiers() -> void:
 		var affinity = pair[0]
 		var mod_name = pair[1]
 		var amount = current_stage.get(mod_name)
-		self.set(affinity, self.get(affinity) + amount)
+		if amount != 0:
+			self.set(affinity, self.get(affinity) + amount)
 
 func gain_progress(amount: float) -> void:
-	var data = get_parent().data 
-	var potential_bonus = float(data.potential) / 10.0
+	if not _data:
+		return
+	var potential_bonus = float(_data.potential) / 10.0
 	var modified_amount = amount * (1.0 + potential_bonus)
 	progress_to_next_stage += modified_amount
 	if current_stage_index < stage_definitions.size() - 1:
