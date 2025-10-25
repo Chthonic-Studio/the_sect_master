@@ -1,4 +1,6 @@
-extends Node
+extends Node2D
+
+@export var cul
 
 
 # Called when the node enters the scene tree for the first time.
