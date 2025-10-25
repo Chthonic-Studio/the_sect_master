@@ -2,7 +2,7 @@ extends Node2D
 class_name Char
 
 # Internal references to the child nodes
-@onready var data: Character = $Data
+@onready var data: CharacterData = $Data
 @onready var ai: CharacterAI = $AI
 @onready var cultivation: Cultivation = $Cultivation
 

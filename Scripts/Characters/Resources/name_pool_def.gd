@@ -19,20 +19,22 @@ func _ensure_rng() -> void:
 # --- Internal Functions for Selection ---
 func _get_random_element(list_string: String) -> String:
 	_ensure_rng()
-	var elements = list_string.split(",", false)
+	var elements: Array = list_string.split(",", false)
 	if elements.is_empty():
 		return ""
-	var idx = _rng.randi_range(0, elements.size() - 1)
+	var idx: int = _rng.randi_range(0, elements.size() - 1)
 	return elements[idx].strip_edges()
 
 func get_random_last_name() -> String:
 	return _get_random_element(last_names)
 
-func get_random_first_name(gender: CharacterDefinition.Gender) -> String:
+# Changed signature: accept an int (CharacterData.Gender) so callers can pass CharacterData.Gender values.
+# This avoids referencing CharacterDefinition.Gender which doesn't exist in the repo.
+func get_random_first_name(gender: int) -> String:
 	match gender:
-		CharacterDefinition.Gender.FEMALE:
+		CharacterData.Gender.FEMALE:
 			return _get_random_element(female_first_names)
-		CharacterDefinition.Gender.MALE:
+		CharacterData.Gender.MALE:
 			return _get_random_element(male_first_names)
 		_:
 			return _get_random_element(male_first_names)

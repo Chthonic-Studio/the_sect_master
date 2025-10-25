@@ -30,26 +30,7 @@ var stage_definitions: Array[CultivationStage]
 var _data: CharacterData
 
 func _ready() -> void:
-	_data = get_parent().get_node_or_null("Data") as CharacterData
-	if not _data:
-		push_error("Cultivation requires a sibling 'Data' node.")
-		set_process(false)
-		return
-
-	# If already initialized, run initialization immediately. Otherwise, wait for the signal.
-	if _data.is_initialized():
-		if _data.char_definition and _data.char_definition.cultivation_path:
-			initialize_cultivation(_data.char_definition.cultivation_path)
-	else:
-		# Connect to initialized signal and receive the definition when ready
-		_data.connect("initialized", Callable(self, "_on_data_initialized"))
-
-func _on_data_initialized(definition: CharacterDefinition) -> void:
-	if not definition:
-		push_error("Cultivation received empty definition on initialization.")
-		return
-	if definition.cultivation_path:
-		initialize_cultivation(definition.cultivation_path)
+	pass
 
 # Initialize cultivation path and immediately apply current stage modifiers
 func initialize_cultivation(path_def: CultivationPathDef) -> void:

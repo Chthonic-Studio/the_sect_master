@@ -21,7 +21,7 @@ enum Gender {MALE, FEMALE}
 @export var potential: int = 1
 
 @export_category("Starting Traits")
-@export var starting_traits: Array[CharacterTrait] # Array of trait resources
+@export var starting_traits: Array = []
 
 @export_category("Primary Combat/Ability Attributes")
 @export_range(1, 20, 1) var strength: int = 10         # Physical Power, Damage, Carry Weight
