@@ -2,8 +2,8 @@ extends CharacterBody2D
 class_name Char
 
 # Internal references to the child nodes
-@onready var data: CharacterData = $Data as CharacterData
-@onready var ai: CharacterAI = $AI as CharacterAI
+@onready var data: CharacterData = $Data
+@onready var ai: CharacterAI = $AI
 
 func _ready() -> void:
 	if not data or not ai:

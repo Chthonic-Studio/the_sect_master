@@ -1,10 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://bxa4ouhsmwjls"]
+[gd_scene load_steps=6 format=3 uid="uid://bxa4ouhsmwjls"]
 
 [ext_resource type="Script" uid="uid://dhuqdpb238iqk" path="res://Scripts/Characters/character.gd" id="1_ushfy"]
 [ext_resource type="Texture2D" uid="uid://b84y7vdsrlofr" path="res://icon.svg" id="2_owm7s"]
+[ext_resource type="Script" uid="uid://bp3ldbtjvdji5" path="res://Scripts/Characters/character_data.gd" id="3_ejsiy"]
+[ext_resource type="Script" uid="uid://2s2odefrf0jy" path="res://Scripts/Characters/character_ai.gd" id="4_2mse5"]
+[ext_resource type="Script" uid="uid://b0su8sce5utbk" path="res://Scripts/Characters/cultivation.gd" id="5_reotu"]
 
 [node name="Character" type="Node2D"]
 script = ExtResource("1_ushfy")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_owm7s")
+
+[node name="Data" type="Node" parent="."]
+script = ExtResource("3_ejsiy")
+
+[node name="AI" type="Node" parent="."]
+script = ExtResource("4_2mse5")
+
+[node name="Cultivation" type="Node" parent="."]
+script = ExtResource("5_reotu")
