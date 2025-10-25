@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Culture" load_steps=2 format=3 uid="uid://bmplq8gk0inms"]
 
-[ext_resource type="Script" uid="uid://qngw6v45ue53" path="res://Scripts/Characters/culture.gd" id="1_pps6a"]
+[ext_resource type="Script" uid="uid://qngw6v45ue53" path="res://Scripts/Characters/Resources/culture.gd" id="1_pps6a"]
 
 [resource]
 script = ExtResource("1_pps6a")
