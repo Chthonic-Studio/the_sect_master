@@ -15,19 +15,34 @@ class_name CharacterData
 @export var current_stamina: int = 100
 
 ## Reference to the character's progression state
-@export var cultivation_state: CultivationState 
+@export var cultivation_state: Cultivation
 
 ## --- Current Attributes (Dynamic Runtime Values) ---
-# NOTE: In a production environment, you might use a Dictionary to store these dynamically, 
-# but for clarity, we use individual variables matching the Definition.
-
-# ... (Declare all 17 combat/personality stats here, but DO NOT use @export)
+## Primary Combat/Ability Attributes
 var strength: int
 var constitution: int
-# ... and so on for all 17 stats ...
+var agility: int
+var intelligence: int
+var wisdom: int
+var charisma: int
 
+## Personality Axes (Bipolar)
+var morality: int
+var candor: int
+var assertiveness: int
+var ego: int
+
+## Core Personality Traits (Unipolar)
+var creativity: int
+var resourcefulness: int
+var empathy: int
+var resolve: int
+var ambition: int
+var loyalty: int
+var integrity: int
+
+## Traits
 var active_traits: Array[CharacterTrait] = []
-
 
 func _ready() -> void:
 	if char_definition:
@@ -41,22 +56,89 @@ func _initialize_from_definition() -> void:
 	# Set the current, dynamic stats to the initial values from the static Definition
 	strength = char_definition.strength
 	constitution = char_definition.constitution
-	# ... set all 17 stats similarly ...
+	agility = char_definition.agility
+	intelligence = char_definition.intelligence
+	wisdom = char_definition.wisdom
+	charisma = char_definition.charisma
+
+	morality = char_definition.morality
+	candor = char_definition.candor
+	assertiveness = char_definition.assertiveness
+	ego = char_definition.ego
+
+	creativity = char_definition.creativity
+	resourcefulness = char_definition.resourcefulness
+	empathy = char_definition.empathy
+	resolve = char_definition.resolve
+	ambition = char_definition.ambition
+	loyalty = char_definition.loyalty
+	integrity = char_definition.integrity
+
+	active_traits.clear()
 	active_traits.append_array(char_definition.starting_traits)
 	# The character's age and potential will start at their initial values or be set by the spawner
 
-
+## Provides safe, centralized stat access by name (for AI, UI, etc.)
 func get_stat(stat_name: String) -> int:
-	# Use a dictionary or 'match' statement for safe access in GDScript
 	match stat_name:
 		"strength": return strength
+		"constitution": return constitution
+		"agility": return agility
+		"intelligence": return intelligence
+		"wisdom": return wisdom
+		"charisma": return charisma
 		"morality": return morality
-		# ... and so on for all 17 stats ...
-		_: 
+		"candor": return candor
+		"assertiveness": return assertiveness
+		"ego": return ego
+		"creativity": return creativity
+		"resourcefulness": return resourcefulness
+		"empathy": return empathy
+		"resolve": return resolve
+		"ambition": return ambition
+		"loyalty": return loyalty
+		"integrity": return integrity
+		_:
 			push_error("Attempted to access non-existent stat: " + stat_name)
 			return 0
-			
+
+## Modifies a stat by name, clamps where appropriate, and can emit a signal if you add one
 func modify_stat(stat_name: String, amount: int) -> void:
-	# Logic for modifying a stat, ensuring range limits (e.g., clamp(-100, 100))
-	# ... update the relevant stat and potentially fire signals ...
-	pass
+	match stat_name:
+		"strength":
+			strength = clamp(strength + amount, 1, 20)
+		"constitution":
+			constitution = clamp(constitution + amount, 1, 20)
+		"agility":
+			agility = clamp(agility + amount, 1, 20)
+		"intelligence":
+			intelligence = clamp(intelligence + amount, 1, 20)
+		"wisdom":
+			wisdom = clamp(wisdom + amount, 1, 20)
+		"charisma":
+			charisma = clamp(charisma + amount, 1, 20)
+		"morality":
+			morality = clamp(morality + amount, -100, 100)
+		"candor":
+			candor = clamp(candor + amount, -100, 100)
+		"assertiveness":
+			assertiveness = clamp(assertiveness + amount, -100, 100)
+		"ego":
+			ego = clamp(ego + amount, -100, 100)
+		"creativity":
+			creativity = clamp(creativity + amount, 1, 20)
+		"resourcefulness":
+			resourcefulness = clamp(resourcefulness + amount, 1, 20)
+		"empathy":
+			empathy = clamp(empathy + amount, 1, 20)
+		"resolve":
+			resolve = clamp(resolve + amount, 1, 20)
+		"ambition":
+			ambition = clamp(ambition + amount, 1, 20)
+		"loyalty":
+			loyalty = clamp(loyalty + amount, 1, 20)
+		"integrity":
+			integrity = clamp(integrity + amount, 1, 20)
+		_:
+			push_error("Attempted to modify non-existent stat: " + stat_name)
+	# Optionally emit a stat_changed signal here
