@@ -5,7 +5,6 @@
 
 [resource]
 script = ExtResource("2_6wfgl")
-root_id = 1
 root_name = "No Spiritual Root"
 root_image = ExtResource("1_lrb28")
 metadata/_custom_type_script = "uid://dhwd2x827rle3"

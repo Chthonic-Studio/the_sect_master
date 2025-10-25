@@ -1,8 +1,16 @@
-[gd_resource type="Resource" script_class="RootSpawnTableDef" load_steps=3 format=3 uid="uid://drclviosg43c4"]
+[gd_resource type="Resource" script_class="RootSpawnTableDef" load_steps=10 format=3 uid="uid://drclviosg43c4"]
 
 [ext_resource type="Script" uid="uid://dxm8h7rderk3o" path="res://Scripts/Characters/Resources/root_spawn_entry.gd" id="1_gvjt1"]
+[ext_resource type="Resource" uid="uid://dg5xapvv8lq15" path="res://Resources/Characters/SpiritualRoots/no_root_entry.tres" id="2_5c0ts"]
 [ext_resource type="Script" uid="uid://bm4yj7s6emnw4" path="res://Scripts/Characters/Resources/root_spawn_table_def.gd" id="2_k78ej"]
+[ext_resource type="Resource" uid="uid://bl5pv058v0yfk" path="res://Resources/Characters/SpiritualRoots/common_root_entry.tres" id="3_lg3gu"]
+[ext_resource type="Resource" uid="uid://jm0psf1ijtcy" path="res://Resources/Characters/SpiritualRoots/superior_root_entry.tres" id="4_hn5x4"]
+[ext_resource type="Resource" uid="uid://stq1ai3vtyot" path="res://Resources/Characters/SpiritualRoots/heavenly_root_entry.tres" id="5_oqnve"]
+[ext_resource type="Resource" uid="uid://cyuskm6uauorw" path="res://Resources/Characters/SpiritualRoots/demonic_root_entry.tres" id="6_naccy"]
+[ext_resource type="Resource" uid="uid://def5h0aro4u3v" path="res://Resources/Characters/SpiritualRoots/ghostly_root_entry.tres" id="7_tu613"]
+[ext_resource type="Resource" uid="uid://uwm7s2rl57gb" path="res://Resources/Characters/SpiritualRoots/mutated_root_entry.tres" id="8_r7io1"]
 
 [resource]
 script = ExtResource("2_k78ej")
+entries = Array[ExtResource("1_gvjt1")]([ExtResource("2_5c0ts"), ExtResource("3_lg3gu"), ExtResource("4_hn5x4"), ExtResource("5_oqnve"), ExtResource("6_naccy"), ExtResource("7_tu613"), ExtResource("8_r7io1")])
 metadata/_custom_type_script = "uid://bm4yj7s6emnw4"

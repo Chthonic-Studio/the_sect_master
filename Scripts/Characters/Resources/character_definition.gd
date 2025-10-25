@@ -1,5 +1,7 @@
 class_name CharacterDefinition extends Resource
 
+enum Gender {MALE, FEMALE}
+
 ## --- System Values ---
 @export_category("System Values (Static)")
 ## A unique key for the definition, used for data lookup
@@ -10,7 +12,7 @@ class_name CharacterDefinition extends Resource
 @export var char_fullname: String = "New Character"
 @export var char_first_name: String = "First"
 @export var char_last_name: String = "Last"
-@export var char_culture: Culture 
+@export var char_gender: Gender
 @export var char_lifespan: int = 70 
 @export var spiritual_root: SpiritualRoot 
 

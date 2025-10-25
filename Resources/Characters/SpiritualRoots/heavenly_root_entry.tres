@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="RootSpawnEntry" load_steps=3 format=3 uid="uid://stq1ai3vtyot"]
 
-[ext_resource type="Resource" uid="uid://ylmlxe1johnf" path="res://Resources/Characters/SpiritualRoots/common_root.tres" id="1_x5j44"]
-[ext_resource type="Script" uid="uid://dxm8h7rderk3o" path="res://Scripts/Characters/Resources/root_spawn_entry.gd" id="2_dw8ui"]
+[ext_resource type="Resource" uid="uid://ckqmcy4dtt4jv" path="res://Resources/Characters/SpiritualRoots/heavenly_root.tres" id="1_dmc77"]
+[ext_resource type="Script" uid="uid://dxm8h7rderk3o" path="res://Scripts/Characters/Resources/root_spawn_entry.gd" id="2_q0ijs"]
 
 [resource]
-script = ExtResource("2_dw8ui")
-root = ExtResource("1_x5j44")
-spawn_weight = 30.0
+script = ExtResource("2_q0ijs")
+root = ExtResource("1_dmc77")
+spawn_weight = 10.0
 metadata/_custom_type_script = "uid://dxm8h7rderk3o"

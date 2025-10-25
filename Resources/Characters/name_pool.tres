@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="NamePoolDef" load_steps=2 format=3 uid="uid://bn3wa7axoigh"]
+
+[ext_resource type="Script" uid="uid://gykiay0pixfw" path="res://Scripts/Characters/Resources/name_pool_def.gd" id="1_xu2ko"]
+
+[resource]
+script = ExtResource("1_xu2ko")
+metadata/_custom_type_script = "uid://gykiay0pixfw"

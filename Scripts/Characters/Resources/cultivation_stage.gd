@@ -19,7 +19,7 @@ class_name CultivationStage extends Resource
 @export var charisma_modifier: int = 0
 
 ## --- Weapon Affinity Modifiers (Detailed) ---
-@export_category("Weapon Affinities")
+@export_category("Affinities")
 @export var blade_affinity_modifier: int = 0
 @export var sword_affinity_modifier: int = 0
 @export var spear_affinity_modifier: int = 0
@@ -28,7 +28,6 @@ class_name CultivationStage extends Resource
 @export var bow_affinity_modifier: int = 0
 @export var fan_affinity_modifier: int = 0
 @export var zither_affinity_modifier: int = 0
-
 ## --- Magic/Support Affinity Modifiers ---
 @export var magic_affinity_modifier: int = 0
 @export var formation_affinity_modifier: int = 0
