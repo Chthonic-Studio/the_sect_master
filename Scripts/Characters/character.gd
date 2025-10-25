@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends Node2D
 class_name Char
 
 # Internal references to the child nodes
@@ -12,14 +12,13 @@ func _ready() -> void:
 		set_process(false)
 		return
 		
-	# Example of using the AI for initialization
-	# ai.start_thinking()
+	CharacterManager.spawn_new_character()
 
 ## PUBLIC API for external systems (e.g., the player or a mission manager)
 
 func start_cultivation() -> void:
 	# Called by the AI or a player command
-	print("Character %s starts cultivating." % data.char_definition.char_fullname)
+	# print("Character %s starts cultivating." % data.char_definition.char_fullname)
 	# The actual cultivation logic/scene change would start here.
 
 # Physics movement loop

@@ -18,6 +18,8 @@ enum Gender {MALE, FEMALE}
 
 ## --- Initial Attributes (Static Defaults) ---
 
+@export var cultivation_path: CultivationPathDef = preload("res://Resources/Characters/cultivation_path.tres")
+
 @export_category("Primary Combat/Ability Attributes (Initial)")
 @export_range(1, 20, 1) var strength: int = 10
 @export_range(1, 20, 1) var constitution: int = 10

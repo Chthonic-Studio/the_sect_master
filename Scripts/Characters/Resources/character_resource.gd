@@ -9,7 +9,6 @@ class_name Character extends Resource
 @export var char_fullname: String
 @export var char_first_name: String
 @export var char_last_name: String
-@export var char_culture: Culture
 @export var char_age: int = 5
 @export var char_lifespan: int = 70
 @export var potential: int = 1
