@@ -1,19 +1,11 @@
-class_name Character extends Resource
+extends Node
 
-@export_category("System Values")
-## A character's unique ID, generated at spawn
-@export var char_id: int
 
-## The basic info of every character
-@export_category("Character Info")
-@export var char_fullname: String
-@export var char_first_name: String
-@export var char_last_name: String
-@export var char_culture: Culture
-@export var char_age: int = 5
-@export var char_lifespan: int = 70
-@export var potential: int = 1
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
 
-@export_category("Character Personality")
-@export var courage: int
-@export var diligence: int
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
