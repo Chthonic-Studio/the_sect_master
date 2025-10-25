@@ -7,22 +7,12 @@ class_name NamePoolDef extends Resource
 @export_multiline var male_first_names: String = "Wei,Jian,Lei,Bo,Fan,Hao,Min,Quan"
 @export_multiline var female_first_names: String = "Mei,Lin,Hua,Ying,Xiao,Jing,Rong,Fen"
 
-# Local RNG to avoid using global helpers directly; seeded on first use
-var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
-var _rng_inited: bool = false
-
-func _ensure_rng() -> void:
-	if not _rng_inited:
-		_rng.randomize()
-		_rng_inited = true
-
 # --- Internal Functions for Selection ---
 func _get_random_element(list_string: String) -> String:
-	_ensure_rng()
 	var elements: Array = list_string.split(",", false)
 	if elements.is_empty():
 		return ""
-	var idx: int = _rng.randi_range(0, elements.size() - 1)
+	var idx: int = randi_range(0, elements.size() - 1)
 	return elements[idx].strip_edges()
 
 func get_random_last_name() -> String:

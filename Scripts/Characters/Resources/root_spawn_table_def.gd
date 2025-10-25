@@ -3,17 +3,7 @@ class_name RootSpawnTableDef extends Resource
 @export_category("Spiritual Root Spawn Table")
 @export var entries: Array[RootSpawnEntry]
 
-# Use a local RNG for the selection (seeded per-resource lifetime)
-var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
-var _rng_inited: bool = false
-
-func _ensure_rng() -> void:
-	if not _rng_inited:
-		_rng.randomize()
-		_rng_inited = true
-
 func get_random_root() -> SpiritualRoot:
-	_ensure_rng()
 	var total_weight: float = 0.0
 	for entry in entries:
 		total_weight += entry.spawn_weight
@@ -22,7 +12,7 @@ func get_random_root() -> SpiritualRoot:
 		push_error("Spawn table has no weight or entries.")
 		return null
 
-	var random_point = _rng.randf() * total_weight
+	var random_point = randf() * total_weight
 	var current_weight = 0.0
 
 	for entry in entries:
