@@ -12,8 +12,6 @@ func _ready() -> void:
 		set_process(false)
 		return
 
-## PUBLIC API for external systems (e.g., the player or a mission manager)
-
 # Physics movement loop
 func _physics_process(delta: float) -> void:
 	# The CharacterAI will typically set the 'velocity' or 'target'

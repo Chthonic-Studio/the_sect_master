@@ -9,7 +9,3 @@ func _ready() -> void:
 
 func test_char_creation() -> void:
 	CharacterManager.spawn_new_character()
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
