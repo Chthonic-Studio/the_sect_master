@@ -158,6 +158,7 @@ func create_character(char_id: int, params: Dictionary = {}) -> Node:
 
 	# Return the fully initialized character node; CharacterManager will register it
 	print("Succesfully spawned new char")
+	add_child(char_node)
 	return char_node
 	
 

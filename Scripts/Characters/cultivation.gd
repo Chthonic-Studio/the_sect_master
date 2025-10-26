@@ -4,11 +4,7 @@ class_name Cultivation
 ## --- Dynamic State ---
 @export var current_stage_index: int = 0
 @export var progress_to_next_stage: float = 0.0
-
-@export var current_health: int = 100
-@export var max_health: int = 100
-@export var current_qi: int = 100
-@export var max_qi: int = 100
+@export var cultivation_path: CultivationPathDef
 
 ## --- Affinities (Unipolar Runtime Stats) ---
 var blade_affinity: int = 0
@@ -30,14 +26,12 @@ var stage_definitions: Array[CultivationStage]
 var _data: CharacterData
 
 func _ready() -> void:
+	initialize_cultivation()
 	pass
 
 # Initialize cultivation path and immediately apply current stage modifiers
-func initialize_cultivation(path_def: CultivationPathDef) -> void:
-	if not path_def:
-		push_error("initialize_cultivation called with null path_def.")
-		return
-	stage_definitions = path_def.stages
+func initialize_cultivation() -> void:
+	stage_definitions = cultivation_path.stages
 	_apply_current_stage_modifiers()
 
 func _apply_current_stage_modifiers() -> void:
@@ -45,10 +39,6 @@ func _apply_current_stage_modifiers() -> void:
 		return
 
 	var current_stage = stage_definitions[current_stage_index]
-
-	# Apply health and qi modifiers
-	max_health += current_stage.health_modifier
-	max_qi += current_stage.qi_modifier
 
 	# Apply lifespan modifier on CharacterData (safer than calling parent)
 	if _data and _data.has_method("apply_lifespan_modifier"):
