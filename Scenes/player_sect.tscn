@@ -1,5 +1,0 @@
-[gd_scene format=3 uid="uid://dynu65t23k30q"]
-
-[node name="PlayerSect" type="Node2D"]
-
-[node name="Node" type="Node" parent="."]
