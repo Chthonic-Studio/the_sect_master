@@ -23,11 +23,15 @@ enum CultivationStat {
 # These track the hidden "Utility AI" values. 
 # Your JSONs will reference these to drive NPC decision making.
 const PERSONALITY_STATS = [
-	"ambition",    # Drive to rise in rank / betray superiors
-	"honor",       # Likelihood to follow sect laws
-	"greed",       # Desire for resources/items
-	"sociability", # Likelihood to form friendships vs rivals
-	"ruthlessness" # Willingness to kill or use extreme measures
+	"ambition",     # Drive to rise in rank. High = Confidence; Low = Humility.
+	"honor",        # Adherence to rules. High = Integrity/Honesty; Low = Deception.
+	"greed",        # Desire for material wealth and resources.
+	"sociability",  # Likelihood to form bonds. Covers Empathy, Humor, and Extroversion.
+	"ruthlessness", # Willingness to kill. High = Evil/Aggression; Low = Good/Pacifism.
+	"discipline",   # Combines Willpower, Tenacity, and Patience. High = rigorous cultivator.
+	"curiosity",    # Combines Creativity and Adaptability. Drive to discover new techniques.
+	"cunning",      # Combines Resourcefulness and manipulation. Smart survival instinct.
+	"loyalty"       # Dedication specifically to the Sect/Master. Distinct from general honor.
 ]
 
 # --- TALENT LEVELS ---
@@ -46,20 +50,11 @@ const BASE_STATS_BY_AGE = {
 	"child": 5,     # Age 0-12
 	"teen": 10,     # Age 13-19
 	"adult": 20,    # Age 20-60
-	"elder": 15     # Age 60+ (Physical decline starts)
+	"elder": 15     # Age 60+ 
 }
 
 const STAT_CAP = 255
 const MAX_TRAITS_PER_CHARACTER = 5
-
-# --- PATHS ---
-# Used by the DataManager to find your JSON files.
-const DATA_PATHS = {
-	"traits": "res://data/traits/",
-	"personalities": "res://data/personalities/",
-	"names": "res://data/names/names.json",
-	"affiliations": "res://data/sects/definitions/"
-}
 
 # --- HELPER: STAT MAPPING ---
 # Translates string keys from JSON into the Enum values used in code.
