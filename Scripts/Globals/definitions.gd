@@ -11,12 +11,22 @@ enum Stat {
 }
 
 # --- CULTIVATION STATS ---
-# Specific to the Wuxia/Xianxia theme.
 enum CultivationStat {
 	QI_CAPACITY,     # Maximum energy pool
 	QI_ABSORPTION,   # How fast they gain XP/Cultivation
 	COMPREHENSION,   # Chance to learn rare techniques
-	LUCK             # Critical hit chance and random event favorability
+	LUCK,            # Critical hit chance and random event favorability
+	
+}
+
+# --- DAMAGE & INJURY TYPES ---
+enum DamageType {
+	SLASHING,		# Swords, Sabers
+	PIERCING,		# Spears, Needles
+	BLUNT,			# Staffs, Hammers, Fists
+	INTERNAL,		# Palm strikes, Qi-blasts (ignores physical armor)
+	POISON,			# Sichuan specialty, damage over time
+	BLEED			# Deep cuts, max HP reduction until treated
 }
 
 # --- MARTIAL PROGRESSION ---
@@ -45,6 +55,13 @@ const PERSONALITY_STATS = [
 	"curiosity",    # Combines Creativity and Adaptability. Drive to discover new techniques.
 	"cunning",      # Combines Resourcefulness and manipulation. Smart survival instinct.
 	"loyalty"       # Dedication specifically to the Sect/Master. Distinct from general honor.
+]
+
+# Cosmic and Social alignment axes (0 to 100, where 50 is neutral)
+const ALIGNMENT_STATS = [
+	"morality",    # 0 = Demonic/Orthodox, 100 = Righteous. Influences faction relations.
+	"karma",       # 0 = Sinner/Heaven's Wrath, 100 = Blessed/Meritorious. Influences tribulation difficulty and luck events.
+	"reputation"   # 0 = Unknown, 100 = Jianghu Legend. Influences recruitment and intimidation.
 ]
 
 # --- APTITUDE LEVELS ---
@@ -115,6 +132,19 @@ const BASE_STATS_BY_AGE = {
 	"teen": 10,     # Age 13-19
 	"adult": 20,    # Age 20-60
 	"elder": 15     # Age 60+ 
+}
+
+# Age thresholds dictating how many personality traits a character has organically developed.
+const PERSONALITY_AGE_THRESHOLDS = {
+	6: 0,   # 0-6 years: 0 traits
+	12: 1,  # 7-12 years: 1 trait
+	17: 2,  # 13-17 years: 2 traits
+	999: 3  # 18+ years: 3 traits
+}
+
+enum TraitType {
+	PERSONALITY,
+	COMMON
 }
 
 const STAT_CAP = 255

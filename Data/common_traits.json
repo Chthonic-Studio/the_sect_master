@@ -1,0 +1,223 @@
+[
+	{
+		"id": "divine_aptitude",
+		"display_name": "Divine Aptitude",
+		"type": "common",
+		"description": "Born with meridians as wide as rivers. Exceptional cultivation speed.",
+		"rarity_weight": 5,
+		"stat_modifiers": { "qi_absorption": 50, "comprehension": 25 },
+		"conflicts": ["crippled", "dantian_damaged"]
+	},
+	{
+		"id": "body_of_iron",
+		"display_name": "Body of Iron",
+		"type": "common",
+		"description": "Flesh refined like tempered steel. Impervious to basic weapons.",
+		"rarity_weight": 20,
+		"stat_modifiers": { "constitution": 20, "strength": 15 },
+		"conflicts": ["crippled", "spiritual_scars"]
+	},
+	{
+		"id": "qi_deviation_survivor",
+		"display_name": "Qi Deviation Survivor",
+		"type": "common",
+		"description": "Survived a catastrophic internal energy collapse.",
+		"rarity_weight": 15,
+		"stat_modifiers": { "qi_capacity": -15, "luck": -10 },
+		"conflicts": ["enlightened_mind", "blessed_by_fortune"]
+	},
+	{
+		"id": "spiritual_scars",
+		"display_name": "Spiritual Scars",
+		"type": "common",
+		"description": "Their soul was damaged in a past encounter. Vulnerable to mental arts.",
+		"rarity_weight": 20,
+		"stat_modifiers": { "intelligence": -10, "luck": -5 },
+		"conflicts": ["body_of_iron"]
+	},
+	{
+		"id": "ancient_master",
+		"display_name": "Ancient Master",
+		"type": "common",
+		"description": "Has lived for centuries. Their base stats degrade, but their knowledge is vast.",
+		"rarity_weight": 5,
+		"stat_modifiers": { "constitution": -10, "strength": -10, "comprehension": 40 },
+		"conflicts": ["martial_prodigy"]
+	},
+	{
+		"id": "crippled",
+		"display_name": "Crippled Meridians",
+		"type": "common",
+		"description": "Internal channels are completely blocked.",
+		"rarity_weight": 10,
+		"stat_modifiers": { "qi_absorption": -80, "constitution": -10 },
+		"conflicts": ["divine_aptitude", "martial_prodigy", "body_of_iron"]
+	},
+	{
+		"id": "demon_beast_hunter",
+		"display_name": "Demon Beast Hunter",
+		"type": "common",
+		"description": "Specialized in tracking and killing supernatural fauna.",
+		"rarity_weight": 25,
+		"stat_modifiers": { "agility": 5 },
+		"conflicts": ["spirit_beast_companion"]
+	},
+	{
+		"id": "enlightened",
+		"display_name": "Enlightened",
+		"type": "common",
+		"description": "Has glimpsed the true Dao.",
+		"rarity_weight": 5,
+		"stat_modifiers": { "comprehension": 50, "luck": 15 },
+		"conflicts": ["cursed", "world_weary"]
+	},
+	{
+		"id": "world_weary",
+		"display_name": "World-Weary",
+		"type": "common",
+		"description": "Tired of the endless cycle of Jianghu violence.",
+		"rarity_weight": 20,
+		"personality_modifiers": { "ambition": -30, "sociability": -10 },
+		"conflicts": ["enlightened", "ambitious"]
+	},
+	{
+		"id": "infamous",
+		"display_name": "Infamous",
+		"type": "common",
+		"description": "Their name is used to scare children in the mortal realms.",
+		"rarity_weight": 20,
+		"stat_modifiers": { "charisma": -15 },
+		"personality_modifiers": { "reputation": 40, "morality": -30 },
+		"conflicts": ["hero_of_the_sect"]
+	},
+	{
+		"id": "hero_of_the_sect",
+		"display_name": "Hero of the Sect",
+		"type": "common",
+		"description": "Revered by their peers for past deeds.",
+		"rarity_weight": 15,
+		"stat_modifiers": { "charisma": 20 },
+		"personality_modifiers": { "reputation": 30, "loyalty": 30 },
+		"conflicts": ["infamous"]
+	},
+	{
+		"id": "blessed_by_fortune",
+		"display_name": "Blessed by Fortune",
+		"type": "common",
+		"description": "The Heavens seem to favor this one.",
+		"rarity_weight": 10,
+		"stat_modifiers": { "luck": 40 },
+		"personality_modifiers": { "karma": 30 },
+		"conflicts": ["cursed"]
+	},
+	{
+		"id": "martial_prodigy",
+		"display_name": "Martial Prodigy",
+		"type": "common",
+		"description": "Understands complex martial forms after seeing them only once.",
+		"rarity_weight": 8,
+		"stat_modifiers": { "agility": 15, "strength": 10, "comprehension": 30 },
+		"conflicts": ["crippled", "ancient_master"]
+	},
+	{
+		"id": "scholar",
+		"display_name": "Scholar",
+		"type": "common",
+		"description": "Well-read in ancient texts, stratagems, and poetry.",
+		"rarity_weight": 30,
+		"stat_modifiers": { "intelligence": 15, "charisma": 5 },
+		"conflicts": ["impulsive", "superstitious"]
+	},
+	{
+		"id": "master_alchemist",
+		"display_name": "Master Alchemist",
+		"type": "common",
+		"description": "Possesses deep knowledge of herbs and pill refinement. (System pending)",
+		"rarity_weight": 15,
+		"stat_modifiers": { "intelligence": 10 },
+		"conflicts": []
+	},
+	{
+		"id": "enlightened_mind",
+		"display_name": "Enlightened Mind",
+		"type": "common",
+		"description": "Immune to petty illusions and mental traps.",
+		"rarity_weight": 10,
+		"stat_modifiers": { "comprehension": 20, "intelligence": 15 },
+		"conflicts": ["qi_deviation_survivor", "superstitious"]
+	},
+	{
+		"id": "cursed",
+		"display_name": "Cursed",
+		"type": "common",
+		"description": "Tribulation lightning strikes a little too close, a little too often.",
+		"rarity_weight": 5,
+		"stat_modifiers": { "luck": -40 },
+		"personality_modifiers": { "karma": -30 },
+		"conflicts": ["blessed_by_fortune"]
+	},
+	{
+		"id": "ancient_bloodline",
+		"display_name": "Ancient Bloodline",
+		"type": "common",
+		"description": "Carries a dormant physical mutation from an era long past.",
+		"rarity_weight": 5,
+		"stat_modifiers": { "constitution": 15, "qi_capacity": 20 },
+		"conflicts": []
+	},
+	{
+		"id": "dantian_damaged",
+		"display_name": "Dantian Damaged",
+		"type": "common",
+		"description": "Their energy center leaks Qi constantly.",
+		"rarity_weight": 15,
+		"stat_modifiers": { "qi_capacity": -50, "qi_absorption": -20 },
+		"conflicts": ["divine_aptitude"]
+	},
+	{
+		"id": "sword_heart_enlightenment",
+		"display_name": "Sword Heart Enlightenment",
+		"type": "common",
+		"description": "Their intent is as sharp as a blade. Immense combat potential.",
+		"rarity_weight": 2,
+		"stat_modifiers": { "strength": 20, "agility": 15 },
+		"conflicts": []
+	},
+	{
+		"id": "spirit_beast_companion",
+		"display_name": "Spirit Beast Companion",
+		"type": "common",
+		"description": "Accompanied by a loyal magical beast. (System pending)",
+		"rarity_weight": 10,
+		"stat_modifiers": { "charisma": 5 },
+		"conflicts": ["demon_beast_hunter"]
+	},
+	{
+		"id": "forbidden_knowledge_seeker",
+		"display_name": "Forbidden Knowledge Seeker",
+		"type": "common",
+		"description": "Dabbles in Demonic arts for quicker gains. High risk, high reward.",
+		"rarity_weight": 12,
+		"stat_modifiers": { "qi_absorption": 30 },
+		"personality_modifiers": { "morality": -20, "curiosity": 20 },
+		"conflicts": ["pious", "righteous"]
+	},
+	{
+		"id": "free_spirit",
+		"display_name": "Free Spirit",
+		"type": "common",
+		"description": "Hates the rigid hierarchy of traditional sects.",
+		"rarity_weight": 20,
+		"personality_modifiers": { "loyalty": -20, "discipline": -10, "sociability": 15 },
+		"conflicts": ["disciplined", "dogmatic"]
+	},
+	{
+		"id": "ghostly_presence",
+		"display_name": "Ghostly Presence",
+		"type": "common",
+		"description": "Naturally stealthy, often forgotten by those around them.",
+		"rarity_weight": 15,
+		"stat_modifiers": { "agility": 10, "charisma": -15 },
+		"conflicts": ["charismatic", "infamous"]
+	}
+]

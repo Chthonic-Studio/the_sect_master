@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="The Sect Master"
-run/main_scene="uid://bxa4ouhsmwjls"
+run/main_scene="uid://orxe6dw2vjou"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -27,8 +27,10 @@ CharacterGenerator="*uid://cf5m61f2w6q8r"
 
 [display]
 
-window/size/viewport_width=1680
-window/size/viewport_height=900
+window/size/viewport_width=1200
+window/size/viewport_height=800
+window/size/window_width_override=1680
+window/size/window_height_override=900
 
 [rendering]
 

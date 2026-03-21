@@ -1,19 +1,40 @@
 {
 	"cultures": {
+		"CENTRAL_PLAINS": {
+			"surnames": ["Zhao", "Qian", "Sun", "Li", "Zhou", "Wu", "Zheng", "Wang"],
+			"male_given": ["Wei", "Jian", "Ping", "Bo", "Chen"],
+			"female_given": ["Fang", "Jing", "Min", "Hua", "Xiu"]
+		},
 		"SICHUAN": {
-			"surnames": ["Tang", "Bao", "Lei"],
-			"male_given": ["Feng", "Huo", "Jun"],
-			"female_given": ["Mei", "Ling", "Zhu"]
+			"surnames": ["Tang", "Bao", "Lei", "Miao", "Zou"],
+			"male_given": ["Feng", "Huo", "Jun", "Yan", "Lie"],
+			"female_given": ["Mei", "Ling", "Zhu", "Qiu", "Hong"]
 		},
 		"JIANGNAN": {
-			"surnames": ["Lin", "Ye", "Su"],
-			"male_given": ["Wen", "Shi", "Xian"],
-			"female_given": ["Rou", "Yue", "Qin"]
-		}
-	},
+			"surnames": ["Lin", "Ye", "Su", "Shen", "Gu", "Lu"],
+			"male_given": ["Wen", "Shi", "Xian", "Yu", "Qing"],
+			"female_given": ["Rou", "Yue", "Qin", "Wan", "Shui"]
+		},
+		"LINGNAN": {
+			"surnames": ["Huang", "Zeng", "Peng", "Mo", "He"],
+			"male_given": ["Shan", "Hai", "Gang", "Tie", "Zhen"],
+			"female_given": ["Lan", "Cui", "Zhen", "Qiao", "Biyu"]
+		},
+		"WESTERN_REGIONS": {
+			"surnames": ["An", "Shi", "Kang", "Jin", "Ma"],
+			"male_given": ["Tu", "Batu", "Sha", "Lie", "Kuang"],
+			"female_given": ["Jin", "Yin", "Sha", "Luo", "Moli"]
+		},
+		"NORTHERN_BORDER": {
+			"surnames": ["Gongsun", "Murong", "Tuo", "Duan", "Gao"],
+			"male_given": ["Feng", "Biao", "Mang", "Zhan", "Kuo"],
+			"female_given": ["Bing", "Xue", "Shuang", "Han", "Leng"]
+		},
 	"generic": {
 		"surnames": ["Li", "Wang", "Zhang", "Liu"],
 		"male_given": ["Wei", "Qiang", "Lei"],
 		"female_given": ["Yan", "Fang", "Xiu"]
+	}
+	
 	}
 }

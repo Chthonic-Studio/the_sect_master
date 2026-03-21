@@ -2,24 +2,20 @@ extends Node
 
 # --- REGISTRIES (The "Rules") ---
 var traits_registry: Dictionary = {}
-var personalities_registry: Dictionary = {}
 var name_pools: Dictionary = {}
 
 # --- REPOSITORIES (The "Living Entities") ---
 var character_repo: Dictionary = {} 
 
-# --- PERSISTENCE COUNTERS ---
-# This ensures every character ever created gets a unique, incremental ID.
-# This value MUST be saved and loaded to prevent ID reuse in a saved game.
 var next_char_id: int = 1
 
-# --- INITIALIZATION ---
 func _ready() -> void:
 	load_all_data()
 
 func load_all_data() -> void:
-	_load_json_to_registry("res://data/traits.json", traits_registry)
-	_load_json_to_registry("res://data/personalities.json", personalities_registry)
+	_load_json_to_registry("res://data/traits_personality.json", traits_registry)
+	_load_json_to_registry("res://data/traits_common.json", traits_registry)
+	
 	_load_names_pool("res://data/names.json")
 
 func _load_json_to_registry(path: String, target_dict: Dictionary) -> void:
@@ -27,8 +23,7 @@ func _load_json_to_registry(path: String, target_dict: Dictionary) -> void:
 		printerr("DataManager: File not found at ", path)
 		return
 	var file = FileAccess.open(path, FileAccess.READ)
-	var json_text = file.get_as_text()
-	var data = JSON.parse_string(json_text)
+	var data = JSON.parse_string(file.get_as_text())
 	if data is Array:
 		for item in data:
 			if item.has("id"):
@@ -48,7 +43,6 @@ func register_character(char_data: CharacterData) -> void:
 		char_data.char_id = _generate_sequential_id()
 	character_repo[char_data.char_id] = char_data
 
-## Guarantees uniqueness by using a simple counter.
 func _generate_sequential_id() -> String:
 	var id = "char_" + str(next_char_id)
 	next_char_id += 1
@@ -74,11 +68,10 @@ func get_trait_modifiers_for_personality(trait_ids: Array[String], p_name: Strin
 	for tid in trait_ids:
 		if traits_registry.has(tid):
 			var trait_data = traits_registry[tid]
+			# Traits now directly modify the continuous axes
 			if trait_data.has("personality_modifiers"):
 				total_mod += trait_data["personality_modifiers"].get(p_name, 0)
 	return total_mod
-
-# --- SAVE/LOAD LOGIC ---
 
 func get_save_data() -> Dictionary:
 	var characters_dict = {}
@@ -86,14 +79,12 @@ func get_save_data() -> Dictionary:
 		characters_dict[char_id] = character_repo[char_id].to_dictionary()
 	
 	return {
-		"next_char_id": next_char_id, # CRITICAL: Save the counter state
+		"next_char_id": next_char_id,
 		"characters": characters_dict
 	}
 
 func load_save_data(save_data: Dictionary) -> void:
 	character_repo.clear()
-	
-	# Restore the counter so new characters don't overwrite old IDs
 	next_char_id = save_data.get("next_char_id", 1)
 	
 	var all_char_data = save_data.get("characters", {})

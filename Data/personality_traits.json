@@ -1,0 +1,180 @@
+[
+	{
+		"id": "righteous",
+		"display_name": "Righteous",
+		"type": "personality",
+		"description": "Upholds justice and orthodox values above all else.",
+		"personality_modifiers": { "honor": 30, "morality": 40, "ruthlessness": -20 },
+		"conflicts": ["scheming", "cruel", "hedonist", "vengeful"]
+	},
+	{
+		"id": "scheming",
+		"display_name": "Scheming",
+		"type": "personality",
+		"description": "Always looking for an angle. Trust is a vulnerability.",
+		"personality_modifiers": { "cunning": 30, "honor": -20, "ambition": 15 },
+		"conflicts": ["righteous", "altruistic", "stoic", "impulsive"]
+	},
+	{
+		"id": "fierce",
+		"display_name": "Fierce",
+		"type": "personality",
+		"description": "Aggressive and uncompromising in all matters.",
+		"personality_modifiers": { "ruthlessness": 25, "sociability": -15, "discipline": 10 },
+		"conflicts": ["calm", "altruistic", "lazy"]
+	},
+	{
+		"id": "arrogant",
+		"display_name": "Arrogant",
+		"type": "personality",
+		"description": "Believes their cultivation path is inherently superior.",
+		"personality_modifiers": { "ambition": 20, "sociability": -20 },
+		"stat_modifiers": { "charisma": -5 },
+		"conflicts": ["altruistic", "stoic"]
+	},
+	{
+		"id": "disciplined",
+		"display_name": "Disciplined",
+		"type": "personality",
+		"description": "Possesses a will of iron. Never skips morning forms.",
+		"personality_modifiers": { "discipline": 35, "honor": 10 },
+		"conflicts": ["lazy", "impulsive", "hedonist"]
+	},
+	{
+		"id": "impulsive",
+		"display_name": "Impulsive",
+		"type": "personality",
+		"description": "Acts on the first thought that enters their mind.",
+		"personality_modifiers": { "discipline": -25, "curiosity": 20 },
+		"conflicts": ["disciplined", "stoic", "scheming", "calm"]
+	},
+	{
+		"id": "dao_seeker",
+		"display_name": "Dao-Seeker",
+		"type": "personality",
+		"description": "Obsessed with the fundamental truths of the universe.",
+		"personality_modifiers": { "curiosity": 30, "ambition": 10, "greed": -20 },
+		"conflicts": ["lazy", "hedonist", "superstitious"]
+	},
+	{
+		"id": "hedonist",
+		"display_name": "Hedonist",
+		"type": "personality",
+		"description": "Why cultivate immortality if you can't enjoy the mortal realm?",
+		"personality_modifiers": { "greed": 25, "discipline": -20, "sociability": 20 },
+		"conflicts": ["disciplined", "dao_seeker", "pious", "stoic"]
+	},
+	{
+		"id": "perceptive",
+		"display_name": "Perceptive",
+		"type": "personality",
+		"description": "Notices the slightest shifts in wind and intent.",
+		"personality_modifiers": { "cunning": 15, "curiosity": 15 },
+		"conflicts": ["impulsive", "dogmatic"]
+	},
+	{
+		"id": "charismatic",
+		"display_name": "Charismatic",
+		"type": "personality",
+		"description": "Naturally draws others to their side.",
+		"personality_modifiers": { "sociability": 30 },
+		"stat_modifiers": { "charisma": 15 },
+		"conflicts": ["stoic", "cruel", "envious"]
+	},
+	{
+		"id": "stoic",
+		"display_name": "Stoic",
+		"type": "personality",
+		"description": "Emotions are ripples on a pond; they are the deep water.",
+		"personality_modifiers": { "discipline": 20, "sociability": -15 },
+		"conflicts": ["impulsive", "hedonist", "vengeful"]
+	},
+	{
+		"id": "envious",
+		"display_name": "Envious",
+		"type": "personality",
+		"description": "Covets the breakthroughs and treasures of others.",
+		"personality_modifiers": { "greed": 30, "loyalty": -20, "honor": -15 },
+		"conflicts": ["altruistic", "generous", "stoic"]
+	},
+	{
+		"id": "lazy",
+		"display_name": "Lazy",
+		"type": "personality",
+		"description": "Prefers a nap over a breakthrough.",
+		"personality_modifiers": { "discipline": -30, "ambition": -20 },
+		"conflicts": ["disciplined", "dao_seeker", "fierce"]
+	},
+	{
+		"id": "innovative",
+		"display_name": "Innovative",
+		"type": "personality",
+		"description": "Always seeking to combine techniques in forbidden ways.",
+		"personality_modifiers": { "curiosity": 35, "honor": -10 },
+		"conflicts": ["dogmatic", "lazy"]
+	},
+	{
+		"id": "altruistic",
+		"display_name": "Altruistic",
+		"type": "personality",
+		"description": "Will bleed so others do not have to.",
+		"personality_modifiers": { "honor": 25, "sociability": 20, "greed": -20 },
+		"conflicts": ["cruel", "scheming", "envious", "arrogant"]
+	},
+	{
+		"id": "pious",
+		"display_name": "Pious",
+		"type": "personality",
+		"description": "Strictly adheres to the spiritual doctrines of the sect.",
+		"personality_modifiers": { "honor": 15, "loyalty": 30, "curiosity": -15 },
+		"conflicts": ["hedonist", "innovative"]
+	},
+	{
+		"id": "calm",
+		"display_name": "Calm",
+		"type": "personality",
+		"description": "Unshakeable, even when the heavens fall.",
+		"personality_modifiers": { "discipline": 15, "ruthlessness": -10 },
+		"conflicts": ["fierce", "impulsive", "vengeful"]
+	},
+	{
+		"id": "vengeful",
+		"display_name": "Vengeful",
+		"type": "personality",
+		"description": "A slight against them is a debt repaid in blood.",
+		"personality_modifiers": { "ruthlessness": 30, "honor": -10, "sociability": -15 },
+		"conflicts": ["calm", "altruistic", "stoic"]
+	},
+	{
+		"id": "cruel",
+		"display_name": "Cruel",
+		"type": "personality",
+		"description": "Finds joy in the suffering of those beneath their realm.",
+		"personality_modifiers": { "ruthlessness": 40, "morality": -40, "sociability": -20 },
+		"conflicts": ["righteous", "altruistic", "generous"]
+	},
+	{
+		"id": "generous",
+		"display_name": "Generous",
+		"type": "personality",
+		"description": "Freely gives pills and advice to juniors.",
+		"personality_modifiers": { "greed": -30, "sociability": 20 },
+		"conflicts": ["greedy", "cruel", "envious"]
+	},
+	{
+		"id": "dogmatic",
+		"display_name": "Dogmatic",
+		"type": "personality",
+		"description": "Believes the ancient ways are the only ways.",
+		"personality_modifiers": { "curiosity": -30, "loyalty": 20 },
+		"conflicts": ["innovative", "dao_seeker"]
+	},
+	{
+		"id": "superstitious",
+		"display_name": "Superstitious",
+		"type": "personality",
+		"description": "Sees omens in tea leaves and thunder claps.",
+		"personality_modifiers": { "curiosity": -10, "cunning": -10 },
+		"conflicts": ["dao_seeker", "scholar"]
+	}
+]

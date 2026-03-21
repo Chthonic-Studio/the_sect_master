@@ -17,6 +17,7 @@ var is_alive: bool = true
 var base_stats = {}
 var base_cultivation = {}
 var personality_values = {}
+var alignment_values = {}
 var traits: Array[String] = []
 
 # --- INITIALIZATION ---
@@ -30,6 +31,8 @@ func _setup_empty_stats():
 		base_cultivation[s] = 0
 	for p_name in Definitions.PERSONALITY_STATS:
 		personality_values[p_name] = 50
+	for a_name in Definitions.ALIGNMENT_STATS:
+		alignment_values[a_name] = 50
 
 # --- DATA ACCESSORS ---
 
