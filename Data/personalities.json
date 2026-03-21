@@ -1,0 +1,36 @@
+[
+  {
+	"id": "ambitious",
+	"display_name": "Ambitious",
+	"description": "This character craves power and status above all else.",
+	"rarity_weight": 50,
+	"hidden_values": {
+	  "ambition": 85,
+	  "loyalty": 30,
+	  "honor": 40
+	},
+	"ai_behavior_modifiers": {
+	  "betrayal_threshold": 0.7,
+	  "training_frequency": 1.2,
+	  "rebellion_chance": 1.5
+	},
+	"conflicts": ["content", "lazy"]
+  },
+  {
+	"id": "loyalist",
+	"display_name": "Loyal",
+	"description": "A pillar of the sect who values the collective over the self.",
+	"rarity_weight": 60,
+	"hidden_values": {
+	  "ambition": 20,
+	  "loyalty": 90,
+	  "honor": 80
+	},
+	"ai_behavior_modifiers": {
+	  "betrayal_threshold": 0.1,
+	  "defense_priority": 1.4,
+	  "sacrifice_willingness": 2.0
+	},
+	"conflicts": ["ambitious", "treacherous"]
+  }
+]

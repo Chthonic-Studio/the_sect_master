@@ -8,17 +8,20 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="The Sect Master"
 run/main_scene="uid://bxa4ouhsmwjls"
-config/features=PackedStringArray("4.5", "GL Compatibility")
+config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
-CharacterManager="*res://Globals/character_manager.gd"
-CharacterFactory="*res://Globals/character_factory.gd"
+Definitions="*uid://dap1gd3uqy8wj"
 
 [display]
 
