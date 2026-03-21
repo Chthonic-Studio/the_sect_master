@@ -1,14 +1,19 @@
 {
-  "male_first": [
-	"Wei", "Li", "Han", "Bo", "Fu", "He", "Jian", "Zheng", "Long", "Qiang"
-  ],
-  "female_first": [
-	"Mei", "Xue", "Lian", "Chun", "Jia", "Ru", "Yan", "Zhu", "Ling", "Fen"
-  ],
-  "neutral_first": [
-	"Yun", "Tian", "An", "Ning", "Shan", "Xiao", "Zhi"
-  ],
-  "last_names": [
-	"Lin", "Zhao", "Zhang", "Li", "Wang", "Wu", "Liu", "Chen", "Yang", "Huang"
-  ]
+	"cultures": {
+		"SICHUAN": {
+			"surnames": ["Tang", "Bao", "Lei"],
+			"male_given": ["Feng", "Huo", "Jun"],
+			"female_given": ["Mei", "Ling", "Zhu"]
+		},
+		"JIANGNAN": {
+			"surnames": ["Lin", "Ye", "Su"],
+			"male_given": ["Wen", "Shi", "Xian"],
+			"female_given": ["Rou", "Yue", "Qin"]
+		}
+	},
+	"generic": {
+		"surnames": ["Li", "Wang", "Zhang", "Liu"],
+		"male_given": ["Wei", "Qiang", "Lei"],
+		"female_given": ["Yan", "Fang", "Xiu"]
+	}
 }

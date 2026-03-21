@@ -19,9 +19,22 @@ enum CultivationStat {
 	LUCK             # Critical hit chance and random event favorability
 }
 
+# --- MARTIAL PROGRESSION ---
+# Based on internal energy refinement and Jianghu reputation.
+enum MartialRealm {
+	UNINITIATED,		# Commoner/Novice
+	THIRD_RATE,			# Basic internal energy, local thug level
+	SECOND_RATE,		# Proficient, established sect member
+	FIRST_RATE,			# Master level, can lead a branch
+	PEAK_MASTER,		# Famous in the region
+	GRANDMASTER,		# Sect leader level, legendary status
+	TRASCENDENT,		# Mythical, "Invincible under the Heavens"
+	SUMMIT,				# Last step before immortality
+}
+
 # --- PERSONALITY AXES ---
 # These track the hidden "Utility AI" values. 
-# Your JSONs will reference these to drive NPC decision making.
+# JSONs will reference these to drive NPC decision making.
 const PERSONALITY_STATS = [
 	"ambition",     # Drive to rise in rank. High = Confidence; Low = Humility.
 	"honor",        # Adherence to rules. High = Integrity/Honesty; Low = Deception.
@@ -34,15 +47,66 @@ const PERSONALITY_STATS = [
 	"loyalty"       # Dedication specifically to the Sect/Master. Distinct from general honor.
 ]
 
-# --- TALENT LEVELS ---
+# --- APTITUDE LEVELS ---
 # Used by the generator to define quality tiers.
-enum TalentTier {
-	TRASH,     # Gray
-	COMMON,    # White
-	EARTH,     # Green
-	HEAVEN,    # Purple
-	MYTHIC     # Gold/Orange
+enum Aptitude {
+	MEDIOCRE,			# Slow learning, low Qi ceiling
+	STURDY,				# Bonus to External/Physical arts
+	FLEXIBLE,			# Bonus to Agility/Lightness skills
+	GENIUS,				# Bonus to Intelligence and skill gain speed
+	ENLIGHTENED,		# High comprehension for Internal arts
+	HEAVEN_SENT,		# Rare 'Martial Skeleton', fast learning in all areas
+	WITHERED,			# Blocked meridians, extremely difficult to cultivate
 }
+
+# --- CHARACTER STATE ---
+enum LifeState {
+	HEALTHY,
+	INJURED,			# Flesh wounds (External)
+	INTERNAL_INJURY,	# Damaged meridians (Qi-based)
+	CRIPPLED,			# Permanent stat loss
+	MEDITATING,
+	RETIRED,			# Left the Jianghu
+	DEAD
+}
+
+enum Gender {
+	MALE,
+	FEMALE,
+	NON_BINARY,
+	NON_HUMAN
+}
+
+# --- GEOGRAPHY & CULTURE ---
+# Used for name generation, starting traits, and regional bonuses.
+enum Culture {
+	CENTRAL_PLAINS,		# Standard/Han balance
+	SICHUAN,			# Poison/Hidden Weapon affinity, spicy temperament
+	JIANGNAN,			# Scholar/Elegant arts, high comprehension
+	LINGNAN,			# Hard physical styles, resilient
+	WESTERN_REGIONS,	# Exotic styles, high agility
+	NORTHERN_BORDER		# Heavy weapons, high strength
+}
+
+# --- SECT HIERARCHY ---
+enum SectRank {
+	LABORER,
+	OUTER_DISCIPLE,
+	INNER_DISCIPLE,
+	CORE_DISCIPLE,
+	ELDER,
+	SECT_MASTER
+}
+
+enum SocialClass {
+	PEASANT,
+	CITIZEN,
+	GENTRY,
+	NOBILITY,
+	OUTCAST			# Bandits, beggars, etc.
+}
+
+
 
 # --- GENERATION CONSTANTS ---
 # Centralized math modifiers so you can balance the whole game in one file.
