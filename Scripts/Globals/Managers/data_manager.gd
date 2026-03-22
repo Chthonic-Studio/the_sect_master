@@ -176,6 +176,7 @@ func _ensure_mod_directories() -> void:
 		dir.make_dir("Mods")
 		dir.make_dir("Mods/Traits")
 		dir.make_dir("Mods/Names")
+		dir.make_dir("Mods/Modifiers")
 
 ## Generic directory scanner that applies a specific loading Callable to each JSON found
 func _scan_directory_for_json(path: String, load_func: Callable) -> void:
