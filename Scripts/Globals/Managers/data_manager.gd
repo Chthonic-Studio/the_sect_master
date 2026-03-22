@@ -7,6 +7,7 @@ const MOD_DATA_PATH = "user://Mods/"
 # --- REGISTRIES (The "Rules") ---
 var traits_registry: Dictionary = {}
 var name_pools: Dictionary = {}
+var modifiers_registry: Dictionary = {}
 
 # --- REPOSITORIES (The "Living Entities") ---
 var character_repo: Dictionary = {} 
@@ -15,15 +16,27 @@ var next_char_id: int = 1
 
 func _ready() -> void:
 	load_all_data()
+	TimeManager.day_passed.connect(_on_day_passed)
 
+## Broadcasts the daily tick to all active characters in the simulation
+func _on_day_passed(_day: int) -> void:
+	var current_total_days = TimeManager.get_total_days_elapsed()
+	
+	for char_id in character_repo:
+		var character = character_repo[char_id]
+		if character.is_alive:
+			character.process_daily_tick(current_total_days)
+			
 func load_all_data() -> void:
 	# 1. Load vanilla game data
 	_scan_directory_for_json(BASE_DATA_PATH + "Traits", _load_trait_data)
 	_scan_directory_for_json(BASE_DATA_PATH + "Names", _load_name_data)
+	_scan_directory_for_json(BASE_DATA_PATH + "Modifiers", _load_modifier_data)
 	
 	# 2. Load modded data (overwrites vanilla IDs or adds new ones)
 	_scan_directory_for_json(MOD_DATA_PATH + "Traits", _load_trait_data)
 	_scan_directory_for_json(MOD_DATA_PATH + "Names", _load_name_data)
+	_scan_directory_for_json(MOD_DATA_PATH + "Modifiers", _load_modifier_data)
 
 func _load_json_to_registry(path: String, target_dict: Dictionary) -> void:
 	if not FileAccess.file_exists(path):
@@ -42,6 +55,19 @@ func _load_names_pool(path: String) -> void:
 	if not FileAccess.file_exists(path): return
 	var file = FileAccess.open(path, FileAccess.READ)
 	name_pools = JSON.parse_string(file.get_as_text())
+
+func _load_modifier_data(path: String) -> void:
+	var file = FileAccess.open(path, FileAccess.READ)
+	var json = JSON.new()
+	var error = json.parse(file.get_as_text())
+	
+	if error != OK:
+		printerr("DataManager: JSON Parse Error in Modifiers ", path)
+		return
+		
+	var data = json.data
+	if data is Dictionary:
+		modifiers_registry.merge(data, true)
 
 #region Character Repo Management
 # --- CHARACTER REPO MANAGEMENT ---
@@ -64,48 +90,58 @@ func get_character(char_id: String) -> CharacterData:
 #region Calculator Functions
 # --- CALCULATOR FUNCTIONS ---
 
-func get_trait_modifiers_for_stat(trait_ids: Array[String], stat_enum: int) -> int:
-	var total_mod = 0
+func get_total_stat_modifiers(trait_ids: Array[String], modifier_ids: Array[String], stat_enum: int) -> int:
+	var total = 0
 	var stat_name = Definitions.Stat.keys()[stat_enum].to_lower()
-	for tid in trait_ids:
-		if traits_registry.has(tid):
-			var trait_data = traits_registry[tid]
-			if trait_data.has("stat_modifiers"):
-				total_mod += trait_data["stat_modifiers"].get(stat_name, 0)
-	return total_mod
-
-func get_trait_modifiers_for_personality(trait_ids: Array[String], p_name: String) -> int:
-	var total_mod = 0
-	for tid in trait_ids:
-		if traits_registry.has(tid):
-			var trait_data = traits_registry[tid]
-			# Traits now directly modify the continuous axes
-			if trait_data.has("personality_modifiers"):
-				total_mod += trait_data["personality_modifiers"].get(p_name, 0)
-	return total_mod
-
-func get_trait_modifiers_for_cultivation(trait_ids: Array[String], stat_enum: int) -> int:
-	var total_mod = 0
-	# Converts enum to string key (e.g. CultivationStat.QI_ABSORPTION -> "qi_absorption")
-	var stat_name = Definitions.CultivationStat.keys()[stat_enum].to_lower()
 	
 	for tid in trait_ids:
 		if traits_registry.has(tid):
-			var trait_data = traits_registry[tid]
-			if trait_data.has("stat_modifiers"):
-				total_mod += trait_data["stat_modifiers"].get(stat_name, 0)
-	return total_mod
+			total += traits_registry[tid].get("stat_modifiers", {}).get(stat_name, 0)
+			
+	for mid in modifier_ids:
+		if modifiers_registry.has(mid):
+			total += modifiers_registry[mid].get("stat_modifiers", {}).get(stat_name, 0)
+			
+	return total
 
-func get_trait_modifiers_for_alignment(trait_ids: Array[String], a_name: String) -> int:
-	var total_mod = 0
+func get_total_personality_modifiers(trait_ids: Array[String], modifier_ids: Array[String], p_name: String) -> int:
+	var total = 0
 	for tid in trait_ids:
 		if traits_registry.has(tid):
-			var trait_data = traits_registry[tid]
-			# In your JSON, alignment modifiers like "morality" and "karma" are 
-			# stored inside the "personality_modifiers" block.
-			if trait_data.has("personality_modifiers"):
-				total_mod += trait_data["personality_modifiers"].get(a_name, 0)
-	return total_mod
+			total += traits_registry[tid].get("personality_modifiers", {}).get(p_name, 0)
+			
+	for mid in modifier_ids:
+		if modifiers_registry.has(mid):
+			total += modifiers_registry[mid].get("personality_modifiers", {}).get(p_name, 0)
+			
+	return total
+
+func get_total_martial_modifiers(trait_ids: Array[String], modifier_ids: Array[String], stat_enum: int) -> int:
+	var total = 0
+	var stat_name = Definitions.MartialStat.keys()[stat_enum].to_lower()
+	
+	for tid in trait_ids:
+		if traits_registry.has(tid):
+			total += traits_registry[tid].get("martial_modifiers", {}).get(stat_name, 0)
+			
+	for mid in modifier_ids:
+		if modifiers_registry.has(mid):
+			total += modifiers_registry[mid].get("martial_modifiers", {}).get(stat_name, 0)
+			
+	return total
+
+func get_total_alignment_modifiers(trait_ids: Array[String], modifier_ids: Array[String], a_name: String) -> int:
+	var total = 0
+	
+	for tid in trait_ids:
+		if traits_registry.has(tid):
+			total += traits_registry[tid].get("alignment_modifiers", {}).get(a_name, 0)
+			
+	for mid in modifier_ids:
+		if modifiers_registry.has(mid):
+			total += modifiers_registry[mid].get("alignment_modifiers", {}).get(a_name, 0)
+			
+	return total
 
 #endregion
 

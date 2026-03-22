@@ -26,8 +26,42 @@ metadata/_edit_use_anchors_ = true
 
 [node name="DEBUG_CharacterList" type="GridContainer" parent="." unique_id=139573471]
 layout_mode = 0
-offset_left = 785.0
-offset_top = 21.0
-offset_right = 1183.0
-offset_bottom = 773.0
-columns = 2
+offset_left = 680.0
+offset_top = 129.0
+offset_right = 1187.0
+offset_bottom = 790.0
+columns = 3
+
+[node name="DEBUG_WorldTime" type="Label" parent="." unique_id=341480403]
+layout_mode = 0
+offset_left = 1000.0
+offset_top = 3.0
+offset_right = 1195.0
+offset_bottom = 67.0
+
+[node name="DEBUG_TimePanel" type="HBoxContainer" parent="." unique_id=1906650103]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 6.0
+offset_right = 256.0
+offset_bottom = 46.0
+
+[node name="0" type="Button" parent="DEBUG_TimePanel" unique_id=440973904]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "0"
+
+[node name="x1" type="Button" parent="DEBUG_TimePanel" unique_id=1582810934]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "x1"
+
+[node name="x2" type="Button" parent="DEBUG_TimePanel" unique_id=744186797]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "x2"
+
+[node name="x3" type="Button" parent="DEBUG_TimePanel" unique_id=1175699094]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "x3"

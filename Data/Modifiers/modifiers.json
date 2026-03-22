@@ -1,0 +1,28 @@
+{
+	"demonic_blood_pill": {
+		"name": "Demonic Blood Surge",
+		"description": "Sacrifices sanity for immense physical and martial power. Expires quickly.",
+		"stat_modifiers": {
+			"strength": 20,
+			"agility": 10
+		},
+		"martial_modifiers": {
+			"ferocity": 30,
+			"qi_flow": 15
+		},
+		"personality_modifiers": {
+			"honor": -20,
+			"ruthlessness": 40
+		}
+	},
+	"meditation_insight": {
+		"name": "Lingering Insight",
+		"description": "The lingering clarity from a deep meditation session.",
+		"martial_modifiers": {
+			"insight": 15,
+			"technique": 10
+		}
+	},
+	
+	
+}
