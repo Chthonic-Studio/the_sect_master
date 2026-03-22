@@ -5,13 +5,45 @@ const STARTING_SPAWN_COUNT = 5
 @onready var spawn_button: Button = $DEBUG_SpawnRandomChar
 @onready var character_list: GridContainer = $DEBUG_CharacterList
 
+@onready var time_label: Label = $DEBUG_WorldTime
+@onready var btn_pause: Button = $"DEBUG_TimePanel/0"
+@onready var btn_x1: Button = $DEBUG_TimePanel/x1
+@onready var btn_x2: Button = $DEBUG_TimePanel/x2
+@onready var btn_x3: Button = $DEBUG_TimePanel/x3
+
 func _ready() -> void:
-	# 1. Connect signals decoupled from the editor UI
+	# 1. Connect Character Spawning
 	spawn_button.pressed.connect(_on_spawn_button_pressed)
 	
-	# 2. Spawn the initial batch to populate the grid
+	# 2. Connect Time Controls (Using lambdas for clean, one-line signal connections)
+	btn_pause.pressed.connect(func(): TimeManager.set_time_speed(TimeManager.Speed.PAUSED))
+	btn_x1.pressed.connect(func(): TimeManager.set_time_speed(TimeManager.Speed.NORMAL))
+	btn_x2.pressed.connect(func(): TimeManager.set_time_speed(TimeManager.Speed.FAST))
+	btn_x3.pressed.connect(func(): TimeManager.set_time_speed(TimeManager.Speed.SUPER_FAST))
+	
+	# 3. Connect Time Manager Signals to UI Updates
+	TimeManager.day_passed.connect(_update_time_display)
+	TimeManager.month_passed.connect(_update_time_display)
+	TimeManager.year_passed.connect(_update_time_display)
+	
+	# Initialize Display
+	_update_time_display(0) # Passing a dummy 0 just to initialize the text
+	TimeManager.set_time_speed(TimeManager.Speed.NORMAL) # Start the clock!
+	
+	# Spawn initial batch
 	for i in range(STARTING_SPAWN_COUNT):
 		_generate_and_display_character()
+
+# --- TIME LOGIC ---
+
+## Triggered by TimeManager signals.
+## The underscore parameter ignores the specific int (day/month/year) passed by the signal,
+## as we just grab the fully formatted string from the TimeManager directly.
+func _update_time_display(_value_passed: int) -> void:
+	time_label.text = TimeManager.get_date_string()
+	
+
+# --- CHARACTER LOGIC ---
 
 func _on_spawn_button_pressed() -> void:
 	_generate_and_display_character()

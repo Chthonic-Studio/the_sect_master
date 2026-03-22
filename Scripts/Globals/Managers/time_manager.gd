@@ -96,8 +96,8 @@ func toggle_pause() -> void:
 func _get_speed_multiplier() -> float:
 	match current_speed:
 		Speed.NORMAL: return 1.0
-		Speed.FAST: return 5.0     # 5x faster
-		Speed.SUPER_FAST: return 15.0 # 15x faster (for skipping long cultivation sessions)
+		Speed.FAST: return 3.0     
+		Speed.SUPER_FAST: return 7.0 
 		_: return 0.0
 
 # --- UTILITY ---
