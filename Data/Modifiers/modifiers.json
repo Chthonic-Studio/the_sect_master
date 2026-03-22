@@ -8,7 +8,7 @@
 		},
 		"martial_modifiers": {
 			"ferocity": 30,
-			"meridian_flow": 15
+			"qi_flow": 15
 		},
 		"personality_modifiers": {
 			"honor": -20,
