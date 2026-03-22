@@ -8,6 +8,7 @@ const MOD_DATA_PATH = "user://Mods/"
 var traits_registry: Dictionary = {}
 var name_pools: Dictionary = {}
 var modifiers_registry: Dictionary = {}
+var weapons_registry: Dictionary = {}
 
 # --- REPOSITORIES (The "Living Entities") ---
 var character_repo: Dictionary = {} 
@@ -32,11 +33,13 @@ func load_all_data() -> void:
 	_scan_directory_for_json(BASE_DATA_PATH + "Traits", _load_trait_data)
 	_scan_directory_for_json(BASE_DATA_PATH + "Names", _load_name_data)
 	_scan_directory_for_json(BASE_DATA_PATH + "Modifiers", _load_modifier_data)
+	_scan_directory_for_json(BASE_DATA_PATH + "Weapons", _load_weapon_data)
 	
 	# 2. Load modded data (overwrites vanilla IDs or adds new ones)
 	_scan_directory_for_json(MOD_DATA_PATH + "Traits", _load_trait_data)
 	_scan_directory_for_json(MOD_DATA_PATH + "Names", _load_name_data)
 	_scan_directory_for_json(MOD_DATA_PATH + "Modifiers", _load_modifier_data)
+	_scan_directory_for_json(MOD_DATA_PATH + "Weapons", _load_weapon_data)
 
 func _load_json_to_registry(path: String, target_dict: Dictionary) -> void:
 	if not FileAccess.file_exists(path):
@@ -68,6 +71,16 @@ func _load_modifier_data(path: String) -> void:
 	var data = json.data
 	if data is Dictionary:
 		modifiers_registry.merge(data, true)
+
+func _load_weapon_data(path: String) -> void:
+	var file = FileAccess.open(path, FileAccess.READ)
+	var json = JSON.new()
+	var error = json.parse(file.get_as_text())
+	if error != OK: return
+	
+	var data = json.data
+	if data is Dictionary:
+		weapons_registry.merge(data, true)
 
 #region Character Repo Management
 # --- CHARACTER REPO MANAGEMENT ---
@@ -233,3 +246,20 @@ func _deep_merge_dict(target: Dictionary, patch: Dictionary) -> void:
 			target[key].append_array(patch[key])
 		else:
 			target[key] = patch[key]
+
+# --- COMBAT HELPERS ---
+## Returns 1.5 if attacker has advantage, 0.75 if disadvantage, 1.0 if neutral
+func get_weapon_matchup_multiplier(attacker_weapon_id: String, defender_weapon_id: String) -> float:
+	var attacker = weapons_registry.get(attacker_weapon_id)
+	var defender = weapons_registry.get(defender_weapon_id)
+	
+	if not attacker or not defender: return 1.0
+	
+	var def_type = defender.get("weapon_type", "")
+	
+	if def_type in attacker.get("strong_against", []):
+		return 1.5
+	elif def_type in attacker.get("weak_against", []):
+		return 0.75
+		
+	return 1.0

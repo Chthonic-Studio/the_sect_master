@@ -18,6 +18,39 @@ var is_alive: bool = true
 var aptitude: int = 0 
 var active_modifiers: Array[Dictionary] = []
 
+# --- DYNAMIC STATE VARIABLES ---
+var wealth: int = 0
+var is_hurt: bool = false
+var state_vars: Dictionary = {
+	"stress": 0.0,       # 0 = Calm, 100 = Mental breakdown
+	"comfort": 50.0,     # Rises when in good rooms/using good items
+	"loneliness": 0.0,   # Rises slowly, lowered by social interaction
+	"fatigue": 0.0,      # Rises while awake/working, lowered by sleep
+	"mood": 50.0         # The master variable, influenced by all the above
+}
+var equipped_weapon_id: String = ""
+var weapon_proficiencies: Dictionary = {} # Tracks skill level per weapon type enum (e.g. { Definitions.WeaponType.SWORD : 45.0 })
+
+# --- VOLATILE STATE & AI ---
+# --- NEEDS (The Character's Drives, 0 = Satiated, 100 = Desperate) ---
+var needs: Dictionary = {
+	"creativity": 0.0,
+	"exploration": 0.0,
+	"helping": 0.0,
+	"relaxation": 0.0,
+	"rest": 0.0,         # Directly tied to Fatigue
+	"shopping": 0.0,     # Tied to Greed/Wealth
+	"training": 0.0,     # Tied to Ambition
+	"socialization": 0.0,# Tied to Loneliness
+	"spirituality": 0.0,
+	"entertainment": 0.0,
+	"studying": 0.0,
+	"villainy": 0.0      # Tied to Ruthlessness/Low Morality
+}
+
+var action_cooldowns: Dictionary = {}
+var brain: CharacterBrain
+
 # --- THE DATA CONTAINERS ---
 var base_stats = {}
 var base_martial = {}
@@ -32,8 +65,16 @@ var current_martial = {}
 var current_personality = {}
 var current_alignment = {}
 
+# Combat Caches (Recalculated alongside stats)
+var max_health: float = 100.0
+var current_resistances: Dictionary = {} # e.g. { Definitions.DamageType.SLASHING: 10 }
+var current_affinities: Dictionary = {}  # e.g. { Definitions.DamageType.POISON: 25 }
+var current_weapon_affinities: Dictionary = {} # e.g. "Sword Heart" gives a flat +50 to SWORD affinity.
+
 # --- INITIALIZATION ---
 func _init():
+	_setup_empty_stats()
+	brain = CharacterBrain.new()
 	_setup_empty_stats()
 
 func _setup_empty_stats():
@@ -49,6 +90,9 @@ func _setup_empty_stats():
 	for a_name in Definitions.ALIGNMENT_STATS:
 		alignment_values[a_name] = 50
 		current_alignment[a_name] = 50
+	for w in Definitions.WeaponType.values():
+		weapon_proficiencies[w] = 0.0
+		current_weapon_affinities[w] = 1.0 # 1.0 is the baseline 100% learning speed
 
 # --- DATA ACCESSORS (Now O(1) Instant Lookups) ---
 
@@ -97,6 +141,26 @@ func recalculate_all_stats() -> void:
 		var total = alignment_values.get(a_name, 50) + DataManager.get_total_alignment_modifiers(traits, active_modifier_ids, a_name)
 		current_alignment[a_name] = clampi(total, 0, 100)
 	
+	# 5. Recalculate Weapon Affinities
+	# Reset affinities to baseline before recalculating
+	for w in Definitions.WeaponType.values():
+		current_weapon_affinities[w] = 1.0
+		
+	# Loop through traits to find weapon affinity modifiers
+	for t_id in traits:
+		var trait_data = DataManager.traits_registry.get(t_id, {})
+		var affinities = trait_data.get("weapon_affinities", {})
+		for weapon_string in affinities:
+			var w_enum = _string_to_weapon_enum(weapon_string)
+			if w_enum != -1:
+				current_weapon_affinities[w_enum] += affinities[weapon_string]
+				
+	# Apply equipped weapon stat modifiers
+	if equipped_weapon_id != "" and DataManager.weapons_registry.has(equipped_weapon_id):
+		var w_stats = DataManager.weapons_registry[equipped_weapon_id].get("stat_modifiers", {})
+		# Apply w_stats to current_stats just like you do with traits
+		# (You can integrate this directly into your _accumulate_bonuses helper)
+	
 	# Notify external UI/Systems that this character's numbers have shifted
 	stats_recalculated.emit(self)
 
@@ -137,26 +201,32 @@ func add_temporary_modifier(modifier_id: String, duration_days: int) -> void:
 
 ## Called by DataManager's daily tick
 func process_daily_tick(current_total_days: int) -> void:
-	if active_modifiers.is_empty():
-		return
+	# 1. Process Modifiers Expiration
+	if not active_modifiers.is_empty():
+		var expired_ids: Array[String] = []
+		var needs_recalculation = false
 		
-	var expired_ids: Array[String] = []
-	var needs_recalculation = false
-	
-	# Loop backwards when erasing from an array to avoid index shifting
-	for i in range(active_modifiers.size() - 1, -1, -1):
-		if active_modifiers[i]["expiration_day"] <= current_total_days:
-			expired_ids.append(active_modifiers[i]["id"])
-			active_modifiers.remove_at(i)
-			needs_recalculation = true
-			
-	if needs_recalculation:
-		recalculate_all_stats()
-		
-		# Broadcast the expirations AFTER stats are accurate again
-		for mod_id in expired_ids:
-			modifier_expired.emit(self, mod_id)
+		for i in range(active_modifiers.size() - 1, -1, -1):
+			if active_modifiers[i]["expiration_day"] <= current_total_days:
+				expired_ids.append(active_modifiers[i]["id"])
+				active_modifiers.remove_at(i)
+				needs_recalculation = true
+				
+		if needs_recalculation:
+			recalculate_all_stats()
+			for mod_id in expired_ids:
+				modifier_expired.emit(self, mod_id)
+				
+	# 2. Process AI State Machine
+	brain.process_daily_tick(self)
 
+# COMBAT HELPERS
+
+func _string_to_weapon_enum(weapon_str: String) -> int:
+	var upper = weapon_str.to_upper()
+	if Definitions.WeaponType.keys().has(upper):
+		return Definitions.WeaponType[upper]
+	return -1
 
 #region Serialization
 # --- SERIALIZATION (For Saving/Loading) ---
@@ -178,7 +248,18 @@ func to_dictionary() -> Dictionary:
 		"alignment_values": alignment_values, 
 		"traits": traits,
 		"aptitude": aptitude, 
-		"active_modifiers": active_modifiers
+		"active_modifiers": active_modifiers,
+		"wealth": wealth,
+		
+		# AI Values
+		"needs": needs,
+		"action_cooldowns": action_cooldowns,
+		"current_action_id": brain.current_action.id if brain.current_action else "",
+		"action_duration": brain.current_action.duration_remaining if brain.current_action else 0,
+		
+		# Combat Values 
+		"equipped_weapon_id": equipped_weapon_id,
+		"weapon_proficiencies": weapon_proficiencies
 	}
 
 ## Populates this object from a Dictionary loaded from JSON.
@@ -192,6 +273,7 @@ func from_dictionary(data: Dictionary) -> void:
 	current_realm = data.get("current_realm", 1)
 	is_alive = data.get("is_alive", true)
 	aptitude = data.get("aptitude", 0) 
+	equipped_weapon_id = data.get("equipped_weapon_id", "")
 	
 	if data.has("base_stats"):
 		base_stats.merge(data["base_stats"], true)
@@ -211,7 +293,22 @@ func from_dictionary(data: Dictionary) -> void:
 		active_modifiers.clear()
 		for mod in data["active_modifiers"]:
 			active_modifiers.append(mod)
+	
+	if data.has("needs"):
+		needs.merge(data["needs"], true)
+	if data.has("action_cooldowns"):
+		action_cooldowns.merge(data["action_cooldowns"], true)
+	
+	if data.has("weapon_proficiencies"):
+		# Godot JSON parsing loads dictionary keys as Strings, but our proficiencies 
+		# use Integer enums. We must cast them back to integers here.
+		for key_str in data["weapon_proficiencies"]:
+			var w_enum = int(key_str)
+			weapon_proficiencies[w_enum] = data["weapon_proficiencies"][key_str]
 		
+	# Note: In the future, DataManager will need to reconstruct the current_action 
+	# based on the saved 'current_action_id' and 'action_duration'.
+	
 	# Rebuild the cache after loading from save
 	recalculate_all_stats()
 		

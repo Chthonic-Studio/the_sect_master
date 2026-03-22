@@ -21,15 +21,28 @@ enum MartialStat {
 	DESTINY		 	# Luck, basically
 }
 	
-# --- DAMAGE & INJURY TYPES ---
+# --- DAMAGE & INJURY TYPES & WEAPONS ---
 enum DamageType {
 	SLASHING,		# Swords, Sabers
 	PIERCING,		# Spears, Needles
 	BLUNT,			# Staffs, Hammers, Fists
 	INTERNAL,		# Palm strikes, Qi-blasts (ignores physical armor)
 	POISON,			# Sichuan specialty, damage over time
-	BLEED,			# Deep cuts, max HP reduction until treated
-	ENERGY			# Qi-based damage
+	PSYCHIC,		# Mental attacks, illusions
+}
+
+enum WeaponType{
+	SWORD,
+	SABER,
+	SPEAR,
+	NEEDLE,
+	STAFF,
+	HAMMER,
+	FIST,
+	UNARMED,
+	DAGGER,
+	HIDDEN_WEAPON,
+	FAN
 }
 
 # --- MARTIAL PROGRESSION ---
