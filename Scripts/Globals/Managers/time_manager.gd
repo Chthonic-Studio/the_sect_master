@@ -32,9 +32,9 @@ const MAX_TICKS_PER_FRAME = 30
 # --- STATE ---
 var current_speed: Speed = Speed.PAUSED
 
-var year: int = 1
+var year: int = 740
 var month: int = 1
-var day: int = 740
+var day: int = 1
 
 var _time_accumulator: float = 0.0
 
@@ -103,3 +103,8 @@ func _get_speed_multiplier() -> float:
 # --- UTILITY ---
 func get_date_string() -> String:
 	return "Year %d, Month %d, Day %d" % [year, month, day]
+
+# Returns absolute time elapsed for calculating expiration dates of buffs/debuffs.
+func get_total_days_elapsed() -> int:
+	# Formula based on our 360-day calendar
+	return (year * 360) + (month * 30) + day

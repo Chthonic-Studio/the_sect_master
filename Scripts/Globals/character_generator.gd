@@ -48,12 +48,24 @@ func _apply_demographics(_char: CharacterData, context: GenerationContext, overr
 		_: _char.age = overrides.get("age", randi_range(18, 40))
 
 func _apply_talents(_char: CharacterData, context: GenerationContext, _overrides: Dictionary) -> void:
+	# 1. Roll Realm
 	var roll = randf()
 	if context == GenerationContext.RECRUIT_ELITE: roll *= 0.5 
 		
-	if roll < 0.05: _char.current_realm = 3
-	elif roll < 0.2: _char.current_realm = 2
-	else: _char.current_realm = 1
+	if roll < 0.05: _char.current_realm = Definitions.MartialRealm.FIRST_RATE
+	elif roll < 0.2: _char.current_realm = Definitions.MartialRealm.SECOND_RATE
+	else: _char.current_realm = Definitions.MartialRealm.THIRD_RATE
+	
+	# 2. Roll Innate Aptitude (The "Martial Skeleton")
+	var apt_roll = randf()
+	if apt_roll < 0.01: _char.aptitude = Definitions.Aptitude.HEAVEN_SENT
+	elif apt_roll < 0.05: _char.aptitude = Definitions.Aptitude.ENLIGHTENED
+	elif apt_roll < 0.15: _char.aptitude = Definitions.Aptitude.GENIUS
+	elif apt_roll < 0.40: 
+		# 50/50 chance for physical or agility focus
+		_char.aptitude = Definitions.Aptitude.STURDY if randf() > 0.5 else Definitions.Aptitude.FLEXIBLE
+	elif apt_roll < 0.90: _char.aptitude = Definitions.Aptitude.MEDIOCRE
+	else: _char.aptitude = Definitions.Aptitude.WITHERED
 
 func _apply_personality_and_traits(_char: CharacterData, context: GenerationContext, overrides: Dictionary) -> void:
 	# 1. Initialize base continuous axes (0-100)
@@ -148,6 +160,7 @@ func _is_trait_valid(_char: CharacterData, trait_id: String) -> bool:
 	return true
 
 func _calculate_initial_stats(_char: CharacterData) -> void:
+	# --- CORE STATS (Dictated by Age/Biology) ---
 	var base_val = 10
 	if _char.age < 12: base_val = Definitions.BASE_STATS_BY_AGE["child"]
 	elif _char.age > 60: base_val = Definitions.BASE_STATS_BY_AGE["elder"]
@@ -155,6 +168,44 @@ func _calculate_initial_stats(_char: CharacterData) -> void:
 	
 	for s in Definitions.Stat.values():
 		_char.base_stats[s] = base_val + randi_range(-2, 5)
+
+	# --- MARTIAL STATS (Dictated by Realm & Aptitude) ---
+	var realm_tier = _char.current_realm
+	var is_withered = _char.aptitude == Definitions.Aptitude.WITHERED
+	
+	for ms in Definitions.MartialStat.values():
+		# 1. Destiny (Innate plot armor 1-100, ignores realm)
+		if ms == Definitions.MartialStat.DESTINY:
+			var destiny_val = randi_range(1, 100)
+			if _char.aptitude == Definitions.Aptitude.HEAVEN_SENT: 
+				destiny_val = maxi(destiny_val, randi_range(70, 100)) # Protagonist luck
+			_char.base_martial[ms] = destiny_val
+			continue
+			
+		# 2. Internal Force (Qi Pool scales exponentially with Realm)
+		if ms == Definitions.MartialStat.INTERNAL_FORCE:
+			if is_withered:
+				_char.base_martial[ms] = randi_range(0, 10) # Blocked meridians
+			else:
+				# Example: Realm 3 = 900 base Qi. Realm 6 = 3600 base Qi.
+				_char.base_martial[ms] = (realm_tier * realm_tier * 100) + randi_range(10, 50 * maxi(1, realm_tier))
+			continue
+
+		# 3. Combat Skills (Linear scaling for Technique, Insight, Qinggong, etc.)
+		var stat_val = (realm_tier * 15) + randi_range(0, 10)
+		
+		# Apply Aptitude specialized bonuses for narrative combat flavor
+		match _char.aptitude:
+			Definitions.Aptitude.GENIUS:
+				if ms == Definitions.MartialStat.TECHNIQUE: stat_val += 20
+			Definitions.Aptitude.ENLIGHTENED:
+				if ms == Definitions.MartialStat.INSIGHT or ms == Definitions.MartialStat.QI_FLOW: stat_val += 25
+			Definitions.Aptitude.FLEXIBLE:
+				if ms == Definitions.MartialStat.QINGGONG: stat_val += 20
+			Definitions.Aptitude.HEAVEN_SENT:
+				stat_val += 20 # Flat bonus to all combat skills
+				
+		_char.base_martial[ms] = maxi(0, stat_val)
 
 func _get_weighted_age_roll() -> int:
 	var r = randf()

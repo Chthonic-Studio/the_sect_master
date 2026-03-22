@@ -10,15 +10,17 @@ enum Stat {
 	CHARISMA      # Sect loyalty, recruitment success, social influence
 }
 
-# --- CULTIVATION STATS ---
-enum CultivationStat {
-	QI_CAPACITY,     # Maximum energy pool
-	QI_ABSORPTION,   # How fast they gain XP/Cultivation
-	COMPREHENSION,   # Chance to learn rare techniques
-	LUCK,            # Critical hit chance and random event favorability
-	
+# --- MARTIAL STATS ---
+enum MartialStat {
+	INTERNAL_FORCE,  	# Neigong pool (Max Qi)
+	QI_FLOW,   			# Qi recovery & training speed
+	QINGGONG,        	# Lightness skill (Initiative & Evasion)
+	TECHNIQUE,       	# Execution of forms (Accuracy & Parry)
+	INSIGHT,         	# Comprehension (Countering & Feints)
+	FEROCITY,        	# Killing intent & Crit Chance
+	DESTINY		 	# Luck, basically
 }
-
+	
 # --- DAMAGE & INJURY TYPES ---
 enum DamageType {
 	SLASHING,		# Swords, Sabers
@@ -26,7 +28,8 @@ enum DamageType {
 	BLUNT,			# Staffs, Hammers, Fists
 	INTERNAL,		# Palm strikes, Qi-blasts (ignores physical armor)
 	POISON,			# Sichuan specialty, damage over time
-	BLEED			# Deep cuts, max HP reduction until treated
+	BLEED,			# Deep cuts, max HP reduction until treated
+	ENERGY			# Qi-based damage
 }
 
 # --- MARTIAL PROGRESSION ---

@@ -4,61 +4,78 @@ const STARTING_SPAWN_COUNT = 5
 
 @onready var spawn_button: Button = $DEBUG_SpawnRandomChar
 @onready var character_list: GridContainer = $DEBUG_CharacterList
-
 @onready var time_label: Label = $DEBUG_WorldTime
+
 @onready var btn_pause: Button = $"DEBUG_TimePanel/0"
 @onready var btn_x1: Button = $DEBUG_TimePanel/x1
 @onready var btn_x2: Button = $DEBUG_TimePanel/x2
 @onready var btn_x3: Button = $DEBUG_TimePanel/x3
 
+# UI Map: Links a char_id to the specific Label node that displays their modifiers
+var _modifier_labels: Dictionary = {}
+
 func _ready() -> void:
-	# 1. Connect Character Spawning
 	spawn_button.pressed.connect(_on_spawn_button_pressed)
 	
-	# 2. Connect Time Controls (Using lambdas for clean, one-line signal connections)
+	# Connect Time Controls
 	btn_pause.pressed.connect(func(): TimeManager.set_time_speed(TimeManager.Speed.PAUSED))
 	btn_x1.pressed.connect(func(): TimeManager.set_time_speed(TimeManager.Speed.NORMAL))
 	btn_x2.pressed.connect(func(): TimeManager.set_time_speed(TimeManager.Speed.FAST))
 	btn_x3.pressed.connect(func(): TimeManager.set_time_speed(TimeManager.Speed.SUPER_FAST))
 	
-	# 3. Connect Time Manager Signals to UI Updates
-	TimeManager.day_passed.connect(_update_time_display)
-	TimeManager.month_passed.connect(_update_time_display)
-	TimeManager.year_passed.connect(_update_time_display)
+	# Connect Time Manager Signals
+	TimeManager.day_passed.connect(_on_day_passed)
+	TimeManager.month_passed.connect(func(_m): _update_time_display())
+	TimeManager.year_passed.connect(func(_y): _update_time_display())
 	
-	# Initialize Display
-	_update_time_display(0) # Passing a dummy 0 just to initialize the text
-	TimeManager.set_time_speed(TimeManager.Speed.NORMAL) # Start the clock!
+	_update_time_display()
+	TimeManager.set_time_speed(TimeManager.Speed.NORMAL)
 	
-	# Spawn initial batch
+	# --- TEST SCENARIO ---
 	for i in range(STARTING_SPAWN_COUNT):
-		_generate_and_display_character()
+		var character = _generate_and_display_character()
+		
+		# Specifically infect the FIRST character spawned with a 5-day buff
+		if i == 0:
+			print("\n>>> INJECTING MODIFIER TO FIRST CHARACTER: ", character.get_full_name())
+			character.add_temporary_modifier("demonic_blood_pill", 5)
+			_update_modifier_ui(character)
+			
+		# Print debug info for EVERY character after setup is complete
+		_print_deep_debug_info(character)
 
 # --- TIME LOGIC ---
 
-## Triggered by TimeManager signals.
-## The underscore parameter ignores the specific int (day/month/year) passed by the signal,
-## as we just grab the fully formatted string from the TimeManager directly.
-func _update_time_display(_value_passed: int) -> void:
+func _update_time_display() -> void:
 	time_label.text = TimeManager.get_date_string()
-	
 
-# --- CHARACTER LOGIC ---
+func _on_day_passed(_day: int) -> void:
+	_update_time_display()
+	
+	# Every day, update the dynamic visual countdown for all tracked characters
+	for char_id in _modifier_labels:
+		if DataManager.character_repo.has(char_id):
+			var character = DataManager.character_repo[char_id]
+			_update_modifier_ui(character)
+
+# --- UI & DEBUG LOGIC ---
 
 func _on_spawn_button_pressed() -> void:
-	_generate_and_display_character()
+	var character = _generate_and_display_character()
+	_print_deep_debug_info(character)
 
-func _generate_and_display_character() -> void:
-	# Trigger world gen context for maximum variety
+func _generate_and_display_character() -> CharacterData:
 	var new_character = CharacterGenerator.create_character(CharacterGenerator.GenerationContext.WORLD_GEN)
 	
-	_print_deep_debug_info(new_character)
+	# Listen for when modifiers fall off
+	new_character.modifier_expired.connect(_on_modifier_expired)
+	
 	_create_ui_card(new_character)
+	return new_character
 
-## UI logic is strictly separated from simulation data
 func _create_ui_card(character: CharacterData) -> void:
 	var card = PanelContainer.new()
-	card.custom_minimum_size = Vector2(180, 80)
+	card.custom_minimum_size = Vector2(180, 100)
 	
 	var vbox = VBoxContainer.new()
 	card.add_child(vbox)
@@ -70,11 +87,51 @@ func _create_ui_card(character: CharacterData) -> void:
 	
 	var info_label = Label.new()
 	var realm_str = Definitions.MartialRealm.keys()[character.current_realm].capitalize()
-	info_label.text = "Age: %d | %s\nTraits: %d" % [character.age, realm_str, character.traits.size()]
+	info_label.text = "Age: %d | %s" % [character.age, realm_str]
 	info_label.add_theme_font_size_override("font_size", 12)
 	vbox.add_child(info_label)
 	
+	# Dedicated space for Modifiers
+	var mod_label = Label.new()
+	mod_label.add_theme_font_size_override("font_size", 10)
+	mod_label.add_theme_color_override("font_color", Color(0.8, 0.8, 0.4))
+	mod_label.autowrap_mode = TextServer.AUTOWRAP_WORD
+	vbox.add_child(mod_label)
+	
+	# Register the label so the time tick can update it efficiently
+	_modifier_labels[character.char_id] = mod_label
+	_update_modifier_ui(character)
+	
 	character_list.add_child(card)
+
+## Updates only the localized text for modifiers, saving CPU UI cycles
+func _update_modifier_ui(character: CharacterData) -> void:
+	if not _modifier_labels.has(character.char_id):
+		return
+		
+	var label: Label = _modifier_labels[character.char_id]
+	if character.active_modifiers.is_empty():
+		label.text = "No active modifiers."
+		return
+		
+	var text_parts = []
+	var current_abs_day = TimeManager.get_total_days_elapsed()
+	
+	for mod in character.active_modifiers:
+		var days_left = mod["expiration_day"] - current_abs_day
+		text_parts.append("- %s (%d days left)" % [mod["id"], maxi(0, days_left)]) # maxi ensures we never show negative visually briefly
+		
+	label.text = "\n".join(text_parts)
+
+## The event-driven callback for when a buff naturally expires
+func _on_modifier_expired(character: CharacterData, mod_id: String) -> void:
+	print("\n[!!!] TEMPORARY MODIFIER EXPIRED [!!!]")
+	print("Character: ", character.get_full_name())
+	print("Modifier Lost: ", mod_id)
+	print(">>> Recalculating Stats...")
+	
+	_update_modifier_ui(character)
+	_print_deep_debug_info(character)
 
 ## Heavy data logging kept in the console to avoid UI clutter.
 ## Dynamically iterates through Definitions so future stats are automatically included.
@@ -90,10 +147,10 @@ func _print_deep_debug_info(character: CharacterData) -> void:
 		# get_stat() correctly factors in trait modifiers
 		print("- %s: %d" % [stat_key.capitalize(), character.get_stat(enum_val)])
 		
-	print("\n--- CULTIVATION STATS ---")
-	for stat_key in Definitions.CultivationStat.keys():
-		var enum_val = Definitions.CultivationStat[stat_key]
-		print("- %s: %d" % [stat_key.capitalize(), character.get_cultivation_stat(enum_val)])
+	print("\n--- MARTIAL STATS ---")
+	for stat_key in Definitions.MartialStat.keys():
+		var enum_val = Definitions.MartialStat[stat_key]
+		print("- %s: %d" % [stat_key.capitalize(), character.get_martial_stat(enum_val)])
 		
 	print("\n--- PERSONALITY (Utility AI) ---")
 	for p_name in Definitions.PERSONALITY_STATS:
