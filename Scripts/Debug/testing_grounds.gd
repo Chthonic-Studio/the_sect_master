@@ -1,9 +1,5 @@
 extends Control
 
-## How-to-use:
-## Attach this to the TestingGrounds root node. 
-## Ensure CharacterGenerator and DataManager are set as Autoloads in Project Settings.
-
 const STARTING_SPAWN_COUNT = 5
 
 @onready var spawn_button: Button = $DEBUG_SpawnRandomChar

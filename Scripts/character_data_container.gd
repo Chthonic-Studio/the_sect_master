@@ -20,6 +20,13 @@ var personality_values = {}
 var alignment_values = {}
 var traits: Array[String] = []
 
+# --- CACHED DATA CONTAINERS (The final effective values) ---
+# These are strictly for fast O(1) reading during the simulation loop.
+var current_stats = {}
+var current_cultivation = {}
+var current_personality = {}
+var current_alignment = {}
+
 # --- INITIALIZATION ---
 func _init():
 	_setup_empty_stats()
@@ -27,44 +34,74 @@ func _init():
 func _setup_empty_stats():
 	for s in Definitions.Stat.values():
 		base_stats[s] = 0
+		current_stats[s] = 0
 	for s in Definitions.CultivationStat.values():
 		base_cultivation[s] = 0
+		current_cultivation[s] = 0
 	for p_name in Definitions.PERSONALITY_STATS:
 		personality_values[p_name] = 50
+		current_personality[p_name] = 50
 	for a_name in Definitions.ALIGNMENT_STATS:
 		alignment_values[a_name] = 50
+		current_alignment[a_name] = 50
 
-# --- DATA ACCESSORS ---
+# --- DATA ACCESSORS (Now O(1) Instant Lookups) ---
 
 func get_stat(stat_enum: int) -> int:
-	var total = base_stats[stat_enum]
-	total += DataManager.get_trait_modifiers_for_stat(traits, stat_enum)
-	return clampi(total, 0, Definitions.STAT_CAP)
+	return current_stats.get(stat_enum, 0)
+
+func get_cultivation_stat(stat_enum: int) -> int:
+	return current_cultivation.get(stat_enum, 0)
 
 func get_personality_value(p_name: String) -> int:
-	if not personality_values.has(p_name):
-		return 0
-	var val = personality_values[p_name]
-	val += DataManager.get_trait_modifiers_for_personality(traits, p_name)
-	return clampi(val, 0, 100)
+	return current_personality.get(p_name, 0)
+
+func get_alignment_value(a_name: String) -> int:
+	return current_alignment.get(a_name, 0)
 
 func get_full_name() -> String:
 	return first_name + " " + last_name
 
-func get_cultivation_stat(stat_enum: int) -> int:
-	var total = base_cultivation[stat_enum]
-	total += DataManager.get_trait_modifiers_for_cultivation(traits, stat_enum)
-	# Cultivation stats often scale infinitely or have custom caps per realm.
-	# We prevent them from dropping below 0 due to negative traits.
-	return maxi(total, 0)
+# --- CACHE MANAGEMENT ---
 
-func get_alignment_value(a_name: String) -> int:
-	if not alignment_values.has(a_name):
-		return 0
-	var val = alignment_values[a_name]
-	val += DataManager.get_trait_modifiers_for_alignment(traits, a_name)
-	return clampi(val, 0, 100)
+## Called once after bulk operations (generation or loading) 
+## or automatically when a single trait is added/removed.
+func recalculate_all_stats() -> void:
+	# 1. Recalculate Base Stats
+	for s in Definitions.Stat.values():
+		var total = base_stats[s] + DataManager.get_trait_modifiers_for_stat(traits, s)
+		current_stats[s] = clampi(total, 0, Definitions.STAT_CAP)
+		
+	# 2. Recalculate Cultivation Stats
+	for s in Definitions.CultivationStat.values():
+		var total = base_cultivation[s] + DataManager.get_trait_modifiers_for_cultivation(traits, s)
+		current_cultivation[s] = maxi(total, 0)
+		
+	# 3. Recalculate Personality
+	for p_name in Definitions.PERSONALITY_STATS:
+		var val = personality_values.get(p_name, 50) + DataManager.get_trait_modifiers_for_personality(traits, p_name)
+		current_personality[p_name] = clampi(val, 0, 100)
+		
+	# 4. Recalculate Alignment
+	for a_name in Definitions.ALIGNMENT_STATS:
+		var val = alignment_values.get(a_name, 50) + DataManager.get_trait_modifiers_for_alignment(traits, a_name)
+		current_alignment[a_name] = clampi(val, 0, 100)
 
+# --- GAMEPLAY MODIFIERS ---
+
+## Safely apply traits and update the cache to avoid redundant recalculations
+
+func add_trait(trait_id: String) -> void:
+	if not traits.has(trait_id):
+		traits.append(trait_id)
+		recalculate_all_stats()
+
+func remove_trait(trait_id: String) -> void:
+	if traits.has(trait_id):
+		traits.erase(trait_id)
+		recalculate_all_stats()
+
+#region Serialization
 # --- SERIALIZATION (For Saving/Loading) ---
 
 ## Converts this object into a Dictionary that can be saved as JSON.
@@ -81,6 +118,7 @@ func to_dictionary() -> Dictionary:
 		"base_stats": base_stats,
 		"base_cultivation": base_cultivation,
 		"personality_values": personality_values,
+		"alignment_values": alignment_values, 
 		"traits": traits
 	}
 
@@ -95,13 +133,19 @@ func from_dictionary(data: Dictionary) -> void:
 	current_realm = data.get("current_realm", 1)
 	is_alive = data.get("is_alive", true)
 	
-	# We use merge(true) to overwrite defaults with saved values
 	if data.has("base_stats"):
 		base_stats.merge(data["base_stats"], true)
 	if data.has("base_cultivation"):
 		base_cultivation.merge(data["base_cultivation"], true)
 	if data.has("personality_values"):
 		personality_values.merge(data["personality_values"], true)
+	if data.has("alignment_values"):
+		alignment_values.merge(data["alignment_values"], true)
 		
 	if data.has("traits"):
 		traits = Array(data["traits"], TYPE_STRING, &"", null)
+		
+	# Rebuild the cache after loading from save
+	recalculate_all_stats()
+		
+#endregion

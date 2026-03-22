@@ -19,6 +19,9 @@ func create_character(context: GenerationContext, overrides: Dictionary = {}) ->
 	
 	if overrides.has("sect_id"):
 		character.sect_id = overrides["sect_id"]
+		
+	# Calculate all stats and cache them once
+	character.recalculate_all_stats()
 	
 	DataManager.register_character(character)
 	return character
