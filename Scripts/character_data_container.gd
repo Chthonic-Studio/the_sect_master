@@ -51,6 +51,20 @@ func get_personality_value(p_name: String) -> int:
 func get_full_name() -> String:
 	return first_name + " " + last_name
 
+func get_cultivation_stat(stat_enum: int) -> int:
+	var total = base_cultivation[stat_enum]
+	total += DataManager.get_trait_modifiers_for_cultivation(traits, stat_enum)
+	# Cultivation stats often scale infinitely or have custom caps per realm.
+	# We prevent them from dropping below 0 due to negative traits.
+	return maxi(total, 0)
+
+func get_alignment_value(a_name: String) -> int:
+	if not alignment_values.has(a_name):
+		return 0
+	var val = alignment_values[a_name]
+	val += DataManager.get_trait_modifiers_for_alignment(traits, a_name)
+	return clampi(val, 0, 100)
+
 # --- SERIALIZATION (For Saving/Loading) ---
 
 ## Converts this object into a Dictionary that can be saved as JSON.

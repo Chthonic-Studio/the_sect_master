@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://orxe6dw2vjou"]
 
+[ext_resource type="Script" uid="uid://c2h0cer1tsaxn" path="res://Scripts/Debug/testing_grounds.gd" id="1_gnny0"]
+
 [node name="TestingGrounds" type="Control" unique_id=137360398]
 layout_mode = 3
 anchors_preset = 15
@@ -7,6 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_gnny0")
 metadata/_edit_use_anchors_ = true
 
 [node name="DEBUG_SpawnRandomChar" type="Button" parent="." unique_id=2070175220]
@@ -27,3 +30,4 @@ offset_left = 785.0
 offset_top = 21.0
 offset_right = 1183.0
 offset_bottom = 773.0
+columns = 2

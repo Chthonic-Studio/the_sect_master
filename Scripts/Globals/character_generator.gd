@@ -56,12 +56,23 @@ func _apply_personality_and_traits(_char: CharacterData, context: GenerationCont
 	# 1. Initialize base continuous axes (0-100)
 	var all_axes = Definitions.PERSONALITY_STATS + Definitions.ALIGNMENT_STATS
 	for p_name in all_axes:
+		# Reputation is handled separately based on Martial Realm
+		if p_name == "reputation":
+			continue
+			
 		var base = 50
 		if context == GenerationContext.BIRTH and overrides.has("parent_personalities"):
-			base = overrides["parent_personalities"].get(p_name, 50) + randi_range(-10, 10)
+			base = overrides["parent_personalities"].get(p_name, 50) + randi_range(-30, 30)
 		else:
 			base = randi_range(30, 70) # Tighter grouping so traits have more impact
-		_char.personality_values[p_name] = clampi(base, 0, 100)
+			
+		if p_name in Definitions.PERSONALITY_STATS:
+			_char.personality_values[p_name] = clampi(base, 0, 100)
+		else:
+			_char.alignment_values[p_name] = clampi(base, 0, 100)
+
+	# Setup Reputation based on their generated realm
+	_char.alignment_values["reputation"] = _roll_reputation_by_realm(_char.current_realm)
 
 	# 2. Separate available traits by type
 	var personality_pool: Array[String] = []
@@ -89,14 +100,38 @@ func _apply_personality_and_traits(_char: CharacterData, context: GenerationCont
 	if _char.age > 50: num_common += 1 # Elders have seen more
 	_assign_traits_from_pool(_char, common_pool, num_common)
 
+## Generates a starting reputation strictly based on the character's martial standing
+func _roll_reputation_by_realm(realm: int) -> int:
+	match realm:
+		Definitions.MartialRealm.UNINITIATED: return 0
+		Definitions.MartialRealm.THIRD_RATE: return randi_range(0, 10)
+		Definitions.MartialRealm.SECOND_RATE: return randi_range(10, 30)
+		Definitions.MartialRealm.FIRST_RATE: return randi_range(30, 50)
+		Definitions.MartialRealm.PEAK_MASTER: return randi_range(50, 70)
+		Definitions.MartialRealm.GRANDMASTER: return randi_range(70, 90)
+		Definitions.MartialRealm.TRASCENDENT: return randi_range(80, 100)
+		Definitions.MartialRealm.SUMMIT: return randi_range(90, 100)
+		_: return 0
+
 ## Helper to assign traits while checking conflicts
+## Optimized to prevent array duplication and shuffling per character.
 func _assign_traits_from_pool(_char: CharacterData, pool: Array[String], amount: int) -> void:
-	var available = pool.duplicate()
-	available.shuffle() # Randomize pool
-	
+	if pool.is_empty() or amount <= 0:
+		return
+		
+	var attempts = 0
+	var max_attempts = amount * 5 # Prevent infinite loops if valid traits are exhausted
 	var applied = 0
-	for t_id in available:
-		if applied >= amount: break
+	
+	while applied < amount and attempts < max_attempts:
+		attempts += 1
+		var t_id = pool.pick_random()
+		
+		# Skip if we already have it
+		if t_id in _char.traits:
+			continue
+			
+		# Check conflicts
 		if _is_trait_valid(_char, t_id):
 			_char.traits.append(t_id)
 			applied += 1
