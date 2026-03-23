@@ -92,7 +92,28 @@ func _load_weapon_data(path: String) -> void:
 	
 	var data = json.data
 	if data is Dictionary:
-		weapons_registry.merge(data, true)
+		for weapon_id in data:
+			var weapon = data[weapon_id]
+			
+			# Pre-process stat modifiers (String keys to Enum integer keys)
+			if weapon.has("stat_modifiers"):
+				var parsed_stats = {}
+				for key in weapon["stat_modifiers"]:
+					var stat_enum = Definitions.get_stat_enum(key)
+					if stat_enum != -1:
+						parsed_stats[stat_enum] = weapon["stat_modifiers"][key]
+				weapon["stat_modifiers"] = parsed_stats
+				
+			# Pre-process martial modifiers
+			if weapon.has("martial_modifiers"):
+				var parsed_martial = {}
+				for key in weapon["martial_modifiers"]:
+					var martial_enum = Definitions.get_martial_enum(key)
+					if martial_enum != -1:
+						parsed_martial[martial_enum] = weapon["martial_modifiers"][key]
+				weapon["martial_modifiers"] = parsed_martial
+				
+			weapons_registry[weapon_id] = weapon
 
 #region Character Repo Management
 # --- CHARACTER REPO MANAGEMENT ---

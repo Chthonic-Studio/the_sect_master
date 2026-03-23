@@ -73,7 +73,6 @@ var current_weapon_affinities: Dictionary = {} # e.g. "Sword Heart" gives a flat
 
 # --- INITIALIZATION ---
 func _init():
-	_setup_empty_stats()
 	brain = CharacterBrain.new()
 	_setup_empty_stats()
 
@@ -143,36 +142,18 @@ func recalculate_all_stats() -> void:
 	
 	# 5. Recalculate Weapon Affinities
 	# Reset affinities to baseline before recalculating
-	for w in Definitions.WeaponType.values():
-		current_weapon_affinities[w] = 1.0
-		
-	# Loop through traits to find weapon affinity modifiers
-	for t_id in traits:
-		var trait_data = DataManager.traits_registry.get(t_id, {})
-		var affinities = trait_data.get("weapon_affinities", {})
-		for weapon_string in affinities:
-			var w_enum = _string_to_weapon_enum(weapon_string)
-			if w_enum != -1:
-				current_weapon_affinities[w_enum] += affinities[weapon_string]
-				
 	# Apply equipped weapon stat and martial modifiers
 	if equipped_weapon_id != "" and DataManager.weapons_registry.has(equipped_weapon_id):
 		var weapon_data = DataManager.weapons_registry[equipped_weapon_id]
 		
-		# Apply core stat modifiers
+		# O(1) integer iteration. No strings!
 		var w_stats = weapon_data.get("stat_modifiers", {})
-		for stat_key in w_stats:
-			var stat_enum = Definitions.new().get_stat_enum(stat_key) # Helper instance or make helper static
-			if stat_enum != -1:
-				current_stats[stat_enum] = clampi(current_stats[stat_enum] + w_stats[stat_key], 0, Definitions.STAT_CAP)
+		for stat_enum in w_stats:
+			current_stats[stat_enum] = clampi(current_stats[stat_enum] + w_stats[stat_enum], 0, Definitions.STAT_CAP)
 				
-		# Apply martial modifiers (e.g., weapons giving flat bonuses to Ferocity or Insight)
 		var w_martial = weapon_data.get("martial_modifiers", {})
-		for m_key in w_martial:
-			# Needs a similar helper to get_stat_enum but for MartialStats
-			var m_enum = _string_to_martial_enum(m_key) 
-			if m_enum != -1:
-				current_martial[m_enum] = maxi(current_martial[m_enum] + w_martial[m_key], 0)
+		for m_enum in w_martial:
+			current_martial[m_enum] = maxi(current_martial[m_enum] + w_martial[m_enum], 0)
 	
 	# Notify external UI/Systems that this character's numbers have shifted
 	stats_recalculated.emit(self)
@@ -232,20 +213,6 @@ func process_daily_tick(current_total_days: int) -> void:
 				
 	# 2. Process AI State Machine
 	brain.process_daily_tick(self)
-
-# COMBAT HELPERS
-
-func _string_to_weapon_enum(weapon_str: String) -> int:
-	var upper = weapon_str.to_upper()
-	if Definitions.WeaponType.keys().has(upper):
-		return Definitions.WeaponType[upper]
-	return -1
-
-func _string_to_martial_enum(martial_str: String) -> int:
-	var upper = martial_str.to_upper()
-	if Definitions.MartialStat.keys().has(upper):
-		return Definitions.MartialStat[upper]
-	return -1
 
 #region Serialization
 # --- SERIALIZATION (For Saving/Loading) ---

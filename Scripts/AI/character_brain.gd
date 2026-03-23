@@ -50,6 +50,5 @@ func _choose_new_action(character: CharacterData) -> void:
 func restore_action_state(action_id: String, duration: int) -> void:
 	if action_id == "":
 		return
-	# TODO: Call an ActionPlan factory to generate the correct derived class
-	# current_action = ActionFactory.create(action_id, duration)
-	current_action = ActionPlan.new(action_id, duration) 
+	# Hooking into our centralized Action Factory to reconstruct the correct script
+	current_action = DataManager.create_action(action_id, duration)
