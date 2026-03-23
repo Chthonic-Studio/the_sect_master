@@ -10,6 +10,10 @@ var name_pools: Dictionary = {}
 var modifiers_registry: Dictionary = {}
 var weapons_registry: Dictionary = {}
 
+# --- AI LOGIC REGISTRIES ---
+var desires_registry: Array[Desire] = []
+var action_scripts_registry: Dictionary = {} # Maps String IDs to GDScript references (The Factory)
+
 # --- REPOSITORIES (The "Living Entities") ---
 var character_repo: Dictionary = {} 
 
@@ -29,6 +33,10 @@ func _on_day_passed(_day: int) -> void:
 			character.process_daily_tick(current_total_days)
 			
 func load_all_data() -> void:
+	_ensure_mod_directories()
+	
+	# 0. Mount Mod Packs FIRST (Injects modded scripts and assets into res://)
+	_mount_mod_packs()
 	# 1. Load vanilla game data
 	_scan_directory_for_json(BASE_DATA_PATH + "Traits", _load_trait_data)
 	_scan_directory_for_json(BASE_DATA_PATH + "Names", _load_name_data)
@@ -40,6 +48,10 @@ func load_all_data() -> void:
 	_scan_directory_for_json(MOD_DATA_PATH + "Names", _load_name_data)
 	_scan_directory_for_json(MOD_DATA_PATH + "Modifiers", _load_modifier_data)
 	_scan_directory_for_json(MOD_DATA_PATH + "Weapons", _load_weapon_data)
+	
+	# 3. Load AI Logic Scripts 
+	_scan_directory_for_scripts("res://Scripts/AI/Desires", _load_desire_script)
+	_scan_directory_for_scripts("res://Scripts/AI/Actions", _load_action_script)
 
 func _load_json_to_registry(path: String, target_dict: Dictionary) -> void:
 	if not FileAccess.file_exists(path):
@@ -246,6 +258,87 @@ func _deep_merge_dict(target: Dictionary, patch: Dictionary) -> void:
 			target[key].append_array(patch[key])
 		else:
 			target[key] = patch[key]
+
+## Scans the user://Mods directory for exported .zip or .pck files 
+## and mounts them into the res:// virtual file system.
+func _mount_mod_packs() -> void:
+	var dir = DirAccess.open("user://Mods")
+	if not dir:
+		return
+		
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	
+	while file_name != "":
+		if not dir.current_is_dir() and (file_name.ends_with(".zip") or file_name.ends_with(".pck")):
+			var full_path = "user://Mods/" + file_name
+			# This is the magic Godot function that merges the mod into res://
+			var success = ProjectSettings.load_resource_pack(full_path)
+			if success:
+				print("DataManager: Successfully mounted mod pack -> ", file_name)
+			else:
+				printerr("DataManager: Failed to mount mod pack -> ", file_name)
+		file_name = dir.get_next()
+
+#endregion
+
+
+#region AI Logic Loaders & The Action Factory
+
+## Scans a directory for Godot scripts (.gd) or compiled scripts (.gdc) 
+func _scan_directory_for_scripts(path: String, load_func: Callable) -> void:
+	var dir = DirAccess.open(path)
+	if not dir:
+		return 
+		
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	
+	while file_name != "":
+		if not dir.current_is_dir():
+			# Support both raw source (.gd) and exported bytecode (.gdc)
+			if file_name.ends_with(".gd") or file_name.ends_with(".gdc") or file_name.ends_with(".remap"):
+				# Godot 4 export remapping sometimes changes .gd to .gd.remap
+				var clean_name = file_name.replace(".remap", "") 
+				var full_path = path + "/" + clean_name
+				load_func.call(full_path)
+		file_name = dir.get_next()
+
+func _load_desire_script(path: String) -> void:
+	var script = load(path)
+	if script and script is Script:
+		# Instantiate the script to hold in memory globally
+		var desire_instance = script.new()
+		if desire_instance is Desire:
+			desires_registry.append(desire_instance)
+		else:
+			printerr("DataManager: Script at ", path, " does not extend Desire.")
+
+func _load_action_script(path: String) -> void:
+	var script = load(path)
+	if script and script is Script:
+		# We instantiate it ONCE just to read its 'id' property, then discard the instance.
+		# We store the SCRIPT REFERENCE, not the instance, in the registry.
+		var temp_instance = script.new("", 0)
+		if temp_instance is ActionPlan:
+			var action_id = temp_instance.id
+			action_scripts_registry[action_id] = script
+		else:
+			printerr("DataManager: Script at ", path, " does not extend ActionPlan.")
+
+## THE ACTION FACTORY: Converts a saved string ID back into a living, executing script object.
+func create_action(action_id: String, duration: int) -> ActionPlan:
+	if action_id == "":
+		return null
+		
+	if action_scripts_registry.has(action_id):
+		var script_ref = action_scripts_registry[action_id]
+		return script_ref.new(action_id, duration)
+		
+	printerr("ActionFactory: Attempted to create unknown action_id: ", action_id)
+	return ActionPlan.new(action_id, duration) # Fallback to base class to prevent crashes
+
+#endregion
 
 # --- COMBAT HELPERS ---
 ## Returns 1.5 if attacker has advantage, 0.75 if disadvantage, 1.0 if neutral

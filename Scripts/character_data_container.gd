@@ -155,11 +155,24 @@ func recalculate_all_stats() -> void:
 			if w_enum != -1:
 				current_weapon_affinities[w_enum] += affinities[weapon_string]
 				
-	# Apply equipped weapon stat modifiers
+	# Apply equipped weapon stat and martial modifiers
 	if equipped_weapon_id != "" and DataManager.weapons_registry.has(equipped_weapon_id):
-		var w_stats = DataManager.weapons_registry[equipped_weapon_id].get("stat_modifiers", {})
-		# Apply w_stats to current_stats just like you do with traits
-		# (You can integrate this directly into your _accumulate_bonuses helper)
+		var weapon_data = DataManager.weapons_registry[equipped_weapon_id]
+		
+		# Apply core stat modifiers
+		var w_stats = weapon_data.get("stat_modifiers", {})
+		for stat_key in w_stats:
+			var stat_enum = Definitions.new().get_stat_enum(stat_key) # Helper instance or make helper static
+			if stat_enum != -1:
+				current_stats[stat_enum] = clampi(current_stats[stat_enum] + w_stats[stat_key], 0, Definitions.STAT_CAP)
+				
+		# Apply martial modifiers (e.g., weapons giving flat bonuses to Ferocity or Insight)
+		var w_martial = weapon_data.get("martial_modifiers", {})
+		for m_key in w_martial:
+			# Needs a similar helper to get_stat_enum but for MartialStats
+			var m_enum = _string_to_martial_enum(m_key) 
+			if m_enum != -1:
+				current_martial[m_enum] = maxi(current_martial[m_enum] + w_martial[m_key], 0)
 	
 	# Notify external UI/Systems that this character's numbers have shifted
 	stats_recalculated.emit(self)
@@ -226,6 +239,12 @@ func _string_to_weapon_enum(weapon_str: String) -> int:
 	var upper = weapon_str.to_upper()
 	if Definitions.WeaponType.keys().has(upper):
 		return Definitions.WeaponType[upper]
+	return -1
+
+func _string_to_martial_enum(martial_str: String) -> int:
+	var upper = martial_str.to_upper()
+	if Definitions.MartialStat.keys().has(upper):
+		return Definitions.MartialStat[upper]
 	return -1
 
 #region Serialization
@@ -300,14 +319,18 @@ func from_dictionary(data: Dictionary) -> void:
 		action_cooldowns.merge(data["action_cooldowns"], true)
 	
 	if data.has("weapon_proficiencies"):
-		# Godot JSON parsing loads dictionary keys as Strings, but our proficiencies 
-		# use Integer enums. We must cast them back to integers here.
 		for key_str in data["weapon_proficiencies"]:
 			var w_enum = int(key_str)
 			weapon_proficiencies[w_enum] = data["weapon_proficiencies"][key_str]
 		
-	# Note: In the future, DataManager will need to reconstruct the current_action 
-	# based on the saved 'current_action_id' and 'action_duration'.
+	# Reconstruct the AI's current action immediately
+	var saved_action_id = data.get("current_action_id", "")
+	var saved_action_duration = data.get("action_duration", 0)
+	if saved_action_id != "" and saved_action_duration > 0:
+		brain.restore_action_state(saved_action_id, saved_action_duration)
+	
+	# Rebuild the cache after loading from save
+	recalculate_all_stats()
 	
 	# Rebuild the cache after loading from save
 	recalculate_all_stats()

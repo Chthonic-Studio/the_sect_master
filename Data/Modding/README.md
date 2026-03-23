@@ -18,7 +18,7 @@ user://Mods/
 ├── Names/
 │   ├── new_demonic_names.json
 └── Modifiers/
-    ├── custom_pills.json
+	├── custom_pills.json
 ```
 
 ### Overwriting vs. Adding
@@ -33,11 +33,14 @@ If you want to add new behaviors (like a new `Desire` for characters to steal ar
 To create a Logic Mod, you must pack your files using the Godot Editor.
 
 ### Workflow for Logic Mods:
-1. **Download the Modding Kit / Base Project:** Open the game&#39;s project in Godot 4.4+.
-2. **Create your Scripts:** Write your new `Desire` or `ActionPlan` extending our base classes. Place them in the appropriate `res://Scripts/` folders.
-3. **Export as a Mod Pack (ZIP/PCK):**
+1. **Download Godott:** Create a new project in Godot 4.6+.
+2. **Replicate the Folder Structure:** Godot's mod mounting requires a 1:1 path match. You **must** place your scripts in the exact same folder structure as the base game. 
+   * Example for a new Desire: `res://Scripts/AI/Desires/desire_steal.gd`
+   * Example for a new Action: `res://Scripts/AI/Actions/action_steal.gd`
+3. **Create your Scripts:** Write your new `Desire` or `ActionPlan` extending our base classes.
+4. **Export as a Mod Pack (ZIP/PCK):**
    * Go to `Project -> Export`.
-   * Select the files/folders specific to your mod.
+   * Select the exact files/folders specific to your mod (Ensure the `Scripts/AI/...` path is preserved in the export).
    * Click **Export PCK/ZIP**.
    * Save it as `MyAwesomeMod.zip`.
 
