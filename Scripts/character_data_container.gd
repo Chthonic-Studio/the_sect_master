@@ -210,9 +210,73 @@ func process_daily_tick(current_total_days: int) -> void:
 			recalculate_all_stats()
 			for mod_id in expired_ids:
 				modifier_expired.emit(self, mod_id)
+	
+	# 2. Apply organic baseline deterioration
+	_apply_daily_decay()
 				
-	# 2. Process AI State Machine
+	# 3. Process AI State Machine (Actions will modify the deteriorated stats)
 	brain.process_daily_tick(self)
+	
+	# 4. Master State Calculation
+	_calculate_mood()
+
+## Applies baseline creeping of needs and state variables simply from existing.
+func _apply_daily_decay() -> void:
+	# --- STATE VARS ---
+	# Base fatigue from just being awake for a day.
+	# If they are doing heavy tasks (Meditating), the action itself will add MORE fatigue.
+	state_vars["fatigue"] = minf(100.0, state_vars.get("fatigue", 0.0) + 5.0)
+	
+	# Loneliness creeps up slowly. Extroverts (high sociability) get lonely faster.
+	var sociability = get_personality_value("sociability")
+	var loneliness_rate = 1.0 + (sociability / 100.0 * 2.0) # 1.0 to 3.0 per day
+	state_vars["loneliness"] = minf(100.0, state_vars.get("loneliness", 0.0) + loneliness_rate)
+	
+	# --- NEEDS ---
+	# Needs slowly creep up. 
+	# Later, we can tie these strictly to traits (e.g. ambitious people need training faster)
+	var ambition = get_personality_value("ambition")
+	var train_rate = 0.5 + (ambition / 100.0 * 2.5) # 0.5 to 3.0 per day
+	needs["training"] = minf(100.0, needs.get("training", 0.0) + train_rate)
+	
+	needs["entertainment"] = minf(100.0, needs.get("entertainment", 0.0) + 1.5)
+	needs["socialization"] = minf(100.0, needs.get("socialization", 0.0) + 1.5)
+
+
+## Derives the master 'Mood' variable from all other state variables and unmet needs.
+## 0-20 = Breakdown risk | 21-40 = Unhappy | 41-60 = Content | 61-80 = Happy | 81-100 = Euphoric
+func _calculate_mood() -> void:
+	var base_mood = 50.0
+	
+	# 1. State Penalties
+	var stress_penalty = state_vars.get("stress", 0.0) * 0.4
+	var fatigue_penalty = 0.0
+	# Fatigue only hurts mood if they are exhausted (> 60)
+	if state_vars.get("fatigue", 0.0) > 60.0:
+		fatigue_penalty = (state_vars.get("fatigue", 0.0) - 60.0) * 0.5
+		
+	var loneliness_penalty = state_vars.get("loneliness", 0.0) * 0.2
+	
+	# 2. Comfort Bonus
+	var comfort_bonus = (state_vars.get("comfort", 50.0) - 50.0) * 0.2
+	
+	# 3. Unmet Needs Penalty
+	# We find the single highest unmet need and penalize mood based on it.
+	# We don't stack all needs, otherwise they'd always be miserable.
+	var highest_need_val = 0.0
+	for need_key in needs:
+		if needs[need_key] > highest_need_val:
+			highest_need_val = needs[need_key]
+			
+	var need_penalty = 0.0
+	if highest_need_val > 50.0:
+		need_penalty = (highest_need_val - 50.0) * 0.3
+	
+	# Final Calculation
+	var final_mood = base_mood + comfort_bonus - stress_penalty - fatigue_penalty - loneliness_penalty - need_penalty
+	
+	# Clamp and assign
+	state_vars["mood"] = clampi(int(final_mood), 0, 100)
 
 #region Serialization
 # --- SERIALIZATION (For Saving/Loading) ---

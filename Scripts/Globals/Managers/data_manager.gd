@@ -338,26 +338,29 @@ func _load_desire_script(path: String) -> void:
 func _load_action_script(path: String) -> void:
 	var script = load(path)
 	if script and script is Script:
-		# We instantiate it ONCE just to read its 'id' property, then discard the instance.
-		# We store the SCRIPT REFERENCE, not the instance, in the registry.
-		var temp_instance = script.new("", 0)
+		# Probe the script with a duration of 0. No more empty strings!
+		var temp_instance = script.new(0)
 		if temp_instance is ActionPlan:
 			var action_id = temp_instance.id
 			action_scripts_registry[action_id] = script
 		else:
 			printerr("DataManager: Script at ", path, " does not extend ActionPlan.")
 
-## THE ACTION FACTORY: Converts a saved string ID back into a living, executing script object.
 func create_action(action_id: String, duration: int) -> ActionPlan:
 	if action_id == "":
 		return null
 		
 	if action_scripts_registry.has(action_id):
 		var script_ref = action_scripts_registry[action_id]
-		return script_ref.new(action_id, duration)
+		# Only pass the duration. The script inherently knows its own ID.
+		return script_ref.new(duration)
 		
 	printerr("ActionFactory: Attempted to create unknown action_id: ", action_id)
-	return ActionPlan.new(action_id, duration) # Fallback to base class to prevent crashes
+	
+	# Fallback to prevent crashes
+	var fallback = ActionPlan.new(duration)
+	fallback.id = action_id 
+	return fallback
 
 #endregion
 
