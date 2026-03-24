@@ -21,15 +21,28 @@ enum MartialStat {
 	DESTINY		 	# Luck, basically
 }
 	
-# --- DAMAGE & INJURY TYPES ---
+# --- DAMAGE & INJURY TYPES & WEAPONS ---
 enum DamageType {
 	SLASHING,		# Swords, Sabers
 	PIERCING,		# Spears, Needles
 	BLUNT,			# Staffs, Hammers, Fists
 	INTERNAL,		# Palm strikes, Qi-blasts (ignores physical armor)
 	POISON,			# Sichuan specialty, damage over time
-	BLEED,			# Deep cuts, max HP reduction until treated
-	ENERGY			# Qi-based damage
+	PSYCHIC,		# Mental attacks, illusions
+}
+
+enum WeaponType{
+	SWORD,
+	SABER,
+	SPEAR,
+	NEEDLE,
+	STAFF,
+	HAMMER,
+	FIST,
+	UNARMED,
+	DAGGER,
+	HIDDEN_WEAPON,
+	FAN
 }
 
 # --- MARTIAL PROGRESSION ---
@@ -155,11 +168,20 @@ const MAX_TRAITS_PER_CHARACTER = 5
 
 # --- HELPER: STAT MAPPING ---
 # Translates string keys from JSON into the Enum values used in code.
-func get_stat_enum(stat_name: String):
-	match stat_name.to_lower():
-		"constitution": return Stat.CONSTITUTION
-		"strength": return Stat.STRENGTH
-		"agility": return Stat.AGILITY
-		"intelligence": return Stat.INTELLIGENCE
-		"charisma": return Stat.CHARISMA
+func get_stat_enum(stat_name: String) -> int:
+	var upper = stat_name.to_upper()
+	if Stat.keys().has(upper):
+		return Stat[upper]
+	return -1
+
+func get_martial_enum(martial_name: String) -> int:
+	var upper = martial_name.to_upper()
+	if MartialStat.keys().has(upper):
+		return MartialStat[upper]
+	return -1
+
+func get_weapon_enum(weapon_name: String) -> int:
+	var upper = weapon_name.to_upper()
+	if WeaponType.keys().has(upper):
+		return WeaponType[upper]
 	return -1

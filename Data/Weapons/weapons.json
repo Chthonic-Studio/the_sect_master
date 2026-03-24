@@ -1,0 +1,27 @@
+{
+	"basic_iron_sword": {
+		"name": "Iron Sword",
+		"description": "A standard three-foot blade. The weapon of a gentleman, but often wielded by scoundrels.",
+		"weapon_type": "SWORD",
+		"damage_type": "SLASHING",
+		"base_damage": 15,
+		"stat_modifiers": {
+			"agility": 5
+		},
+		"strong_against": ["SPEAR", "FAN"],
+		"weak_against": ["HAMMER", "STAFF"]
+	},
+	"heavy_hammer": {
+		"name": "Meteor Hammer",
+		"description": "A brutal chunk of iron on a handle. Crushes armor and finesse alike.",
+		"weapon_type": "HAMMER",
+		"damage_type": "BLUNT",
+		"base_damage": 25,
+		"stat_modifiers": {
+			"strength": 10,
+			"agility": -5
+		},
+		"strong_against": ["SWORD", "SABER"],
+		"weak_against": ["NEEDLE", "HIDDEN_WEAPON"]
+	}
+}
