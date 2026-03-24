@@ -108,7 +108,7 @@ func get_alignment_value(a_name: String) -> int:
 	return current_alignment.get(a_name, 0)
 
 func get_full_name() -> String:
-	return first_name + " " + last_name
+	return last_name + " " + first_name
 
 # --- CACHE MANAGEMENT ---
 
@@ -326,16 +326,21 @@ func from_dictionary(data: Dictionary) -> void:
 	equipped_weapon_id = data.get("equipped_weapon_id", "")
 	
 	if data.has("base_stats"):
-		base_stats.merge(data["base_stats"], true)
+		for key in data["base_stats"]:
+			base_stats[int(key) if key.is_valid_int() else key] = int(data["base_stats"][key])
 	if data.has("base_martial"):
-		base_martial.merge(data["base_martial"], true)
+		for key in data["base_martial"]:
+			base_martial[int(key) if key.is_valid_int() else key] = int(data["base_martial"][key])
 	if data.has("personality_values"):
-		personality_values.merge(data["personality_values"], true)
+		for key in data["personality_values"]:
+			personality_values[key] = int(data["personality_values"][key])
 	if data.has("alignment_values"):
-		alignment_values.merge(data["alignment_values"], true)
+		for key in data["alignment_values"]:
+			alignment_values[key] = int(data["alignment_values"][key])
 		
 	if data.has("traits"):
-		traits = Array(data["traits"], TYPE_STRING, &"", null)
+		# Avoid Godot 3 Array() constructor syntax
+		traits.assign(data["traits"])
 	
 	if data.has("active_modifiers"):
 		# Ensure we load it cleanly into our typed array structure

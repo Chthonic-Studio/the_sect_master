@@ -23,6 +23,12 @@ func evaluate(character: CharacterData) -> float:
 	
 	return score
 
-func generate_action(_character: CharacterData) -> ActionPlan:
-	var duration = randi_range(1, 2)
-	return DataManager.create_action("action_birdwatching", duration)
+func generate_action(character: CharacterData) -> ActionPlan:
+	var entertainment_need = character.needs.get("entertainment", 0.0)
+	
+	# Action_birdwatching removes 20 entertainment need per day.
+	# We calculate how many days it takes to clear their current boredom, 
+	# clamped to a minimum of 1 day and a maximum of 4 days.
+	var calculated_duration = clampi(ceili(entertainment_need / 20.0), 1, 4)
+	
+	return DataManager.create_action("action_birdwatching", calculated_duration)

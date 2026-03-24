@@ -27,10 +27,15 @@ func _ready() -> void:
 func _on_day_passed(_day: int) -> void:
 	var current_total_days = TimeManager.get_total_days_elapsed()
 	
-	for char_id in character_repo:
-		var character = character_repo[char_id]
-		if character.is_alive:
-			character.process_daily_tick(current_total_days)
+	# Duplicate the keys to safely allow repo modifications during the tick
+	var active_keys = character_repo.keys().duplicate()
+	
+	for char_id in active_keys:
+		# Double check it still exists (might have been removed by a previous character's action)
+		if character_repo.has(char_id):
+			var character = character_repo[char_id]
+			if character.is_alive:
+				character.process_daily_tick(current_total_days)
 			
 func load_all_data() -> void:
 	_ensure_mod_directories()
@@ -58,6 +63,9 @@ func _load_json_to_registry(path: String, target_dict: Dictionary) -> void:
 		printerr("DataManager: File not found at ", path)
 		return
 	var file = FileAccess.open(path, FileAccess.READ)
+	if not file:
+		printerr("DataManager: Failed to open file for reading (_load_json_to_registry @ Data Manager): ", path)
+		return
 	var data = JSON.parse_string(file.get_as_text())
 	if data is Array:
 		for item in data:
@@ -69,10 +77,16 @@ func _load_json_to_registry(path: String, target_dict: Dictionary) -> void:
 func _load_names_pool(path: String) -> void:
 	if not FileAccess.file_exists(path): return
 	var file = FileAccess.open(path, FileAccess.READ)
+	if not file:
+		printerr("DataManager: Failed to open file for reading (_load_names_pool @ Data Manager): ", path)
+		return
 	name_pools = JSON.parse_string(file.get_as_text())
 
 func _load_modifier_data(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
+	if not file:
+		printerr("DataManager: Failed to open file for reading (_load_modifier_data @ Data Manager): ", path)
+		return
 	var json = JSON.new()
 	var error = json.parse(file.get_as_text())
 	
@@ -86,6 +100,9 @@ func _load_modifier_data(path: String) -> void:
 
 func _load_weapon_data(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
+	if not file:
+		printerr("DataManager: Failed to open file for reading (_load_weapon_data @ Data Manager): ", path)
+		return
 	var json = JSON.new()
 	var error = json.parse(file.get_as_text())
 	if error != OK: return
@@ -241,6 +258,9 @@ func _scan_directory_for_json(path: String, load_func: Callable) -> void:
 
 func _load_trait_data(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
+	if not file:
+		printerr("DataManager: Failed to open file for reading (_load_trait_data @ Data Manager): ", path)
+		return
 	var json = JSON.new()
 	var error = json.parse(file.get_as_text())
 	
@@ -259,6 +279,9 @@ func _load_trait_data(path: String) -> void:
 
 func _load_name_data(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
+	if not file:
+		printerr("DataManager: Failed to open file for reading (_load_name_data @ Data Manager): ", path)
+		return
 	var data = JSON.parse_string(file.get_as_text())
 	
 	if typeof(data) != TYPE_DICTIONARY:
@@ -338,13 +361,10 @@ func _load_desire_script(path: String) -> void:
 func _load_action_script(path: String) -> void:
 	var script = load(path)
 	if script and script is Script:
-		# Probe the script with a duration of 0. No more empty strings!
-		var temp_instance = script.new(0)
-		if temp_instance is ActionPlan:
-			var action_id = temp_instance.id
-			action_scripts_registry[action_id] = script
-		else:
-			printerr("DataManager: Script at ", path, " does not extend ActionPlan.")
+		# Use the filename as the ID (e.g., "action_meditate.gd" -> "action_meditate")
+		# This avoids calling .new() blindly on modder scripts.
+		var action_id = path.get_file().get_basename().replace(".remap", "")
+		action_scripts_registry[action_id] = script
 
 func create_action(action_id: String, duration: int) -> ActionPlan:
 	if action_id == "":

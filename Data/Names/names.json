@@ -1,40 +1,39 @@
 {
 	"cultures": {
 		"CENTRAL_PLAINS": {
-			"surnames": ["Zhao", "Qian", "Sun", "Li", "Zhou", "Wu", "Zheng", "Wang"],
-			"male_given": ["Wei", "Jian", "Ping", "Bo", "Chen"],
-			"female_given": ["Fang", "Jing", "Min", "Hua", "Xiu"]
+			"surnames": ["Zhao", "Qian", "Sun", "Li", "Zhou", "Wu", "Zheng", "Wang", "Feng", "Chen", "Chu", "Wei", "Jiang", "Shen", "Han", "Yang", "Zhu", "Qin", "Xu", "He"],
+			"male_given": ["Wei", "Jian", "Ping", "Bo", "Chen", "Guang", "An", "De", "Zheng", "Hao", "Sheng", "Lun", "Xue", "Yuan", "Zhi", "Quanyin", "Tian", "Long", "Shi", "Kai"],
+			"female_given": ["Fang", "Jing", "Min", "Hua", "Xiu", "Li", "Yun", "Rong", "Fei", "Yan", "Ying", "Mei", "Lan", "Hui", "Ling", "Yue", "Su", "Xuan", "Ya", "Zi"]
 		},
 		"SICHUAN": {
-			"surnames": ["Tang", "Bao", "Lei", "Miao", "Zou"],
-			"male_given": ["Feng", "Huo", "Jun", "Yan", "Lie"],
-			"female_given": ["Mei", "Ling", "Zhu", "Qiu", "Hong"]
+			"surnames": ["Tang", "Bao", "Lei", "Miao", "Zou", "Ba", "Long", "Yin", "Deng", "Fei", "Long", "Mu", "Sha", "Mo"],
+			"male_given": ["Feng", "Huo", "Jun", "Yan", "Lie", "Xing", "Shuo", "Bao", "Kuang", "Jie", "Zun", "Ao", "Xiao", "Duan", "Zhan"],
+			"female_given": ["Mei", "Ling", "Zhu", "Qiu", "Hong", "Yao", "Xi", "Luo", "Dan", "Can", "Yu", "Jiao", "E", "Man", "Ying"]
 		},
 		"JIANGNAN": {
-			"surnames": ["Lin", "Ye", "Su", "Shen", "Gu", "Lu"],
-			"male_given": ["Wen", "Shi", "Xian", "Yu", "Qing"],
-			"female_given": ["Rou", "Yue", "Qin", "Wan", "Shui"]
+			"surnames": ["Lin", "Ye", "Su", "Shen", "Gu", "Lu", "Xie", "Yuan", "Lu", "Shao", "Tao", "Fu", "Sheng", "Mao"],
+			"male_given": ["Wen", "Shi", "Xian", "Yu", "Qing", "Mo", "Lin", "Xuan", "Ran", "Yi", "Chen", "He", "Fan", "Shu", "Zi"],
+			"female_given": ["Rou", "Yue", "Qin", "Wan", "Shui", "Xue", "Ling", "Ning", "Xiao", "Yian", "Wei", "Shu", "Ting", "Qiao", "Yue"]
 		},
 		"LINGNAN": {
-			"surnames": ["Huang", "Zeng", "Peng", "Mo", "He"],
-			"male_given": ["Shan", "Hai", "Gang", "Tie", "Zhen"],
-			"female_given": ["Lan", "Cui", "Zhen", "Qiao", "Biyu"]
+			"surnames": ["Huang", "Zeng", "Peng", "Mo", "He", "Liang", "Cai", "Mai", "Kuang", "Xian", "Ou", "Pang", "Zuo"],
+			"male_given": ["Shan", "Hai", "Gang", "Tie", "Zhen", "Yue", "Sheng", "Ding", "Zhu", "Kun", "Guang", "Chao", "Feng", "Jian", "Ying"],
+			"female_given": ["Lan", "Cui", "Zhen", "Qiao", "Biyu", "Fen", "E", "Ying", "Mei", "Cai", "Lian", "He", "Xiang", "Qun", "Di"]
 		},
 		"WESTERN_REGIONS": {
-			"surnames": ["An", "Shi", "Kang", "Jin", "Ma"],
-			"male_given": ["Tu", "Batu", "Sha", "Lie", "Kuang"],
-			"female_given": ["Jin", "Yin", "Sha", "Luo", "Moli"]
+			"surnames": ["An", "Shi", "Kang", "Jin", "Ma", "Cao", "Bi", "Luo", "Mi", "He", "Sha", "Khotan", "Urum"],
+			"male_given": ["Tu", "Batu", "Sha", "Lie", "Kuang", "Altan", "Temur", "Torgut", "Zaya", "Khen", "Baatar", "Sukh", "Munkh", "Od"],
+			"female_given": ["Jin", "Yin", "Sha", "Luo", "Moli", "Naren", "Gua", "Sarna", "Altana", "Qiqig", "Od", "Bayar", "Tana", "Zaya"]
 		},
 		"NORTHERN_BORDER": {
-			"surnames": ["Gongsun", "Murong", "Tuo", "Duan", "Gao"],
-			"male_given": ["Feng", "Biao", "Mang", "Zhan", "Kuo"],
-			"female_given": ["Bing", "Xue", "Shuang", "Han", "Leng"]
+			"surnames": ["Gongsun", "Murong", "Tuo", "Duan", "Gao", "Yuwen", "Ouyang", "Xiahou", "Sima", "Wanyan", "Yelu", "Huyan"],
+			"male_given": ["Feng", "Biao", "Mang", "Zhan", "Kuo", "Tie", "Han", "Kuang", "Shuai", "Jue", "Ying", "Ge", "Duo", "Ba", "Mang"],
+			"female_given": ["Bing", "Xue", "Shuang", "Han", "Leng", "Ao", "Ya", "Mei", "Su", "Ying", "Qing", "Zhen", "Xuan", "Luo", "Ran"]
 		},
-	"generic": {
-		"surnames": ["Li", "Wang", "Zhang", "Liu"],
-		"male_given": ["Wei", "Qiang", "Lei"],
-		"female_given": ["Yan", "Fang", "Xiu"]
-	}
-	
+		"generic": {
+			"surnames": ["Li", "Wang", "Zhang", "Liu", "Chen", "Yang", "Huang", "Zhao", "Wu", "Zhou", "Xu", "Sun", "Ma", "Zhu", "Hu", "Guo", "He", "Lin", "Luo", "Gao"],
+			"male_given": ["Wei", "Qiang", "Lei", "Jun", "Yang", "Yong", "Ying", "Jian", "Lun", "Hao", "Sheng", "Zhen", "Ming", "Bo", "Tai"],
+			"female_given": ["Yan", "Fang", "Xiu", "Juan", "Mei", "Li", "Jing", "Hua", "Su", "Yun", "Rong", "Ning", "Ping", "Hui", "Lan"]
+		}
 	}
 }
