@@ -23,26 +23,33 @@ func process_daily_tick(character: CharacterData) -> void:
 		_choose_new_action(character)
 
 func _choose_new_action(character: CharacterData) -> void:
-	# Rely on the centralized DataManager array to save memory
-	if DataManager.desires_registry.is_empty():
-		return
-		
 	var best_score: float = -1.0
 	var best_desire: Desire = null
 	
-	for desire in DataManager.desires_registry:
-		var raw_score = desire.evaluate(character)
+	# Keep track of what we've evaluated to avoid duplicates 
+	# (e.g., if a Desire has both "general" and "martial_artist" tags)
+	var evaluated_ids = {}
+	
+	for tag in character.ai_tags:
+		var desires_for_tag = DataManager.micro_desires.get(tag, [])
 		
-		if raw_score <= 0.0:
-			continue
+		for desire in desires_for_tag:
+			if evaluated_ids.has(desire.id):
+				continue
+			evaluated_ids[desire.id] = true
 			
-		var noise_modifier = randf_range(1.0 - UTILITY_NOISE_VARIANCE, 1.0 + UTILITY_NOISE_VARIANCE)
-		var final_score = raw_score * noise_modifier
-		
-		if final_score > best_score:
-			best_score = final_score
-			best_desire = desire
+			var raw_score = desire.evaluate(character)
 			
+			if raw_score <= 0.0:
+				continue
+				
+			var noise_modifier = randf_range(1.0 - UTILITY_NOISE_VARIANCE, 1.0 + UTILITY_NOISE_VARIANCE)
+			var final_score = raw_score * noise_modifier
+			
+			if final_score > best_score:
+				best_score = final_score
+				best_desire = desire
+				
 	if best_desire:
 		current_action = best_desire.generate_action(character)
 
