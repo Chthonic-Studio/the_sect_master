@@ -11,7 +11,8 @@ var modifiers_registry: Dictionary = {}
 var weapons_registry: Dictionary = {}
 
 # --- AI LOGIC REGISTRIES ---
-var desires_registry: Array[Desire] = []
+var micro_desires: Dictionary = {} # Dict[String, Array[Desire]] mapped by tag
+var macro_desires: Dictionary = {} # Dict[String, Array[Desire]] mapped by tag
 var action_scripts_registry: Dictionary = {} # Maps String IDs to GDScript references (The Factory)
 
 # --- REPOSITORIES (The "Living Entities") ---
@@ -354,7 +355,14 @@ func _load_desire_script(path: String) -> void:
 		# Instantiate the script to hold in memory globally
 		var desire_instance = script.new()
 		if desire_instance is Desire:
-			desires_registry.append(desire_instance)
+			# Determine which dictionary to route it to
+			var target_registry = macro_desires if desire_instance.is_macro else micro_desires
+			
+			# Map the instance to every tag it supports
+			for tag in desire_instance.ai_tags:
+				if not target_registry.has(tag):
+					target_registry[tag] = []
+				target_registry[tag].append(desire_instance)
 		else:
 			printerr("DataManager: Script at ", path, " does not extend Desire.")
 
