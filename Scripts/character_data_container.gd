@@ -18,6 +18,14 @@ var is_alive: bool = true
 var aptitude: int = 0 
 var active_modifiers: Array[Dictionary] = []
 
+# --- SIMULATION LOD ---
+enum SimTier { MICRO, MACRO, FROZEN }
+var current_sim_tier: SimTier = SimTier.MICRO
+
+# --- AI ROLES & DIRECTIVES ---
+var ai_tags: Array[String] = ["general", "martial_artist"] # Default tags for baseline behavior
+var current_directive: Directive = null
+
 # --- DYNAMIC STATE VARIABLES ---
 var wealth: int = 0
 var is_hurt: bool = false
@@ -157,6 +165,31 @@ func recalculate_all_stats() -> void:
 	
 	# Notify external UI/Systems that this character's numbers have shifted
 	stats_recalculated.emit(self)
+
+# --- SIMULATION TRANSITIONS ---
+
+## Wakes a character up to full daily RimWorld-style evaluation.
+func transition_to_micro() -> void:
+	current_sim_tier = SimTier.MICRO
+	
+	# Randomize needs slightly so a newly spawned character doesn't enter 
+	# as a blank slate and immediately try to sleep or meditate simultaneously.
+	var ambition = get_personality_value("ambition")
+	needs["training"] = randf_range(20.0, 50.0 + (ambition * 0.5))
+	state_vars["fatigue"] = randf_range(10.0, 40.0)
+
+## Demotes a character to background CK3-style monthly evaluations.
+func transition_to_macro() -> void:
+	current_sim_tier = SimTier.MACRO
+	# Clear out micro-specific volatile state to save memory
+	if brain.current_action != null:
+		brain.current_action = null
+
+## Halts all AI processing (e.g., dead, imprisoned, or secluded meditation).
+func transition_to_frozen() -> void:
+	current_sim_tier = SimTier.FROZEN
+	if brain.current_action != null:
+		brain.current_action = null
 
 # --- GAMEPLAY MODIFIERS ---
 
@@ -303,9 +336,12 @@ func to_dictionary() -> Dictionary:
 		
 		# AI Values
 		"needs": needs,
+		"current_sim_tier": current_sim_tier,
+		"ai_tags": ai_tags,
 		"action_cooldowns": action_cooldowns,
 		"current_action_id": brain.current_action.id if brain.current_action else "",
 		"action_duration": brain.current_action.duration_remaining if brain.current_action else 0,
+		# TODO: We will serialize the current_directive ID once the factory is built in Phase 3
 		
 		# Combat Values 
 		"equipped_weapon_id": equipped_weapon_id,
@@ -324,6 +360,11 @@ func from_dictionary(data: Dictionary) -> void:
 	is_alive = data.get("is_alive", true)
 	aptitude = data.get("aptitude", 0) 
 	equipped_weapon_id = data.get("equipped_weapon_id", "")
+	
+	current_sim_tier = data.get("current_sim_tier", SimTier.MICRO)
+	
+	if data.has("ai_tags"):
+		ai_tags.assign(data["ai_tags"])
 	
 	if data.has("base_stats"):
 		for key in data["base_stats"]:
