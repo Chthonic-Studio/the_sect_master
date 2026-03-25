@@ -140,3 +140,34 @@ func _display_sect_info(sect: SectData) -> void:
 		res_string += "%s: %d (%s%d)\n" % [r_name, current_val, sign_str, delta]
 		
 	add_label.call("Resources & Ledger:", res_string)
+
+	# --- BUILDINGS & QUEUE ---
+	var built_names = []
+	for b_id in sect.completed_buildings:
+		var b_data = DataManager.buildings_registry.get(b_id, {})
+		built_names.append(b_data.get("name", b_id))
+	var built_str = ", ".join(built_names) if not built_names.is_empty() else "None"
+	add_label.call("Buildings:", built_str)
+	
+	var queue_strings = []
+	for project in sect.construction_queue:
+		var b_data = DataManager.buildings_registry.get(project["building_id"], {})
+		var b_name = b_data.get("name", project["building_id"])
+		queue_strings.append("%s (%d days left)" % [b_name, project["days_remaining"]])
+	var queue_str = "\n".join(queue_strings) if not queue_strings.is_empty() else "Empty"
+	add_label.call("Construction Queue:", queue_str)
+	
+	# --- DEBUG BUILD BUTTON ---
+	var test_build_btn = Button.new()
+	test_build_btn.text = "Build Grand Kitchen"
+	# Disable the button if they can't afford it or already have it
+	test_build_btn.disabled = not sect.can_build("grand_kitchen")
+	
+	test_build_btn.pressed.connect(func():
+		if sect.start_construction("grand_kitchen"):
+			_display_sect_info(sect) # Refresh the UI immediately to show the queue
+	)
+	
+	# Add the button spanning both columns so it looks clean
+	test_build_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	sect_info_container.add_child(test_build_btn)

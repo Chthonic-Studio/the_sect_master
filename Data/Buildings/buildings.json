@@ -1,17 +1,58 @@
 {
+	"meditation_mats": {
+		"id": "meditation_mats",
+		"name": "Courtyard Mats",
+		"description": "Basic woven mats in the courtyard for collective breathing exercises.",
+		"build_days_base": 15,
+		"cost": { "MATERIALS": 100, "WEALTH": 20 },
+		"monthly_upkeep": {},
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["basic_meditation"]
+	},
 	"grand_kitchen": {
 		"id": "grand_kitchen",
 		"name": "Grand Kitchen",
-		"description": "A massive facility capable of feeding hundreds of disciples.",
+		"description": "A facility capable of feeding hundreds of disciples.",
 		"build_days_base": 45,
-		"cost": {
-			"MATERIALS": 300,
-			"WEALTH": 100
-		},
-		"monthly_upkeep": {
-			"WEALTH": 15
-		},
+		"cost": { "MATERIALS": 300, "WEALTH": 100 },
+		"monthly_upkeep": { "WEALTH": 15 },
 		"yields": {},
-		"unlocks_ai_tags": ["advanced_cooking"]
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["advanced_cooking"]
+	},
+	"massive_kitchen": {
+		"id": "massive_kitchen",
+		"name": "Massive Kitchen",
+		"description": "An upgraded kitchen complex that can support grand banquets.",
+		"build_days_base": 90,
+		"cost": { "MATERIALS": 800, "WEALTH": 300 },
+		"monthly_upkeep": { "WEALTH": 40 },
+		"yields": {},
+		"prerequisite_tags": ["advanced_cooking"],
+		"replaces": "grand_kitchen",
+		"unlocks_sect_tags": ["advanced_cooking", "master_cooking"]
+	},
+	"alchemy_furnace": {
+		"id": "alchemy_furnace",
+		"name": "Bronze Alchemy Furnace",
+		"description": "A heavy furnace for refining basic medicinal herbs into pills.",
+		"build_days_base": 60,
+		"cost": { "MATERIALS": 500, "WEALTH": 200 },
+		"monthly_upkeep": { "WEALTH": 25, "MATERIALS": 10 },
+		"yields": { "MEDICINE": 15 },
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["basic_alchemy"]
+	},
+	"martial_arena": {
+		"id": "martial_arena",
+		"name": "Sparring Arena",
+		"description": "A stone-paved ring for disciples to safely test their forms.",
+		"build_days_base": 30,
+		"cost": { "MATERIALS": 400, "WEALTH": 50 },
+		"monthly_upkeep": { "WEALTH": 10 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["sparring"]
 	}
 }

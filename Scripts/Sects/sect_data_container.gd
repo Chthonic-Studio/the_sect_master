@@ -34,6 +34,7 @@ var active_laws: Dictionary = {} # e.g., { "elder_stipends": "lavish", "successi
 var completed_buildings: Array[String] = []
 var active_modifiers: Array[Dictionary] = []
 var active_tenets: Array[String] = [] 
+var unlocked_tags: Array[String] = []
 
 # Array of Dictionaries tracking ongoing construction. 
 # Format: {"building_id": String, "days_remaining": int}
@@ -135,14 +136,21 @@ func process_daily_tick(current_total_days: int) -> void:
 
 	# 2. Process Construction Queue
 	if not construction_queue.is_empty():
-		# Only process the first item in the queue (Sects build one thing at a time)
 		var current_project = construction_queue[0]
 		current_project["days_remaining"] -= 1
 		
 		if current_project["days_remaining"] <= 0:
 			var finished_building = current_project["building_id"]
+			
+			# Handle replacing buildings
+			var b_data = DataManager.buildings_registry.get(finished_building, {})
+			var replaces = b_data.get("replaces", "")
+			if replaces != "" and completed_buildings.has(replaces):
+				completed_buildings.erase(replaces)
+			
 			completed_buildings.append(finished_building)
 			construction_queue.remove_at(0)
+			recalculate_sect_tags() # Update capabilities immediately
 			building_completed.emit(self, finished_building)
 
 ## Adds a predefined temporary macro-modifier (e.g. "+20% pill production for 30 days").
@@ -277,6 +285,105 @@ func get_projected_monthly_deltas() -> Dictionary:
 
 #endregion
 
+#region Construction
+
+## Checks if the sect can afford and legally build this building.
+func can_build(building_id: String) -> bool:
+	if not DataManager.buildings_registry.has(building_id):
+		return false
+		
+	# 1. Enforce uniqueness: Only one of each building type
+	# (Future: Upgrades could be handled by requiring a previous building ID to be removed)
+	if completed_buildings.has(building_id):
+		return false
+		
+	for project in construction_queue:
+		if project.get("building_id", "") == building_id:
+			return false
+			
+	# 2. Check Affordability
+	var b_data = DataManager.buildings_registry[building_id]
+	var prereqs = b_data.get("prerequisite_tags", [])
+	for req in prereqs:
+		if not unlocked_tags.has(req):
+			return false # Missing a required tag
+	var cost = b_data.get("cost", {})
+	
+	for res_key in cost:
+		var r_enum = Definitions.get_resource_enum(res_key)
+		if r_enum != -1 and resources.get(r_enum, 0) < cost[res_key]:
+			return false # Cannot afford this specific resource
+			
+	return true
+
+## Attempts to start construction. Deducts resources and adds to queue.
+func start_construction(building_id: String) -> bool:
+	if not can_build(building_id):
+		return false
+		
+	var b_data = DataManager.buildings_registry[building_id]
+	var cost = b_data.get("cost", {})
+	
+	# 1. Deduct resources
+	for res_key in cost:
+		var r_enum = Definitions.get_resource_enum(res_key)
+		if r_enum != -1:
+			resources[r_enum] -= cost[res_key]
+			
+	# 2. Calculate Build Time
+	var build_days = b_data.get("build_days_base", 30)
+	
+	# --- FUTURE EXPANSION HOOK ---
+	# Here we can modify build_days based on Sect Tenets or the Sect Master's Intelligence
+	
+	# 3. Add to queue
+	construction_queue.append({
+		"building_id": building_id,
+		"days_remaining": build_days
+	})
+	
+	return true
+
+## Cancels a project in the queue and refunds the cost.
+func cancel_construction(queue_index: int) -> void:
+	if queue_index < 0 or queue_index >= construction_queue.size():
+		return
+		
+	var project = construction_queue[queue_index]
+	var b_data = DataManager.buildings_registry.get(project["building_id"], {})
+	var cost = b_data.get("cost", {})
+	
+	# Refund resources perfectly
+	for res_key in cost:
+		var r_enum = Definitions.get_resource_enum(res_key)
+		if r_enum != -1:
+			resources[r_enum] += cost[res_key]
+			
+	construction_queue.remove_at(queue_index)
+
+#endregion
+
+## Safely rebuilds the sect's capability tags based on existing buildings and tenets.
+func recalculate_sect_tags() -> void:
+	unlocked_tags.clear()
+	
+	# 1. Tags from Buildings
+	for b_id in completed_buildings:
+		var b_data = DataManager.buildings_registry.get(b_id, {})
+		var tags = b_data.get("unlocks_sect_tags", [])
+		for t in tags:
+			if not unlocked_tags.has(t):
+				unlocked_tags.append(t)
+				
+	# 2. Tags from Tenets (Future-proofing for things like "Demonic Arts Allowed")
+	for t_id in active_tenets:
+		var t_data = DataManager.tenets_registry.get(t_id, {})
+		var tags = t_data.get("unlocks_sect_tags", [])
+		for t in tags:
+			if not unlocked_tags.has(t):
+				unlocked_tags.append(t)
+
+
 # --- SERIALIZATION ---
 
 func to_dictionary() -> Dictionary:
@@ -293,6 +400,7 @@ func to_dictionary() -> Dictionary:
 		"members_by_position": members_by_position,
 		"active_laws": active_laws,
 		"active_tenets": active_tenets,
+		"unlocked_tags": unlocked_tags,
 		"completed_buildings": completed_buildings,
 		"active_modifiers": active_modifiers,
 		"construction_queue": construction_queue
@@ -341,6 +449,9 @@ func from_dictionary(data: Dictionary) -> void:
 		
 	if data.has("completed_buildings"):
 		completed_buildings.assign(data["completed_buildings"])
+	
+	if data.has("unlocked_tags"):
+		unlocked_tags.assign(data["unlocked_tags"])
 		
 	if data.has("active_modifiers"):
 		active_modifiers.clear()

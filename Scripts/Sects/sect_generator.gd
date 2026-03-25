@@ -55,7 +55,14 @@ func _load_premade_sects() -> void:
 			for target_id in data["relationships"]:
 				var rel_value = int(data["relationships"][target_id])
 				SimulationManager.set_sect_relationship(sect.sect_id, target_id, rel_value)
-
+		
+		# Add pre-built buildings
+		if data.has("completed_buildings"):
+			for b_id in data["completed_buildings"]:
+				if DataManager.buildings_registry.has(b_id):
+					sect.completed_buildings.append(b_id)
+			sect.recalculate_sect_tags() # Ensure tags activate immediately
+			
 		_assign_starting_laws(sect)
 		SimulationManager.register_sect(sect)
 		_populate_sect(sect, randi_range(20, 40))
@@ -113,7 +120,6 @@ func generate_custom_sect(tier: SectTier, overrides: Dictionary = {}) -> SectDat
 	
 	return sect
 
-# (Then, modify your existing `_generate_dynamic_sect` to simply call this new function:)
 func _generate_dynamic_sect(tier: SectTier) -> SectData:
 	return generate_custom_sect(tier, {})
 
