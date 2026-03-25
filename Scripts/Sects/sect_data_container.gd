@@ -220,6 +220,63 @@ func remove_tenet(tenet_id: String) -> void:
 
 #endregion
 
+#region Economy & Macro-Tick
+
+func process_monthly_tick() -> void:
+	var deltas = get_projected_monthly_deltas()
+	
+	for r_enum in deltas:
+		resources[r_enum] += deltas[r_enum]
+		
+		# Prevent negative resources and apply bankruptcy penalties
+		if resources[r_enum] < 0:
+			resources[r_enum] = 0
+			
+			# If a sect goes bankrupt on Wealth, they lose Face in the Jianghu
+			if r_enum == Definitions.ResourceType.WEALTH:
+				stats[Definitions.SectStat.FACE] = clampi(stats[Definitions.SectStat.FACE] - 5, 0, 100)
+				# Future Hook: Emit a signal here to lower Elder loyalty/mood!
+
+## Calculates the net income/expenses for the sect. 
+## Separated from the tick so the UI can safely read it for tooltips.
+func get_projected_monthly_deltas() -> Dictionary:
+	var deltas: Dictionary = {}
+	for r in Definitions.ResourceType.values():
+		deltas[r] = 0
+		
+	# 1. Process Completed Buildings (Yields and Upkeeps)
+	for b_id in completed_buildings:
+		var b_data = DataManager.buildings_registry.get(b_id, {})
+		
+		var yields = b_data.get("yields", {})
+		for res_key in yields:
+			var r_enum = Definitions.get_resource_enum(res_key)
+			if r_enum != -1: 
+				deltas[r_enum] += yields[res_key]
+				
+		var upkeep = b_data.get("monthly_upkeep", {})
+		for res_key in upkeep:
+			var r_enum = Definitions.get_resource_enum(res_key)
+			if r_enum != -1: 
+				deltas[r_enum] -= upkeep[res_key]
+				
+	# 2. Process Laws (Elder Stipends)
+	var elder_stipend_opt = active_laws.get("elder_stipends", "")
+	if elder_stipend_opt != "":
+		var law_data = DataManager.sect_laws_registry.get("elder_stipends", {})
+		var opt_data = law_data.get("options", {}).get(elder_stipend_opt, {})
+		
+		var cost_per_elder = opt_data.get("cost_per_elder", 0)
+		var num_elders = members_by_rank.get(Definitions.SectRank.ELDER, []).size()
+		
+		deltas[Definitions.ResourceType.WEALTH] -= (cost_per_elder * num_elders)
+		
+	# 3. (Future Expansion) Base Taxes from controlled territory, tributary sects, etc.
+		
+	return deltas
+
+#endregion
+
 # --- SERIALIZATION ---
 
 func to_dictionary() -> Dictionary:

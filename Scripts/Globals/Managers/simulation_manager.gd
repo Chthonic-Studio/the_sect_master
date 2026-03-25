@@ -11,6 +11,7 @@ var sect_relationships: Dictionary = {} # Maps "sect_a|sect_b" -> int (-100 to 1
 
 func _ready() -> void:
 	TimeManager.day_passed.connect(_on_day_passed)
+	TimeManager.month_passed.connect(_on_month_passed)
 
 ## Broadcasts the daily tick to all active characters and sects in the simulation
 func _on_day_passed(_day: int) -> void:
@@ -28,6 +29,13 @@ func _on_day_passed(_day: int) -> void:
 	for s_id in active_sect_keys:
 		if sect_repo.has(s_id):
 			sect_repo[s_id].process_daily_tick(current_total_days)
+
+## Broadcasts the macro monthly tick to all active sects
+func _on_month_passed(_month: int) -> void:
+	var active_sect_keys = sect_repo.keys().duplicate()
+	for s_id in active_sect_keys:
+		if sect_repo.has(s_id):
+			sect_repo[s_id].process_monthly_tick()
 
 #region Character Management
 func register_character(char_data: CharacterData) -> void:
