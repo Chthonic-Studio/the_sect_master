@@ -2,6 +2,7 @@ extends Desire
 
 func _init() -> void:
 	id = "desire_meditate"
+	ai_tags = ["martial_artist"] 
 
 func evaluate(character: CharacterData) -> float:
 	var fatigue = character.state_vars.get("fatigue", 0.0)

@@ -1,0 +1,99 @@
+[gd_scene format=3 uid="uid://ulyof05eintj"]
+
+[ext_resource type="Script" uid="uid://bpcrcsac64bgx" path="res://Scripts/Debug/DEBUG_sect_testing_grounds.gd" id="1_djnvu"]
+
+[node name="DebugSectTestingGrounds" type="Control" unique_id=607120889]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_djnvu")
+metadata/_edit_use_anchors_ = true
+
+[node name="SectList" type="ScrollContainer" parent="." unique_id=497450370]
+layout_mode = 0
+anchor_left = 0.61833334
+anchor_top = 0.075
+anchor_right = 0.9975
+anchor_bottom = 0.98875
+metadata/_edit_use_anchors_ = true
+
+[node name="SectList_Vbox" type="VBoxContainer" parent="SectList" unique_id=1904969759]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1791703202]
+layout_mode = 0
+anchor_left = 0.0058333334
+anchor_top = 0.06625
+anchor_right = 0.25166667
+anchor_bottom = 0.5325
+offset_bottom = -3.0517578e-05
+metadata/_edit_use_anchors_ = true
+
+[node name="SpawnNewSect_Minor" type="Button" parent="VBoxContainer" unique_id=374227635]
+layout_mode = 2
+text = "SpawnNewSect_Minor"
+
+[node name="SpawnNewSect_Average" type="Button" parent="VBoxContainer" unique_id=37055798]
+layout_mode = 2
+text = "SpawnNewSect_Average"
+
+[node name="SpawnNewSect_Major" type="Button" parent="VBoxContainer" unique_id=1596374911]
+layout_mode = 2
+text = "SpawnNewSect_Major"
+
+[node name="SectInfo" type="ScrollContainer" parent="." unique_id=364293379]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0016666667
+anchor_top = 0.64
+anchor_right = 0.59
+anchor_bottom = 0.99375
+offset_right = 6.1035156e-05
+metadata/_edit_use_anchors_ = true
+
+[node name="SectInfoContainer" type="GridContainer" parent="SectInfo" unique_id=314337667]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 4
+
+[node name="DEBUG_WorldTime" type="Label" parent="." unique_id=2079301589]
+layout_mode = 0
+offset_left = 1000.0
+offset_top = 3.0
+offset_right = 1195.0
+offset_bottom = 67.0
+
+[node name="DEBUG_TimePanel" type="HBoxContainer" parent="." unique_id=735359982]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 6.0
+offset_right = 256.0
+offset_bottom = 46.0
+
+[node name="0" type="Button" parent="DEBUG_TimePanel" unique_id=509845419]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "0"
+
+[node name="x1" type="Button" parent="DEBUG_TimePanel" unique_id=25355110]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "x1"
+
+[node name="x2" type="Button" parent="DEBUG_TimePanel" unique_id=611890602]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "x2"
+
+[node name="x3" type="Button" parent="DEBUG_TimePanel" unique_id=39085982]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "x3"

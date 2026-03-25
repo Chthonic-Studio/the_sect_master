@@ -1,0 +1,12 @@
+{
+	"elder_stipends": {
+		"name": "Elder Stipends",
+		"description": "How much wealth is allocated monthly to the Sect's Elders.",
+		"options": {
+			"none": { "name": "None", "cost_per_elder": 0, "opinion_modifier": -30 },
+			"standard": { "name": "Standard", "cost_per_elder": 20, "opinion_modifier": 0 },
+			"lavish": { "name": "Lavish", "cost_per_elder": 80, "opinion_modifier": 40 }
+		},
+		"default_option": "standard"
+	}
+}

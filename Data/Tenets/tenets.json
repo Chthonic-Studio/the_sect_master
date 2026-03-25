@@ -1,0 +1,29 @@
+{
+	"way_of_the_sword": {
+		"name": "Way of the Sword",
+		"description": "This sect venerates the sword above all other weapons.",
+		"allowed_alignments": ["ORTHODOX", "NEUTRAL", "UNORTHODOX"],
+		"name_contributions": {
+			"nouns": ["Sword", "Blade", "Edge"],
+			"suffixes": ["Pavilion"]
+		}
+	},
+	"strength_is_justice": {
+		"name": "Strength is Justice",
+		"description": "The weak are meat, the strong do eat.",
+		"allowed_alignments": ["DEMONIC", "UNORTHODOX", "EVIL"],
+		"name_contributions": {
+			"prefixes": ["Fierce", "Savage", "Conquering"],
+			"nouns": ["Fist", "Might"]
+		}
+	},
+	"ascetic_vows": {
+		"name": "Ascetic Vows",
+		"description": "Rejects worldly pleasures for pure cultivation.",
+		"allowed_alignments": ["ORTHODOX", "NEUTRAL"],
+		"name_contributions": {
+			"prefixes": ["Silent", "Fasting", "Austere"],
+			"nouns": ["Monk", "Spirit"]
+		}
+	}
+}

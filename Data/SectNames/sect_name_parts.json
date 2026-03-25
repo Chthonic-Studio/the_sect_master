@@ -1,0 +1,18 @@
+{
+	"base": {
+		"prefixes": ["Mystic", "Azure", "Golden", "Void", "Iron", "Hidden"],
+		"nouns": ["Lotus", "Dragon", "Tiger", "Crane", "Moon", "Sun", "Star", "Cloud"],
+		"suffixes": ["Sect", "Clan", "Valley", "Temple", "School"]
+	},
+	"alignments": {
+		"ORTHODOX": {
+			"prefixes": ["Heavenly", "Jade", "Pure", "Righteous"],
+			"suffixes": ["Pavilion", "Orthodoxy", "Monastery"]
+		},
+		"DEMONIC": {
+			"prefixes": ["Blood", "Shadow", "Crimson", "Nether", "Vile"],
+			"nouns": ["Demon", "Fiend", "Serpent", "Bone"],
+			"suffixes": ["Cult", "Palace", "Grotto"]
+		}
+	}
+}

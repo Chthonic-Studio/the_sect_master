@@ -1,0 +1,87 @@
+extends Node
+
+const SAVE_DIR = "user://Saves/"
+
+func _ready() -> void:
+	var dir = DirAccess.open("user://")
+	if not dir.dir_exists("Saves"):
+		dir.make_dir("Saves")
+
+func save_game(save_name: String) -> void:
+	var save_path = SAVE_DIR + save_name + ".json"
+	
+	# 1. Gather all living data from the managers
+	var characters_dict = {}
+	for char_id in SimulationManager.character_repo:
+		characters_dict[char_id] = SimulationManager.character_repo[char_id].to_dictionary()
+		
+	var sects_dict = {}
+	for s_id in SimulationManager.sect_repo:
+		sects_dict[s_id] = SimulationManager.sect_repo[s_id].to_dictionary()
+	
+	var save_data = {
+		"time": {
+			"year": TimeManager.year,
+			"month": TimeManager.month,
+			"day": TimeManager.day
+		},
+		"simulation": {
+			"next_char_id": SimulationManager.next_char_id,
+			"next_sect_id": SimulationManager.next_sect_id,
+			"characters": characters_dict,
+			"sects": sects_dict,
+			"sect_relationships": SimulationManager.sect_relationships 
+		}
+	}
+	
+	# 2. Write to disk
+	var file = FileAccess.open(save_path, FileAccess.WRITE)
+	if file:
+		file.store_string(JSON.stringify(save_data, "\t"))
+		print("SaveManager: Game saved successfully to ", save_path)
+	else:
+		printerr("SaveManager: Failed to write save file.")
+
+func load_game(save_name: String) -> void:
+	var save_path = SAVE_DIR + save_name + ".json"
+	if not FileAccess.file_exists(save_path):
+		printerr("SaveManager: Save file does not exist at ", save_path)
+		return
+		
+	var file = FileAccess.open(save_path, FileAccess.READ)
+	var json = JSON.new()
+	if json.parse(file.get_as_text()) != OK:
+		printerr("SaveManager: Failed to parse save JSON.")
+		return
+		
+	var data = json.data
+	
+	# 1. Restore Time
+	var time_data = data.get("time", {})
+	TimeManager.year = time_data.get("year", 740)
+	TimeManager.month = time_data.get("month", 1)
+	TimeManager.day = time_data.get("day", 1)
+	
+	# 2. Restore Simulation
+	var sim_data = data.get("simulation", {})
+	SimulationManager.clear_simulation()
+	
+	if sim_data.has("sect_relationships"):
+		SimulationManager.sect_relationships = sim_data["sect_relationships"].duplicate()
+	
+	SimulationManager.next_char_id = sim_data.get("next_char_id", 1)
+	SimulationManager.next_sect_id = sim_data.get("next_sect_id", 1)
+	
+	var all_char_data = sim_data.get("characters", {})
+	for char_id in all_char_data:
+		var new_char = CharacterData.new()
+		new_char.from_dictionary(all_char_data[char_id])
+		SimulationManager.character_repo[char_id] = new_char
+		
+	var all_sect_data = sim_data.get("sects", {})
+	for s_id in all_sect_data:
+		var new_sect = SectData.new()
+		new_sect.from_dictionary(all_sect_data[s_id])
+		SimulationManager.sect_repo[s_id] = new_sect
+		
+	print("SaveManager: Game loaded successfully from ", save_path)

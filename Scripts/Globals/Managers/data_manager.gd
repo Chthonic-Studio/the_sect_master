@@ -4,39 +4,27 @@ extends Node
 const BASE_DATA_PATH = "res://Data/"
 const MOD_DATA_PATH = "user://Mods/"
 
-# --- REGISTRIES (The "Rules") ---
+# --- CHARACTER REGISTRIES ---
 var traits_registry: Dictionary = {}
 var name_pools: Dictionary = {}
 var modifiers_registry: Dictionary = {}
 var weapons_registry: Dictionary = {}
 
+# --- SECT SYSTEM REGISTRIES ---
+var premade_sects_registry: Dictionary = {}
+var sect_laws_registry: Dictionary = {}
+var buildings_registry: Dictionary = {}
+var tenets_registry: Dictionary = {}      
+var sect_names_registry: Dictionary = {}  
+
 # --- AI LOGIC REGISTRIES ---
 var micro_desires: Dictionary = {} # Dict[String, Array[Desire]] mapped by tag
 var macro_desires: Dictionary = {} # Dict[String, Array[Desire]] mapped by tag
 var action_scripts_registry: Dictionary = {} # Maps String IDs to GDScript references (The Factory)
-
-# --- REPOSITORIES (The "Living Entities") ---
-var character_repo: Dictionary = {} 
-
-var next_char_id: int = 1
+var directive_scripts_registry: Dictionary = {} # Maps String IDs to GDScript references
 
 func _ready() -> void:
 	load_all_data()
-	TimeManager.day_passed.connect(_on_day_passed)
-
-## Broadcasts the daily tick to all active characters in the simulation
-func _on_day_passed(_day: int) -> void:
-	var current_total_days = TimeManager.get_total_days_elapsed()
-	
-	# Duplicate the keys to safely allow repo modifications during the tick
-	var active_keys = character_repo.keys().duplicate()
-	
-	for char_id in active_keys:
-		# Double check it still exists (might have been removed by a previous character's action)
-		if character_repo.has(char_id):
-			var character = character_repo[char_id]
-			if character.is_alive:
-				character.process_daily_tick(current_total_days)
 			
 func load_all_data() -> void:
 	_ensure_mod_directories()
@@ -49,15 +37,27 @@ func load_all_data() -> void:
 	_scan_directory_for_json(BASE_DATA_PATH + "Modifiers", _load_modifier_data)
 	_scan_directory_for_json(BASE_DATA_PATH + "Weapons", _load_weapon_data)
 	
+	
+	# 1b. Load vanilla Sect data
+	_scan_directory_for_json(BASE_DATA_PATH + "Sects", _load_premade_sects)
+	_scan_directory_for_json(BASE_DATA_PATH + "Laws", _load_sect_laws)
+	_scan_directory_for_json(BASE_DATA_PATH + "Buildings", _load_buildings)
+	_scan_directory_for_json(BASE_DATA_PATH + "Tenets", _load_tenets)
+	_scan_directory_for_json(BASE_DATA_PATH + "SectNames", _load_sect_names)
+	
+	
 	# 2. Load modded data (overwrites vanilla IDs or adds new ones)
 	_scan_directory_for_json(MOD_DATA_PATH + "Traits", _load_trait_data)
 	_scan_directory_for_json(MOD_DATA_PATH + "Names", _load_name_data)
 	_scan_directory_for_json(MOD_DATA_PATH + "Modifiers", _load_modifier_data)
 	_scan_directory_for_json(MOD_DATA_PATH + "Weapons", _load_weapon_data)
+	_scan_directory_for_json(MOD_DATA_PATH + "Tenets", _load_tenets)
+	_scan_directory_for_json(MOD_DATA_PATH + "SectNames", _load_sect_names)
 	
 	# 3. Load AI Logic Scripts 
 	_scan_directory_for_scripts("res://Scripts/AI/Desires", _load_desire_script)
 	_scan_directory_for_scripts("res://Scripts/AI/Actions", _load_action_script)
+	_scan_directory_for_scripts("res://Scripts/AI/Directives", _load_directive_script)
 
 func _load_json_to_registry(path: String, target_dict: Dictionary) -> void:
 	if not FileAccess.file_exists(path):
@@ -133,24 +133,6 @@ func _load_weapon_data(path: String) -> void:
 				
 			weapons_registry[weapon_id] = weapon
 
-#region Character Repo Management
-# --- CHARACTER REPO MANAGEMENT ---
-
-func register_character(char_data: CharacterData) -> void:
-	if char_data.char_id == "":
-		char_data.char_id = _generate_sequential_id()
-	character_repo[char_data.char_id] = char_data
-
-func _generate_sequential_id() -> String:
-	var id = "char_" + str(next_char_id)
-	next_char_id += 1
-	return id
-
-func get_character(char_id: String) -> CharacterData:
-	return character_repo.get(char_id, null)
-
-#endregion
-
 #region Calculator Functions
 # --- CALCULATOR FUNCTIONS ---
 
@@ -209,28 +191,6 @@ func get_total_alignment_modifiers(trait_ids: Array[String], modifier_ids: Array
 
 #endregion
 
-#region Save Data
-func get_save_data() -> Dictionary:
-	var characters_dict = {}
-	for char_id in character_repo:
-		characters_dict[char_id] = character_repo[char_id].to_dictionary()
-	
-	return {
-		"next_char_id": next_char_id,
-		"characters": characters_dict
-	}
-
-func load_save_data(save_data: Dictionary) -> void:
-	character_repo.clear()
-	next_char_id = save_data.get("next_char_id", 1)
-	
-	var all_char_data = save_data.get("characters", {})
-	for char_id in all_char_data:
-		var new_char = CharacterData.new()
-		new_char.from_dictionary(all_char_data[char_id])
-		character_repo[char_id] = new_char
-#endregion
-
 #region Data Loaders & Mod Support
 
 ## Creates the user:// folder structure so players know where to put mods
@@ -241,6 +201,12 @@ func _ensure_mod_directories() -> void:
 		dir.make_dir("Mods/Traits")
 		dir.make_dir("Mods/Names")
 		dir.make_dir("Mods/Modifiers")
+		dir.make_dir("Mods/Weapons")
+		dir.make_dir("Mods/Sects")
+		dir.make_dir("Mods/Laws")
+		dir.make_dir("Mods/Buildings")
+		dir.make_dir("Mods/Tenets")
+		dir.make_dir("Mods/SectNames")
 
 ## Generic directory scanner that applies a specific loading Callable to each JSON found
 func _scan_directory_for_json(path: String, load_func: Callable) -> void:
@@ -292,6 +258,43 @@ func _load_name_data(path: String) -> void:
 	# For names, we do a deep merge so modders can just add 
 	# one new culture without wiping the vanilla cultures.
 	_deep_merge_dict(name_pools, data)
+
+func _load_tenets(path: String) -> void:
+	var file = FileAccess.open(path, FileAccess.READ)
+	if not file: return
+	var json = JSON.new()
+	if json.parse(file.get_as_text()) == OK and json.data is Dictionary:
+		tenets_registry.merge(json.data, true)
+
+func _load_sect_names(path: String) -> void:
+	var file = FileAccess.open(path, FileAccess.READ)
+	if not file: return
+	var data = JSON.parse_string(file.get_as_text())
+	if typeof(data) == TYPE_DICTIONARY:
+		_deep_merge_dict(sect_names_registry, data)
+
+# --- NEW SECT LOADERS ---
+func _load_premade_sects(path: String) -> void:
+	var file = FileAccess.open(path, FileAccess.READ)
+	if not file: return
+	var json = JSON.new()
+	if json.parse(file.get_as_text()) == OK and json.data is Dictionary:
+		premade_sects_registry.merge(json.data, true)
+
+func _load_sect_laws(path: String) -> void:
+	var file = FileAccess.open(path, FileAccess.READ)
+	if not file: return
+	var json = JSON.new()
+	if json.parse(file.get_as_text()) == OK and json.data is Dictionary:
+		sect_laws_registry.merge(json.data, true)
+
+func _load_buildings(path: String) -> void:
+	var file = FileAccess.open(path, FileAccess.READ)
+	if not file: return
+	var json = JSON.new()
+	if json.parse(file.get_as_text()) == OK and json.data is Dictionary:
+		buildings_registry.merge(json.data, true)
+
 
 ## Helper to merge nested dictionaries (crucial for names.json mods)
 func _deep_merge_dict(target: Dictionary, patch: Dictionary) -> void:
@@ -369,9 +372,9 @@ func _load_desire_script(path: String) -> void:
 func _load_action_script(path: String) -> void:
 	var script = load(path)
 	if script and script is Script:
-		# Use the filename as the ID (e.g., "action_meditate.gd" -> "action_meditate")
-		# This avoids calling .new() blindly on modder scripts.
-		var action_id = path.get_file().get_basename().replace(".remap", "")
+		# Replace .remap first, then use get_basename() to properly strip .gd or .gdc
+		var clean_filename = path.get_file().replace(".remap", "")
+		var action_id = clean_filename.get_basename()
 		action_scripts_registry[action_id] = script
 
 func create_action(action_id: String, duration: int) -> ActionPlan:
@@ -388,6 +391,27 @@ func create_action(action_id: String, duration: int) -> ActionPlan:
 	# Fallback to prevent crashes
 	var fallback = ActionPlan.new(duration)
 	fallback.id = action_id 
+	return fallback
+
+func _load_directive_script(path: String) -> void:
+	var script = load(path)
+	if script and script is Script:
+		# Same as above to ensure accurate ID mapping in exported builds
+		var clean_filename = path.get_file().replace(".remap", "")
+		var directive_id = clean_filename.get_basename()
+		directive_scripts_registry[directive_id] = script
+
+func create_directive(directive_id: String, duration: int, custom_modifiers: Dictionary = {}) -> Directive:
+	if directive_id == "":
+		return null
+		
+	if directive_scripts_registry.has(directive_id):
+		var script_ref = directive_scripts_registry[directive_id]
+		return script_ref.new(duration, custom_modifiers)
+		
+	printerr("ActionFactory: Attempted to create unknown directive_id: ", directive_id)
+	var fallback = Directive.new(duration, custom_modifiers)
+	fallback.id = directive_id
 	return fallback
 
 #endregion

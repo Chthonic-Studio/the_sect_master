@@ -1,0 +1,17 @@
+{
+	"grand_kitchen": {
+		"id": "grand_kitchen",
+		"name": "Grand Kitchen",
+		"description": "A massive facility capable of feeding hundreds of disciples.",
+		"build_days_base": 45,
+		"cost": {
+			"MATERIALS": 300,
+			"WEALTH": 100
+		},
+		"monthly_upkeep": {
+			"WEALTH": 15
+		},
+		"yields": {},
+		"unlocks_ai_tags": ["advanced_cooking"]
+	}
+}
