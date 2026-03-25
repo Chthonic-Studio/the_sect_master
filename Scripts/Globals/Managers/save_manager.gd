@@ -31,7 +31,8 @@ func save_game(save_name: String) -> void:
 			"characters": characters_dict,
 			"sects": sects_dict,
 			"sect_relationships": SimulationManager.sect_relationships 
-		}
+		},
+		"world_logs": WorldLogManager.global_logs # Added World Logs
 	}
 	
 	# 2. Write to disk
@@ -83,5 +84,12 @@ func load_game(save_name: String) -> void:
 		var new_sect = SectData.new()
 		new_sect.from_dictionary(all_sect_data[s_id])
 		SimulationManager.sect_repo[s_id] = new_sect
+		
+	# 3. Restore World Logs
+	WorldLogManager.clear_logs()
+	if data.has("world_logs"):
+		var logs_array: Array[Dictionary] = []
+		logs_array.assign(data["world_logs"])
+		WorldLogManager.global_logs = logs_array
 		
 	print("SaveManager: Game loaded successfully from ", save_path)

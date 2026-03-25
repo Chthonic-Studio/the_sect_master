@@ -9,6 +9,7 @@ var traits_registry: Dictionary = {}
 var name_pools: Dictionary = {}
 var modifiers_registry: Dictionary = {}
 var weapons_registry: Dictionary = {}
+var events_registry: Dictionary = {}
 
 # --- SECT SYSTEM REGISTRIES ---
 var premade_sects_registry: Dictionary = {}
@@ -36,7 +37,7 @@ func load_all_data() -> void:
 	_scan_directory_for_json(BASE_DATA_PATH + "Names", _load_name_data)
 	_scan_directory_for_json(BASE_DATA_PATH + "Modifiers", _load_modifier_data)
 	_scan_directory_for_json(BASE_DATA_PATH + "Weapons", _load_weapon_data)
-	
+	_scan_directory_for_json(BASE_DATA_PATH + "Events", _load_events)
 	
 	# 1b. Load vanilla Sect data
 	_scan_directory_for_json(BASE_DATA_PATH + "Sects", _load_premade_sects)
@@ -45,7 +46,6 @@ func load_all_data() -> void:
 	_scan_directory_for_json(BASE_DATA_PATH + "Tenets", _load_tenets)
 	_scan_directory_for_json(BASE_DATA_PATH + "SectNames", _load_sect_names)
 	
-	
 	# 2. Load modded data (overwrites vanilla IDs or adds new ones)
 	_scan_directory_for_json(MOD_DATA_PATH + "Traits", _load_trait_data)
 	_scan_directory_for_json(MOD_DATA_PATH + "Names", _load_name_data)
@@ -53,6 +53,7 @@ func load_all_data() -> void:
 	_scan_directory_for_json(MOD_DATA_PATH + "Weapons", _load_weapon_data)
 	_scan_directory_for_json(MOD_DATA_PATH + "Tenets", _load_tenets)
 	_scan_directory_for_json(MOD_DATA_PATH + "SectNames", _load_sect_names)
+	_scan_directory_for_json(MOD_DATA_PATH + "Events", _load_events)
 	
 	# 3. Load AI Logic Scripts 
 	_scan_directory_for_scripts("res://Scripts/AI/Desires", _load_desire_script)
@@ -207,6 +208,7 @@ func _ensure_mod_directories() -> void:
 		dir.make_dir("Mods/Buildings")
 		dir.make_dir("Mods/Tenets")
 		dir.make_dir("Mods/SectNames")
+		dir.make_dir("Mods/Events")
 
 ## Generic directory scanner that applies a specific loading Callable to each JSON found
 func _scan_directory_for_json(path: String, load_func: Callable) -> void:
@@ -295,6 +297,12 @@ func _load_buildings(path: String) -> void:
 	if json.parse(file.get_as_text()) == OK and json.data is Dictionary:
 		buildings_registry.merge(json.data, true)
 
+func _load_events(path: String) -> void:
+	var file = FileAccess.open(path, FileAccess.READ)
+	if not file: return
+	var json = JSON.new()
+	if json.parse(file.get_as_text()) == OK and json.data is Dictionary:
+		events_registry.merge(json.data, true)
 
 ## Helper to merge nested dictionaries (crucial for names.json mods)
 func _deep_merge_dict(target: Dictionary, patch: Dictionary) -> void:

@@ -1,0 +1,49 @@
+{
+	"social_brawl_minor": {
+		"id": "social_brawl_minor",
+		"title": "A Disagreement Escalates",
+		"description": "Tensions boiled over. [initiator_name] and [target_name] came to blows over a petty dispute during morning forms.",
+		"options": {
+			"opt_brutalize": {
+				"text": "Crush them without mercy.",
+				"ai_base_weight": 10.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "cruel"], "multiplier": 3.0 },
+					{ "condition": ["stat_greater_than", "initiator", "ruthlessness", 70], "add": 20.0 }
+				],
+				"effects": [
+					{ "type": "add_trait", "target": "target", "trait": "injured" },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I severely beat [target_name] in a brawl." },
+					{ "type": "add_personal_log", "target": "target", "text": "I was brutally beaten by [initiator_name]." }
+				]
+			},
+			"opt_restrain": {
+				"text": "Teach them a lesson, but hold back.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "honor", 60], "multiplier": 2.0 },
+					{ "condition": ["has_trait", "initiator", "altruistic"], "add": 50.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sparred with [target_name] to settle a dispute." },
+					{ "type": "add_personal_log", "target": "target", "text": "[initiator_name] bested me, but showed mercy." }
+				]
+			}
+		}
+	},
+	"sect_war_declaration": {
+		"id": "sect_war_declaration",
+		"title": "Declaration of War",
+		"description": "Diplomacy has failed. [initiator_sect_name] has officially declared a state of blood-feud upon [target_sect_name]!",
+		"options": {
+			"acknowledge": {
+				"text": "The rivers will run red.",
+				"ai_base_weight": 100.0,
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": -100 },
+					{ "type": "add_world_log", "log_type": "war", "text": "[initiator_sect_name] declared war on [target_sect_name]." }
+				]
+			}
+		}
+	}
+}

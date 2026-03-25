@@ -28,6 +28,8 @@ SimulationManager="*uid://b7gdu5uxq6cpq"
 SaveManager="*uid://b3h0igekcakx1"
 CharacterGenerator="*uid://cf5m61f2w6q8r"
 SectGenerator="*uid://dpfaeta0v5dv"
+WorldLogManager="*uid://cllqrvj7o51v8"
+EventManager="*uid://g8y5smn6181j"
 
 [display]
 

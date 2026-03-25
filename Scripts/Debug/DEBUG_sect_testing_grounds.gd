@@ -89,13 +89,15 @@ func _display_sect_info(sect: SectData) -> void:
 	add_label.call("Name:", sect.sect_name)
 	add_label.call("Alignment:", Definitions.SectAlignment.keys()[sect.alignment])
 	
-	# --- TENETS ---
+	# --- TENETS & TAGS ---
 	var tenet_names: Array[String] = []
 	for t_id in sect.active_tenets:
 		var t_data = DataManager.tenets_registry.get(t_id, {})
 		tenet_names.append(t_data.get("name", t_id))
 	var tenet_str = ", ".join(tenet_names) if not tenet_names.is_empty() else "None"
 	add_label.call("Tenets:", tenet_str)
+	
+	add_label.call("Sect Tags:", ", ".join(sect.unlocked_tags) if not sect.unlocked_tags.is_empty() else "None")
 	
 	# --- RIVAL & RELATIONSHIPS ---
 	var rival_name = "None"

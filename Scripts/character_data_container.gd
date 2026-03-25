@@ -17,6 +17,7 @@ var current_realm: int = 1
 var is_alive: bool = true
 var aptitude: int = 0 
 var active_modifiers: Array[Dictionary] = []
+var personal_log: Array[String] = []
 
 # --- SIMULATION LOD ---
 enum SimTier { MICRO, MACRO, FROZEN }
@@ -100,6 +101,13 @@ func _setup_empty_stats():
 	for w in Definitions.WeaponType.values():
 		weapon_proficiencies[w] = 0.0
 		current_weapon_affinities[w] = 1.0 # 1.0 is the baseline 100% learning speed
+
+## Adds a log entry with the current date, maintaining a maximum size to save memory.
+func add_log(message: String) -> void:
+	var entry = "[%s] %s" % [TimeManager.get_date_string(), message]
+	personal_log.push_front(entry)
+	if personal_log.size() > 50: # Limit size to prevent infinite memory bloat
+		personal_log.pop_back()
 
 # --- DATA ACCESSORS (Now O(1) Instant Lookups) ---
 
@@ -355,6 +363,7 @@ func to_dictionary() -> Dictionary:
 		"traits": traits,
 		"aptitude": aptitude, 
 		"active_modifiers": active_modifiers,
+		"personal_log": personal_log,
 		"wealth": wealth,
 		
 		# AI Values
@@ -416,6 +425,9 @@ func from_dictionary(data: Dictionary) -> void:
 		active_modifiers.clear()
 		for mod in data["active_modifiers"]:
 			active_modifiers.append(mod)
+	
+	if data.has("personal_log"):
+		personal_log.assign(data["personal_log"])
 	
 	if data.has("needs"):
 		needs.merge(data["needs"], true)
