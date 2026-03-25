@@ -23,7 +23,7 @@ func create_character(context: GenerationContext, overrides: Dictionary = {}) ->
 	# Calculate all stats and cache them once
 	character.recalculate_all_stats()
 	
-	DataManager.register_character(character)
+	SimulationManager.register_character(character)
 	return character
 
 func _apply_demographics(_char: CharacterData, context: GenerationContext, overrides: Dictionary) -> void:

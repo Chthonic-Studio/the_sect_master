@@ -1,0 +1,10 @@
+{
+	"shaolin_temple": {
+		"id": "shaolin_temple",
+		"name": "Shaolin Temple",
+		"alignment": 0, 
+		"rival_sect_id": "blood_demon_sect",
+		"resources": { "WEALTH": 500, "MATERIALS": 1000, "MEDICINE": 300, "ELIXIRS": 50 },
+		"stats": { "FACE": 100, "REPUTATION": 90, "KARMA": 85 }
+	}
+}

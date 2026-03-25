@@ -24,6 +24,8 @@ config/icon="res://icon.svg"
 Definitions="*uid://dap1gd3uqy8wj"
 TimeManager="*uid://v6d6p1am835f"
 DataManager="*uid://5b8l37kc8se6"
+SimulationManager="*uid://b7gdu5uxq6cpq"
+SaveManager="*uid://b3h0igekcakx1"
 CharacterGenerator="*uid://cf5m61f2w6q8r"
 
 [display]

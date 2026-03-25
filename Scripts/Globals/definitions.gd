@@ -139,7 +139,29 @@ enum SocialClass {
 	OUTCAST			# Bandits, beggars, etc.
 }
 
+# --- SECT SYSTEM DEFINITIONS ---
+enum SectAlignment {
+	ORTHODOX,
+	DEMONIC,
+	NEUTRAL,
+	UNORTHODOX,
+	EVIL
+}
 
+# The physical and abstract currencies used by Sects for expansion and upkeep.
+enum ResourceType {
+	WEALTH,     # Gold/Silver, used for wages and standard purchases
+	MATERIALS,  # Wood/Stone/Metal, used for building construction
+	MEDICINE,   # Healing salves and common herbs
+	ELIXIRS     # Rare elixirs to help with trainings
+}
+
+# Abstract macro-stats that define a Sect's standing in the Jianghu.
+enum SectStat {
+	FACE,       # Prestige/Influence. Spent on diplomacy or forcing demands.
+	REPUTATION, # 0 (Despised/Feared) to 100 (Revered).
+	KARMA       # 0 (Sinful) to 100 (Meritorious). Affects luck events and tribulation severity.
+}
 
 # --- GENERATION CONSTANTS ---
 # Centralized math modifiers so you can balance the whole game in one file.
@@ -184,4 +206,16 @@ func get_weapon_enum(weapon_name: String) -> int:
 	var upper = weapon_name.to_upper()
 	if WeaponType.keys().has(upper):
 		return WeaponType[upper]
+	return -1
+
+func get_resource_enum(resource_name: String) -> int:
+	var upper = resource_name.to_upper()
+	if ResourceType.keys().has(upper):
+		return ResourceType[upper]
+	return -1
+
+func get_sect_stat_enum(stat_name: String) -> int:
+	var upper = stat_name.to_upper()
+	if SectStat.keys().has(upper):
+		return SectStat[upper]
 	return -1

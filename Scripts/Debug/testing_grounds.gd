@@ -58,8 +58,8 @@ func _on_day_passed(_day: int) -> void:
 	
 	# Update the localized UIs for modifiers
 	for char_id in _modifier_labels:
-		if DataManager.character_repo.has(char_id):
-			var character = DataManager.character_repo[char_id]
+		if SimulationManager.character_repo.has(char_id):
+			var character = SimulationManager.character_repo[char_id]
 			_update_modifier_ui(character)
 			
 	# Real-time visualization of the Utility AI ticking
