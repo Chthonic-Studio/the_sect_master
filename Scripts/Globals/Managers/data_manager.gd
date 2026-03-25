@@ -371,9 +371,9 @@ func _load_desire_script(path: String) -> void:
 func _load_action_script(path: String) -> void:
 	var script = load(path)
 	if script and script is Script:
-		# Use the filename as the ID (e.g., "action_meditate.gd" -> "action_meditate")
-		# This avoids calling .new() blindly on modder scripts.
-		var action_id = path.get_file().get_basename().replace(".remap", "")
+		# Replace .remap first, then use get_basename() to properly strip .gd or .gdc
+		var clean_filename = path.get_file().replace(".remap", "")
+		var action_id = clean_filename.get_basename()
 		action_scripts_registry[action_id] = script
 
 func create_action(action_id: String, duration: int) -> ActionPlan:
@@ -395,7 +395,9 @@ func create_action(action_id: String, duration: int) -> ActionPlan:
 func _load_directive_script(path: String) -> void:
 	var script = load(path)
 	if script and script is Script:
-		var directive_id = path.get_file().get_basename().replace(".remap", "")
+		# Same as above to ensure accurate ID mapping in exported builds
+		var clean_filename = path.get_file().replace(".remap", "")
+		var directive_id = clean_filename.get_basename()
 		directive_scripts_registry[directive_id] = script
 
 func create_directive(directive_id: String, duration: int, custom_modifiers: Dictionary = {}) -> Directive:

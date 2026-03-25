@@ -228,6 +228,10 @@ func add_temporary_modifier(modifier_id: String, duration_days: int) -> void:
 
 ## Called by DataManager's daily tick
 func process_daily_tick(current_total_days: int) -> void:
+	# If frozen (dead, deep secluded meditation), completely skip the loop
+	if current_sim_tier == SimTier.FROZEN:
+		return
+		
 	# 1. Process Modifiers Expiration
 	if not active_modifiers.is_empty():
 		var expired_ids: Array[String] = []
@@ -246,9 +250,8 @@ func process_daily_tick(current_total_days: int) -> void:
 	
 	# 2. AI & Overrides
 	if current_directive != null:
-		# Apply customized deterioration based on the current mission
+		# Directives bypass normal AI and decay
 		_apply_daily_decay(current_directive.decay_modifiers)
-		
 		current_directive.process_tick(self)
 		current_directive.duration_remaining -= 1
 		
@@ -256,12 +259,18 @@ func process_daily_tick(current_total_days: int) -> void:
 			current_directive.on_complete(self)
 			current_directive = null
 	else:
-		# Normal autonomous baseline deterioration and AI evaluation
-		_apply_daily_decay()
-		brain.process_daily_tick(self)
+		# ONLY process intensive Utility AI if the character is active on-screen
+		if current_sim_tier == SimTier.MICRO:
+			_apply_daily_decay()
+			brain.process_daily_tick(self)
+		elif current_sim_tier == SimTier.MACRO:
+			# TODO: Apply a monthly macro-evaluation here later.
+			# For now, we do nothing to save CPU time.
+			pass
 	
-	# 3. Master State Calculation
-	_calculate_mood()
+	# 3. Master State Calculation (Only necessary for on-screen UI feedback)
+	if current_sim_tier == SimTier.MICRO:
+		_calculate_mood()
 
 ## Applies baseline creeping of needs and state variables simply from existing.
 ## Can be overridden by Directives to simulate arduous missions or deep rest.
