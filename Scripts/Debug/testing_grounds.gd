@@ -2,8 +2,9 @@ extends Control
 
 const STARTING_SPAWN_COUNT = 5
 
-@onready var spawn_button: Button = $DEBUG_SpawnRandomChar
-@onready var character_list: GridContainer = $DEBUG_CharacterList
+@onready var spawn_button: Button = $DEBUG_ButtonVbox/DEBUG_SpawnRandomChar
+@onready var test_directive_button: Button = $DEBUG_ButtonVbox/DEBUG_SendLastCharToTestDirective
+@onready var character_list: GridContainer = $DEBUG_List/DEBUG_CharacterList
 @onready var time_label: Label = $DEBUG_WorldTime
 @onready var char_info_grid: GridContainer = $DEBUG_LastCharInfo/GridContainer
 
@@ -21,6 +22,7 @@ var _inspected_character: CharacterData = null
 
 func _ready() -> void:
 	spawn_button.pressed.connect(_on_spawn_button_pressed)
+	test_directive_button.pressed.connect(_on_test_directive_pressed)
 	
 	# Connect Time Controls
 	btn_pause.pressed.connect(func(): TimeManager.set_time_speed(TimeManager.Speed.PAUSED))
@@ -196,7 +198,18 @@ func _refresh_character_info(character: CharacterData) -> void:
 		ai_data["Current Action"] = "None (Evaluating)"
 		ai_data["Days Remaining"] = "0"
 	_update_info_panel("AI Brain", ai_data)
-
+	
+	var directive_data = {}
+	if character.current_directive != null:
+		directive_data["Active Mission"] = character.current_directive.id
+		directive_data["Days Remaining"] = str(character.current_directive.duration_remaining)
+		# Optionally, show how grueling it is:
+		directive_data["Fatigue Rate"] = "+%.1f/day" % character.current_directive.decay_modifiers.get("fatigue_rate", 5.0)
+	else:
+		directive_data["Active Mission"] = "None"
+		directive_data["Days Remaining"] = "0"
+	
+	_update_info_panel("Directives", directive_data)
 
 ## Highly optimized procedural UI. Builds the nodes once, then just updates their strings.
 func _update_info_panel(title: String, data: Dictionary) -> void:
@@ -238,3 +251,17 @@ func _update_info_panel(title: String, data: Dictionary) -> void:
 			_detail_labels[map_key] = label
 			
 		label.text = key + ": " + str(data[key])
+
+func _on_test_directive_pressed() -> void:
+	if _inspected_character == null or not _inspected_character.is_alive:
+		print("No valid character selected to send on a directive.")
+		return
+		
+	# Create a 7-day expedition to the ruins.
+	# The DataManager factory automatically constructs it and injects default decay modifiers.
+	_inspected_character.current_directive = DataManager.create_directive("directive_explore_ruins", 7)
+	
+	print("\n>>> ASSIGNED DIRECTIVE TO: ", _inspected_character.get_full_name())
+	
+	# Immediately force the UI to refresh so we see the change without waiting for a day to pass
+	_refresh_character_info(_inspected_character)

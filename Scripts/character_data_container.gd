@@ -244,36 +244,50 @@ func process_daily_tick(current_total_days: int) -> void:
 			for mod_id in expired_ids:
 				modifier_expired.emit(self, mod_id)
 	
-	# 2. Apply organic baseline deterioration
-	_apply_daily_decay()
-				
-	# 3. Process AI State Machine (Actions will modify the deteriorated stats)
-	brain.process_daily_tick(self)
+	# 2. AI & Overrides
+	if current_directive != null:
+		# Apply customized deterioration based on the current mission
+		_apply_daily_decay(current_directive.decay_modifiers)
+		
+		current_directive.process_tick(self)
+		current_directive.duration_remaining -= 1
+		
+		if current_directive.is_complete():
+			current_directive.on_complete(self)
+			current_directive = null
+	else:
+		# Normal autonomous baseline deterioration and AI evaluation
+		_apply_daily_decay()
+		brain.process_daily_tick(self)
 	
-	# 4. Master State Calculation
+	# 3. Master State Calculation
 	_calculate_mood()
 
 ## Applies baseline creeping of needs and state variables simply from existing.
-func _apply_daily_decay() -> void:
+## Can be overridden by Directives to simulate arduous missions or deep rest.
+func _apply_daily_decay(custom_modifiers: Dictionary = {}) -> void:
 	# --- STATE VARS ---
-	# Base fatigue from just being awake for a day.
-	# If they are doing heavy tasks (Meditating), the action itself will add MORE fatigue.
-	state_vars["fatigue"] = minf(100.0, state_vars.get("fatigue", 0.0) + 5.0)
+	var base_fatigue_rate = custom_modifiers.get("fatigue_rate", 5.0)
+	state_vars["fatigue"] = minf(100.0, state_vars.get("fatigue", 0.0) + base_fatigue_rate)
 	
-	# Loneliness creeps up slowly. Extroverts (high sociability) get lonely faster.
 	var sociability = get_personality_value("sociability")
-	var loneliness_rate = 1.0 + (sociability / 100.0 * 2.0) # 1.0 to 3.0 per day
-	state_vars["loneliness"] = minf(100.0, state_vars.get("loneliness", 0.0) + loneliness_rate)
+	var base_loneliness_rate = custom_modifiers.get("loneliness_rate", 1.0 + (sociability / 100.0 * 2.0))
+	state_vars["loneliness"] = minf(100.0, state_vars.get("loneliness", 0.0) + base_loneliness_rate)
 	
 	# --- NEEDS ---
-	# Needs slowly creep up. 
-	# Later, we can tie these strictly to traits (e.g. ambitious people need training faster)
 	var ambition = get_personality_value("ambition")
-	var train_rate = 0.5 + (ambition / 100.0 * 2.5) # 0.5 to 3.0 per day
-	needs["training"] = minf(100.0, needs.get("training", 0.0) + train_rate)
+	var base_train_rate = custom_modifiers.get("training_rate", 0.5 + (ambition / 100.0 * 2.5))
+	needs["training"] = minf(100.0, needs.get("training", 0.0) + base_train_rate)
 	
-	needs["entertainment"] = minf(100.0, needs.get("entertainment", 0.0) + 1.5)
-	needs["socialization"] = minf(100.0, needs.get("socialization", 0.0) + 1.5)
+	var base_ent_rate = custom_modifiers.get("entertainment_rate", 1.5)
+	needs["entertainment"] = minf(100.0, needs.get("entertainment", 0.0) + base_ent_rate)
+	
+	var base_soc_rate = custom_modifiers.get("socialization_rate", 1.5)
+	needs["socialization"] = minf(100.0, needs.get("socialization", 0.0) + base_soc_rate)
+	
+	# Stress is special; it doesn't passively rise normally, but a Directive can force it to.
+	if custom_modifiers.has("stress_rate"):
+		state_vars["stress"] = minf(100.0, state_vars.get("stress", 0.0) + custom_modifiers["stress_rate"])
 
 
 ## Derives the master 'Mood' variable from all other state variables and unmet needs.
@@ -341,7 +355,11 @@ func to_dictionary() -> Dictionary:
 		"action_cooldowns": action_cooldowns,
 		"current_action_id": brain.current_action.id if brain.current_action else "",
 		"action_duration": brain.current_action.duration_remaining if brain.current_action else 0,
-		# TODO: We will serialize the current_directive ID once the factory is built in Phase 3
+		
+		# Directive State
+		"current_directive_id": current_directive.id if current_directive else "",
+		"directive_duration": current_directive.duration_remaining if current_directive else 0,
+		"directive_modifiers": current_directive.decay_modifiers if current_directive else {},
 		
 		# Combat Values 
 		"equipped_weapon_id": equipped_weapon_id,
@@ -406,8 +424,13 @@ func from_dictionary(data: Dictionary) -> void:
 	if saved_action_id != "" and saved_action_duration > 0:
 		brain.restore_action_state(saved_action_id, saved_action_duration)
 	
-	# Rebuild the cache after loading from save
-	recalculate_all_stats()
+	# Reconstruct the Directive
+	var dir_id = data.get("current_directive_id", "")
+	var dir_dur = data.get("directive_duration", 0)
+	var dir_mods = data.get("directive_modifiers", {})
+	
+	if dir_id != "" and dir_dur > 0:
+		current_directive = DataManager.create_directive(dir_id, dir_dur, dir_mods)
 	
 	# Rebuild the cache after loading from save
 	recalculate_all_stats()

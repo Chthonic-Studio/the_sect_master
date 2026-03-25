@@ -14,6 +14,7 @@ var weapons_registry: Dictionary = {}
 var micro_desires: Dictionary = {} # Dict[String, Array[Desire]] mapped by tag
 var macro_desires: Dictionary = {} # Dict[String, Array[Desire]] mapped by tag
 var action_scripts_registry: Dictionary = {} # Maps String IDs to GDScript references (The Factory)
+var directive_scripts_registry: Dictionary = {} # Maps String IDs to GDScript references
 
 # --- REPOSITORIES (The "Living Entities") ---
 var character_repo: Dictionary = {} 
@@ -58,6 +59,7 @@ func load_all_data() -> void:
 	# 3. Load AI Logic Scripts 
 	_scan_directory_for_scripts("res://Scripts/AI/Desires", _load_desire_script)
 	_scan_directory_for_scripts("res://Scripts/AI/Actions", _load_action_script)
+	_scan_directory_for_scripts("res://Scripts/AI/Directives", _load_directive_script)
 
 func _load_json_to_registry(path: String, target_dict: Dictionary) -> void:
 	if not FileAccess.file_exists(path):
@@ -388,6 +390,25 @@ func create_action(action_id: String, duration: int) -> ActionPlan:
 	# Fallback to prevent crashes
 	var fallback = ActionPlan.new(duration)
 	fallback.id = action_id 
+	return fallback
+
+func _load_directive_script(path: String) -> void:
+	var script = load(path)
+	if script and script is Script:
+		var directive_id = path.get_file().get_basename().replace(".remap", "")
+		directive_scripts_registry[directive_id] = script
+
+func create_directive(directive_id: String, duration: int, custom_modifiers: Dictionary = {}) -> Directive:
+	if directive_id == "":
+		return null
+		
+	if directive_scripts_registry.has(directive_id):
+		var script_ref = directive_scripts_registry[directive_id]
+		return script_ref.new(duration, custom_modifiers)
+		
+	printerr("ActionFactory: Attempted to create unknown directive_id: ", directive_id)
+	var fallback = Directive.new(duration, custom_modifiers)
+	fallback.id = directive_id
 	return fallback
 
 #endregion
