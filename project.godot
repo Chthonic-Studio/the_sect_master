@@ -27,6 +27,7 @@ DataManager="*uid://5b8l37kc8se6"
 SimulationManager="*uid://b7gdu5uxq6cpq"
 SaveManager="*uid://b3h0igekcakx1"
 CharacterGenerator="*uid://cf5m61f2w6q8r"
+SectGenerator="*uid://dpfaeta0v5dv"
 
 [display]
 

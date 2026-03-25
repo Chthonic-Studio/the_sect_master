@@ -29,7 +29,8 @@ func save_game(save_name: String) -> void:
 			"next_char_id": SimulationManager.next_char_id,
 			"next_sect_id": SimulationManager.next_sect_id,
 			"characters": characters_dict,
-			"sects": sects_dict
+			"sects": sects_dict,
+			"sect_relationships": SimulationManager.sect_relationships 
 		}
 	}
 	
@@ -64,6 +65,9 @@ func load_game(save_name: String) -> void:
 	# 2. Restore Simulation
 	var sim_data = data.get("simulation", {})
 	SimulationManager.clear_simulation()
+	
+	if sim_data.has("sect_relationships"):
+		SimulationManager.sect_relationships = sim_data["sect_relationships"].duplicate()
 	
 	SimulationManager.next_char_id = sim_data.get("next_char_id", 1)
 	SimulationManager.next_sect_id = sim_data.get("next_sect_id", 1)

@@ -4,6 +4,9 @@ class_name SectData
 signal modifier_expired(sect: SectData, modifier_id: String)
 signal strength_recalculated(sect: SectData)
 signal building_completed(sect: SectData, building_id: String)
+signal law_changed(sect: SectData, law_id: String, new_option_id: String)
+signal tenet_added(sect: SectData, tenet_id: String)
+signal tenet_removed(sect: SectData, tenet_id: String)
 
 # --- IDENTITY ---
 var sect_id: String = ""
@@ -30,6 +33,7 @@ var members_by_position: Dictionary = {}
 var active_laws: Dictionary = {} # e.g., { "elder_stipends": "lavish", "succession": "strongest" }
 var completed_buildings: Array[String] = []
 var active_modifiers: Array[Dictionary] = []
+var active_tenets: Array[String] = [] 
 
 # Array of Dictionaries tracking ongoing construction. 
 # Format: {"building_id": String, "days_remaining": int}
@@ -156,6 +160,66 @@ func add_temporary_modifier(modifier_id: String, duration_days: int) -> void:
 		"expiration_day": expiration
 	})
 
+func get_relationship(other_sect_id: String) -> int:
+	return SimulationManager.get_sect_relationship(self.sect_id, other_sect_id)
+
+
+#region Progression & Mutators
+
+## Safely attempts to change a sect law. Returns true if successful.
+func change_law(law_id: String, new_option_id: String) -> bool:
+	if not DataManager.sect_laws_registry.has(law_id):
+		printerr("SectData: Attempted to change invalid law ID: ", law_id)
+		return false
+		
+	var law_data = DataManager.sect_laws_registry[law_id]
+	var options = law_data.get("options", {})
+	
+	if not options.has(new_option_id):
+		printerr("SectData: Invalid option '", new_option_id, "' for law '", law_id, "'")
+		return false
+		
+	# --- FUTURE EXPANSION HOOK ---
+	# Here is where we will check `options[new_option_id].get("prerequisites")`
+	# against the Sect's alignment or stats before allowing the change.
+	
+	active_laws[law_id] = new_option_id
+	law_changed.emit(self, law_id, new_option_id)
+	
+	# If a law changes Elder stipends, the economic ledger will naturally 
+	# read the new value on the next monthly tick.
+	return true
+
+## Safely adds a tenet if the sect's alignment permits it.
+func add_tenet(tenet_id: String) -> bool:
+	if active_tenets.has(tenet_id):
+		return false
+		
+	if not DataManager.tenets_registry.has(tenet_id):
+		return false
+		
+	var tenet_data = DataManager.tenets_registry[tenet_id]
+	var alignment_str = Definitions.SectAlignment.keys()[alignment]
+	
+	if not alignment_str in tenet_data.get("allowed_alignments", []):
+		printerr("SectData: Cannot add tenet '", tenet_id, "'. Invalid alignment.")
+		return false
+		
+	active_tenets.append(tenet_id)
+	tenet_added.emit(self, tenet_id)
+	
+	# Note: Adding a tenet does NOT change the sect's name automatically, 
+	# just like changing religion in CK3 doesn't rename your empire.
+	return true
+
+## Safely removes a tenet.
+func remove_tenet(tenet_id: String) -> void:
+	if active_tenets.has(tenet_id):
+		active_tenets.erase(tenet_id)
+		tenet_removed.emit(self, tenet_id)
+
+#endregion
+
 # --- SERIALIZATION ---
 
 func to_dictionary() -> Dictionary:
@@ -171,6 +235,7 @@ func to_dictionary() -> Dictionary:
 		"members_by_rank": members_by_rank,
 		"members_by_position": members_by_position,
 		"active_laws": active_laws,
+		"active_tenets": active_tenets,
 		"completed_buildings": completed_buildings,
 		"active_modifiers": active_modifiers,
 		"construction_queue": construction_queue
@@ -211,6 +276,11 @@ func from_dictionary(data: Dictionary) -> void:
 			
 	if data.has("active_laws"):
 		active_laws = data["active_laws"].duplicate()
+	 
+	if data.has("active_tenets"):
+		var tenets_array: Array[String] = []
+		tenets_array.assign(data["active_tenets"])
+		active_tenets = tenets_array	
 		
 	if data.has("completed_buildings"):
 		completed_buildings.assign(data["completed_buildings"])

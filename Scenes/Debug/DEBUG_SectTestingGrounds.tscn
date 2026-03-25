@@ -16,10 +16,11 @@ metadata/_edit_use_anchors_ = true
 
 [node name="SectList" type="ScrollContainer" parent="." unique_id=497450370]
 layout_mode = 0
-offset_left = 742.0
-offset_top = 60.0
-offset_right = 1197.0
-offset_bottom = 791.0
+anchor_left = 0.61833334
+anchor_top = 0.075
+anchor_right = 0.9975
+anchor_bottom = 0.98875
+metadata/_edit_use_anchors_ = true
 
 [node name="SectList_Vbox" type="VBoxContainer" parent="SectList" unique_id=1904969759]
 layout_mode = 2

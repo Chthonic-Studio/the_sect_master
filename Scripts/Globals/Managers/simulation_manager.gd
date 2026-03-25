@@ -7,6 +7,8 @@ var next_char_id: int = 1
 var sect_repo: Dictionary = {}
 var next_sect_id: int = 1
 
+var sect_relationships: Dictionary = {} # Maps "sect_a|sect_b" -> int (-100 to 100)
+
 func _ready() -> void:
 	TimeManager.day_passed.connect(_on_day_passed)
 
@@ -48,6 +50,37 @@ func register_sect(sect_data: SectData) -> void:
 func get_sect(sect_id: String) -> SectData:
 	return sect_repo.get(sect_id, null)
 #endregion
+
+# Add these functions anywhere in the script
+#region Diplomacy & Relationships
+
+## Generates an alphabetically sorted, unique key for any two sects.
+func _get_relationship_key(id_a: String, id_b: String) -> String:
+	if id_a < id_b:
+		return id_a + "|" + id_b
+	return id_b + "|" + id_a
+
+## Gets the relationship between two sects. Defaults to 0 if they haven't interacted.
+func get_sect_relationship(id_a: String, id_b: String) -> int:
+	if id_a == id_b: return 100 # A sect always loves itself
+	var key = _get_relationship_key(id_a, id_b)
+	return sect_relationships.get(key, 0)
+
+## Sets the relationship value, clamping it between -100 and 100.
+func set_sect_relationship(id_a: String, id_b: String, value: int) -> void:
+	if id_a == id_b: return
+	var key = _get_relationship_key(id_a, id_b)
+	sect_relationships[key] = clampi(value, -100, 100)
+
+## Modifies the relationship by a delta amount safely.
+func modify_sect_relationship(id_a: String, id_b: String, amount: int) -> void:
+	var current = get_sect_relationship(id_a, id_b)
+	set_sect_relationship(id_a, id_b, current + amount)
+
+#endregion
+
+
+
 
 func clear_simulation() -> void:
 	character_repo.clear()
