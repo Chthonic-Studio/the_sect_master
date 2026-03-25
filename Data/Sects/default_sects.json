@@ -9,7 +9,11 @@
 		"relationships": {
 			"blood_demon_sect": -100,
 			"wudang_sect": 50
-		}
+		},
+		"completed_buildings": [
+			"martial_arena",
+			"meditation_mats"
+		]
 	},
 	"wudang_sect": {
 		"id": "wudang_sect",
@@ -49,11 +53,14 @@
 		"alignment": 3,
 		"rival_sect_id": "mount_hua_sect",
 		"resources": { "WEALTH": 800, "MATERIALS": 600, "MEDICINE": 1000, "ELIXIRS": 400 },
-		"stats": { "FACE": 75, "REPUTATION": 60, "KARMA": 40 }
+		"stats": { "FACE": 75, "REPUTATION": 60, "KARMA": 40 },
+		"completed_buildings": [
+			"alchemy_furnace"
+		]
 	},
-	"namgung_family": {
-		"id": "namgung_family",
-		"name": "Namgung Family",
+	"namgoong_family": {
+		"id": "namgoong_family",
+		"name": "Namgoong Family",
 		"alignment": 0,
 		"rival_sect_id": "heavenly_demon_cult",
 		"resources": { "WEALTH": 1200, "MATERIALS": 800, "MEDICINE": 200, "ELIXIRS": 300 },

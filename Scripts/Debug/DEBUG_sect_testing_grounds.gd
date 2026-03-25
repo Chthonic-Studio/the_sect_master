@@ -5,6 +5,12 @@ extends Control
 @onready var btn_spawn_minor = $VBoxContainer/SpawnNewSect_Minor
 @onready var btn_spawn_average = $VBoxContainer/SpawnNewSect_Average
 @onready var btn_spawn_major = $VBoxContainer/SpawnNewSect_Major
+@onready var time_label: Label = $DEBUG_WorldTime
+
+@onready var btn_pause: Button = $DEBUG_TimePanel/"0"
+@onready var btn_x1: Button = $DEBUG_TimePanel/"x1"
+@onready var btn_x2: Button = $DEBUG_TimePanel/"x2"
+@onready var btn_x3: Button = $DEBUG_TimePanel/"x3"
 
 func _ready() -> void:
 	# Run World Gen immediately for debugging purposes
@@ -17,6 +23,26 @@ func _ready() -> void:
 	btn_spawn_minor.pressed.connect(func(): _spawn_debug_sect(SectGenerator.SectTier.MINOR))
 	btn_spawn_average.pressed.connect(func(): _spawn_debug_sect(SectGenerator.SectTier.AVERAGE))
 	btn_spawn_major.pressed.connect(func(): _spawn_debug_sect(SectGenerator.SectTier.MAJOR))
+	
+	# Connect Time Controls
+	btn_pause.pressed.connect(func(): TimeManager.set_time_speed(TimeManager.Speed.PAUSED))
+	btn_x1.pressed.connect(func(): TimeManager.set_time_speed(TimeManager.Speed.NORMAL))
+	btn_x2.pressed.connect(func(): TimeManager.set_time_speed(TimeManager.Speed.FAST))
+	btn_x3.pressed.connect(func(): TimeManager.set_time_speed(TimeManager.Speed.SUPER_FAST))
+	
+	# Connect Time Manager Signals
+	TimeManager.day_passed.connect(_on_day_passed)
+	TimeManager.month_passed.connect(func(_m): _update_time_display())
+	TimeManager.year_passed.connect(func(_y): _update_time_display())
+	
+	_update_time_display()
+	TimeManager.set_time_speed(TimeManager.Speed.NORMAL)
+
+func _update_time_display() -> void:
+	time_label.text = TimeManager.get_date_string()
+
+func _on_day_passed(_day: int) -> void:
+	_update_time_display()
 
 func _spawn_debug_sect(tier: int) -> void:
 	# Generates a sect, which automatically registers itself in the SimulationManager
@@ -102,7 +128,46 @@ func _display_sect_info(sect: SectData) -> void:
 	add_label.call("Hierarchy:", "%d Master, %d Elders" % [master_count, elder_count])
 	
 	var res_string = ""
+	var projected_deltas = sect.get_projected_monthly_deltas()
+	
 	for r_enum in sect.resources:
-		var r_name = Definitions.ResourceType.keys()[r_enum]
-		res_string += "%s: %d | " % [r_name.capitalize(), sect.resources[r_enum]]
-	add_label.call("Resources:", res_string)
+		var r_name = Definitions.ResourceType.keys()[r_enum].capitalize()
+		var current_val = sect.resources[r_enum]
+		var delta = projected_deltas[r_enum]
+		
+		# Format it like "Wealth: 500 (+15)" or "Wealth: 500 (-20)"
+		var sign_str = "+" if delta >= 0 else ""
+		res_string += "%s: %d (%s%d)\n" % [r_name, current_val, sign_str, delta]
+		
+	add_label.call("Resources & Ledger:", res_string)
+
+	# --- BUILDINGS & QUEUE ---
+	var built_names = []
+	for b_id in sect.completed_buildings:
+		var b_data = DataManager.buildings_registry.get(b_id, {})
+		built_names.append(b_data.get("name", b_id))
+	var built_str = ", ".join(built_names) if not built_names.is_empty() else "None"
+	add_label.call("Buildings:", built_str)
+	
+	var queue_strings = []
+	for project in sect.construction_queue:
+		var b_data = DataManager.buildings_registry.get(project["building_id"], {})
+		var b_name = b_data.get("name", project["building_id"])
+		queue_strings.append("%s (%d days left)" % [b_name, project["days_remaining"]])
+	var queue_str = "\n".join(queue_strings) if not queue_strings.is_empty() else "Empty"
+	add_label.call("Construction Queue:", queue_str)
+	
+	# --- DEBUG BUILD BUTTON ---
+	var test_build_btn = Button.new()
+	test_build_btn.text = "Build Grand Kitchen"
+	# Disable the button if they can't afford it or already have it
+	test_build_btn.disabled = not sect.can_build("grand_kitchen")
+	
+	test_build_btn.pressed.connect(func():
+		if sect.start_construction("grand_kitchen"):
+			_display_sect_info(sect) # Refresh the UI immediately to show the queue
+	)
+	
+	# Add the button spanning both columns so it looks clean
+	test_build_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	sect_info_container.add_child(test_build_btn)
