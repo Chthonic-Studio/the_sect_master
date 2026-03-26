@@ -118,6 +118,8 @@ func generate_custom_sect(tier: SectTier, overrides: Dictionary = {}) -> SectDat
 	var starting_size = overrides.get("members_count", randi_range(10 * int(tier), 20 * int(tier)))
 	_populate_sect(sect, starting_size)
 	
+	sect.recalculate_sect_tags()
+	
 	return sect
 
 func _generate_dynamic_sect(tier: SectTier) -> SectData:
@@ -136,6 +138,7 @@ func _roll_tenets(sect: SectData, amount: int) -> void:
 	
 	for i in range(min(amount, valid_tenets.size())):
 		sect.active_tenets.append(valid_tenets[i])
+	sect.recalculate_sect_tags()
 
 func _generate_sect_name(sect: SectData) -> String:
 	var name_db = DataManager.sect_names_registry
@@ -200,6 +203,8 @@ func _assign_starting_laws(sect: SectData) -> void:
 		var default_opt = law_data.get("default_option", "")
 		if default_opt != "":
 			sect.active_laws[law_id] = default_opt
+	
+	sect.recalculate_sect_tags()
 
 #endregion
 

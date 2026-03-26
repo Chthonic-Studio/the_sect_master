@@ -37,7 +37,7 @@ func _resolve_ai_event(event_data: Dictionary, context: Dictionary) -> void:
 		_execute_effects(event_data.get("effects", []), context)
 		return
 		
-	var initiator = SimulationManager.get_character(context["initiator"])
+	var _initiator = SimulationManager.get_character(context["initiator"])
 	var best_option_id = ""
 	var highest_weight = -999.0
 	
@@ -95,11 +95,18 @@ func _execute_effects(effects: Array, context: Dictionary) -> void:
 				WorldLogManager.add_log(effect.get("log_type", "general"), _format_string(effect["text"], context))
 				
 			"modify_sect_relationship":
-				SimulationManager.modify_sect_relationship(
-					context["initiator_sect"], 
-					context["target_sect"], 
-					effect["amount"]
-				)
+				# --- Use safe lookups to prevent hard crashes ---
+				var init_sect = context.get("initiator_sect", "")
+				var targ_sect = context.get("target_sect", "")
+				
+				if init_sect != "" and targ_sect != "":
+					SimulationManager.modify_sect_relationship(
+						init_sect, 
+						targ_sect, 
+						effect.get("amount", 0)
+					)
+				else:
+					printerr("EventManager: Failed to modify relationship. Missing sect keys in context.")
 				
 			_:
 				printerr("EventManager: Unknown effect type: ", type)
@@ -117,8 +124,28 @@ func _check_condition(condition: Array, context: Dictionary) -> bool:
 			return char_obj and char_obj.traits.has(condition[2])
 		"stat_greater_than":
 			var char_obj = SimulationManager.get_character(context.get(condition[1], ""))
-			var val = char_obj.get_personality_value(condition[2]) if char_obj else 0
-			return val > condition[3]
+			if not char_obj: return false
+			
+			var stat_name: String = condition[2]
+			var threshold: float = condition[3]
+			var val: float = 0.0
+			
+			# --- ADDED: Dynamic stat routing ---
+			if stat_name in Definitions.PERSONALITY_STATS:
+				val = char_obj.get_personality_value(stat_name)
+			elif stat_name in Definitions.ALIGNMENT_STATS:
+				val = char_obj.get_alignment_value(stat_name)
+			else:
+				var stat_enum = Definitions.get_stat_enum(stat_name)
+				if stat_enum != -1: 
+					val = char_obj.get_stat(stat_enum)
+				else:
+					var martial_enum = Definitions.get_martial_enum(stat_name)
+					if martial_enum != -1: 
+						val = char_obj.get_martial_stat(martial_enum)
+			# -----------------------------------
+			
+			return val > threshold
 	return false
 
 ## Replaces bracketed variables with actual names. 

@@ -61,11 +61,15 @@ func _setup_default_dictionaries() -> void:
 func add_member(char_id: String, rank: int, position: String = "") -> void:
 	if not all_members.has(char_id):
 		all_members.append(char_id)
-		
+	
+	# Scrub the character from any existing rank arrays before assigning the new one
+	for r in members_by_rank.keys():
+		if members_by_rank[r].has(char_id):
+			members_by_rank[r].erase(char_id)
+			
 	if not members_by_rank.has(rank):
 		members_by_rank[rank] = []
-	if not members_by_rank[rank].has(char_id):
-		members_by_rank[rank].append(char_id)
+	members_by_rank[rank].append(char_id)
 		
 	if position != "":
 		assign_position(char_id, position)

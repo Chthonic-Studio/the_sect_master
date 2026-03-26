@@ -93,5 +93,6 @@ func modify_sect_relationship(id_a: String, id_b: String, amount: int) -> void:
 func clear_simulation() -> void:
 	character_repo.clear()
 	sect_repo.clear()
+	sect_relationships.clear()
 	next_char_id = 1
 	next_sect_id = 1

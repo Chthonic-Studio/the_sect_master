@@ -182,14 +182,17 @@ func get_total_alignment_modifiers(trait_ids: Array[String], modifier_ids: Array
 	
 	for tid in trait_ids:
 		if traits_registry.has(tid):
-			total += traits_registry[tid].get("alignment_modifiers", {}).get(a_name, 0)
+			var trait_data = traits_registry[tid]
+			var align_block = trait_data.get("alignment_modifiers", trait_data.get("personality_modifiers", {}))
+			total += align_block.get(a_name, 0)
 			
 	for mid in modifier_ids:
 		if modifiers_registry.has(mid):
-			total += modifiers_registry[mid].get("alignment_modifiers", {}).get(a_name, 0)
+			var mod_data = modifiers_registry[mid]
+			var align_block = mod_data.get("alignment_modifiers", mod_data.get("personality_modifiers", {}))
+			total += align_block.get(a_name, 0)
 			
 	return total
-
 #endregion
 
 #region Data Loaders & Mod Support
