@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://cumrkp7iq83hn"]
 
+[ext_resource type="PackedScene" uid="uid://dc65kmaf72vhc" path="res://Scenes/UI/law_list_item.tscn" id="1_wxmoq"]
+
 [node name="PreceptsPanel" type="HBoxContainer" unique_id=821234677]
 
 [node name="ActiveTenets" type="VBoxContainer" parent="." unique_id=890544052]
@@ -34,14 +36,5 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="LawListItem" type="HBoxContainer" parent="SectLaws/ScrollContainer/LawsList" unique_id=562394577]
+[node name="LawListItem" parent="SectLaws/ScrollContainer/LawsList" unique_id=172888959 instance=ExtResource("1_wxmoq")]
 layout_mode = 2
-
-[node name="Label" type="Label" parent="SectLaws/ScrollContainer/LawsList/LawListItem" unique_id=2013103830]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-text = "Elder Stipends: "
-
-[node name="OptionButton" type="OptionButton" parent="SectLaws/ScrollContainer/LawsList/LawListItem" unique_id=1383172639]
-layout_mode = 2
-size_flags_horizontal = 3
