@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://cumrkp7iq83hn"]
+
+[node name="PreceptsPanel" type="HBoxContainer" unique_id=821234677]
+
+[node name="ActiveTenets" type="VBoxContainer" parent="." unique_id=890544052]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="SectTenets" type="Label" parent="ActiveTenets" unique_id=1654209890]
+layout_mode = 2
+text = "Sect Tenets"
+horizontal_alignment = 1
+
+[node name="TenetsList" type="ItemList" parent="ActiveTenets" unique_id=1009461736]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SectLaws" type="VBoxContainer" parent="." unique_id=1605235349]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SectLaws" type="Label" parent="SectLaws" unique_id=1589234913]
+layout_mode = 2
+text = "Sect Laws"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SectLaws" unique_id=1870009381]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LawsList" type="VBoxContainer" parent="SectLaws/ScrollContainer" unique_id=1678519020]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LawListItem" type="HBoxContainer" parent="SectLaws/ScrollContainer/LawsList" unique_id=562394577]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SectLaws/ScrollContainer/LawsList/LawListItem" unique_id=2013103830]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Elder Stipends: "
+
+[node name="OptionButton" type="OptionButton" parent="SectLaws/ScrollContainer/LawsList/LawListItem" unique_id=1383172639]
+layout_mode = 2
+size_flags_horizontal = 3
