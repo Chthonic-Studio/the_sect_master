@@ -30,6 +30,7 @@ CharacterGenerator="*uid://cf5m61f2w6q8r"
 SectGenerator="*uid://dpfaeta0v5dv"
 WorldLogManager="*uid://cllqrvj7o51v8"
 EventManager="*uid://g8y5smn6181j"
+UIManager="*uid://bhnycd8v475v1"
 
 [display]
 

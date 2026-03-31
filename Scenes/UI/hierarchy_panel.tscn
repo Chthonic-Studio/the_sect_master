@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://bsmb0bb42gtbt" path="res://Scripts/UI/hierarchy_panel.gd" id="1_hxmff"]
 
 [node name="HierarchyPanel" type="VBoxContainer" unique_id=1791663435]
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_hxmff")
 roster_item_scene = ExtResource("1_1qxc6")
 
@@ -21,12 +23,14 @@ layout_mode = 2
 
 [node name="MainRoster" type="ScrollContainer" parent="." unique_id=1345193229]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="RosterGrid" type="GridContainer" parent="MainRoster" unique_id=956887998]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+columns = 2
 
 [node name="RosterItem" parent="MainRoster/RosterGrid" unique_id=1573130340 instance=ExtResource("1_1qxc6")]
 layout_mode = 2

@@ -6,6 +6,11 @@ class_name SectDashboard
 
 var active_sect: SectData
 
+func _ready() -> void:
+	# Tell the UIManager this panel exists and is ready to receive data, and put it in the PANELS layer.
+	UIManager.register_panel("sect_dashboard", self, UIManager.Layer.PANELS)
+	$CloseButton.pressed.connect(func(): UIManager.close_panel("sect_dashboard"))
+
 func setup_dashboard(sect: SectData) -> void:
 	if active_sect:
 		# Clean up old connections if we switch views between different sects

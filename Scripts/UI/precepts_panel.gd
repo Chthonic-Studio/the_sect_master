@@ -1,0 +1,61 @@
+extends HBoxContainer
+class_name PreceptsPanel
+
+@export var law_item_scene: PackedScene = preload("res://Scenes/UI/law_list_item.tscn")
+var active_sect: SectData
+
+func setup_panel(sect: SectData) -> void:
+	active_sect = sect
+	_refresh_panel()
+
+func _refresh_panel() -> void:
+	if not active_sect: return
+	
+	# --- 1. TENETS ---
+	var tenets_list: ItemList = $ActiveTenets/TenetsList
+	tenets_list.clear()
+	
+	for t_id in active_sect.active_tenets:
+		var t_data = DataManager.tenets_registry.get(t_id, {})
+		tenets_list.add_item(t_data.get("name", t_id))
+		
+	# --- 2. LAWS ---
+	var laws_list = $SectLaws/ScrollContainer/LawsList
+	for child in laws_list.get_children():
+		child.queue_free()
+		
+	for law_id in active_sect.active_laws:
+		var current_option = active_sect.active_laws[law_id]
+		var law_data = DataManager.sect_laws_registry.get(law_id, {})
+		
+		# Instantiate our interactive Law List Item
+		var item = law_item_scene.instantiate()
+		laws_list.add_child(item)
+		
+		var label: Label = item.get_node("Label")
+		var dropdown: OptionButton = item.get_node("OptionButton")
+		
+		label.text = law_data.get("name", law_id) + ":"
+		
+		var options_dict = law_data.get("options", {})
+		var option_keys = options_dict.keys()
+		
+		# Populate the Dropdown options
+		for i in range(option_keys.size()):
+			var opt_key = option_keys[i]
+			dropdown.add_item(options_dict[opt_key].get("name", opt_key))
+			
+			if opt_key == current_option:
+				dropdown.selected = i
+				
+		# Listen for Player changes
+		dropdown.item_selected.connect(func(index: int):
+			var new_opt_key = option_keys[index]
+			active_sect.change_law(law_id, new_opt_key)
+			
+			# If the law changes stipends/income, we should immediately tell the Ledger to re-calculate!
+			if %LedgerPanel.has_method("_update_ledger"): 
+				%LedgerPanel._update_ledger()
+		)
+		
+		

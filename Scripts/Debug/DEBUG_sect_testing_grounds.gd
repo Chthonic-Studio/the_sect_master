@@ -72,7 +72,10 @@ func _refresh_sect_list() -> void:
 		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		
 		# Bind the button press to display the info
-		btn.pressed.connect(_display_sect_info.bind(sect))
+		btn.pressed.connect(func():
+			_display_sect_info(sect)
+			UIManager.open_panel("sect_dashboard", sect)
+		)
 		sect_list_vbox.add_child(btn)
 
 func _display_sect_info(sect: SectData) -> void:
