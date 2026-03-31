@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://b34erchstwbbc"]
 
+[ext_resource type="Script" uid="uid://b453hoavyujfs" path="res://Scripts/UI/ledger_panel.gd" id="1_7auym"]
+
 [node name="LedgerPanel" type="VBoxContainer" unique_id=233494681]
+script = ExtResource("1_7auym")
 
 [node name="WealthIncome" type="PanelContainer" parent="." unique_id=2013521080]
 layout_mode = 2
@@ -14,11 +17,13 @@ layout_mode = 2
 text = "Wealth:"
 
 [node name="CurrentWealth" type="Label" parent="WealthIncome/HBoxContainer" unique_id=154934290]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 text = "999"
 
 [node name="WealthDeltaTooltip" type="Label" parent="WealthIncome/HBoxContainer" unique_id=1369086963]
+unique_name_in_owner = true
 layout_mode = 2
 text = "+15 / month"
 
@@ -49,6 +54,7 @@ layout_mode = 2
 text = "Face: "
 
 [node name="FaceStat" type="Label" parent="SectStats/HBoxContainer" unique_id=788455401]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="ReputationLabel" type="Label" parent="SectStats/HBoxContainer" unique_id=1857336105]
@@ -56,6 +62,7 @@ layout_mode = 2
 text = "Reputation: "
 
 [node name="ReputationStat" type="Label" parent="SectStats/HBoxContainer" unique_id=953769448]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="KarmaLabel" type="Label" parent="SectStats/HBoxContainer" unique_id=252370390]
@@ -63,4 +70,5 @@ layout_mode = 2
 text = "Karma: "
 
 [node name="KarmaStat" type="Label" parent="SectStats/HBoxContainer" unique_id=818448618]
+unique_name_in_owner = true
 layout_mode = 2

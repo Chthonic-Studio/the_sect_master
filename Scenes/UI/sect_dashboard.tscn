@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://ckfe2ds8xsrjt"]
+
+[ext_resource type="PackedScene" uid="uid://b34erchstwbbc" path="res://Scenes/UI/ledger_panel.tscn" id="1_3cxdh"]
+[ext_resource type="Script" uid="uid://cbaukjfljtaaj" path="res://Scripts/UI/sect_dashboard.gd" id="1_a7vi4"]
+[ext_resource type="PackedScene" uid="uid://cfia6b3uj8k14" path="res://Scenes/UI/infrastructure_panel.tscn" id="2_a7vi4"]
+[ext_resource type="PackedScene" uid="uid://cumrkp7iq83hn" path="res://Scenes/UI/precepts_panel.tscn" id="3_uocbj"]
+[ext_resource type="PackedScene" uid="uid://j3nh7ma1nwe" path="res://Scenes/UI/hierarchy_panel.tscn" id="4_ioxsk"]
+
+[node name="SectDashboard" type="Control" unique_id=1464939097]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 267.0
+offset_top = 319.0
+offset_right = 943.0
+offset_bottom = 697.0
+script = ExtResource("1_a7vi4")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1103364793]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=559865680]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=970222495]
+layout_mode = 2
+
+[node name="SectNameLabel" type="Label" parent="MarginContainer/VBoxContainer/Header" unique_id=114384316]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sect Name"
+
+[node name="SectStrengthLabel" type="Label" parent="MarginContainer/VBoxContainer/Header" unique_id=350978026]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+text = "SS: 999"
+
+[node name="MainTabs" type="TabContainer" parent="MarginContainer/VBoxContainer" unique_id=1274740794]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="Ledger" type="MarginContainer" parent="MarginContainer/VBoxContainer/MainTabs" unique_id=999223397]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="LedgerPanel" parent="MarginContainer/VBoxContainer/MainTabs/Ledger" unique_id=233494681 instance=ExtResource("1_3cxdh")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Infrastructure" type="MarginContainer" parent="MarginContainer/VBoxContainer/MainTabs" unique_id=544763480]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="InfrastructurePanel" parent="MarginContainer/VBoxContainer/MainTabs/Infrastructure" unique_id=290949399 instance=ExtResource("2_a7vi4")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Precepts" type="MarginContainer" parent="MarginContainer/VBoxContainer/MainTabs" unique_id=53810609]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="PreceptsPanel" parent="MarginContainer/VBoxContainer/MainTabs/Precepts" unique_id=821234677 instance=ExtResource("3_uocbj")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Hierarchy" type="MarginContainer" parent="MarginContainer/VBoxContainer/MainTabs" unique_id=109635834]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="HierarchyPanel" parent="MarginContainer/VBoxContainer/MainTabs/Hierarchy" unique_id=1791663435 instance=ExtResource("4_ioxsk")]
+unique_name_in_owner = true
+layout_mode = 2

@@ -37,6 +37,14 @@ func _ready() -> void:
 	
 	_update_time_display()
 	TimeManager.set_time_speed(TimeManager.Speed.NORMAL)
+		
+	# 2. Generate a fully populated test sect
+	var test_sect = SectGenerator.generate_custom_sect(SectGenerator.SectTier.AVERAGE, {
+		"name": "Celestial prototype Sect"
+	})
+	
+	# 3. Inject it into the UI!
+	%SectDashboard.setup_dashboard(test_sect)
 
 func _update_time_display() -> void:
 	time_label.text = TimeManager.get_date_string()

@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ulyof05eintj"]
 
 [ext_resource type="Script" uid="uid://bpcrcsac64bgx" path="res://Scripts/Debug/DEBUG_sect_testing_grounds.gd" id="1_djnvu"]
+[ext_resource type="PackedScene" uid="uid://ckfe2ds8xsrjt" path="res://Scenes/UI/sect_dashboard.tscn" id="2_kkxem"]
 
 [node name="DebugSectTestingGrounds" type="Control" unique_id=607120889]
 layout_mode = 3
@@ -97,3 +98,11 @@ text = "x2"
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "x3"
+
+[node name="SectDashboard" parent="." unique_id=1464939097 instance=ExtResource("2_kkxem")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 12.0
+offset_top = 156.0
+offset_right = 688.0
+offset_bottom = 534.0
