@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://orxe6dw2vjou"]
 
 [ext_resource type="Script" uid="uid://c2h0cer1tsaxn" path="res://Scripts/Debug/testing_grounds.gd" id="1_gnny0"]
-[ext_resource type="PackedScene" uid="uid://ckfe2ds8xsrjt" path="res://Scenes/UI/sect_dashboard.tscn" id="2_dcuqf"]
+[ext_resource type="PackedScene" uid="uid://bv6jc4jsyphvo" path="res://Scenes/UI/character_dashboard.tscn" id="2_dcuqf"]
 
 [node name="TestingGrounds" type="Control" unique_id=137360398]
 layout_mode = 3
@@ -63,10 +63,10 @@ text = "x3"
 
 [node name="DEBUG_LastCharInfo" type="ScrollContainer" parent="." unique_id=1440528619]
 layout_mode = 0
-offset_left = 21.0
-offset_top = 573.0
-offset_right = 687.0
-offset_bottom = 779.0
+offset_left = 10.0
+offset_top = 256.0
+offset_right = 676.0
+offset_bottom = 462.0
 
 [node name="GridContainer" type="GridContainer" parent="DEBUG_LastCharInfo" unique_id=873657799]
 layout_mode = 2
@@ -90,23 +90,5 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 2
 text = "Send Char to Directive"
 
-[node name="SectDashboard" parent="." unique_id=1464939097 instance=ExtResource("2_dcuqf")]
-layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 676.0
-offset_bottom = 378.0
-
-[node name="LedgerPanel" type="VBoxContainer" parent="." unique_id=1443321662]
-layout_mode = 0
-offset_left = 818.0
-offset_top = 686.0
-offset_right = 1183.0
-offset_bottom = 781.0
-
-[node name="InfraestructurePanel" type="HBoxContainer" parent="." unique_id=1387549237]
-layout_mode = 0
-offset_left = 871.0
-offset_top = 119.0
-offset_right = 1027.0
-offset_bottom = 412.0
+[node name="CharacterDashboard" parent="." unique_id=1962542295 instance=ExtResource("2_dcuqf")]
+layout_mode = 1

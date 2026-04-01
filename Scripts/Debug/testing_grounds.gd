@@ -116,6 +116,15 @@ func _create_ui_card(character: CharacterData) -> void:
 	_modifier_labels[character.char_id] = mod_label
 	_update_modifier_ui(character)
 	
+	# --- Add the button to open the dashboard ---
+	var open_dashboard_btn = Button.new()
+	open_dashboard_btn.text = "View Dashboard"
+	open_dashboard_btn.pressed.connect(func():
+		UIManager.open_panel("character_dashboard", character)
+	)
+	vbox.add_child(open_dashboard_btn)
+	# -------------------------------------------------
+	
 	character_list.add_child(card)
 
 func _update_modifier_ui(character: CharacterData) -> void:

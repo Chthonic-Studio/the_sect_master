@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b34erchstwbbc"]
 
-[ext_resource type="Script" uid="uid://b453hoavyujfs" path="res://Scripts/UI/ledger_panel.gd" id="1_7auym"]
+[ext_resource type="Script" uid="uid://b453hoavyujfs" path="res://Scripts/UI/SectUI/ledger_panel.gd" id="1_7auym"]
 
 [node name="LedgerPanel" type="VBoxContainer" unique_id=233494681]
 script = ExtResource("1_7auym")

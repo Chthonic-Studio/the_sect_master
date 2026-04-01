@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cumrkp7iq83hn"]
 
-[ext_resource type="Script" uid="uid://brn7vbgw7k2hv" path="res://Scripts/UI/precepts_panel.gd" id="1_etcoy"]
+[ext_resource type="Script" uid="uid://brn7vbgw7k2hv" path="res://Scripts/UI/SectUI/precepts_panel.gd" id="1_etcoy"]
 [ext_resource type="PackedScene" uid="uid://dc65kmaf72vhc" path="res://Scenes/UI/law_list_item.tscn" id="1_wxmoq"]
 
 [node name="PreceptsPanel" type="HBoxContainer" unique_id=821234677]

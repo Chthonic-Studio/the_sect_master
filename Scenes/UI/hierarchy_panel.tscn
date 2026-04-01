@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://j3nh7ma1nwe"]
 
 [ext_resource type="PackedScene" uid="uid://b6x40hbcb6byg" path="res://Scenes/UI/roster_item.tscn" id="1_1qxc6"]
-[ext_resource type="Script" uid="uid://bsmb0bb42gtbt" path="res://Scripts/UI/hierarchy_panel.gd" id="1_hxmff"]
+[ext_resource type="Script" uid="uid://bsmb0bb42gtbt" path="res://Scripts/UI/SectUI/hierarchy_panel.gd" id="1_hxmff"]
 
 [node name="HierarchyPanel" type="VBoxContainer" unique_id=1791663435]
 size_flags_horizontal = 3

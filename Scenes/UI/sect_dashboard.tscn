@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ckfe2ds8xsrjt"]
 
 [ext_resource type="PackedScene" uid="uid://b34erchstwbbc" path="res://Scenes/UI/ledger_panel.tscn" id="1_3cxdh"]
-[ext_resource type="Script" uid="uid://cbaukjfljtaaj" path="res://Scripts/UI/sect_dashboard.gd" id="1_a7vi4"]
+[ext_resource type="Script" uid="uid://cbaukjfljtaaj" path="res://Scripts/UI/SectUI/sect_dashboard.gd" id="1_a7vi4"]
 [ext_resource type="PackedScene" uid="uid://cfia6b3uj8k14" path="res://Scenes/UI/infrastructure_panel.tscn" id="2_a7vi4"]
 [ext_resource type="PackedScene" uid="uid://cumrkp7iq83hn" path="res://Scenes/UI/precepts_panel.tscn" id="3_uocbj"]
 [ext_resource type="PackedScene" uid="uid://j3nh7ma1nwe" path="res://Scenes/UI/hierarchy_panel.tscn" id="4_ioxsk"]
@@ -91,9 +91,11 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="CloseButton" type="Button" parent="." unique_id=977221763]
-layout_mode = 0
-offset_left = 657.0
-offset_top = 5.0
-offset_right = 676.0
-offset_bottom = 22.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.964497
+anchor_right = 1.0
+anchor_bottom = 0.06349207
+grow_horizontal = 0
 icon = SubResource("AtlasTexture_r58pr")
+metadata/_edit_use_anchors_ = true

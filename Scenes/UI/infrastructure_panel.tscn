@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cfia6b3uj8k14"]
 
-[ext_resource type="Script" uid="uid://6768iwv7mqlc" path="res://Scripts/UI/infraestructure_panel.gd" id="1_63e4r"]
+[ext_resource type="Script" uid="uid://6768iwv7mqlc" path="res://Scripts/UI/SectUI/infraestructure_panel.gd" id="1_63e4r"]
 
 [node name="InfrastructurePanel" type="HBoxContainer" unique_id=290949399]
 theme_override_constants/separation = 10
