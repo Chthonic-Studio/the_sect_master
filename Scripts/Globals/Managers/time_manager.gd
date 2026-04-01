@@ -29,6 +29,8 @@ const SECONDS_PER_DAY = 3.0
 # to try and process hundreds of days in a single frame, crashing the game.
 const MAX_TICKS_PER_FRAME = 30 
 
+var _epoch_day: int = 0
+
 # --- STATE ---
 var current_speed: Speed = Speed.PAUSED
 
@@ -62,6 +64,8 @@ func _process(delta: float) -> void:
 
 # --- TIME ADVANCEMENT LOGIC ---
 func _advance_day() -> void:
+	_epoch_day += 1
+	
 	day += 1
 	if day > DAYS_PER_MONTH:
 		day = 1
@@ -106,5 +110,4 @@ func get_date_string() -> String:
 
 # Returns absolute time elapsed for calculating expiration dates of buffs/debuffs.
 func get_total_days_elapsed() -> int:
-	# Formula based on our 360-day calendar
-	return (year * 360) + (month * 30) + day
+	return _epoch_day

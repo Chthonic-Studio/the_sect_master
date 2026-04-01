@@ -8,11 +8,13 @@ func _ready() -> void:
 	TimeManager.day_passed.connect(_on_day_passed)
 
 func setup_panel(sect: SectData) -> void:
-	if active_sect:
+	if active_sect and active_sect.building_completed.is_connected(_on_building_completed):
 		active_sect.building_completed.disconnect(_on_building_completed)
 		
 	active_sect = sect
-	active_sect.building_completed.connect(_on_building_completed)
+	
+	if active_sect and not active_sect.building_completed.is_connected(_on_building_completed):
+		active_sect.building_completed.connect(_on_building_completed)
 	
 	_refresh_panel()
 

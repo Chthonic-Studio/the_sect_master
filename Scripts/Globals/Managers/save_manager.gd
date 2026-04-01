@@ -23,7 +23,8 @@ func save_game(save_name: String) -> void:
 		"time": {
 			"year": TimeManager.year,
 			"month": TimeManager.month,
-			"day": TimeManager.day
+			"day": TimeManager.day,
+			"epoch_day": TimeManager.get_total_days_elapsed()
 		},
 		"simulation": {
 			"next_char_id": SimulationManager.next_char_id,
@@ -62,6 +63,7 @@ func load_game(save_name: String) -> void:
 	TimeManager.year = time_data.get("year", 740)
 	TimeManager.month = time_data.get("month", 1)
 	TimeManager.day = time_data.get("day", 1)
+	TimeManager._epoch_day = time_data.get("epoch_day", 0)
 	
 	# 2. Restore Simulation
 	var sim_data = data.get("simulation", {})

@@ -27,12 +27,13 @@ func _ready() -> void:
 
 ## Called by the UIManager when opening the panel
 func setup_dashboard(character: CharacterData) -> void:
-	if active_character:
-		# Disconnect old signals if we switch characters while the panel is open
+	if active_character and active_character.stats_recalculated.is_connected(_refresh_ui):
 		active_character.stats_recalculated.disconnect(_refresh_ui)
 		
 	active_character = character
-	active_character.stats_recalculated.connect(_refresh_ui)
+	
+	if active_character and not active_character.stats_recalculated.is_connected(_refresh_ui):
+		active_character.stats_recalculated.connect(_refresh_ui)
 	
 	_refresh_identity_header()
 	_refresh_active_tab()

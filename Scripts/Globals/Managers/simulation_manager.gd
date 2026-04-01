@@ -11,6 +11,7 @@ var sect_relationships: Dictionary = {} # Maps "sect_a|sect_b" -> int (-100 to 1
 
 var _chars_to_process: Array = []
 var _is_processing_day: bool = false
+var _pending_day_batches: Array[Dictionary] = []
 const MAX_CHARACTERS_PER_FRAME: int = 200
 
 func _ready() -> void:
@@ -26,25 +27,36 @@ func _on_day_passed(_day: int) -> void:
 		if sect_repo.has(s_id):
 			sect_repo[s_id].process_daily_tick(current_total_days)
 			
-	# Queue characters for time-sliced processing
-	_chars_to_process = character_repo.keys().duplicate()
-	_is_processing_day = true
+	_pending_day_batches.append({
+		"day": current_total_days,
+		"chars": character_repo.keys().duplicate()
+	})
 
 func _process(_delta: float) -> void:
-	if _is_processing_day:
-		var current_total_days = TimeManager.get_total_days_elapsed()
-		var processed_count = 0
+	if _pending_day_batches.is_empty():
+		return
+	
+	var processed_count = 0
+	
+	while processed_count < MAX_CHARACTERS_PER_FRAME and not _pending_day_batches.is_empty():
+		var batch = _pending_day_batches[0]
+		var chars: Array = batch["chars"]
+		var day_total: int = batch["day"]
 		
-		while not _chars_to_process.is_empty() and processed_count < MAX_CHARACTERS_PER_FRAME:
-			var char_id = _chars_to_process.pop_back()
-			if character_repo.has(char_id):
-				var character = character_repo[char_id]
-				if character.is_alive:
-					character.process_daily_tick(current_total_days)
-			processed_count += 1
-			
-		if _chars_to_process.is_empty():
-			_is_processing_day = false
+		if chars.is_empty():
+			_pending_day_batches.remove_at(0)
+			continue
+		
+		var char_id = chars.pop_back()
+		batch["chars"] = chars
+		_pending_day_batches[0] = batch
+		
+		if character_repo.has(char_id):
+			var character = character_repo[char_id]
+			if character.is_alive:
+				character.process_daily_tick(day_total)
+		
+		processed_count += 1
 
 ## Broadcasts the macro monthly tick to all active sects
 func _on_month_passed(_month: int) -> void:
