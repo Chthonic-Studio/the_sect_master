@@ -9,26 +9,42 @@ var next_sect_id: int = 1
 
 var sect_relationships: Dictionary = {} # Maps "sect_a|sect_b" -> int (-100 to 100)
 
+var _chars_to_process: Array = []
+var _is_processing_day: bool = false
+const MAX_CHARACTERS_PER_FRAME: int = 200
+
 func _ready() -> void:
 	TimeManager.day_passed.connect(_on_day_passed)
 	TimeManager.month_passed.connect(_on_month_passed)
 
 ## Broadcasts the daily tick to all active characters and sects in the simulation
 func _on_day_passed(_day: int) -> void:
+	# Trigger Sects immediately as they are few in number
 	var current_total_days = TimeManager.get_total_days_elapsed()
-	
-	# Duplicate the keys to safely allow repo modifications during the tick
-	var active_char_keys = character_repo.keys().duplicate()
-	for char_id in active_char_keys:
-		if character_repo.has(char_id):
-			var character = character_repo[char_id]
-			if character.is_alive:
-				character.process_daily_tick(current_total_days)
-
 	var active_sect_keys = sect_repo.keys().duplicate()
 	for s_id in active_sect_keys:
 		if sect_repo.has(s_id):
 			sect_repo[s_id].process_daily_tick(current_total_days)
+			
+	# Queue characters for time-sliced processing
+	_chars_to_process = character_repo.keys().duplicate()
+	_is_processing_day = true
+
+func _process(_delta: float) -> void:
+	if _is_processing_day:
+		var current_total_days = TimeManager.get_total_days_elapsed()
+		var processed_count = 0
+		
+		while not _chars_to_process.is_empty() and processed_count < MAX_CHARACTERS_PER_FRAME:
+			var char_id = _chars_to_process.pop_back()
+			if character_repo.has(char_id):
+				var character = character_repo[char_id]
+				if character.is_alive:
+					character.process_daily_tick(current_total_days)
+			processed_count += 1
+			
+		if _chars_to_process.is_empty():
+			_is_processing_day = false
 
 ## Broadcasts the macro monthly tick to all active sects
 func _on_month_passed(_month: int) -> void:
@@ -86,9 +102,6 @@ func modify_sect_relationship(id_a: String, id_b: String, amount: int) -> void:
 	set_sect_relationship(id_a, id_b, current + amount)
 
 #endregion
-
-
-
 
 func clear_simulation() -> void:
 	character_repo.clear()
