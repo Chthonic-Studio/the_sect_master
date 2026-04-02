@@ -67,6 +67,10 @@ var personality_values = {}
 var alignment_values = {}
 var traits: Array[String] = []
 
+# --- EVENT MEMORY & PULSE ---
+var event_memory: Dictionary = {} # Maps event/flag ID -> Array[Dictionary] of payloads
+var next_event_pulse_day: int = -1 # -1 means uninitialized
+
 # --- CACHED DATA CONTAINERS (The final effective values) ---
 # These are strictly for fast O(1) reading during the simulation loop.
 var current_stats = {}
@@ -276,6 +280,17 @@ func process_daily_tick(current_total_days: int) -> void:
 			# For now, we do nothing to save CPU time.
 			pass
 	
+	# 2.5. EVENT ENGINE PULSE
+	if current_sim_tier != SimTier.FROZEN:
+		if next_event_pulse_day <= 0:
+			# Initialize with a random stagger so the world doesn't evaluate everyone on Day 1
+			next_event_pulse_day = current_total_days + randi_range(1, 30)
+			
+		if current_total_days >= next_event_pulse_day:
+			EventManager.evaluate_character_pulse(self)
+			# Jitter - Next evaluation happens randomly between 20 and 40 days from now
+			next_event_pulse_day = current_total_days + randi_range(20, 40)
+	
 	# 3. Master State Calculation (Only necessary for on-screen UI feedback)
 	if current_sim_tier == SimTier.MICRO:
 		_calculate_mood()
@@ -342,6 +357,29 @@ func _calculate_mood() -> void:
 	# Clamp and assign
 	state_vars["mood"] = clampi(int(final_mood), 0, 100)
 
+
+# --- EVENT MEMORY API ---
+
+func add_memory(memory_id: String, payload: Dictionary = {}) -> void:
+	if not event_memory.has(memory_id):
+		event_memory[memory_id] = []
+	
+	payload["day_recorded"] = TimeManager.get_total_days_elapsed()
+	event_memory[memory_id].append(payload)
+
+func has_memory(memory_id: String) -> bool:
+	return event_memory.has(memory_id) and not event_memory[memory_id].is_empty()
+
+## Checks if the memory exists AND if the payload contains a specific key-value pair.
+func has_memory_matching(memory_id: String, key: String, value: Variant) -> bool:
+	if not has_memory(memory_id): return false
+	
+	for payload in event_memory[memory_id]:
+		if payload.has(key) and payload[key] == value:
+			return true
+	return false
+
+
 #region Serialization
 # --- SERIALIZATION (For Saving/Loading) ---
 
@@ -381,7 +419,11 @@ func to_dictionary() -> Dictionary:
 		
 		# Combat Values 
 		"equipped_weapon_id": equipped_weapon_id,
-		"weapon_proficiencies": weapon_proficiencies
+		"weapon_proficiencies": weapon_proficiencies,
+		
+		# Event status
+		"event_memory": event_memory,
+		"next_event_pulse_day": next_event_pulse_day,
 	}
 
 ## Populates this object from a Dictionary loaded from JSON.
@@ -438,6 +480,10 @@ func from_dictionary(data: Dictionary) -> void:
 		for key_str in data["weapon_proficiencies"]:
 			var w_enum = int(key_str)
 			weapon_proficiencies[w_enum] = data["weapon_proficiencies"][key_str]
+	
+	if data.has("event_memory"):
+		event_memory.merge(data["event_memory"], true)
+	next_event_pulse_day = data.get("next_event_pulse_day", -1)
 		
 	# Reconstruct the AI's current action immediately
 	var saved_action_id = data.get("current_action_id", "")
