@@ -207,10 +207,28 @@ func _check_condition(condition: Array, context: Dictionary) -> bool:
 
 func _format_string(text: String, context: Dictionary) -> String:
 	var formatted = text
+	
 	if context.has("initiator"):
 		var c = SimulationManager.get_character(context["initiator"])
-		if c: formatted = formatted.replace("[initiator_name]", c.get_full_name())
+		if c: 
+			formatted = formatted.replace("[initiator_name]", c.get_full_name())
+			var sect = SimulationManager.get_sect(c.sect_id)
+			formatted = formatted.replace("[initiator_sect_name]", sect.sect_name if sect else "Rogue Cultivators")
+			
 	if context.has("target"):
 		var c = SimulationManager.get_character(context["target"])
-		if c: formatted = formatted.replace("[target_name]", c.get_full_name())
+		if c: 
+			formatted = formatted.replace("[target_name]", c.get_full_name())
+			var sect = SimulationManager.get_sect(c.sect_id)
+			formatted = formatted.replace("[target_sect_name]", sect.sect_name if sect else "Rogue Cultivators")
+			
+	# Fallbacks in case the event only passes the sect IDs and no characters (like global world events)
+	if context.has("initiator_sect") and "[initiator_sect_name]" in formatted:
+		var sect = SimulationManager.get_sect(context["initiator_sect"])
+		if sect: formatted = formatted.replace("[initiator_sect_name]", sect.sect_name)
+		
+	if context.has("target_sect") and "[target_sect_name]" in formatted:
+		var sect = SimulationManager.get_sect(context["target_sect"])
+		if sect: formatted = formatted.replace("[target_sect_name]", sect.sect_name)
+		
 	return formatted

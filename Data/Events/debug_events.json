@@ -1,0 +1,136 @@
+{
+	"debug_wealth_find": {
+		"id": "debug_wealth_find",
+		"title": "A Fortunate Discovery",
+		"description": "While meditating near the sect's borders, [initiator_name] discovered a hidden cache of spirit stones.",
+		"options": {
+			"opt_keep": {
+				"text": "Keep it for myself.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "greedy"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": 500 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I found a hidden stash of wealth and kept it a secret." }
+				]
+			},
+			"opt_share": {
+				"text": "Turn it over to the Sect.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_trait", "target": "initiator", "trait": "hero_of_the_sect" },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I surrendered a massive fortune to [initiator_sect_name], earning great merit." }
+				]
+			}
+		}
+	},
+	"debug_stat_check": {
+		"id": "debug_stat_check",
+		"title": "Test of Will",
+		"description": "[initiator_name] is faced with a demonic illusion. Can their discipline hold?",
+		"options": {
+			"opt_resist": {
+				"text": "My mind is a fortress.",
+				"ai_base_weight": 100.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "discipline", 60], "add": 200.0 },
+					{ "condition": ["stat_greater_than", "initiator", "discipline", 80], "add": 500.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I successfully resisted a demonic illusion." }
+				]
+			},
+			"opt_fail": {
+				"text": "Give in to the temptation.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "weak_willed"], "multiplier": 5.0 }
+				],
+				"effects": [
+					{ "type": "add_trait", "target": "initiator", "trait": "spiritual_scars" },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I fell prey to a demonic illusion, damaging my soul." }
+				]
+			}
+		}
+	},
+	"debug_chain_start": {
+		"id": "debug_chain_start",
+		"title": "A Plot is Hatched",
+		"description": "[initiator_name] has begun plotting against [target_name]. The trap will be sprung in exactly 3 days.",
+		"options": {
+			"opt_execute": {
+				"text": "Set the wheels in motion.",
+				"ai_base_weight": 100.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I began a sinister plot against [target_name]." },
+					{ "type": "trigger_event", "event_id": "debug_chain_resolve", "delay_days": 3 }
+				]
+			}
+		}
+	},
+	"debug_chain_resolve": {
+		"id": "debug_chain_resolve",
+		"title": "The Trap Springs",
+		"description": "The plot enacted by [initiator_name] against [target_name] has finally come to fruition!",
+		"options": {
+			"opt_success": {
+				"text": "A flawless execution.",
+				"ai_base_weight": 100.0,
+				"effects": [
+					{ "type": "add_trait", "target": "target", "trait": "spiritual_scars" },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "successful_plot", "payload": {"victim": "[target_name]"} },
+					{ "type": "add_personal_log", "target": "target", "text": "I fell into a vile trap set by [initiator_name]." }
+				]
+			}
+		}
+	},
+	"debug_relationship_modify": {
+		"id": "debug_relationship_modify",
+		"title": "Diplomatic Incident",
+		"description": "[initiator_name] heavily insulted the visiting elders of [target_sect_name]!",
+		"world_log_category": "Diplomacy",
+		"options": {
+			"opt_apologize": {
+				"text": "Offer a profound apology.",
+				"ai_base_weight": 50.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I humiliated myself apologizing to [target_sect_name] to save face." },
+					{ "type": "modify_sect_relationship", "amount": 10 }
+				]
+			},
+			"opt_double_down": {
+				"text": "Stand by the insult.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "arrogance", 60], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I boldly insulted the elders of [target_sect_name]." },
+					{ "type": "modify_sect_relationship", "amount": -40 }
+				]
+			}
+		}
+	},
+	"debug_memory_check": {
+		"id": "debug_memory_check",
+		"title": "A Ghost from the Past",
+		"description": "[initiator_name] reflects on their past deeds.",
+		"options": {
+			"opt_has_memory": {
+				"text": "I remember my successful plot.",
+				"ai_base_weight": 100.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_memory", "initiator", "successful_plot"], "multiplier": 1000.0 },
+					{ "condition": ["not_has_trait", "initiator", "amnesiac"], "multiplier": 1.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I fondly remembered my past scheming." }
+				]
+			}
+		}
+	}
+}

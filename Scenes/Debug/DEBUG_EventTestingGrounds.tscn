@@ -1,3 +1,156 @@
 [gd_scene format=3 uid="uid://dflpe2s3ug13i"]
 
-[node name="DebugEventTestingGrounds" type="Node2D" unique_id=1497832409]
+[ext_resource type="Script" uid="uid://test_event_script_uid" path="res://Scripts/Debug/DEBUG_event_testing_grounds.gd" id="1_xyz"]
+
+[node name="DebugEventTestingGrounds" type="Control" unique_id="1497832409"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xyz")
+
+[node name="TimePanel" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 260.0
+offset_bottom = 90.0
+
+[node name="VBox" type="VBoxContainer" parent="TimePanel"]
+layout_mode = 2
+
+[node name="DEBUG_WorldTime" type="Label" parent="TimePanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Year 740, Month 1, Day 1"
+horizontal_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="TimePanel/VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Btn0" type="Button" parent="TimePanel/VBox/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "||"
+
+[node name="Btn1" type="Button" parent="TimePanel/VBox/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "x1"
+
+[node name="Btn2" type="Button" parent="TimePanel/VBox/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "x2"
+
+[node name="Btn3" type="Button" parent="TimePanel/VBox/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+text = "x3"
+
+[node name="ControlsPanel" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 110.0
+offset_right = 400.0
+offset_bottom = 400.0
+
+[node name="VBox" type="VBoxContainer" parent="ControlsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="ControlsPanel/VBox"]
+layout_mode = 2
+text = "World Controls"
+horizontal_alignment = 1
+
+[node name="GenerateWorldBtn" type="Button" parent="ControlsPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Generate Testing World"
+
+[node name="HSeparator" type="HSeparator" parent="ControlsPanel/VBox"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="ControlsPanel/VBox"]
+layout_mode = 2
+text = "Force Event Spawner"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="ControlsPanel/VBox"]
+layout_mode = 2
+text = "Event:"
+
+[node name="EventDropdown" type="OptionButton" parent="ControlsPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="ControlsPanel/VBox"]
+layout_mode = 2
+text = "Initiator:"
+
+[node name="InitiatorDropdown" type="OptionButton" parent="ControlsPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="ControlsPanel/VBox"]
+layout_mode = 2
+text = "Target (Optional):"
+
+[node name="TargetDropdown" type="OptionButton" parent="ControlsPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ForceEventBtn" type="Button" parent="ControlsPanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Trigger Event"
+
+[node name="LogPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -700.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="LogPanel"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="LogPanel/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LogPanel/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "World Event Log"
+
+[node name="ClearLogBtn" type="Button" parent="LogPanel/VBox/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Clear Log"
+
+[node name="HSeparator" type="HSeparator" parent="LogPanel/VBox"]
+layout_mode = 2
+
+[node name="Scroll" type="ScrollContainer" parent="LogPanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LogVBox" type="VBoxContainer" parent="LogPanel/VBox/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3

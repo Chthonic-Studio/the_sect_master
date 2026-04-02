@@ -224,6 +224,12 @@ func _scan_directory_for_json(path: String, load_func: Callable) -> void:
 	
 	while file_name != "":
 		if not dir.current_is_dir() and file_name.get_extension() == "json":
+			
+			# Skip any file prefixed with "debug_" if this is a production build
+			if file_name.begins_with("debug_") and not OS.is_debug_build():
+				file_name = dir.get_next()
+				continue
+				
 			var full_path = path + "/" + file_name
 			load_func.call(full_path)
 		file_name = dir.get_next()
