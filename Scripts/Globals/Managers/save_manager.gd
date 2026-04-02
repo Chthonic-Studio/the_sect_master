@@ -31,9 +31,10 @@ func save_game(save_name: String) -> void:
 			"next_sect_id": SimulationManager.next_sect_id,
 			"characters": characters_dict,
 			"sects": sects_dict,
-			"sect_relationships": SimulationManager.sect_relationships 
+			"sect_relationships": SimulationManager.sect_relationships,
+			"delayed_events": EventManager._delayed_events # NEW: Inject the delayed event queue
 		},
-		"world_logs": WorldLogManager.global_logs # Added World Logs
+		"world_logs": WorldLogManager.global_logs
 	}
 	
 	# 2. Write to disk
@@ -72,6 +73,13 @@ func load_game(save_name: String) -> void:
 	if sim_data.has("sect_relationships"):
 		SimulationManager.sect_relationships = sim_data["sect_relationships"].duplicate()
 	
+	if sim_data.has("delayed_events"):
+		var parsed_events: Array[Dictionary] = []
+		parsed_events.assign(sim_data["delayed_events"])
+		EventManager._delayed_events = parsed_events
+	else:
+		EventManager._delayed_events.clear()
+		
 	SimulationManager.next_char_id = sim_data.get("next_char_id", 1)
 	SimulationManager.next_sect_id = sim_data.get("next_sect_id", 1)
 	
