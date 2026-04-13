@@ -106,6 +106,8 @@ func _setup_empty_stats():
 		alignment_values[a_name] = 50
 		current_alignment[a_name] = 50
 
+
+
 ## Adds a log entry with the current date, maintaining a maximum size to save memory.
 func add_log(message: String) -> void:
 	var entry = "[%s] %s" % [TimeManager.get_date_string(), message]
@@ -224,6 +226,62 @@ func transition_to_frozen() -> void:
 	if brain.current_action != null:
 		brain.current_action = null
 
+## Lightweight off-screen simulation.
+## Purpose: keep background characters evolving without running full Utility AI.
+func _process_macro_daily(current_total_days: int) -> void:
+	# Coarse passive drift (very cheap).
+	_apply_macro_daily_drift()
+	
+	# Monthly pulse based on absolute day count to avoid per-character counters in save format.
+	# This keeps deterministic cadence and avoids extra serialization complexity.
+	if current_total_days % 30 == 0:
+		_process_macro_monthly_tick()
+
+func _apply_macro_daily_drift() -> void:
+	# Keep this intentionally gentle so macro does not outpace micro.
+	var sociability = get_personality_value("sociability")
+	var ambition = get_personality_value("ambition")
+	var greed = get_personality_value("greed")
+	
+	state_vars["fatigue"] = minf(100.0, state_vars.get("fatigue", 0.0) + 1.0)
+	state_vars["loneliness"] = minf(100.0, state_vars.get("loneliness", 0.0) + (0.4 + sociability * 0.01))
+	state_vars["stress"] = minf(100.0, state_vars.get("stress", 0.0) + 0.2)
+	
+	needs["training"] = minf(100.0, needs.get("training", 0.0) + (0.2 + ambition * 0.01))
+	needs["work"] = minf(100.0, needs.get("work", 0.0) + (0.5 + greed * 0.01))
+	needs["socialization"] = minf(100.0, needs.get("socialization", 0.0) + 0.6)
+	needs["entertainment"] = minf(100.0, needs.get("entertainment", 0.0) + 0.5)
+
+## Monthly macro outcome roll.
+## Keep probabilities modest to avoid explosive growth in large populations.
+func _process_macro_monthly_tick() -> void:
+	# 1) Coarse wealth movement based on work pressure and greed.
+	var work_need = needs.get("work", 0.0)
+	var greed = get_personality_value("greed")
+	var discipline = get_personality_value("discipline")
+	
+	var wealth_shift = int((work_need * 0.05) + (greed * 0.02) - (state_vars.get("stress", 0.0) * 0.02))
+	wealth += clampi(wealth_shift + randi_range(-3, 3), -15, 25)
+	wealth = maxi(wealth, 0)
+	
+	# 2) Minor martial progression chance for off-screen martial artists.
+	if is_martial_artist:
+		var insight = get_martial_stat(Definitions.MartialStat.INSIGHT)
+		var chance = 0.03 + (insight / 2000.0) + (discipline / 5000.0)
+		if randf() < chance:
+			base_martial[Definitions.MartialStat.INTERNAL_FORCE] += randi_range(1, 2)
+			recalculate_all_stats()
+	
+	# 3) Recovery pressure release so macro actors do not spiral to 100 on all tracks forever.
+	state_vars["fatigue"] = maxf(0.0, state_vars.get("fatigue", 0.0) - randf_range(8.0, 18.0))
+	state_vars["stress"] = maxf(0.0, state_vars.get("stress", 0.0) - randf_range(5.0, 15.0))
+	state_vars["loneliness"] = maxf(0.0, state_vars.get("loneliness", 0.0) - randf_range(4.0, 12.0))
+	
+	needs["work"] = maxf(0.0, needs.get("work", 0.0) - randf_range(8.0, 20.0))
+	needs["training"] = maxf(0.0, needs.get("training", 0.0) - randf_range(5.0, 15.0))
+	needs["socialization"] = maxf(0.0, needs.get("socialization", 0.0) - randf_range(6.0, 18.0))
+	needs["entertainment"] = maxf(0.0, needs.get("entertainment", 0.0) - randf_range(6.0, 16.0))
+
 # --- GAMEPLAY MODIFIERS ---
 
 ## Safely apply traits and update the cache to avoid redundant recalculations
@@ -297,9 +355,7 @@ func process_daily_tick(current_total_days: int) -> void:
 			_apply_daily_decay()
 			brain.process_daily_tick(self)
 		elif current_sim_tier == SimTier.MACRO:
-			# TODO: Apply a monthly macro-evaluation here later.
-			# For now, we do nothing to save CPU time.
-			pass
+			_process_macro_daily(current_total_days)
 	
 	# 2.5. EVENT ENGINE PULSE
 	if current_sim_tier != SimTier.FROZEN:

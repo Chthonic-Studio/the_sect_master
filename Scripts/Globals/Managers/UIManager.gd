@@ -50,28 +50,40 @@ func register_panel(panel_id: String, panel_node: Control, default_layer: int = 
 		printerr("UIManager: Panel ID '%s' is already registered!" % panel_id)
 		return
 		
+	if not _layers.has(default_layer):
+		printerr("UIManager: Invalid layer for panel registration: ", default_layer)
+		return
+	
 	_registered_panels[panel_id] = panel_node
 	
-	var target_layer = _layers[default_layer]
-	panel_node.reparent.call_deferred(target_layer, false)
+	var target_layer: CanvasLayer = _layers[default_layer]
+	
+	# Immediate deterministic reparent to avoid frame-order races during setup/open.
+	if panel_node.get_parent() != target_layer:
+		panel_node.reparent(target_layer, false)
 	
 	panel_node.hide()
 
-## Opens a registered panel and passes it an optional data payload.
 func open_panel(panel_id: String, payload: Variant = null) -> void:
 	if not _registered_panels.has(panel_id):
 		printerr("UIManager: Attempted to open unregistered panel: ", panel_id)
 		return
 		
-	var panel = _registered_panels[panel_id]
+	var panel: Control = _registered_panels[panel_id]
 	
-	# If it has a setup/init function, pass the data
+	# Guard against calls made before the panel is fully in-tree.
+	if not panel.is_inside_tree():
+		await panel.ready
+	
+	# Route payload to dashboard-style setup.
 	if payload != null and panel.has_method("setup_dashboard"):
 		panel.setup_dashboard(payload)
+	# Route payload to generic panel-style setup.
+	elif payload != null and panel.has_method("setup_panel"):
+		panel.setup_panel(payload)
 		
 	panel.show()
 	
-	# Manage the stack (bring to front)
 	if _ui_stack.has(panel):
 		_ui_stack.erase(panel)
 	_ui_stack.append(panel)

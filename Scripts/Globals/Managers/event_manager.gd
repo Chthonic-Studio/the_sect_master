@@ -151,6 +151,12 @@ func _execute_effects(effects: Array, context: Dictionary) -> void:
 				var targ_sect = context.get("target_sect", "")
 				if init_sect != "" and targ_sect != "":
 					SimulationManager.modify_sect_relationship(init_sect, targ_sect, effect.get("amount", 0))
+			"add_world_log":
+				var log_type = effect.get("log_type", "Event")
+				var text = _format_string(effect.get("text", ""), context)
+				WorldLogManager.add_log(log_type, text)
+			_:
+				printerr("EventManager: Unknown effect type '", type, "' in _execute_effects. Effect payload: ", effect)
 
 func _process_delayed_events(_day: int) -> void:
 	var current_day = TimeManager.get_total_days_elapsed()

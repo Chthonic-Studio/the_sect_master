@@ -545,7 +545,7 @@ func to_dictionary() -> Dictionary:
 		"completed_buildings": completed_buildings,
 		"active_modifiers": active_modifiers,
 		"construction_queue": construction_queue,
-		"active_proposals": active_proposals
+		"active_proposals": _serialize_active_proposals()
 	}
 
 func from_dictionary(data: Dictionary) -> void:
@@ -608,4 +608,44 @@ func from_dictionary(data: Dictionary) -> void:
 	if data.has("active_proposals"):
 		active_proposals.clear()
 		for a in data["active_proposals"]:
-			construction_queue.append(a)
+			if typeof(a) != TYPE_DICTIONARY:
+				continue
+
+			var p_type: String = a.get("type", "")
+			if p_type == "":
+				continue
+
+			var p_payload: Dictionary = a.get("payload", {})
+			var p_days: int = int(a.get("days_remaining", 0))
+
+			var p_undecided: Array[String] = []
+			if a.has("undecided"):
+				p_undecided.assign(a["undecided"])
+
+			var restored = SectProposal.new(p_type, p_payload, p_days, p_undecided)
+			restored.proposal_id = a.get("proposal_id", restored.proposal_id)
+
+			restored.supporters.clear()
+			if a.has("supporters"):
+				restored.supporters.assign(a["supporters"])
+
+			restored.opposers.clear()
+			if a.has("opposers"):
+				restored.opposers.assign(a["opposers"])
+
+			restored.proposal_resolved.connect(_on_proposal_resolved)
+			active_proposals.append(restored)
+
+func _serialize_active_proposals() -> Array[Dictionary]:
+	var serialized: Array[Dictionary] = []
+	for proposal in active_proposals:
+		serialized.append({
+			"proposal_id": proposal.proposal_id,
+			"type": proposal.type,
+			"payload": proposal.payload,
+			"days_remaining": proposal.days_remaining,
+			"supporters": proposal.supporters,
+			"opposers": proposal.opposers,
+			"undecided": proposal.undecided
+		})
+	return serialized

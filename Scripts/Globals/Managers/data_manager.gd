@@ -59,6 +59,8 @@ func load_all_data() -> void:
 	_scan_directory_for_scripts("res://Scripts/AI/Desires", _load_desire_script)
 	_scan_directory_for_scripts("res://Scripts/AI/Actions", _load_action_script)
 	_scan_directory_for_scripts("res://Scripts/AI/Directives", _load_directive_script)
+	
+	_validate_loaded_data()
 
 func _load_json_to_registry(path: String, target_dict: Dictionary) -> void:
 	if not FileAccess.file_exists(path):
@@ -449,3 +451,124 @@ func get_weapon_matchup_multiplier(attacker_weapon_id: String, defender_weapon_i
 		return 0.75
 		
 	return 1.0
+
+
+#region Validation
+
+const _KNOWN_EVENT_EFFECT_TYPES := {
+	"add_trait": true,
+	"modify_wealth": true,
+	"add_memory": true,
+	"trigger_event": true,
+	"add_personal_log": true,
+	"modify_sect_relationship": true,
+	"add_world_log": true
+}
+
+func _validate_loaded_data() -> void:
+	_validate_traits_registry()
+	_validate_modifiers_registry()
+	_validate_events_registry()
+
+func _validate_traits_registry() -> void:
+	for trait_id in traits_registry.keys():
+		var trait_data: Dictionary = traits_registry[trait_id]
+		
+		_validate_stat_block_keys(
+			trait_data.get("stat_modifiers", {}),
+			"trait",
+			trait_id,
+			"stat_modifiers"
+		)
+		
+		_validate_martial_block_keys(
+			trait_data.get("martial_modifiers", {}),
+			"trait",
+			trait_id,
+			"martial_modifiers"
+		)
+		
+		_validate_personality_alignment_block_keys(
+			trait_data.get("personality_modifiers", {}),
+			"trait",
+			trait_id,
+			"personality_modifiers"
+		)
+		
+		_validate_personality_alignment_block_keys(
+			trait_data.get("alignment_modifiers", {}),
+			"trait",
+			trait_id,
+			"alignment_modifiers"
+		)
+
+func _validate_modifiers_registry() -> void:
+	for mod_id in modifiers_registry.keys():
+		var mod_data: Dictionary = modifiers_registry[mod_id]
+		
+		_validate_stat_block_keys(
+			mod_data.get("stat_modifiers", {}),
+			"modifier",
+			mod_id,
+			"stat_modifiers"
+		)
+		
+		_validate_martial_block_keys(
+			mod_data.get("martial_modifiers", {}),
+			"modifier",
+			mod_id,
+			"martial_modifiers"
+		)
+		
+		_validate_personality_alignment_block_keys(
+			mod_data.get("personality_modifiers", {}),
+			"modifier",
+			mod_id,
+			"personality_modifiers"
+		)
+		
+		_validate_personality_alignment_block_keys(
+			mod_data.get("alignment_modifiers", {}),
+			"modifier",
+			mod_id,
+			"alignment_modifiers"
+		)
+
+func _validate_events_registry() -> void:
+	for event_id in events_registry.keys():
+		var event_data: Dictionary = events_registry[event_id]
+		
+		# Root effects
+		_validate_effect_array(event_data.get("effects", []), event_id, "root.effects")
+		
+		# Option effects
+		var options: Dictionary = event_data.get("options", {})
+		for opt_id in options.keys():
+			var opt_data: Dictionary = options[opt_id]
+			_validate_effect_array(opt_data.get("effects", []), event_id, "options.%s.effects" % opt_id)
+
+func _validate_effect_array(effects: Array, event_id: String, path: String) -> void:
+	for i in range(effects.size()):
+		var effect: Dictionary = effects[i]
+		var effect_type: String = effect.get("type", "")
+		if effect_type == "" or not _KNOWN_EVENT_EFFECT_TYPES.has(effect_type):
+			push_warning("DataManager Validation: Unknown event effect type '%s' in event '%s' at %s[%d]." % [effect_type, event_id, path, i])
+
+func _validate_stat_block_keys(block: Dictionary, data_type: String, data_id: String, block_name: String) -> void:
+	for key in block.keys():
+		if Definitions.get_stat_enum(String(key)) == -1:
+			push_warning("DataManager Validation: Invalid %s key '%s' in %s '%s' (%s)." % [block_name, key, data_type, data_id, block_name])
+
+func _validate_martial_block_keys(block: Dictionary, data_type: String, data_id: String, block_name: String) -> void:
+	for key in block.keys():
+		if Definitions.get_martial_enum(String(key)) == -1:
+			push_warning("DataManager Validation: Invalid %s key '%s' in %s '%s' (%s)." % [block_name, key, data_type, data_id, block_name])
+
+func _validate_personality_alignment_block_keys(block: Dictionary, data_type: String, data_id: String, block_name: String) -> void:
+	for key in block.keys():
+		var k := String(key)
+		var is_valid = (k in Definitions.PERSONALITY_STATS) or (k in Definitions.ALIGNMENT_STATS)
+		if not is_valid:
+			push_warning("DataManager Validation: Invalid %s key '%s' in %s '%s' (%s)." % [block_name, key, data_type, data_id, block_name])
+
+#endregion
