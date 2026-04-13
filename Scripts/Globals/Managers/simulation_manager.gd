@@ -1,5 +1,7 @@
 extends Node
 
+signal character_died(char_id: String)
+
 # --- REPOSITORIES (The "Living Entities") ---
 var character_repo: Dictionary = {} 
 var next_char_id: int = 1
@@ -112,8 +114,25 @@ func set_sect_relationship(id_a: String, id_b: String, value: int) -> void:
 func modify_sect_relationship(id_a: String, id_b: String, amount: int) -> void:
 	var current = get_sect_relationship(id_a, id_b)
 	set_sect_relationship(id_a, id_b, current + amount)
+	
+#endregion
+
+#region Mortality & Global Events
+
+func handle_character_death(character: CharacterData) -> void:
+	character_died.emit(character.char_id)
+	
+	# If they belonged to a sect, we must check if succession is triggered
+	if character.sect_id != "":
+		var sect = get_sect(character.sect_id)
+		if sect:
+			# Check if the dead character was the active Sect Master
+			var masters = sect.members_by_rank.get(Definitions.SectRank.SECT_MASTER, [])
+			if masters.has(character.char_id):
+				sect.handle_succession()
 
 #endregion
+
 
 func clear_simulation() -> void:
 	character_repo.clear()

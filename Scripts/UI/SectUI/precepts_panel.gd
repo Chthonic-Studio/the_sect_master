@@ -51,11 +51,19 @@ func _refresh_panel() -> void:
 		# Listen for Player changes
 		dropdown.item_selected.connect(func(index: int):
 			var new_opt_key = option_keys[index]
-			active_sect.change_law(law_id, new_opt_key)
 			
-			# If the law changes stipends/income, we should immediately tell the Ledger to re-calculate!
-			if %LedgerPanel.has_method("_update_ledger"): 
-				%LedgerPanel._update_ledger()
+			# Route through the political proposal system instead of changing it instantly
+			active_sect.propose_action("change_law", {"law_id": law_id, "new_option_id": new_opt_key})
+			
+			# Tell the player what happened
+			WorldLogManager.add_log("System", "A proposal to change " + law_data.get("name", law_id) + " has been submitted to the Elders.")
+			
+			# Re-select the old visual option for now, because the law hasn't ACTUALLY changed yet!
+			# It will only change when the proposal_resolved signal fires.
+			for j in range(option_keys.size()):
+				if option_keys[j] == active_sect.active_laws[law_id]:
+					dropdown.selected = j
+					break
 		)
 		
 		

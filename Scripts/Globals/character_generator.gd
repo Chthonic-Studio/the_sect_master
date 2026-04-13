@@ -1,7 +1,8 @@
 extends Node
 
 enum GenerationContext {
-	WORLD_GEN,
+	WORLD_GEN_MARTIAL,
+	WORLD_GEN_PEASANT,
 	BIRTH,
 	RECRUIT_COMMON,
 	RECRUIT_ELITE,
@@ -11,6 +12,15 @@ enum GenerationContext {
 
 func create_character(context: GenerationContext, overrides: Dictionary = {}) -> CharacterData:
 	var character = CharacterData.new()
+	
+	# Determine if they are born into the Jianghu or the common world
+	if context in [GenerationContext.WORLD_GEN_PEASANT, GenerationContext.REPOPULATE]:
+		character.is_martial_artist = false
+		var tags = overrides.get("ai_tags", ["peasant", "worker"])
+		character.ai_tags.assign(tags) # Safely cast untyped array to Array[String]
+	else:
+		character.is_martial_artist = true
+		character.ai_tags.assign(["general", "martial_artist"])
 	
 	_apply_demographics(character, context, overrides)
 	_apply_talents(character, context, overrides)
@@ -43,7 +53,8 @@ func _apply_demographics(_char: CharacterData, context: GenerationContext, overr
 	match context:
 		GenerationContext.BIRTH: _char.age = 0
 		GenerationContext.RECRUIT_COMMON: _char.age = randi_range(14, 20)
-		GenerationContext.WORLD_GEN: _char.age = _get_weighted_age_roll()
+		GenerationContext.WORLD_GEN_MARTIAL: _char.age = _get_weighted_age_roll()
+		GenerationContext.WORLD_GEN_PEASANT: _char.age = _get_weighted_age_roll()
 		GenerationContext.SECT_MEMBER: _char.age = overrides.get("age", randi_range(16, 60))
 		_: _char.age = overrides.get("age", randi_range(18, 40))
 
@@ -169,7 +180,13 @@ func _calculate_initial_stats(_char: CharacterData) -> void:
 	for s in Definitions.Stat.values():
 		_char.base_stats[s] = base_val + randi_range(-2, 5)
 
-	# --- MARTIAL STATS (Dictated by Realm & Aptitude) ---
+	# --- MARTIAL STATS ---
+	if _char.is_martial_artist:
+		roll_martial_awakening(_char)
+		
+## A public function so non-martials can have their martial stats generated 
+## organically later in their life if an event triggers it.
+func roll_martial_awakening(_char: CharacterData) -> void:
 	var realm_tier = _char.current_realm
 	var is_withered = _char.aptitude == Definitions.Aptitude.WITHERED
 	
@@ -187,14 +204,12 @@ func _calculate_initial_stats(_char: CharacterData) -> void:
 			if is_withered:
 				_char.base_martial[ms] = randi_range(0, 10) # Blocked meridians
 			else:
-				# Example: Realm 3 = 900 base Qi. Realm 6 = 3600 base Qi.
 				_char.base_martial[ms] = (realm_tier * realm_tier * 100) + randi_range(10, 50 * maxi(1, realm_tier))
 			continue
 
 		# 3. Combat Skills (Linear scaling for Technique, Insight, Qinggong, etc.)
 		var stat_val = (realm_tier * 15) + randi_range(0, 10)
 		
-		# Apply Aptitude specialized bonuses for narrative combat flavor
 		match _char.aptitude:
 			Definitions.Aptitude.GENIUS:
 				if ms == Definitions.MartialStat.TECHNIQUE: stat_val += 20
@@ -203,7 +218,7 @@ func _calculate_initial_stats(_char: CharacterData) -> void:
 			Definitions.Aptitude.FLEXIBLE:
 				if ms == Definitions.MartialStat.QINGGONG: stat_val += 20
 			Definitions.Aptitude.HEAVEN_SENT:
-				stat_val += 20 # Flat bonus to all combat skills
+				stat_val += 20 
 				
 		_char.base_martial[ms] = maxi(0, stat_val)
 

@@ -1,4 +1,22 @@
 {
+	"sect_authority": {
+		"name": "Sect Authority",
+		"description": "Who holds the true executive power within the sect?",
+		"options": {
+			"council_rule": { 
+				"name": "Council Rule", 
+				"flags": ["requires_council"], 
+				"opinion_modifier": 20 
+			},
+			"absolute_master": { 
+				"name": "Absolute Master", 
+				"flags": ["absolute_authority"], 
+				"opinion_modifier": -30 
+			}
+		},
+		"default_option": "council_rule"
+	},
+	
 	"elder_stipends": {
 		"name": "Elder Stipends",
 		"description": "How much wealth is allocated monthly to the Sect's Elders.",
@@ -8,5 +26,27 @@
 			"lavish": { "name": "Lavish", "cost_per_elder": 80, "opinion_modifier": 40 }
 		},
 		"default_option": "standard"
-	}
+	},
+
+	"succession": {
+		"name": "Succession Law",
+		"description": "Determines who rightfully inherits the Sect when the Master falls.",
+		"options": {
+			"strongest": { 
+				"name": "The Strongest", 
+				"flags": [],
+				"opinion_modifier": 0 
+			},
+			"seniority": { 
+				"name": "Eldest Elder", 
+				"flags": ["favors_age"],
+				"opinion_modifier": 10 
+			}
+		},
+		"default_option": "strongest"
+	},
+
+
+
+
 }

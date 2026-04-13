@@ -15,6 +15,7 @@ var gender: int = 0 # 0: Male, 1: Female, 2: Neutral
 var sect_id: String = ""
 var current_realm: int = 1
 var is_alive: bool = true
+var is_martial_artist: bool = false # TRUE for Martial Artists. FALSE for peasants/servants/merchants/etc.
 var aptitude: int = 0 
 var active_modifiers: Array[Dictionary] = []
 var personal_log: Array[String] = []
@@ -24,7 +25,7 @@ enum SimTier { MICRO, MACRO, FROZEN }
 var current_sim_tier: SimTier = SimTier.MICRO
 
 # --- AI ROLES & DIRECTIVES ---
-var ai_tags: Array[String] = ["general", "martial_artist"] # Default tags for baseline behavior
+var ai_tags: Array[String] = ["general"] # Default tags for baseline behavior
 var current_directive: Directive = null
 
 # --- DYNAMIC STATE VARIABLES ---
@@ -54,7 +55,8 @@ var needs: Dictionary = {
 	"spirituality": 0.0,
 	"entertainment": 0.0,
 	"studying": 0.0,
-	"villainy": 0.0      # Tied to Ruthlessness/Low Morality
+	"villainy": 0.0,      # Tied to Ruthlessness/Low Morality
+	"work": 0.0
 }
 
 var action_cooldowns: Dictionary = {}
@@ -93,18 +95,16 @@ func _setup_empty_stats():
 	for s in Definitions.Stat.values():
 		base_stats[s] = 0
 		current_stats[s] = 0
-	for s in Definitions.MartialStat.values():
-		base_martial[s] = 0
-		current_martial[s] = 0
+		
+		# We initialize the character's stats and leave martial stats after deciding if 
+		# character is a martial artist or not
+		
 	for p_name in Definitions.PERSONALITY_STATS:
 		personality_values[p_name] = 50
 		current_personality[p_name] = 50
 	for a_name in Definitions.ALIGNMENT_STATS:
 		alignment_values[a_name] = 50
 		current_alignment[a_name] = 50
-	for w in Definitions.WeaponType.values():
-		weapon_proficiencies[w] = 0.0
-		current_weapon_affinities[w] = 1.0 # 1.0 is the baseline 100% learning speed
 
 ## Adds a log entry with the current date, maintaining a maximum size to save memory.
 func add_log(message: String) -> void:
@@ -130,6 +130,26 @@ func get_alignment_value(a_name: String) -> int:
 func get_full_name() -> String:
 	return last_name + " " + first_name
 
+## Called when a non-martial formally enters the martial world.
+func awaken_martial_artist() -> void:
+	if is_martial_artist: return
+	
+	is_martial_artist = true
+	if not ai_tags.has("martial_artist"):
+		ai_tags.append("martial_artist")
+		
+	# Populate the dictionaries properly
+	for s in Definitions.MartialStat.values():
+		base_martial[s] = 0
+		current_martial[s] = 0
+	for w in Definitions.WeaponType.values():
+		weapon_proficiencies[w] = 0.0
+		current_weapon_affinities[w] = 1.0
+		
+	# Call out to the Generator to roll their innate initial stats based on aptitude
+	CharacterGenerator.roll_martial_awakening(self)
+	recalculate_all_stats()
+
 # --- CACHE MANAGEMENT ---
 
 ## Called once after bulk operations (generation or loading) 
@@ -146,9 +166,11 @@ func recalculate_all_stats() -> void:
 		current_stats[s] = clampi(total, 0, Definitions.STAT_CAP)
 		
 	# 2. Recalculate Martial Stats (Previously Cultivation)
-	for s in Definitions.MartialStat.values():
-		var total = base_martial[s] + DataManager.get_total_martial_modifiers(traits, active_modifier_ids, s)
-		current_martial[s] = maxi(total, 0)
+	# Only calculate this for actual martial artists to respect our memory optimization
+	if is_martial_artist:
+		for s in Definitions.MartialStat.values():
+			var total = base_martial[s] + DataManager.get_total_martial_modifiers(traits, active_modifier_ids, s)
+			current_martial[s] = maxi(total, 0)
 		
 	# 3. Recalculate Personality
 	for p_name in Definitions.PERSONALITY_STATS:
@@ -161,9 +183,8 @@ func recalculate_all_stats() -> void:
 		current_alignment[a_name] = clampi(total, 0, 100)
 	
 	# 5. Recalculate Weapon Affinities
-	# Reset affinities to baseline before recalculating
-	# Apply equipped weapon stat and martial modifiers
-	if equipped_weapon_id != "" and DataManager.weapons_registry.has(equipped_weapon_id):
+	# Gate this behind the martial artist check so we don't try to inject stats into null dictionaries
+	if is_martial_artist and equipped_weapon_id != "" and DataManager.weapons_registry.has(equipped_weapon_id):
 		var weapon_data = DataManager.weapons_registry[equipped_weapon_id]
 		
 		# O(1) integer iteration. No strings!
@@ -317,10 +338,13 @@ func _apply_daily_decay(custom_modifiers: Dictionary = {}) -> void:
 	var base_soc_rate = custom_modifiers.get("socialization_rate", 1.5)
 	needs["socialization"] = minf(100.0, needs.get("socialization", 0.0) + base_soc_rate)
 	
+	var greed = get_personality_value("greed")
+	var base_work_rate = custom_modifiers.get("work_rate", 5.0 + (greed / 100.0 * 5.0))
+	needs["work"] = minf(100.0, needs.get("work", 0.0) + base_work_rate)
+	
 	# Stress is special; it doesn't passively rise normally, but a Directive can force it to.
 	if custom_modifiers.has("stress_rate"):
 		state_vars["stress"] = minf(100.0, state_vars.get("stress", 0.0) + custom_modifiers["stress_rate"])
-
 
 ## Derives the master 'Mood' variable from all other state variables and unmet needs.
 ## 0-20 = Breakdown risk | 21-40 = Unhappy | 41-60 = Content | 61-80 = Happy | 81-100 = Euphoric
@@ -379,6 +403,18 @@ func has_memory_matching(memory_id: String, key: String, value: Variant) -> bool
 			return true
 	return false
 
+# --- MORTALITY ---
+
+## Centralized death function. Halts AI, logs death, and alerts the Simulation.
+func die(cause: String = "natural causes") -> void:
+	if not is_alive: return
+	
+	is_alive = false
+	transition_to_frozen()
+	add_log("Died from " + cause + ".")
+	
+	# Alert the global simulation so Sects or Relatives can react
+	SimulationManager.handle_character_death(self)
 
 #region Serialization
 # --- SERIALIZATION (For Saving/Loading) ---
@@ -394,6 +430,7 @@ func to_dictionary() -> Dictionary:
 		"sect_id": sect_id,
 		"current_realm": current_realm,
 		"is_alive": is_alive,
+		"is_martial_artist": is_martial_artist,
 		"base_stats": base_stats,
 		"base_martial": base_martial,
 		"personality_values": personality_values,
@@ -436,6 +473,7 @@ func from_dictionary(data: Dictionary) -> void:
 	sect_id = data.get("sect_id", "")
 	current_realm = data.get("current_realm", 1)
 	is_alive = data.get("is_alive", true)
+	is_martial_artist = data.get("is_martial_artist", false)
 	aptitude = data.get("aptitude", 0) 
 	equipped_weapon_id = data.get("equipped_weapon_id", "")
 	

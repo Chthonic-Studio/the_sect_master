@@ -76,8 +76,8 @@ func trigger_event(event_id: String, context: Dictionary) -> void:
 	if event_data.get("world_log_category", "") != "":
 		WorldLogManager.add_log(event_data["world_log_category"], _format_string(event_data.get("description", ""), context))
 	
-	# For now, if it's the player's sect, show UI
-	var is_player = (initiator.sect_id == "sect_1") 
+	# Dynamic check against the true player entity
+	var is_player = GameManager.is_player(initiator.char_id)
 	
 	if is_player and event_data.has("options"):
 		player_event_triggered.emit(event_id, context)
