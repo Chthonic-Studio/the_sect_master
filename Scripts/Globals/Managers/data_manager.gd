@@ -139,7 +139,7 @@ func _load_weapon_data(path: String) -> void:
 
 func get_total_stat_modifiers(trait_ids: Array[String], modifier_ids: Array[String], stat_enum: int) -> int:
 	var total = 0
-	var stat_name = Definitions.Stat.keys()[stat_enum].to_lower()
+	var stat_name = Definitions.STAT_NAMES[stat_enum] # O(1), no allocations
 	
 	for tid in trait_ids:
 		if traits_registry.has(tid):

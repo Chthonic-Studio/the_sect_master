@@ -16,6 +16,11 @@ var _is_processing_day: bool = false
 var _pending_day_batches: Array[Dictionary] = []
 const MAX_CHARACTERS_PER_FRAME: int = 200
 
+# Add a persistent array to track active simulation IDs
+var _active_char_ids: Array[String] = []
+var _process_index: int = 0
+var _current_processing_day: int = 0
+
 func _ready() -> void:
 	TimeManager.day_passed.connect(_on_day_passed)
 	TimeManager.month_passed.connect(_on_month_passed)
@@ -33,31 +38,23 @@ func _on_day_passed(_day: int) -> void:
 		"day": current_total_days,
 		"chars": character_repo.keys().duplicate()
 	})
+	
+	_current_processing_day = TimeManager.get_total_days_elapsed()
+	_process_index = 0
 
 func _process(_delta: float) -> void:
-	if _pending_day_batches.is_empty():
-		return
-	
+	if _process_index >= _active_char_ids.size():
+		return # Done for the day
+		
 	var processed_count = 0
-	
-	while processed_count < MAX_CHARACTERS_PER_FRAME and not _pending_day_batches.is_empty():
-		var batch = _pending_day_batches[0]
-		var chars: Array = batch["chars"]
-		var day_total: int = batch["day"]
+	while processed_count < MAX_CHARACTERS_PER_FRAME and _process_index < _active_char_ids.size():
+		var char_id = _active_char_ids[_process_index]
+		var character = character_repo.get(char_id)
 		
-		if chars.is_empty():
-			_pending_day_batches.remove_at(0)
-			continue
-		
-		var char_id = chars.pop_back()
-		batch["chars"] = chars
-		_pending_day_batches[0] = batch
-		
-		if character_repo.has(char_id):
-			var character = character_repo[char_id]
-			if character.is_alive:
-				character.process_daily_tick(day_total)
-		
+		if character and character.is_alive:
+			character.process_daily_tick(_current_processing_day)
+			
+		_process_index += 1
 		processed_count += 1
 
 ## Broadcasts the macro monthly tick to all active sects
@@ -73,7 +70,8 @@ func register_character(char_data: CharacterData) -> void:
 		char_data.char_id = "char_" + str(next_char_id)
 		next_char_id += 1
 	character_repo[char_data.char_id] = char_data
-
+	_active_char_ids.append(char_data.char_id) # Track it
+	
 func get_character(char_id: String) -> CharacterData:
 	return character_repo.get(char_id, null)
 #endregion
@@ -130,7 +128,9 @@ func handle_character_death(character: CharacterData) -> void:
 			var masters = sect.members_by_rank.get(Definitions.SectRank.SECT_MASTER, [])
 			if masters.has(character.char_id):
 				sect.handle_succession()
-
+	# We leave them in the repo for memory/history, but remove from daily processing loop
+	_active_char_ids.erase(character.char_id)
+	
 #endregion
 
 

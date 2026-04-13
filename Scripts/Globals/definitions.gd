@@ -10,6 +10,14 @@ enum Stat {
 	CHARISMA      # Sect loyalty, recruitment success, social influence
 }
 
+const STAT_NAMES = {
+	Stat.CONSTITUTION: "constitution",
+	Stat.STRENGTH: "strength",
+	Stat.AGILITY: "agility",
+	Stat.INTELLIGENCE: "intelligence",
+	Stat.CHARISMA: "charisma"
+}
+
 # --- MARTIAL STATS ---
 enum MartialStat {
 	INTERNAL_FORCE,  	# Neigong pool (Max Qi)
@@ -19,6 +27,16 @@ enum MartialStat {
 	INSIGHT,         	# Comprehension (Countering & Feints)
 	FEROCITY,        	# Killing intent & Crit Chance
 	DESTINY		 	# Luck, basically
+}
+
+const MARTIAL_STAT_NAMES = {
+	MartialStat.INTERNAL_FORCE: "internal_force",
+	MartialStat.QI_FLOW: "qi_flow",
+	MartialStat.QINGGONG: "qinggong",
+	MartialStat.TECHNIQUE: "technique",
+	MartialStat.INSIGHT: "insight",
+	MartialStat.FEROCITY: "ferocity",
+	MartialStat.DESTINY: "destiny"
 }
 	
 # --- DAMAGE & INJURY TYPES & WEAPONS ---

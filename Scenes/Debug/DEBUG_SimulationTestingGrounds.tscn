@@ -1,9 +1,9 @@
-[gd_scene format=3 uid="uid://cx6y8v2q9n1w"]
+[gd_scene format=3 uid="uid://bwgvlja6o38gn"]
 
-[ext_resource type="Script" uid="uid://unique_sim_testing_script" path="res://Scripts/Debug/DEBUG_simulation_testing_grounds.gd" id="1_sim_test"]
+[ext_resource type="Script" uid="uid://cwldyhx3oc0dx" path="res://Scripts/Debug/DEBUG_simulation_testing_grounds.gd" id="1_sim_test"]
 [ext_resource type="PackedScene" uid="uid://6u047732u82x" path="res://Scenes/UI/event_popup.tscn" id="2_evt_pop"]
 
-[node name="DebugSimulationTesting" type="Control"]
+[node name="DebugSimulationTesting" type="Control" unique_id=756839656]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,58 +12,58 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_sim_test")
 
-[node name="TimePanel" type="PanelContainer" parent="."]
+[node name="TimePanel" type="PanelContainer" parent="." unique_id=1294114506]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 20.0
 offset_right = 260.0
 offset_bottom = 90.0
 
-[node name="VBox" type="VBoxContainer" parent="TimePanel"]
+[node name="VBox" type="VBoxContainer" parent="TimePanel" unique_id=1031766928]
 layout_mode = 2
 
-[node name="WorldTime" type="Label" parent="TimePanel/VBox"]
+[node name="WorldTime" type="Label" parent="TimePanel/VBox" unique_id=2136163902]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Year 740, Month 1, Day 1"
 horizontal_alignment = 1
 
-[node name="HBox" type="HBoxContainer" parent="TimePanel/VBox"]
+[node name="HBox" type="HBoxContainer" parent="TimePanel/VBox" unique_id=1665709752]
 layout_mode = 2
 alignment = 1
 
-[node name="BtnPause" type="Button" parent="TimePanel/VBox/HBox"]
+[node name="BtnPause" type="Button" parent="TimePanel/VBox/HBox" unique_id=1255845097]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "||"
 
-[node name="BtnNormal" type="Button" parent="TimePanel/VBox/HBox"]
+[node name="BtnNormal" type="Button" parent="TimePanel/VBox/HBox" unique_id=1658374693]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "x1"
 
-[node name="BtnFast" type="Button" parent="TimePanel/VBox/HBox"]
+[node name="BtnFast" type="Button" parent="TimePanel/VBox/HBox" unique_id=1029378213]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "x2"
 
-[node name="BtnSuperFast" type="Button" parent="TimePanel/VBox/HBox"]
+[node name="BtnSuperFast" type="Button" parent="TimePanel/VBox/HBox" unique_id=1003760052]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "x3"
 
-[node name="DemographicsPanel" type="PanelContainer" parent="."]
+[node name="DemographicsPanel" type="PanelContainer" parent="." unique_id=2118766348]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 110.0
 offset_right = 260.0
 offset_bottom = 210.0
 
-[node name="DemographicsLabel" type="Label" parent="DemographicsPanel"]
+[node name="DemographicsLabel" type="Label" parent="DemographicsPanel" unique_id=334777979]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Total Population: 0
@@ -71,33 +71,33 @@ Martial Artists: 0
 Non-Martials: 0
 Target Cap: 0"
 
-[node name="ControlsPanel" type="PanelContainer" parent="."]
+[node name="ControlsPanel" type="PanelContainer" parent="." unique_id=1150289350]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 230.0
 offset_right = 260.0
 offset_bottom = 400.0
 
-[node name="VBox" type="VBoxContainer" parent="ControlsPanel"]
+[node name="VBox" type="VBoxContainer" parent="ControlsPanel" unique_id=682809763]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="BtnGenerateWorld" type="Button" parent="ControlsPanel/VBox"]
+[node name="BtnGenerateWorld" type="Button" parent="ControlsPanel/VBox" unique_id=1545507311]
 unique_name_in_owner = true
 layout_mode = 2
 text = "1. Generate World"
 
-[node name="BtnTriggerSuccession" type="Button" parent="ControlsPanel/VBox"]
+[node name="BtnTriggerSuccession" type="Button" parent="ControlsPanel/VBox" unique_id=429143851]
 unique_name_in_owner = true
 layout_mode = 2
 text = "2. Kill Player (Test Succession)"
 
-[node name="BtnTriggerPlayerEvent" type="Button" parent="ControlsPanel/VBox"]
+[node name="BtnTriggerPlayerEvent" type="Button" parent="ControlsPanel/VBox" unique_id=2065646347]
 unique_name_in_owner = true
 layout_mode = 2
 text = "3. Force Player Event"
 
-[node name="LogPanel" type="PanelContainer" parent="."]
+[node name="LogPanel" type="PanelContainer" parent="." unique_id=1129644019]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -110,28 +110,28 @@ offset_bottom = -20.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="VBox" type="VBoxContainer" parent="LogPanel"]
+[node name="VBox" type="VBoxContainer" parent="LogPanel" unique_id=572321004]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="LogPanel/VBox"]
+[node name="Label" type="Label" parent="LogPanel/VBox" unique_id=1327664800]
 layout_mode = 2
 text = "World Event Log"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="LogPanel/VBox"]
+[node name="HSeparator" type="HSeparator" parent="LogPanel/VBox" unique_id=1799720089]
 layout_mode = 2
 
-[node name="Scroll" type="ScrollContainer" parent="LogPanel/VBox"]
+[node name="Scroll" type="ScrollContainer" parent="LogPanel/VBox" unique_id=2139035621]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="LogsContainer" type="VBoxContainer" parent="LogPanel/VBox/Scroll"]
+[node name="LogsContainer" type="VBoxContainer" parent="LogPanel/VBox/Scroll" unique_id=154862402]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="EventPopup" parent="." instance=ExtResource("2_evt_pop")]
+[node name="EventPopup" parent="." unique_id=1730637584 instance=ExtResource("2_evt_pop")]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -143,3 +143,5 @@ offset_left = -237.5
 offset_top = -225.0
 offset_right = 237.5
 offset_bottom = 225.0
+grow_horizontal = 2
+grow_vertical = 2
