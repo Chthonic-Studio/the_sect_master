@@ -328,13 +328,15 @@ func propose_action(action_type: String, payload: Dictionary) -> void:
 		return
 		
 	# Otherwise, we must consult the Elders
-	var elders = members_by_rank.get(Definitions.SectRank.ELDER, [])
-	
+	var elders: Array[String] = []
+	if members_by_rank.has(Definitions.SectRank.ELDER):
+		elders.assign(members_by_rank[Definitions.SectRank.ELDER])
+
 	# If there are no elders, the master naturally has absolute authority by default
 	if elders.is_empty():
 		_execute_proposal_action(action_type, payload)
 		return
-		
+
 	var proposal = SectProposal.new(action_type, payload, 7, elders)
 	proposal.proposal_resolved.connect(_on_proposal_resolved)
 	active_proposals.append(proposal)

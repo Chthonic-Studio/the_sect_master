@@ -1,8 +1,6 @@
 [gd_scene format=3 uid="uid://orxe6dw2vjou"]
 
 [ext_resource type="Script" uid="uid://c2h0cer1tsaxn" path="res://Scripts/Debug/testing_grounds.gd" id="1_gnny0"]
-[ext_resource type="PackedScene" uid="uid://bv6jc4jsyphvo" path="res://Scenes/UI/character_dashboard.tscn" id="2_dcuqf"]
-[ext_resource type="PackedScene" uid="uid://6u047732u82x" path="res://Scenes/UI/event_popup.tscn" id="3_abtgi"]
 
 [node name="TestingGrounds" type="Control" unique_id=137360398]
 layout_mode = 3
@@ -90,15 +88,3 @@ metadata/_edit_use_anchors_ = true
 [node name="DEBUG_SendLastCharToTestDirective" type="Button" parent="DEBUG_ButtonVbox" unique_id=617426505]
 layout_mode = 2
 text = "Send Char to Directive"
-
-[node name="CharacterDashboard" parent="." unique_id=1962542295 instance=ExtResource("2_dcuqf")]
-visible = false
-layout_mode = 1
-
-[node name="EventPopup" parent="." unique_id=1239546553 instance=ExtResource("3_abtgi")]
-visible = false
-layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 475.0
-offset_bottom = 450.0
