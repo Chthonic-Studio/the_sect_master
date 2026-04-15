@@ -3,8 +3,6 @@ extends Node
 const TARGET_WORLD_POPULATION: int = 3000
 const MAX_YEARLY_RECOVERY_RATE: float = 0.05 # The world only heals 5% of its max population per year
 
-# Stores an array of days (1-360) on which a character should spawn this year.
-var _scheduled_spawns_this_year: Array[int] = []
 # Stores spawns as Dict[Day_Of_Year(int) : Spawn_Count(int)]
 var _spawns_by_day: Dictionary = {}
 
@@ -14,8 +12,13 @@ func _ready() -> void:
 
 func _on_year_passed(_year: int) -> void:
 	_spawns_by_day.clear()
-	var current_pop = SimulationManager.character_repo.size()
-	var deficit = TARGET_WORLD_POPULATION - current_pop
+	# Only count living characters toward population deficit
+	var living_count = 0
+	for char_id in SimulationManager.character_repo:
+		var c = SimulationManager.character_repo[char_id]
+		if c.is_alive:
+			living_count += 1
+	var deficit = TARGET_WORLD_POPULATION - living_count
 	
 	if deficit <= 0:
 		return

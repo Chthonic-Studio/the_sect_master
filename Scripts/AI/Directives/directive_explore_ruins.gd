@@ -16,13 +16,13 @@ func _init(duration: int = 5, custom_mods: Dictionary = {}) -> void:
 	super(duration, applied_mods)
 	id = "directive_explore_ruins"
 
-func process_tick(_character: CharacterData) -> void:
+func process_tick(character: CharacterData) -> void:
 	# Note: Baseline need decay is handled automatically by CharacterData._apply_daily_decay()
 	# This function is strictly for custom, unique events that happen during the mission.
 	
 	# Example: 10% chance every day they trigger a trap, adding instant burst stress.
 	if randf() < 0.10:
-		_character.state_vars["stress"] = minf(100.0, _character.state_vars.get("stress", 0.0) + 15.0)
+		character.state_vars["stress"] = minf(100.0, character.state_vars.get("stress", 0.0) + 15.0)
 
 func on_complete(character: CharacterData) -> void:
 	# The mission is over. Grant the character their rewards!
