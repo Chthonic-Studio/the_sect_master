@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://d1te7vdf5ih70" path="res://Scripts/UI/CharacterUI/char_combat_panel.gd" id="4_5ouhn"]
 [ext_resource type="Script" uid="uid://brkoe6cnlo8m5" path="res://Scripts/UI/CharacterUI/char_needs_panel.gd" id="5_cc7e1"]
 [ext_resource type="Script" uid="uid://c4honsjohrbsd" path="res://Scripts/UI/CharacterUI/char_log_panel.gd" id="6_gujej"]
+[ext_resource type="Script" uid="uid://bq2b5kj7fg5hu" path="res://Scripts/UI/CharacterUI/char_relationships_panel.gd" id="6_p5ak3"]
 [ext_resource type="Script" uid="uid://ddpkhvqqbjpew" path="res://Scripts/UI/CharacterUI/char_debug_panel.gd" id="7_1hdl1"]
 [ext_resource type="Script" uid="uid://dr68uh556xyo2" path="res://Scripts/UI/CharacterUI/char_action_panel.gd" id="7_cpjx1"]
 
@@ -125,6 +126,7 @@ layout_mode = 2
 [node name="Relationships" type="MarginContainer" parent="Background/MainLayout/TabContainer" unique_id=2070346086]
 visible = false
 layout_mode = 2
+script = ExtResource("6_p5ak3")
 metadata/_tab_index = 3
 
 [node name="Placeholder" type="Label" parent="Background/MainLayout/TabContainer/Relationships" unique_id=2141851946]
