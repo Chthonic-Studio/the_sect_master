@@ -5,7 +5,10 @@
 		"type": "personality",
 		"description": "Upholds justice and orthodox values above all else.",
 		"personality_modifiers": { "honor": 30, "morality": 40, "ruthlessness": -20 },
-		"conflicts": ["scheming", "cruel", "hedonist", "vengeful"]
+		"conflicts": ["scheming", "cruel", "hedonist", "vengeful"],
+		"same_trait_opinion": 15,
+		"opposite_trait_opinion": -20,
+		"specific_trait_opinions": { "altruistic": 10 }
 	},
 	{
 		"id": "scheming",
@@ -13,7 +16,10 @@
 		"type": "personality",
 		"description": "Always looking for an angle. Trust is a vulnerability.",
 		"personality_modifiers": { "cunning": 30, "honor": -20, "ambition": 15 },
-		"conflicts": ["righteous", "altruistic", "stoic", "impulsive"]
+		"conflicts": ["righteous", "altruistic", "stoic", "impulsive"],
+		"same_trait_opinion": -10, 
+		"opposite_trait_opinion": -15,
+		"specific_trait_opinions": { "arrogant": -5 }
 	},
 	{
 		"id": "fierce",

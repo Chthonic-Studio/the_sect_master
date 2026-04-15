@@ -33,6 +33,8 @@ SectGenerator="*uid://dpfaeta0v5dv"
 WorldLogManager="*uid://cllqrvj7o51v8"
 EventManager="*uid://g8y5smn6181j"
 WorldManager="*uid://d4j1cuykbmucu"
+OpinionManager="*uid://bojmvlk1dx0ce"
+InteractionManager="*uid://cxdqsajvc7k3d"
 
 [display]
 

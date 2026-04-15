@@ -27,12 +27,16 @@ func _spawn_roster_item(character: CharacterData) -> void:
 	var item = roster_item_scene.instantiate()
 	%RosterGrid.add_child(item)
 	
-	# Assuming your roster_item.tscn has labels named Name, Realm, CurrentPosition
 	var name_label = item.get_node("HBoxContainer/Name")
 	var realm_label = item.get_node("HBoxContainer/Realm")
 	
 	name_label.text = character.get_full_name()
-	
-	# Convert Enum to String representation
-	var realm_string = Definitions.MartialRealm.keys()[character.current_realm].capitalize()
-	realm_label.text = realm_string
+	realm_label.text = Definitions.MartialRealm.keys()[character.current_realm].capitalize()
+
+	# Make the item clickable to open the character dashboard
+	item.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	item.gui_input.connect(func(event: InputEvent):
+		# We check for a Left Click release to trigger the panel
+		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+			UIManager.open_panel("character_dashboard", character)
+	)

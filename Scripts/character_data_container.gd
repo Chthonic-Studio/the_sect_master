@@ -38,6 +38,8 @@ var state_vars: Dictionary = {
 	"fatigue": 0.0,      # Rises while awake/working, lowered by sleep
 	"mood": 50.0         # The master variable, influenced by all the above
 }
+
+var directed_opinions: Dictionary = {} # Format: { "target_char_id": [ { "id": "insulted", "value": -20, "expiration_day": 850 } ] }
 var equipped_weapon_id: String = ""
 var weapon_proficiencies: Dictionary = {} # Tracks skill level per weapon type enum (e.g. { Definitions.WeaponType.SWORD : 45.0 })
 
@@ -317,6 +319,26 @@ func add_temporary_modifier(modifier_id: String, duration_days: int) -> void:
 	})
 	recalculate_all_stats()
 
+## Adds a temporal opinion modifier directed at another specific character.
+func add_directed_opinion(target_id: String, opinion_id: String, value: int, duration_days: int) -> void:
+	if not directed_opinions.has(target_id):
+		directed_opinions[target_id] = []
+		
+	var expiration = TimeManager.get_total_days_elapsed() + duration_days
+	
+	# Refresh duration if it already exists, rather than stacking infinitely
+	for mod in directed_opinions[target_id]:
+		if mod["id"] == opinion_id:
+			mod["expiration_day"] = maxi(mod["expiration_day"], expiration)
+			return
+			
+	directed_opinions[target_id].append({
+		"id": opinion_id,
+		"value": value,
+		"expiration_day": expiration
+	})
+
+
 ## Called by DataManager's daily tick
 func process_daily_tick(current_total_days: int) -> void:
 	# If frozen (dead, deep secluded meditation), completely skip the loop
@@ -338,6 +360,20 @@ func process_daily_tick(current_total_days: int) -> void:
 			recalculate_all_stats()
 			for mod_id in expired_ids:
 				modifier_expired.emit(self, mod_id)
+				
+	# 1.5. Process Directed Opinions Expiration
+	if not directed_opinions.is_empty():
+		var empty_targets: Array[String] = []
+		for target_id in directed_opinions:
+			var ops: Array = directed_opinions[target_id]
+			for i in range(ops.size() - 1, -1, -1):
+				if ops[i]["expiration_day"] <= current_total_days:
+					ops.remove_at(i)
+			if ops.is_empty():
+				empty_targets.append(target_id)
+				
+		for t_id in empty_targets:
+			directed_opinions.erase(t_id)
 	
 	# 2. AI & Overrides
 	if current_directive != null:
@@ -496,6 +532,7 @@ func to_dictionary() -> Dictionary:
 		"active_modifiers": active_modifiers,
 		"personal_log": personal_log,
 		"wealth": wealth,
+		"directed_opinions": directed_opinions,
 		
 		# AI Values
 		"needs": needs,
@@ -534,6 +571,9 @@ func from_dictionary(data: Dictionary) -> void:
 	equipped_weapon_id = data.get("equipped_weapon_id", "")
 	
 	current_sim_tier = data.get("current_sim_tier", SimTier.MICRO)
+	
+	if data.has("directed_opinions"):
+		directed_opinions.merge(data["directed_opinions"], true)
 	
 	if data.has("ai_tags"):
 		ai_tags.assign(data["ai_tags"])

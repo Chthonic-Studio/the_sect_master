@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://brkoe6cnlo8m5" path="res://Scripts/UI/CharacterUI/char_needs_panel.gd" id="5_cc7e1"]
 [ext_resource type="Script" uid="uid://c4honsjohrbsd" path="res://Scripts/UI/CharacterUI/char_log_panel.gd" id="6_gujej"]
 [ext_resource type="Script" uid="uid://ddpkhvqqbjpew" path="res://Scripts/UI/CharacterUI/char_debug_panel.gd" id="7_1hdl1"]
+[ext_resource type="Script" uid="uid://dr68uh556xyo2" path="res://Scripts/UI/CharacterUI/char_action_panel.gd" id="7_cpjx1"]
 
 [node name="CharacterDashboard" type="Control" unique_id=1962542295 node_paths=PackedStringArray("tab_container", "close_btn", "name_label", "sect_label", "realm_label")]
 custom_minimum_size = Vector2(730, 300)
@@ -146,6 +147,7 @@ layout_mode = 2
 [node name="Actions" type="MarginContainer" parent="Background/MainLayout/TabContainer" unique_id=848433856]
 visible = false
 layout_mode = 2
+script = ExtResource("7_cpjx1")
 metadata/_tab_index = 5
 
 [node name="Placeholder" type="Label" parent="Background/MainLayout/TabContainer/Actions" unique_id=1476658253]

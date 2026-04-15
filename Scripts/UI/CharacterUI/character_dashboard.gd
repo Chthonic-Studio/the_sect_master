@@ -77,23 +77,17 @@ func _on_tab_changed(_tab_index: int) -> void:
 
 # --- FOG OF WAR LOGIC ---
 
-## Granular visibility checker. 
-## Future Expansion: This will check the Player Sect's intelligence network 
-## vs the target character's stealth/sect affiliation.
 func is_data_visible(category: String) -> bool:
-	# If it's a member of the player's sect, we know everything.
-	# (Assuming 'sect_1' is the player's sect for now, you can adjust this later)
-	if active_character.sect_id == "sect_1": 
+	if active_character.sect_id == GameManager.player_sect_id and GameManager.player_sect_id != "": 
 		return true
 		
-	# Placeholder for future intelligence network logic
 	match category:
 		"base_stats": return true
-		"martial_stats": return true # Maybe false for high-level hidden masters?
-		"needs": return true         # Maybe false for strangers?
+		"martial_stats": return true
+		"needs": return true
 		"traits": return true
 		"realm": return true
-		"log": return false          # We shouldn't know a stranger's private log!
+		"log": return true # DEBUG: Set to true for prototype testing so we can see other people's logs!
 		_: return true
 
 func _on_day_passed(_day: int) -> void:
