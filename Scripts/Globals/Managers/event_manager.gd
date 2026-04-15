@@ -72,6 +72,13 @@ func trigger_event(event_id: String, context: Dictionary) -> void:
 	
 	if not initiator: return
 	
+	# Auto-resolve a target if the event requires one but the context doesn't provide one
+	if not context.has("target") and _event_requires_target(event_data):
+		var target_id = _find_valid_target(initiator)
+		if target_id == "":
+			return # No valid target found, abort the event
+		context["target"] = target_id
+	
 	# Auto-logging if event is marked significant
 	if event_data.get("world_log_category", "") != "":
 		WorldLogManager.add_log(event_data["world_log_category"], _format_string(event_data.get("description", ""), context))
@@ -160,15 +167,13 @@ func _execute_effects(effects: Array, context: Dictionary) -> void:
 
 func _process_delayed_events(_day: int) -> void:
 	var current_day = TimeManager.get_total_days_elapsed()
-	var to_remove = []
 	
+	# Iterate in reverse and remove in-place. Since we already iterate back-to-front,
+	# we can safely remove_at(i) immediately without corrupting earlier indices.
 	for i in range(_delayed_events.size() - 1, -1, -1):
 		if _delayed_events[i]["trigger_day"] <= current_day:
 			trigger_event(_delayed_events[i]["event_id"], _delayed_events[i]["context"])
-			to_remove.append(i)
-			
-	for index in to_remove:
-		_delayed_events.remove_at(index)
+			_delayed_events.remove_at(i)
 
 # --- CONDITIONS & UTILS ---
 
@@ -238,3 +243,33 @@ func _format_string(text: String, context: Dictionary) -> String:
 		if sect: formatted = formatted.replace("[target_sect_name]", sect.sect_name)
 		
 	return formatted
+
+## Returns true if the event's description or effects reference a "target" role.
+func _event_requires_target(event_data: Dictionary) -> bool:
+	if "[target_name]" in event_data.get("description", ""):
+		return true
+	for effect in event_data.get("effects", []):
+		if effect.get("target", "") == "target":
+			return true
+	for opt_id in event_data.get("options", {}):
+		var opt = event_data["options"][opt_id]
+		for effect in opt.get("effects", []):
+			if effect.get("target", "") == "target":
+				return true
+	return false
+
+## Finds a valid living character in the same sect (or the world) to serve as an event target.
+func _find_valid_target(initiator: CharacterData) -> String:
+	# Prefer someone in the same sect for social events
+	if initiator.sect_id != "":
+		var sect = SimulationManager.get_sect(initiator.sect_id)
+		if sect:
+			var candidates = sect.all_members.duplicate()
+			candidates.shuffle()
+			for cid in candidates:
+				if cid == initiator.char_id:
+					continue
+				var c = SimulationManager.get_character(cid)
+				if c and c.is_alive:
+					return cid
+	return ""

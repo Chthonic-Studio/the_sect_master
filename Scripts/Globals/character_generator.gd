@@ -173,9 +173,10 @@ func _is_trait_valid(_char: CharacterData, trait_id: String) -> bool:
 func _calculate_initial_stats(_char: CharacterData) -> void:
 	# --- CORE STATS (Dictated by Age/Biology) ---
 	var base_val = 10
-	if _char.age < 12: base_val = Definitions.BASE_STATS_BY_AGE["child"]
-	elif _char.age > 60: base_val = Definitions.BASE_STATS_BY_AGE["elder"]
-	else: base_val = Definitions.BASE_STATS_BY_AGE["adult"]
+	if _char.age <= 12: base_val = Definitions.BASE_STATS_BY_AGE["child"]
+	elif _char.age <= 19: base_val = Definitions.BASE_STATS_BY_AGE["teen"]
+	elif _char.age <= 60: base_val = Definitions.BASE_STATS_BY_AGE["adult"]
+	else: base_val = Definitions.BASE_STATS_BY_AGE["elder"]
 	
 	for s in Definitions.Stat.values():
 		_char.base_stats[s] = base_val + randi_range(-2, 5)

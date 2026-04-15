@@ -63,7 +63,7 @@
 	"description": "The Heavens seem to favor this one.",
 	"rarity_weight": 10,
 	"martial_modifiers": { "destiny": 40 },
-	"personality_modifiers": { "karma": 30 },
+	"alignment_modifiers": { "karma": 30 },
 	"conflicts": ["cursed"]
 },
 {
@@ -93,7 +93,7 @@
 	"description": "Tribulation lightning strikes a little too close, a little too often.",
 	"rarity_weight": 5,
 	"martial_modifiers": { "destiny": -40 },
-	"personality_modifiers": { "karma": -30 },
+	"alignment_modifiers": { "karma": -30 },
 	"conflicts": ["blessed_by_fortune"]
 },
 {
@@ -122,7 +122,8 @@
 	"description": "Dabbles in Demonic arts for quicker gains. High risk, high reward.",
 	"rarity_weight": 12,
 	"martial_modifiers": { "qi_flow": 30 },
-	"personality_modifiers": { "morality": -20, "curiosity": 20 },
+	"personality_modifiers": { "curiosity": 20 },
+	"alignment_modifiers": { "morality": -20 },
 	"conflicts": ["pious", "righteous"]
 }
 ]

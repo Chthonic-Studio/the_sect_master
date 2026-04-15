@@ -26,13 +26,14 @@ func save_game(save_name: String) -> void:
 			"day": TimeManager.day,
 			"epoch_day": TimeManager.get_total_days_elapsed()
 		},
+		"player_char_id": GameManager.player_char_id,
 		"simulation": {
 			"next_char_id": SimulationManager.next_char_id,
 			"next_sect_id": SimulationManager.next_sect_id,
 			"characters": characters_dict,
 			"sects": sects_dict,
 			"sect_relationships": SimulationManager.sect_relationships,
-			"delayed_events": EventManager._delayed_events # NEW: Inject the delayed event queue
+			"delayed_events": EventManager._delayed_events
 		},
 		"world_logs": WorldLogManager.global_logs
 	}
@@ -88,14 +89,22 @@ func load_game(save_name: String) -> void:
 		var new_char = CharacterData.new()
 		new_char.from_dictionary(all_char_data[char_id])
 		SimulationManager.character_repo[char_id] = new_char
+		# Rebuild the active processing list for alive characters
+		if new_char.is_alive:
+			SimulationManager._active_char_ids.append(char_id)
 		
 	var all_sect_data = sim_data.get("sects", {})
 	for s_id in all_sect_data:
 		var new_sect = SectData.new()
 		new_sect.from_dictionary(all_sect_data[s_id])
 		SimulationManager.sect_repo[s_id] = new_sect
+	
+	# 3. Restore Player State
+	var player_id = data.get("player_char_id", "")
+	if player_id != "":
+		GameManager.set_player_character(player_id)
 		
-	# 3. Restore World Logs
+	# 4. Restore World Logs
 	WorldLogManager.clear_logs()
 	if data.has("world_logs"):
 		var logs_array: Array[Dictionary] = []

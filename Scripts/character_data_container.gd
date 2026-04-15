@@ -173,7 +173,7 @@ func recalculate_all_stats() -> void:
 	# Only calculate this for actual martial artists to respect our memory optimization
 	if is_martial_artist:
 		for s in Definitions.MartialStat.values():
-			var total = base_martial[s] + DataManager.get_total_martial_modifiers(traits, active_modifier_ids, s)
+			var total = base_martial.get(s, 0) + DataManager.get_total_martial_modifiers(traits, active_modifier_ids, s)
 			current_martial[s] = maxi(total, 0)
 		
 	# 3. Recalculate Personality
@@ -533,6 +533,7 @@ func to_dictionary() -> Dictionary:
 		"personal_log": personal_log,
 		"wealth": wealth,
 		"directed_opinions": directed_opinions,
+		"state_vars": state_vars,
 		
 		# AI Values
 		"needs": needs,
@@ -607,6 +608,8 @@ func from_dictionary(data: Dictionary) -> void:
 	
 	if data.has("needs"):
 		needs.merge(data["needs"], true)
+	if data.has("state_vars"):
+		state_vars.merge(data["state_vars"], true)
 	if data.has("action_cooldowns"):
 		action_cooldowns.merge(data["action_cooldowns"], true)
 	

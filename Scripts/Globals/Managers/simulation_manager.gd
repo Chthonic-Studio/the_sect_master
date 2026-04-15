@@ -33,13 +33,31 @@ func _on_day_passed(_day: int) -> void:
 		if sect_repo.has(s_id):
 			sect_repo[s_id].process_daily_tick(current_total_days)
 
+	# If the previous day's batch hasn't finished processing, force-complete it
+	# to prevent characters from silently missing their daily tick.
+	if _process_index < _active_char_ids.size():
+		_flush_remaining_characters()
+
 	# Snapshot all currently registered characters for THIS day only.
 	# This prevents mid-day repo mutations from corrupting the current batch iteration.
 	_active_char_ids.clear()
 	for key in character_repo.keys():
-		_active_char_ids.append(str(key))
+		var character = character_repo[key]
+		if character.is_alive:
+			_active_char_ids.append(str(key))
 	_current_processing_day = current_total_days
 	_process_index = 0
+
+## Processes all remaining characters from the previous day's batch immediately.
+func _flush_remaining_characters() -> void:
+	while _process_index < _active_char_ids.size():
+		var char_id = _active_char_ids[_process_index]
+		var character = character_repo.get(char_id)
+
+		if character and character.is_alive:
+			character.process_daily_tick(_current_processing_day)
+
+		_process_index += 1
 
 func _process(_delta: float) -> void:
 	if _process_index >= _active_char_ids.size():
@@ -123,13 +141,22 @@ func modify_sect_relationship(id_a: String, id_b: String, amount: int) -> void:
 func handle_character_death(character: CharacterData) -> void:
 	character_died.emit(character.char_id)
 
+	# Notify GameManager if the player character has died
+	if GameManager.is_player(character.char_id):
+		GameManager.trigger_player_death()
+
 	# If they belonged to a sect, we must check if succession is triggered
 	if character.sect_id != "":
 		var sect = get_sect(character.sect_id)
 		if sect:
-			# Check if the dead character was the active Sect Master
+			# Check if the dead character was the active Sect Master BEFORE removing them
 			var masters = sect.members_by_rank.get(Definitions.SectRank.SECT_MASTER, [])
-			if masters.has(character.char_id):
+			var was_master = masters.has(character.char_id)
+			
+			# Remove the dead character from the sect's membership records
+			sect.remove_member(character.char_id)
+			
+			if was_master:
 				sect.handle_succession()
 
 	# We leave them in the repo for memory/history, but remove from daily processing loop

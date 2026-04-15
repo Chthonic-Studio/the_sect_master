@@ -233,10 +233,10 @@ func _populate_sect(sect: SectData, total_members: int) -> void:
 			"sect_id": sect.sect_id, "age": randi_range(16, 35)
 		})
 		var rank = Definitions.SectRank.OUTER_DISCIPLE
-		if disciple.current_realm >= Definitions.MartialRealm.SECOND_RATE:
-			rank = Definitions.SectRank.INNER_DISCIPLE
-		elif disciple.current_realm >= Definitions.MartialRealm.FIRST_RATE:
+		if disciple.current_realm >= Definitions.MartialRealm.FIRST_RATE:
 			rank = Definitions.SectRank.CORE_DISCIPLE
+		elif disciple.current_realm >= Definitions.MartialRealm.SECOND_RATE:
+			rank = Definitions.SectRank.INNER_DISCIPLE
 		sect.add_member(disciple.char_id, rank)
 
 	sect.recalculate_sect_strength()
