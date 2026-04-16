@@ -47,4 +47,4 @@ Inspiration for grand strategy elements, procedural faction generation, technolo
 ### Rimworld (Ludeon Studios)
 Influence for autonomous character AI (Desires/Needs), individual inventories, and detailed character logs.
 
-Xianxia Literature: The foundational thematic and aesthetic inspiration for cultivation, martial arts sects, realms progression, and the pursuit of power and immortality.
+Wuxia Literature: The foundational thematic and aesthetic inspiration for politics, martial arts sects, progression, and the pursuit of power and immortality.
