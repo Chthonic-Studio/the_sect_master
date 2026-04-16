@@ -2,6 +2,7 @@ extends Control
 
 ## Handles the base entry point of the game.
 
+
 func _ready() -> void:
 	%BtnNewGame.pressed.connect(_on_new_game_pressed)
 	%BtnLoadGame.pressed.connect(_on_load_game_pressed)
