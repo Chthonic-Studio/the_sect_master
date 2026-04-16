@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://maingame123"]
+
+[ext_resource type="Script" path="res://Scripts/main_game.gd" id="1_maingame"]
+
+[node name="MainGame" type="Node2D"]
+script = ExtResource("1_maingame")
+
+[node name="MapBackground" type="Sprite2D" parent="."]
+# Placeholder for your visual map image
+centered = false
+
+[node name="MapRegions" type="Sprite2D" parent="."]
+# Placeholder for your color-coded clickable region map
+visible = false
+centered = false
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
