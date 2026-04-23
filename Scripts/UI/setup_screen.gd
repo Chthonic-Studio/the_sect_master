@@ -230,7 +230,7 @@ func _generate_game(
 	var num_average: int = 0
 	var num_major: int = 0
 	if difficulty >= 1:
-		num_average = max(1, num_rival_sects / 3)
+		num_average = max(1, int(num_rival_sects / 3))
 		num_minor = num_rival_sects - num_average
 	if difficulty >= 2:
 		num_major = 1
