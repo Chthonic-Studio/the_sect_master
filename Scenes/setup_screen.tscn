@@ -24,41 +24,386 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-custom_minimum_size = Vector2(400, 0)
+[node name="MainBox" type="VBoxContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(700, 0)
 layout_mode = 2
-theme_override_constants/separation = 15
+theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="CenterContainer/VBoxContainer"]
+[node name="Page1" type="VBoxContainer" parent="CenterContainer/MainBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "Found Your Sect"
+theme_override_constants/separation = 10
+
+[node name="P1Title" type="Label" parent="CenterContainer/MainBox/Page1"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Chapter One: The Master"
 horizontal_alignment = 1
 
-[node name="CharNameInput" type="LineEdit" parent="CenterContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="P1Desc" type="Label" parent="CenterContainer/MainBox/Page1"]
 layout_mode = 2
-placeholder_text = "Master's Last Name"
+text = "Who are you, before you build an empire?"
+horizontal_alignment = 1
 
-[node name="SectNameInput" type="LineEdit" parent="CenterContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-placeholder_text = "Sect Name"
-
-[node name="AlignmentDropdown" type="OptionButton" parent="CenterContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="HSep1" type="HSeparator" parent="CenterContainer/MainBox/Page1"]
 layout_mode = 2
 
-[node name="HSeparator" type="HSeparator" parent="CenterContainer/VBoxContainer"]
+[node name="NameRow1" type="HBoxContainer" parent="CenterContainer/MainBox/Page1"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_FirstName" type="Label" parent="CenterContainer/MainBox/Page1/NameRow1"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "First Name:"
+
+[node name="FirstNameInput" type="LineEdit" parent="CenterContainer/MainBox/Page1/NameRow1"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter given name"
+
+[node name="NameRow2" type="HBoxContainer" parent="CenterContainer/MainBox/Page1"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_LastName" type="Label" parent="CenterContainer/MainBox/Page1/NameRow2"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "Surname:"
+
+[node name="LastNameInput" type="LineEdit" parent="CenterContainer/MainBox/Page1/NameRow2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter family name"
+
+[node name="GenderRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page1"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_Gender" type="Label" parent="CenterContainer/MainBox/Page1/GenderRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "Gender:"
+
+[node name="GenderDropdown" type="OptionButton" parent="CenterContainer/MainBox/Page1/GenderRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CultureRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page1"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_Culture" type="Label" parent="CenterContainer/MainBox/Page1/CultureRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "Culture:"
+
+[node name="CultureDropdown" type="OptionButton" parent="CenterContainer/MainBox/Page1/CultureRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AptitudeRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page1"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_Aptitude" type="Label" parent="CenterContainer/MainBox/Page1/AptitudeRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "Natural Talent:"
+
+[node name="AptitudeDropdown" type="OptionButton" parent="CenterContainer/MainBox/Page1/AptitudeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HSep2" type="HSeparator" parent="CenterContainer/MainBox/Page1"]
 layout_mode = 2
 
-[node name="BtnStart" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="Label_Avatar" type="Label" parent="CenterContainer/MainBox/Page1"]
+layout_mode = 2
+text = "Portrait (select one):"
+
+[node name="AvatarGrid" type="GridContainer" parent="CenterContainer/MainBox/Page1"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+columns = 6
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+
+[node name="HSep3" type="HSeparator" parent="CenterContainer/MainBox/Page1"]
+layout_mode = 2
+
+[node name="Label_Trait" type="Label" parent="CenterContainer/MainBox/Page1"]
+layout_mode = 2
+text = "Starting Trait (choose one):"
+
+[node name="TraitContainer" type="HBoxContainer" parent="CenterContainer/MainBox/Page1"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="P1ValidationLabel" type="Label" parent="CenterContainer/MainBox/Page1"]
+unique_name_in_owner = true
+layout_mode = 2
+modulate = Color(1.0, 0.4, 0.4, 1.0)
+text = ""
+
+[node name="BtnPage1Next" type="Button" parent="CenterContainer/MainBox/Page1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Next: Found a Sect →"
+
+[node name="Page2" type="VBoxContainer" parent="CenterContainer/MainBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+visible = false
+
+[node name="P2Title" type="Label" parent="CenterContainer/MainBox/Page2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Chapter Two: The Sect"
+horizontal_alignment = 1
+
+[node name="P2Desc" type="Label" parent="CenterContainer/MainBox/Page2"]
+layout_mode = 2
+text = "Define the sect that will shake the Jianghu."
+horizontal_alignment = 1
+
+[node name="P2HSep1" type="HSeparator" parent="CenterContainer/MainBox/Page2"]
+layout_mode = 2
+
+[node name="SectNameRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page2"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_SectName" type="Label" parent="CenterContainer/MainBox/Page2/SectNameRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "Sect Name:"
+
+[node name="SectNameInput" type="LineEdit" parent="CenterContainer/MainBox/Page2/SectNameRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter sect name"
+
+[node name="AlignRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page2"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_Align" type="Label" parent="CenterContainer/MainBox/Page2/AlignRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "Alignment:"
+
+[node name="AlignmentDropdown" type="OptionButton" parent="CenterContainer/MainBox/Page2/AlignRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SectCultureRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page2"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_SectCulture" type="Label" parent="CenterContainer/MainBox/Page2/SectCultureRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "Sect Culture:"
+
+[node name="SectCultureDropdown" type="OptionButton" parent="CenterContainer/MainBox/Page2/SectCultureRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TenetRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page2"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_Tenet" type="Label" parent="CenterContainer/MainBox/Page2/TenetRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "Founding Tenet:"
+
+[node name="TenetDropdown" type="OptionButton" parent="CenterContainer/MainBox/Page2/TenetRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LawPresetRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page2"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_LawPreset" type="Label" parent="CenterContainer/MainBox/Page2/LawPresetRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "Governance Style:"
+
+[node name="LawPresetDropdown" type="OptionButton" parent="CenterContainer/MainBox/Page2/LawPresetRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TierRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page2"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_Tier" type="Label" parent="CenterContainer/MainBox/Page2/TierRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "Starting Size:"
+
+[node name="SectTierDropdown" type="OptionButton" parent="CenterContainer/MainBox/Page2/TierRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="P2ValidationLabel" type="Label" parent="CenterContainer/MainBox/Page2"]
+unique_name_in_owner = true
+layout_mode = 2
+modulate = Color(1.0, 0.4, 0.4, 1.0)
+text = ""
+
+[node name="P2NavRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page2"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BtnPage2Back" type="Button" parent="CenterContainer/MainBox/Page2/P2NavRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 48)
+layout_mode = 2
+text = "← Back"
+
+[node name="P2Spacer" type="Control" parent="CenterContainer/MainBox/Page2/P2NavRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BtnPage2Next" type="Button" parent="CenterContainer/MainBox/Page2/P2NavRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 48)
+layout_mode = 2
+text = "Next: Set the World →"
+
+[node name="Page3" type="VBoxContainer" parent="CenterContainer/MainBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+visible = false
+
+[node name="P3Title" type="Label" parent="CenterContainer/MainBox/Page3"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Chapter Three: The World"
+horizontal_alignment = 1
+
+[node name="P3Desc" type="Label" parent="CenterContainer/MainBox/Page3"]
+layout_mode = 2
+text = "Shape the era into which your sect is born."
+horizontal_alignment = 1
+
+[node name="P3HSep1" type="HSeparator" parent="CenterContainer/MainBox/Page3"]
+layout_mode = 2
+
+[node name="DiffRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page3"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_Diff" type="Label" parent="CenterContainer/MainBox/Page3/DiffRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "Difficulty:"
+
+[node name="DifficultyDropdown" type="OptionButton" parent="CenterContainer/MainBox/Page3/DiffRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PopRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page3"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_Pop" type="Label" parent="CenterContainer/MainBox/Page3/PopRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "World Population:"
+
+[node name="PopScaleDropdown" type="OptionButton" parent="CenterContainer/MainBox/Page3/PopRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NumSectsRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page3"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_NumSects" type="Label" parent="CenterContainer/MainBox/Page3/NumSectsRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "Rival Sects:"
+
+[node name="NumSectsSpinBox" type="SpinBox" parent="CenterContainer/MainBox/Page3/NumSectsRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 2.0
+max_value = 10.0
+step = 1.0
+value = 5.0
+
+[node name="YearRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page3"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_Year" type="Label" parent="CenterContainer/MainBox/Page3/YearRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "Starting Year:"
+
+[node name="StartYearSpinBox" type="SpinBox" parent="CenterContainer/MainBox/Page3/YearRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 100.0
+max_value = 9999.0
+step = 1.0
+value = 740.0
+
+[node name="P3HSep2" type="HSeparator" parent="CenterContainer/MainBox/Page3"]
+layout_mode = 2
+
+[node name="P3NavRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page3"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BtnPage3Back" type="Button" parent="CenterContainer/MainBox/Page3/P3NavRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 48)
+layout_mode = 2
+text = "← Back"
+
+[node name="P3Spacer" type="Control" parent="CenterContainer/MainBox/Page3/P3NavRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BtnStart" type="Button" parent="CenterContainer/MainBox/Page3/P3NavRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 48)
 layout_mode = 2
 text = "Enter the Jianghu"
-
-[node name="BtnBack" type="Button" parent="CenterContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Back"

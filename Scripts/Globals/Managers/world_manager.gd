@@ -1,7 +1,13 @@
 extends Node
 
-const TARGET_WORLD_POPULATION: int = 3000
 const MAX_YEARLY_RECOVERY_RATE: float = 0.05 # The world only heals 5% of its max population per year
+
+## Set by the Setup Screen World Settings. Overrides the base target population.
+var population_multiplier: int = 3000
+
+## The effective target population, used by the repopulation logic.
+var target_population: int:
+	get: return population_multiplier
 
 # Stores spawns as Dict[Day_Of_Year(int) : Spawn_Count(int)]
 var _spawns_by_day: Dictionary = {}
@@ -18,12 +24,12 @@ func _on_year_passed(_year: int) -> void:
 		var c = SimulationManager.character_repo[char_id]
 		if c.is_alive:
 			living_count += 1
-	var deficit = TARGET_WORLD_POPULATION - living_count
+	var deficit = target_population - living_count
 	
 	if deficit <= 0:
 		return
 		
-	var max_spawns = int(TARGET_WORLD_POPULATION * MAX_YEARLY_RECOVERY_RATE)
+	var max_spawns = int(target_population * MAX_YEARLY_RECOVERY_RATE)
 	var spawns_to_schedule = mini(deficit, max_spawns)
 	
 	for i in range(spawns_to_schedule):
