@@ -114,7 +114,7 @@ func load_game(save_name: String) -> void:
 	print("SaveManager: Game loaded successfully from ", save_path)
 
 ## Returns a list of save header dictionaries for the Load Game UI.
-## Each header contains: filename, player_name, date_string, epoch_day.
+## Each header contains: filename, player_name, year, month, day.
 func get_all_save_headers() -> Array[Dictionary]:
 	var headers: Array[Dictionary] = []
 	var dir = DirAccess.open(SAVE_DIR)
