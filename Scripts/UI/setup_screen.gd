@@ -138,7 +138,9 @@ func _on_trait_selected(trait_id: String, btn: Button) -> void:
 # ---- TENET REPOPULATION ----
 func _repopulate_tenets(align_index: int) -> void:
 	%TenetDropdown.clear()
-	var selected_alignment_key = Definitions.SectAlignment.keys()[ALIGNMENT_ORDER[align_index]]
+	# ALIGNMENT_ORDER contains the enum value directly, so we look up the key by value
+	var alignment_value = ALIGNMENT_ORDER[align_index]
+	var selected_alignment_key = Definitions.SectAlignment.keys()[alignment_value]
 	
 	for t_id in DataManager.tenets_registry:
 		var t_data = DataManager.tenets_registry[t_id]

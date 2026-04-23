@@ -57,8 +57,12 @@ func _apply_demographics(_char: CharacterData, context: GenerationContext, overr
 	
 	if _char.gender == Definitions.Gender.FEMALE:
 		_char.first_name = overrides.get("first_name", pools.get("female_given", []).pick_random())
-	else:
+	elif _char.gender == Definitions.Gender.MALE:
 		_char.first_name = overrides.get("first_name", pools.get("male_given", []).pick_random())
+	else:
+		# NON_BINARY / NON_HUMAN: draw from whichever pool is non-empty, or combine both
+		var combined: Array = pools.get("male_given", []) + pools.get("female_given", [])
+		_char.first_name = overrides.get("first_name", combined.pick_random() if not combined.is_empty() else "Unknown")
 		
 	_char.last_name = overrides.get("last_name", pools.get("surnames", []).pick_random())
 	

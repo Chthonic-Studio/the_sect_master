@@ -40,9 +40,9 @@ func _should_interrupt_for_urgency(character: CharacterData) -> bool:
 	if loneliness >= 95.0 and current_action != null:
 		return true
 	
-	# Hunger: if rest need is critically high
+	# High rest need: if the rest need is critically high, interrupt non-rest actions
 	var rest_need = character.needs.get("rest", 0.0)
-	if rest_need >= 95.0 and current_action != null:
+	if rest_need >= 95.0 and current_action != null and current_action.id != "action_rest":
 		return true
 	
 	return false

@@ -148,6 +148,12 @@ func get_all_save_headers() -> Array[Dictionary]:
 		file_name = dir.get_next()
 	dir.list_dir_end()
 	
-	# Sort by epoch_day descending (most recent first)
-	headers.sort_custom(func(a, b): return a.get("year", 0) > b.get("year", 0))
+	# Sort by date descending (most recent first): compare year, then month, then day
+	headers.sort_custom(func(a, b):
+		if a.get("year", 0) != b.get("year", 0):
+			return a.get("year", 0) > b.get("year", 0)
+		if a.get("month", 0) != b.get("month", 0):
+			return a.get("month", 0) > b.get("month", 0)
+		return a.get("day", 0) > b.get("day", 0)
+	)
 	return headers
