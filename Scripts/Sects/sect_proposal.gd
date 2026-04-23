@@ -52,7 +52,7 @@ func _evaluate_elder_vote(elder_id: String, sect: SectData) -> void:
 		var master = SimulationManager.get_character(master_ids[0])
 		if master:
 			var opinion_of_master = OpinionManager.get_opinion(elder, master)
-			# opinion is -100 to 100; scale it to a 0-50 bonus/penalty
+			# opinion is -100 to 100; scale it to a -25 to +25 bonus/penalty
 			support_score += opinion_of_master * 0.25
 	
 	# Specific logic based on the proposal type
