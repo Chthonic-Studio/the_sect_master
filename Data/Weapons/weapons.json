@@ -5,9 +5,9 @@
 		"weapon_type": "SWORD",
 		"damage_type": "SLASHING",
 		"base_damage": 15,
-		"stat_modifiers": {
-			"agility": 5
-		},
+		"rarity": "common",
+		"stat_modifiers": { "agility": 5 },
+		"martial_modifiers": {},
 		"strong_against": ["SPEAR", "FAN"],
 		"weak_against": ["HAMMER", "STAFF"]
 	},
@@ -17,11 +17,106 @@
 		"weapon_type": "HAMMER",
 		"damage_type": "BLUNT",
 		"base_damage": 25,
-		"stat_modifiers": {
-			"strength": 10,
-			"agility": -5
-		},
+		"rarity": "common",
+		"stat_modifiers": { "strength": 10, "agility": -5 },
+		"martial_modifiers": { "ferocity": 10 },
 		"strong_against": ["SWORD", "SABER"],
 		"weak_against": ["NEEDLE", "HIDDEN_WEAPON"]
+	},
+	"iron_staff": {
+		"name": "Iron Staff",
+		"description": "A six-foot iron staff, favored by monks and wandering fighters for its defensive versatility.",
+		"weapon_type": "STAFF",
+		"damage_type": "BLUNT",
+		"base_damage": 18,
+		"rarity": "common",
+		"stat_modifiers": { "constitution": 5 },
+		"martial_modifiers": { "technique": 5 },
+		"strong_against": ["SWORD", "HAMMER", "SABER"],
+		"weak_against": ["SPEAR"]
+	},
+	"hunting_bow": {
+		"name": "Hunting Bow",
+		"description": "A simple recurve bow for ranged combat. Less powerful than war bows but accurate in skilled hands.",
+		"weapon_type": "BOW",
+		"damage_type": "PIERCING",
+		"base_damage": 20,
+		"rarity": "common",
+		"stat_modifiers": { "perception": 8 },
+		"martial_modifiers": { "technique": 5 },
+		"strong_against": ["UNARMED", "SABER"],
+		"weak_against": ["HIDDEN_WEAPON"]
+	},
+	"poison_needle": {
+		"name": "Poison Needle",
+		"description": "A slender steel needle barely visible in flight. Favored by the Tang Clan and shadow fighters.",
+		"weapon_type": "NEEDLE",
+		"damage_type": "PIERCING",
+		"base_damage": 8,
+		"rarity": "uncommon",
+		"stat_modifiers": { "agility": 10, "intelligence": 5 },
+		"martial_modifiers": { "qi_flow": 5 },
+		"strong_against": ["HAMMER", "STAFF"],
+		"weak_against": ["BOW"]
+	},
+	"bronze_saber": {
+		"name": "Bronze Saber",
+		"description": "A single-edged blade suited for fast, aggressive slashing techniques.",
+		"weapon_type": "SABER",
+		"damage_type": "SLASHING",
+		"base_damage": 18,
+		"rarity": "common",
+		"stat_modifiers": { "agility": 8, "strength": 3 },
+		"martial_modifiers": { "ferocity": 5 },
+		"strong_against": ["STAFF", "UNARMED"],
+		"weak_against": ["SWORD", "SPEAR"]
+	},
+	"war_spear": {
+		"name": "War Spear",
+		"description": "A long-shafted spear designed for battlefield use. Keeps enemies at distance.",
+		"weapon_type": "SPEAR",
+		"damage_type": "PIERCING",
+		"base_damage": 22,
+		"rarity": "common",
+		"stat_modifiers": { "strength": 8 },
+		"martial_modifiers": { "technique": 8 },
+		"strong_against": ["SABER", "HAMMER"],
+		"weak_against": ["SWORD", "STAFF"]
+	},
+	"silk_fan": {
+		"name": "Iron-Ribbed Fan",
+		"description": "A fan whose spine is reinforced with cold iron. Concealment is its greatest virtue.",
+		"weapon_type": "FAN",
+		"damage_type": "SLASHING",
+		"base_damage": 12,
+		"rarity": "uncommon",
+		"stat_modifiers": { "intelligence": 8, "agility": 5 },
+		"martial_modifiers": { "technique": 10 },
+		"strong_against": ["NEEDLE", "HIDDEN_WEAPON"],
+		"weak_against": ["HAMMER", "SPEAR"]
+	},
+	"jade_sword": {
+		"name": "Jade Frost Sword",
+		"description": "A rare sword with a blade that faintly glows. Said to have been forged in a glacier. Conducts Qi beautifully.",
+		"weapon_type": "SWORD",
+		"damage_type": "SLASHING",
+		"base_damage": 28,
+		"rarity": "rare",
+		"stat_modifiers": { "agility": 10, "intelligence": 5 },
+		"martial_modifiers": { "qi_flow": 15, "technique": 10 },
+		"strong_against": ["SPEAR", "FAN", "SABER"],
+		"weak_against": ["HAMMER"]
+	},
+	"hidden_darts": {
+		"name": "Flying Feather Darts",
+		"description": "A set of concealed throwing darts that can be launched in rapid succession.",
+		"weapon_type": "HIDDEN_WEAPON",
+		"damage_type": "PIERCING",
+		"base_damage": 10,
+		"rarity": "uncommon",
+		"stat_modifiers": { "agility": 12, "perception": 5 },
+		"martial_modifiers": {},
+		"strong_against": ["HAMMER", "STAFF", "SWORD"],
+		"weak_against": ["BOW"]
 	}
 }

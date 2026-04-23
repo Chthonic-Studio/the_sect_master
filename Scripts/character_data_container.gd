@@ -10,6 +10,8 @@ var first_name: String = ""
 var last_name: String = ""
 var age: int = 0
 var gender: int = 0 # 0: Male, 1: Female, 2: Neutral
+var culture: int = Definitions.Culture.CENTRAL_PLAINS
+var avatar_index: int = 0 # Index into the portrait list (0-11 for placeholder grid)
 
 # --- STATE ---
 var sect_id: String = ""
@@ -519,6 +521,8 @@ func to_dictionary() -> Dictionary:
 		"last_name": last_name,
 		"age": age,
 		"gender": gender,
+		"culture": culture,
+		"avatar_index": avatar_index,
 		"sect_id": sect_id,
 		"current_realm": current_realm,
 		"is_alive": is_alive,
@@ -564,6 +568,8 @@ func from_dictionary(data: Dictionary) -> void:
 	last_name = data.get("last_name", "")
 	age = data.get("age", 0)
 	gender = data.get("gender", 0)
+	culture = data.get("culture", Definitions.Culture.CENTRAL_PLAINS)
+	avatar_index = data.get("avatar_index", 0)
 	sect_id = data.get("sect_id", "")
 	current_realm = data.get("current_realm", 1)
 	is_alive = data.get("is_alive", true)

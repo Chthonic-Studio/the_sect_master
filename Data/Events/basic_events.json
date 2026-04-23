@@ -45,5 +45,643 @@
 				]
 			}
 		}
+	},
+	"cultivation_breakthrough_attempt": {
+		"id": "cultivation_breakthrough_attempt",
+		"title": "On the Cusp of Enlightenment",
+		"pulse": "monthly_character",
+		"base_weight": 3.0,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "discipline", 70], "multiplier": 2.0 },
+			{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 2.5 },
+			{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 1.5 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "discipline", 50]
+		],
+		"description": "[initiator_name] senses their internal energy reaching a critical juncture. A breakthrough may be at hand — or a dangerous Qi Deviation.",
+		"options": {
+			"opt_push_through": {
+				"text": "Push through the barrier. Risk everything for glory.",
+				"ai_base_weight": 25.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "impulsive"], "multiplier": 3.0 },
+					{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 0.5 },
+					{ "condition": ["stat_greater_than", "initiator", "ruthlessness", 60], "add": 20.0 }
+				],
+				"effects": [
+					{ "type": "trigger_event", "event_id": "cultivation_result_risky", "delay_days": 1 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I pushed my Qi to the limit. The outcome will reveal itself soon." }
+				]
+			},
+			"opt_meditate": {
+				"text": "Retreat into seclusion. Let the breakthrough come naturally.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 2.0 },
+					{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "trigger_event", "event_id": "cultivation_result_safe", "delay_days": 7 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I entered seclusion to guide my Qi carefully." }
+				]
+			}
+		}
+	},
+	"cultivation_result_safe": {
+		"id": "cultivation_result_safe",
+		"title": "A Steady Advance",
+		"description": "[initiator_name] emerges from seclusion with a clearer mind and stronger meridians. The Dao rewards patience.",
+		"options": {
+			"acknowledge": {
+				"text": "The Dao rewards patience.",
+				"ai_base_weight": 100.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "My patient cultivation has borne fruit." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "breakthrough_safe", "payload": {} }
+				]
+			}
+		}
+	},
+	"cultivation_result_risky": {
+		"id": "cultivation_result_risky",
+		"title": "The Edge of the Abyss",
+		"description": "[initiator_name]'s gamble with their Qi bears consequences. The channels burn...",
+		"options": {
+			"opt_survive": {
+				"text": "Fight through the pain.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "discipline", 70], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "The breakthrough was agonizing, but I endured." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "breakthrough_risky", "payload": {} }
+				]
+			},
+			"opt_fail": {
+				"text": "The Qi spirals out of control.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "impulsive"], "multiplier": 1.5 },
+					{ "condition": ["has_trait", "initiator", "crippled"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_trait", "target": "initiator", "trait": "qi_deviation_survivor" },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I suffered a Qi Deviation. My foundation is damaged." }
+				]
+			}
+		}
+	},
+	"elder_teaches_technique": {
+		"id": "elder_teaches_technique",
+		"title": "The Elder's Wisdom",
+		"pulse": "monthly_character",
+		"base_weight": 4.0,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 2.5 },
+			{ "condition": ["stat_greater_than", "initiator", "sociability", 65], "multiplier": 1.5 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "sociability", 40]
+		],
+		"description": "Elder [initiator_name] watches a young disciple struggling with a difficult form and considers sharing a shortcut.",
+		"options": {
+			"opt_teach": {
+				"text": "Share the technique. The sect's strength grows through its disciples.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "add_memory", "target": "initiator", "memory_id": "taught_a_disciple", "payload": {} },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I took time to guide a struggling disciple today." },
+					{ "type": "add_world_log", "log_type": "positive", "text": "Elder [initiator_name] of [initiator_sect_name] passed down ancient wisdom." }
+				]
+			},
+			"opt_ignore": {
+				"text": "They must find their own path. Struggle forges iron.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 2.5 },
+					{ "condition": ["has_trait", "initiator", "cruel"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I watched a disciple struggle and said nothing. They must earn their knowledge." }
+				]
+			}
+		}
+	},
+	"disciple_requests_leave": {
+		"id": "disciple_requests_leave",
+		"title": "A Request to Wander",
+		"pulse": "monthly_character",
+		"base_weight": 2.5,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "curious"], "multiplier": 2.0 },
+			{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 2.5 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "curiosity", 60],
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "[initiator_name] approaches you with a formal bow. They wish to travel the Jianghu and seek advanced martial knowledge before returning.",
+		"options": {
+			"opt_grant_leave": {
+				"text": "Grant them leave. Go and return wiser.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "add_memory", "target": "initiator", "memory_id": "granted_wandering_leave", "payload": {} },
+					{ "type": "add_personal_log", "target": "initiator", "text": "The Sect Master granted my request to wander. I will not waste this chance." },
+					{ "type": "trigger_event", "event_id": "wanderer_returns", "delay_days": 90 }
+				]
+			},
+			"opt_deny_leave": {
+				"text": "Deny the request. The sect needs them here.",
+				"ai_base_weight": 40.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "My request to wander was denied. I must suppress my restlessness." }
+				]
+			}
+		}
+	},
+	"wanderer_returns": {
+		"id": "wanderer_returns",
+		"title": "The Wanderer Returns",
+		"description": "[initiator_name] has returned from their journey through the Jianghu, carrying stories of distant sects and new techniques.",
+		"requires_pause": true,
+		"options": {
+			"acknowledge": {
+				"text": "Welcome back, disciple.",
+				"ai_base_weight": 100.0,
+				"effects": [
+					{ "type": "add_trait", "target": "initiator", "trait": "perceptive" },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I have returned from my travels, changed by what I experienced." },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_name] returned to [initiator_sect_name] after months of wandering the Jianghu." }
+				]
+			}
+		}
+	},
+	"internal_duel_challenge": {
+		"id": "internal_duel_challenge",
+		"title": "A Challenge on the Training Ground",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 3.0 },
+			{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 2.0 },
+			{ "condition": ["stat_greater_than", "initiator", "ambition", 70], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "ambition", 55]
+		],
+		"description": "[initiator_name] publicly challenges a sect brother to a formal duel to prove their superiority. The training ground falls silent.",
+		"options": {
+			"opt_accept_formally": {
+				"text": "Bow and accept. Victory brings prestige.",
+				"ai_base_weight": 50.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "event", "text": "A formal duel was held within [initiator_sect_name]." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I issued a formal challenge to prove my superiority." }
+				]
+			},
+			"opt_refuse": {
+				"text": "Refuse with contempt. They are beneath notice.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I refused to dignify their challenge. They are not worthy of my blade." }
+				]
+			}
+		}
+	},
+	"wandering_master_visits": {
+		"id": "wandering_master_visits",
+		"title": "A Grand Master Passes Through",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 50], "multiplier": 2.5 }
+		],
+		"trigger_conditions": [
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A renowned wandering master of the Jianghu has arrived at your sect's gates, seeking hospitality for the night. Their bearing speaks of tremendous cultivation.",
+		"options": {
+			"opt_welcome_and_invite": {
+				"text": "Welcome them lavishly and invite them to exchange pointers.",
+				"ai_base_weight": 70.0,
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": -100 },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "hosted_wandering_master", "payload": {} },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] welcomed a renowned wandering master." },
+					{ "type": "trigger_event", "event_id": "wandering_master_departs", "delay_days": 3 }
+				]
+			},
+			"opt_turn_away": {
+				"text": "Turn them away politely. Strangers bring risks.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "scheming"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned away the wandering master. My sect's secrets must be guarded." }
+				]
+			}
+		}
+	},
+	"wandering_master_departs": {
+		"id": "wandering_master_departs",
+		"title": "Parting Words",
+		"requires_pause": true,
+		"description": "The wandering master prepares to depart. Before leaving, they offer a parting gift for your hospitality — a technique scroll or a personal blessing.",
+		"options": {
+			"opt_accept_scroll": {
+				"text": "Accept the technique scroll.",
+				"ai_base_weight": 100.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "positive", "text": "A wandering grandmaster bestowed a technique scroll upon [initiator_sect_name]." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "received_technique_scroll", "payload": {} }
+				]
+			}
+		}
+	},
+	"rival_spy_caught": {
+		"id": "rival_spy_caught",
+		"title": "A Wolf Among Sheep",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "One of your disciples has uncovered a spy within the sect, a man who had been feeding information to a rival. The traitor now kneels before you.",
+		"options": {
+			"opt_execute": {
+				"text": "Execute them publicly. Let the Jianghu know betrayal has a price.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "cruel"], "multiplier": 3.0 },
+					{ "condition": ["has_trait", "initiator", "ruthless"], "multiplier": 2.0 },
+					{ "condition": ["stat_greater_than", "initiator", "ruthlessness", 65], "add": 30.0 }
+				],
+				"effects": [
+					{ "type": "add_world_log", "log_type": "war", "text": "[initiator_sect_name] executed a captured spy from a rival sect." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "executed_spy", "payload": {} }
+				]
+			},
+			"opt_interrogate": {
+				"text": "Interrogate them for intelligence before deciding their fate.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "scheming"], "multiplier": 2.5 },
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 65], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_memory", "target": "initiator", "memory_id": "interrogated_spy", "payload": {} },
+					{ "type": "add_personal_log", "target": "initiator", "text": "We wrung useful secrets from the spy before sentencing them." }
+				]
+			},
+			"opt_exile": {
+				"text": "Cripple their meridians and cast them out. A mercy they do not deserve.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "righteous"], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I crippled the spy's meridians and banished them. Let the Jianghu see my restraint." }
+				]
+			}
+		}
+	},
+	"tribute_demand": {
+		"id": "tribute_demand",
+		"title": "A Demand from Above",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"trigger_conditions": [
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "An emissary from a hegemon sect arrives bearing demands: pay tribute of 300 silver, or face 'consequences'. Their sect's strength is undeniable.",
+		"options": {
+			"opt_pay": {
+				"text": "Pay the tribute. Live to fight another day.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": -300 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I swallowed my pride and paid tribute. The sect endures." }
+				]
+			},
+			"opt_refuse": {
+				"text": "Refuse. The sect will not bow.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "righteous"], "multiplier": 2.0 },
+					{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] refused to pay tribute, defying the hegemons." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I refused the tribute demand. We will face whatever comes." }
+				]
+			}
+		}
+	},
+	"resource_windfall": {
+		"id": "resource_windfall",
+		"title": "An Unexpected Discovery",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "blessed_by_fortune"], "multiplier": 3.0 },
+			{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 1.5 }
+		],
+		"trigger_conditions": [
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "While expanding the sect's training grounds, your disciples unearthed a cache of long-buried spiritual herbs — a windfall from a forgotten age.",
+		"options": {
+			"opt_distribute": {
+				"text": "Distribute the herbs among the disciples equally.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": 150 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] discovered a cache of spiritual herbs and shared them with all disciples." }
+				]
+			},
+			"opt_keep": {
+				"text": "Secure the herbs in the sect vault for strategic use.",
+				"ai_base_weight": 40.0,
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": 300 }
+				]
+			}
+		}
+	},
+	"elder_challenges_authority": {
+		"id": "elder_challenges_authority",
+		"title": "The Elder Speaks Out",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 2.5 },
+			{ "condition": ["stat_greater_than", "initiator", "ambition", 70], "multiplier": 2.0 },
+			{ "condition": ["stat_greater_than", "initiator", "loyalty", 60], "multiplier": 0.3 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "ambition", 60],
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "Elder [initiator_name] has been openly criticizing your recent decisions in front of the disciples. The atmosphere in the sect is tense.",
+		"options": {
+			"opt_confront": {
+				"text": "Confront them openly. Authority must be absolute.",
+				"ai_base_weight": 40.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "politics", "text": "Tension between the Sect Master and an Elder erupted in [initiator_sect_name]." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "The Sect Master confronted me directly. My position is precarious." }
+				]
+			},
+			"opt_discuss_privately": {
+				"text": "Request a private audience. Let them air their grievances.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "sociability", 60], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_memory", "target": "initiator", "memory_id": "heard_out_elder", "payload": {} },
+					{ "type": "add_personal_log", "target": "initiator", "text": "The Sect Master listened to my concerns. A rare show of respect." }
+				]
+			},
+			"opt_demote": {
+				"text": "Demote them publicly. An example must be set.",
+				"ai_base_weight": 20.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "ruthless"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_world_log", "log_type": "politics", "text": "An Elder was publicly demoted in [initiator_sect_name]." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I was publicly demoted for daring to speak my mind. Humiliation burns." }
+				]
+			}
+		}
+	},
+	"personal_existential_doubt": {
+		"id": "personal_existential_doubt",
+		"title": "The Void Between Breaths",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "stress", 60], "multiplier": 3.0 },
+			{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 1.5 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "stress", 50]
+		],
+		"description": "[initiator_name] finds themselves unable to enter meditation. For three days they have sat unmoving, confronting an emptiness they cannot name.",
+		"options": {
+			"opt_seek_master": {
+				"text": "Seek guidance from a senior cultivator.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "loyalty", 60], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sought a senior's guidance through my spiritual crisis." }
+				]
+			},
+			"opt_endure": {
+				"text": "Endure alone. The Dao tests those it favors.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 2.0 },
+					{ "condition": ["has_trait", "initiator", "stoic"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sat with the emptiness alone until it passed. The Dao tests those it favors." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "survived_doubt_alone", "payload": {} }
+				]
+			}
+		}
+	},
+	"new_year_banquet": {
+		"id": "new_year_banquet",
+		"title": "The New Year Banquet",
+		"pulse": "monthly_character",
+		"base_weight": 8.0,
+		"trigger_conditions": [
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "The New Year approaches. Tradition demands the sect hold a grand banquet. Disciples look forward to this with great anticipation.",
+		"options": {
+			"opt_lavish": {
+				"text": "Hold a grand banquet. Spare no expense.",
+				"ai_base_weight": 50.0,
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": -200 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] celebrated the New Year with a magnificent banquet. Morale soars." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "new_year_banquet_lavish", "payload": {} }
+				]
+			},
+			"opt_modest": {
+				"text": "A modest but sincere gathering.",
+				"ai_base_weight": 70.0,
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": -50 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] marked the New Year with a simple but heartfelt gathering." }
+				]
+			},
+			"opt_skip": {
+				"text": "Skip the festivities. Resources are scarce.",
+				"ai_base_weight": 15.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I cancelled the New Year banquet. The disciples are unhappy." }
+				]
+			}
+		}
+	},
+	"tournament_invitation": {
+		"id": "tournament_invitation",
+		"title": "An Invitation to the Grand Tournament",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 40], "multiplier": 2.5 }
+		],
+		"trigger_conditions": [
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A sealed invitation arrives from a well-known regional sect, announcing the Great Martial Tournament of the Jianghu. First place commands legendary reputation.",
+		"options": {
+			"opt_enter": {
+				"text": "Enter our best disciples. The Jianghu must know our strength.",
+				"ai_base_weight": 70.0,
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": -100 },
+					{ "type": "add_world_log", "log_type": "event", "text": "[initiator_sect_name] announced their participation in the Grand Tournament." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "entered_tournament", "payload": {} }
+				]
+			},
+			"opt_decline": {
+				"text": "Decline. We are not yet ready to show our hand.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I declined the tournament invitation. We will be ready when the time is right." }
+				]
+			}
+		}
+	},
+	"disciple_defects": {
+		"id": "disciple_defects",
+		"title": "Betrayal in the Night",
+		"pulse": "monthly_character",
+		"base_weight": 1.0,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "loyalty", 70], "multiplier": 0.1 },
+			{ "condition": ["stat_greater_than", "initiator", "ambition", 75], "multiplier": 3.0 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "ambition", 65],
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "[initiator_name] has vanished in the night, taking stolen technique manuals with them. Rumor says they have joined a rival sect.",
+		"options": {
+			"opt_hunt_them": {
+				"text": "Send pursuers. Theft cannot stand.",
+				"ai_base_weight": 50.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "politics", "text": "A disciple defected from [initiator_sect_name], taking stolen scrolls." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "defection_occurred", "payload": {} }
+				]
+			},
+			"opt_let_go": {
+				"text": "Let them go. Good riddance to faithless disciples.",
+				"ai_base_weight": 50.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I let the traitor flee. Chasing them would cost more than they are worth." }
+				]
+			}
+		}
+	},
+	"stress_mental_strain": {
+		"id": "stress_mental_strain",
+		"title": "The Weight of Command",
+		"pulse": "monthly_character",
+		"base_weight": 2.5,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "stress", 75], "multiplier": 4.0 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "stress", 70],
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "[initiator_name] has been pushing themselves without rest. Their eyes are hollow, their movements erratic. Those closest to them speak of worry.",
+		"options": {
+			"opt_take_rest": {
+				"text": "Enter brief seclusion. The sect can manage.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I entered seclusion to restore my mind and spirit." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "took_seclusion_rest", "payload": {} }
+				]
+			},
+			"opt_push_through": {
+				"text": "Push through. Great leaders do not rest.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 2.0 },
+					{ "condition": ["stat_greater_than", "initiator", "discipline", 70], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I refused to rest. The fire in my chest will either forge me or consume me." }
+				]
+			}
+		}
+	},
+	"building_completed_celebration": {
+		"id": "building_completed_celebration",
+		"title": "A New Foundation",
+		"pulse": "monthly_character",
+		"base_weight": 5.0,
+		"trigger_conditions": [
+			["has_memory", "initiator", "building_recently_completed"],
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "The construction is complete. The disciples gather to admire the new structure. This milestone deserves acknowledgment.",
+		"options": {
+			"opt_ceremony": {
+				"text": "Hold an opening ceremony. Toast the builders.",
+				"ai_base_weight": 80.0,
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": -30 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] completed a new building and celebrated its opening." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "held_opening_ceremony", "payload": {} }
+				]
+			},
+			"opt_skip": {
+				"text": "No ceremonies. Get back to training.",
+				"ai_base_weight": 20.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "The building is done. No celebration — there is still work to be done." }
+				]
+			}
+		}
 	}
 }

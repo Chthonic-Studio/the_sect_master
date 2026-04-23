@@ -12,15 +12,41 @@ var current_action: ActionPlan = null
 ## Evaluates the daily tick for the character's actions.
 func process_daily_tick(character: CharacterData) -> void:
 	if current_action != null:
-		current_action.duration_remaining -= 1
-		current_action.process_tick(character)
-		
-		if current_action.duration_remaining <= 0:
-			current_action.on_complete(character)
+		# --- URGENCY INTERRUPTION ---
+		# High-urgency needs can preempt the current action.
+		# This mirrors Rimworld's "pawn drops what they're doing to address a critical need."
+		if _should_interrupt_for_urgency(character):
 			current_action = null
+		else:
+			current_action.duration_remaining -= 1
+			current_action.process_tick(character)
+			
+			if current_action.duration_remaining <= 0:
+				current_action.on_complete(character)
+				current_action = null
 			
 	if current_action == null:
 		_choose_new_action(character)
+
+## Returns true if a critical need exceeds the threshold and should preempt the current action.
+func _should_interrupt_for_urgency(character: CharacterData) -> bool:
+	# Critical rest need: if fatigue is above 90, rest overrides everything
+	var fatigue = character.state_vars.get("fatigue", 0.0)
+	if fatigue >= 90.0 and current_action != null and current_action.id != "action_rest":
+		return true
+	
+	# Critical social need: extreme loneliness causes the character to drop tasks,
+	# unless they are already fulfilling that need.
+	var loneliness = character.state_vars.get("loneliness", 0.0)
+	if loneliness >= 95.0 and current_action != null and current_action.id != "action_social_discussion":
+		return true
+	
+	# High rest need: if the rest need is critically high, interrupt non-rest actions
+	var rest_need = character.needs.get("rest", 0.0)
+	if rest_need >= 95.0 and current_action != null and current_action.id != "action_rest":
+		return true
+	
+	return false
 
 func _choose_new_action(character: CharacterData) -> void:
 	var best_score: float = -1.0

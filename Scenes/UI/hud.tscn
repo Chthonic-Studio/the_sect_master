@@ -42,6 +42,12 @@ custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
 text = "Sect Master"
 
+[node name="BtnChronicle" type="Button" parent="TopBar/HBoxContainer/LeftControls"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+text = "Chronicle"
+
 [node name="RightControls" type="HBoxContainer" parent="TopBar/HBoxContainer"]
 layout_mode = 2
 alignment = 2

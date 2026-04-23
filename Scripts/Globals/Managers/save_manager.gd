@@ -112,3 +112,48 @@ func load_game(save_name: String) -> void:
 		WorldLogManager.global_logs = logs_array
 		
 	print("SaveManager: Game loaded successfully from ", save_path)
+
+## Returns a list of save header dictionaries for the Load Game UI.
+## Each header contains: filename, player_name, year, month, day.
+func get_all_save_headers() -> Array[Dictionary]:
+	var headers: Array[Dictionary] = []
+	var dir = DirAccess.open(SAVE_DIR)
+	if not dir:
+		return headers
+	
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	while file_name != "":
+		if not dir.current_is_dir() and file_name.ends_with(".json"):
+			var path = SAVE_DIR + file_name
+			var file = FileAccess.open(path, FileAccess.READ)
+			if file:
+				var json = JSON.new()
+				if json.parse(file.get_as_text()) == OK:
+					var data = json.data
+					var time_data = data.get("time", {})
+					var player_id = data.get("player_char_id", "")
+					var chars = data.get("simulation", {}).get("characters", {})
+					var player_name = "Unknown"
+					if chars.has(player_id):
+						var pc = chars[player_id]
+						player_name = pc.get("last_name", "?") + " " + pc.get("first_name", "?")
+					headers.append({
+						"filename": file_name.get_basename(),
+						"player_name": player_name,
+						"year": time_data.get("year", 0),
+						"month": time_data.get("month", 1),
+						"day": time_data.get("day", 1)
+					})
+		file_name = dir.get_next()
+	dir.list_dir_end()
+	
+	# Sort by date descending (most recent first): compare year, then month, then day
+	headers.sort_custom(func(a, b):
+		if a.get("year", 0) != b.get("year", 0):
+			return a.get("year", 0) > b.get("year", 0)
+		if a.get("month", 0) != b.get("month", 0):
+			return a.get("month", 0) > b.get("month", 0)
+		return a.get("day", 0) > b.get("day", 0)
+	)
+	return headers
