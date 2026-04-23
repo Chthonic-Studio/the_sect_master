@@ -35,9 +35,10 @@ func _should_interrupt_for_urgency(character: CharacterData) -> bool:
 	if fatigue >= 90.0 and current_action != null and current_action.id != "action_rest":
 		return true
 	
-	# Critical social need: extreme loneliness causes the character to drop tasks
+	# Critical social need: extreme loneliness causes the character to drop tasks,
+	# unless they are already fulfilling that need.
 	var loneliness = character.state_vars.get("loneliness", 0.0)
-	if loneliness >= 95.0 and current_action != null:
+	if loneliness >= 95.0 and current_action != null and current_action.id != "action_social_discussion":
 		return true
 	
 	# High rest need: if the rest need is critically high, interrupt non-rest actions
