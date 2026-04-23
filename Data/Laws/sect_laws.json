@@ -1,4 +1,22 @@
 {
+	"sect_authority": {
+		"name": "Sect Authority",
+		"description": "Who holds the true executive power within the sect?",
+		"options": {
+			"council_rule": { 
+				"name": "Council Rule", 
+				"flags": ["requires_council"], 
+				"opinion_modifier": 20 
+			},
+			"absolute_master": { 
+				"name": "Absolute Master", 
+				"flags": ["absolute_authority"], 
+				"opinion_modifier": -30 
+			}
+		},
+		"default_option": "council_rule"
+	},
+	
 	"elder_stipends": {
 		"name": "Elder Stipends",
 		"description": "How much wealth is allocated monthly to the Sect's Elders.",
@@ -8,5 +26,138 @@
 			"lavish": { "name": "Lavish", "cost_per_elder": 80, "opinion_modifier": 40 }
 		},
 		"default_option": "standard"
+	},
+
+	"succession": {
+		"name": "Succession Law",
+		"description": "Determines who rightfully inherits the Sect when the Master falls.",
+		"options": {
+			"strongest": { 
+				"name": "The Strongest", 
+				"flags": [],
+				"opinion_modifier": 0 
+			},
+			"seniority": { 
+				"name": "Eldest Elder", 
+				"flags": ["favors_age"],
+				"opinion_modifier": 10 
+			},
+			"appointed_heir": {
+				"name": "Appointed Heir",
+				"flags": ["heir_required"],
+				"opinion_modifier": 5
+			}
+		},
+		"default_option": "strongest"
+	},
+
+	"recruitment": {
+		"name": "Recruitment Law",
+		"description": "Who may join the sect as a disciple?",
+		"options": {
+			"open_door": {
+				"name": "Open Door Policy",
+				"flags": ["open_recruitment"],
+				"opinion_modifier": 10
+			},
+			"bloodline_test": {
+				"name": "Bloodline Requirement",
+				"flags": ["bloodline_only"],
+				"opinion_modifier": -5
+			},
+			"wealth_gate": {
+				"name": "Wealth Entry Fee",
+				"flags": ["paid_entry"],
+				"opinion_modifier": -10
+			}
+		},
+		"default_option": "open_door"
+	},
+
+	"training_doctrine": {
+		"name": "Training Doctrine",
+		"description": "How are disciples expected to develop their cultivation?",
+		"options": {
+			"compulsory_forms": {
+				"name": "Compulsory Daily Forms",
+				"flags": ["mandatory_training"],
+				"opinion_modifier": -15
+			},
+			"self_cultivation": {
+				"name": "Self-Directed Cultivation",
+				"flags": ["free_training"],
+				"opinion_modifier": 20
+			},
+			"merit_system": {
+				"name": "Merit-Based Advancement",
+				"flags": ["merit_advancement"],
+				"opinion_modifier": 5
+			}
+		},
+		"default_option": "compulsory_forms"
+	},
+
+	"war_declaration": {
+		"name": "War Declaration Law",
+		"description": "Who has the authority to declare war upon another sect?",
+		"options": {
+			"master_decides": {
+				"name": "Master's Sole Decision",
+				"flags": ["unilateral_war"],
+				"opinion_modifier": -10
+			},
+			"elder_council_required": {
+				"name": "Elder Council Must Approve",
+				"flags": ["council_war_vote"],
+				"opinion_modifier": 15
+			}
+		},
+		"default_option": "elder_council_required"
+	},
+
+	"criminal_punishment": {
+		"name": "Criminal Punishment",
+		"description": "How are members who violate sect rules punished?",
+		"options": {
+			"exile": {
+				"name": "Banishment",
+				"flags": ["light_punishment"],
+				"opinion_modifier": 10
+			},
+			"cripple_meridians": {
+				"name": "Meridian Crippling",
+				"flags": ["harsh_punishment"],
+				"opinion_modifier": -20
+			},
+			"death": {
+				"name": "Execution",
+				"flags": ["brutal_punishment"],
+				"opinion_modifier": -40
+			}
+		},
+		"default_option": "exile"
+	},
+
+	"disciple_conduct": {
+		"name": "Disciple Conduct Code",
+		"description": "What personal conduct is expected from sect members?",
+		"options": {
+			"celibacy_vow": {
+				"name": "Vow of Celibacy",
+				"flags": ["no_romance"],
+				"opinion_modifier": -20
+			},
+			"family_permitted": {
+				"name": "Family Life Permitted",
+				"flags": ["family_allowed"],
+				"opinion_modifier": 15
+			},
+			"sect_comes_first": {
+				"name": "Sect Loyalty Above All",
+				"flags": ["sect_priority"],
+				"opinion_modifier": -5
+			}
+		},
+		"default_option": "family_permitted"
 	}
 }

@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://cfia6b3uj8k14"]
+
+[ext_resource type="Script" uid="uid://6768iwv7mqlc" path="res://Scripts/UI/SectUI/infraestructure_panel.gd" id="1_63e4r"]
+
+[node name="InfrastructurePanel" type="HBoxContainer" unique_id=290949399]
+theme_override_constants/separation = 10
+script = ExtResource("1_63e4r")
+
+[node name="ConstructionQueue" type="VBoxContainer" parent="." unique_id=762168084]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="ActiveConstruction" type="Label" parent="ConstructionQueue" unique_id=1585287340]
+layout_mode = 2
+text = "Active Construction"
+
+[node name="ActiveQueueList" type="VBoxContainer" parent="ConstructionQueue" unique_id=2031170078]
+layout_mode = 2
+
+[node name="AvailableBuildings" type="VBoxContainer" parent="." unique_id=608527589]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="AvailableBuildings" unique_id=1086813484]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AvailableBuildings/ScrollContainer" unique_id=1500762695]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3

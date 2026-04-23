@@ -13,10 +13,15 @@ const STARTING_SPAWN_COUNT = 5
 @onready var btn_x2: Button = $DEBUG_TimePanel/"x2"
 @onready var btn_x3: Button = $DEBUG_TimePanel/"x3"
 
+const CHARACTER_DASHBOARD_SCENE: PackedScene = preload("res://Scenes/UI/character_dashboard.tscn")
+
+var _character_dashboard_instance: CharacterDashboard = null
+
 # UI Caches for performance
 var _modifier_labels: Dictionary = {}
 var _panel_containers: Dictionary = {}
 var _detail_labels: Dictionary = {}
+var _panel_active_keys: Dictionary = {}
 
 var _inspected_character: CharacterData = null
 
@@ -73,13 +78,18 @@ func _on_spawn_button_pressed() -> void:
 	_print_deep_debug_info(character)
 
 func _generate_and_display_character() -> CharacterData:
-	var new_character = CharacterGenerator.create_character(CharacterGenerator.GenerationContext.WORLD_GEN)
+	# Mixed world-gen context so debug catches both martial and non-martial paths
+	var context := CharacterGenerator.GenerationContext.WORLD_GEN_MARTIAL
+	if randf() < 0.35:
+		context = CharacterGenerator.GenerationContext.WORLD_GEN_PEASANT
+	
+	var new_character = CharacterGenerator.create_character(context)
 	
 	new_character.modifier_expired.connect(_on_modifier_expired)
 	_create_ui_card(new_character)
 	
 	var available_weapons = DataManager.weapons_registry.keys()
-	if not available_weapons.is_empty():
+	if new_character.is_martial_artist and not available_weapons.is_empty():
 		new_character.equipped_weapon_id = available_weapons.pick_random()
 		new_character.recalculate_all_stats()
 	
@@ -88,6 +98,36 @@ func _generate_and_display_character() -> CharacterData:
 	_refresh_character_info(new_character)
 	
 	return new_character
+
+## Instantiates and registers CharacterDashboard once, then reuses it.
+func _ensure_character_dashboard() -> bool:
+	# Already alive and in tree
+	if _character_dashboard_instance != null and is_instance_valid(_character_dashboard_instance):
+		return true
+	
+	# Instantiate lazily
+	var instance = CHARACTER_DASHBOARD_SCENE.instantiate()
+	if instance == null or not (instance is CharacterDashboard):
+		printerr("TestingGrounds: Failed to instantiate CharacterDashboard scene.")
+		return false
+	
+	_character_dashboard_instance = instance as CharacterDashboard
+	
+	# Add to tree so _ready() runs and self-registers in UIManager
+	get_tree().root.add_child(_character_dashboard_instance)
+	
+	# Wait one frame to guarantee _ready registration path completed
+	await get_tree().process_frame
+	
+	return true
+
+## Opens the character dashboard in production-like flow (instantiate -> register -> open).
+func _open_character_dashboard(character: CharacterData) -> void:
+	var ok = await _ensure_character_dashboard()
+	if not ok:
+		return
+	
+	UIManager.open_panel("character_dashboard", character)
 
 func _create_ui_card(character: CharacterData) -> void:
 	var card = PanelContainer.new()
@@ -115,6 +155,15 @@ func _create_ui_card(character: CharacterData) -> void:
 	
 	_modifier_labels[character.char_id] = mod_label
 	_update_modifier_ui(character)
+	
+	# --- Add the button to open the dashboard ---
+	var open_dashboard_btn = Button.new()
+	open_dashboard_btn.text = "View Dashboard"
+	open_dashboard_btn.pressed.connect(func():
+		_open_character_dashboard(character)
+	)
+	vbox.add_child(open_dashboard_btn)
+	# -------------------------------------------------
 	
 	character_list.add_child(card)
 
@@ -145,14 +194,14 @@ func _print_deep_debug_info(character: CharacterData) -> void:
 
 ## Refreshes the UIs at the bottom. No longer destroys/recreates nodes if they already exist.
 func _refresh_character_info(character: CharacterData) -> void:
-	
 	_update_info_panel("Identity", {
 		"Name": character.get_full_name(),
 		"Age": str(character.age),
 		"Gender": Definitions.Gender.keys()[character.gender].capitalize(),
 		"Realm": Definitions.MartialRealm.keys()[character.current_realm].capitalize(),
 		"Aptitude": Definitions.Aptitude.keys()[character.aptitude].capitalize(),
-		"Weapon": character.equipped_weapon_id if character.equipped_weapon_id != "" else "Unarmed"
+		"Weapon": character.equipped_weapon_id if character.equipped_weapon_id != "" else "Unarmed",
+		"Role": "Martial Artist" if character.is_martial_artist else "Commoner"
 	})
 	
 	var core_stats = {}
@@ -161,8 +210,11 @@ func _refresh_character_info(character: CharacterData) -> void:
 	_update_info_panel("Core Stats", core_stats)
 	
 	var martial_stats = {}
-	for ms in Definitions.MartialStat.values():
-		martial_stats[Definitions.MartialStat.keys()[ms].capitalize()] = str(character.get_martial_stat(ms))
+	if character.is_martial_artist:
+		for ms in Definitions.MartialStat.values():
+			martial_stats[Definitions.MartialStat.keys()[ms].capitalize()] = str(character.get_martial_stat(ms))
+	else:
+		martial_stats["Status"] = "Non-martial character"
 	_update_info_panel("Martial Stats", martial_stats)
 	
 	var personality = {}
@@ -179,10 +231,9 @@ func _refresh_character_info(character: CharacterData) -> void:
 	_update_info_panel("Traits", {"Active": traits_str})
 	
 	# --- NEW AI VISUALIZATION PANELS ---
-	
 	var states = {}
 	for k in character.state_vars:
-		states[k.capitalize()] = "%.1f" % character.state_vars[k] # Formats float to 1 decimal
+		states[k.capitalize()] = "%.1f" % character.state_vars[k]
 	_update_info_panel("State Vars", states)
 	
 	var needs_data = {}
@@ -203,15 +254,13 @@ func _refresh_character_info(character: CharacterData) -> void:
 	if character.current_directive != null:
 		directive_data["Active Mission"] = character.current_directive.id
 		directive_data["Days Remaining"] = str(character.current_directive.duration_remaining)
-		# Optionally, show how grueling it is:
 		directive_data["Fatigue Rate"] = "+%.1f/day" % character.current_directive.decay_modifiers.get("fatigue_rate", 5.0)
 	else:
 		directive_data["Active Mission"] = "None"
 		directive_data["Days Remaining"] = "0"
-	
 	_update_info_panel("Directives", directive_data)
 
-## Highly optimized procedural UI. Builds the nodes once, then just updates their strings.
+## Highly optimized procedural UI. Builds nodes once, updates strings, and hides stale labels.
 func _update_info_panel(title: String, data: Dictionary) -> void:
 	var vbox: VBoxContainer
 	
@@ -234,14 +283,19 @@ func _update_info_panel(title: String, data: Dictionary) -> void:
 		char_info_grid.add_child(panel)
 		
 		_panel_containers[title] = vbox
+		_panel_active_keys[title] = {}
 	else:
 		vbox = _panel_containers[title]
-		
-	# Update or create the individual labels
+	
+	# Mark keys used this refresh for stale-label cleanup
+	var active_keys := {}
+	
+	# Update or create labels
 	for key in data:
 		var map_key = title + "_" + key
-		var label: Label
+		active_keys[map_key] = true
 		
+		var label: Label
 		if _detail_labels.has(map_key):
 			label = _detail_labels[map_key]
 		else:
@@ -249,8 +303,17 @@ func _update_info_panel(title: String, data: Dictionary) -> void:
 			label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			vbox.add_child(label)
 			_detail_labels[map_key] = label
-			
+		
 		label.text = key + ": " + str(data[key])
+		label.show()
+	
+	# Hide stale labels from previous larger data snapshots
+	var previous_keys: Dictionary = _panel_active_keys.get(title, {})
+	for old_key in previous_keys:
+		if not active_keys.has(old_key) and _detail_labels.has(old_key):
+			_detail_labels[old_key].hide()
+	
+	_panel_active_keys[title] = active_keys
 
 func _on_test_directive_pressed() -> void:
 	if _inspected_character == null or not _inspected_character.is_alive:

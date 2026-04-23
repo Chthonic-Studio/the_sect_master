@@ -33,6 +33,7 @@ func _load_premade_sects() -> void:
 		sect.sect_id = data.get("id", "")
 		sect.sect_name = data.get("name", "Unknown Sect")
 		sect.alignment = data.get("alignment", Definitions.SectAlignment.NEUTRAL)
+		sect.culture = data.get("culture", Definitions.Culture.CENTRAL_PLAINS)
 		sect.rival_sect_id = data.get("rival_sect_id", "")
 		
 		var res_data = data.get("resources", {})
@@ -68,8 +69,8 @@ func _load_premade_sects() -> void:
 		_populate_sect(sect, randi_range(20, 40))
 
 ## Spawns a sect, allowing specific parameters to be forced via the overrides Dictionary.
-## Supported keys: "name" (String), "alignment" (int), "tenets" (Array[String]), 
-## "resources" (Dictionary), "laws" (Dictionary), "members_count" (int)
+## Supported keys: "name" (String), "alignment" (int), "culture" (int),
+## "tenets" (Array[String]), "resources" (Dictionary), "laws" (Dictionary), "members_count" (int)
 func generate_custom_sect(tier: SectTier, overrides: Dictionary = {}) -> SectData:
 	var sect = SectData.new()
 	
@@ -78,6 +79,12 @@ func generate_custom_sect(tier: SectTier, overrides: Dictionary = {}) -> SectDat
 		sect.alignment = overrides["alignment"]
 	else:
 		sect.alignment = Definitions.SectAlignment.values().pick_random()
+	
+	# 1b. Culture
+	if overrides.has("culture"):
+		sect.culture = overrides["culture"]
+	else:
+		sect.culture = _roll_sect_culture()
 		
 	_roll_sect_stats(sect) # Establish baseline face/reputation/karma
 	
@@ -118,10 +125,22 @@ func generate_custom_sect(tier: SectTier, overrides: Dictionary = {}) -> SectDat
 	var starting_size = overrides.get("members_count", randi_range(10 * int(tier), 20 * int(tier)))
 	_populate_sect(sect, starting_size)
 	
+	sect.recalculate_sect_tags()
+	
 	return sect
 
 func _generate_dynamic_sect(tier: SectTier) -> SectData:
 	return generate_custom_sect(tier, {})
+
+## Picks a culture for a new dynamically-generated sect.
+func _roll_sect_culture() -> int:
+	var roll = randi_range(0, 99)
+	if roll < 40: return Definitions.Culture.CENTRAL_PLAINS
+	elif roll < 52: return Definitions.Culture.JIANGNAN
+	elif roll < 64: return Definitions.Culture.SICHUAN
+	elif roll < 76: return Definitions.Culture.LINGNAN
+	elif roll < 88: return Definitions.Culture.NORTHERN_BORDER
+	else: return Definitions.Culture.WESTERN_REGIONS
 
 func _roll_tenets(sect: SectData, amount: int) -> void:
 	var alignment_string = Definitions.SectAlignment.keys()[sect.alignment]
@@ -136,6 +155,7 @@ func _roll_tenets(sect: SectData, amount: int) -> void:
 	
 	for i in range(min(amount, valid_tenets.size())):
 		sect.active_tenets.append(valid_tenets[i])
+	sect.recalculate_sect_tags()
 
 func _generate_sect_name(sect: SectData) -> String:
 	var name_db = DataManager.sect_names_registry
@@ -152,20 +172,25 @@ func _generate_sect_name(sect: SectData) -> String:
 	pool_nouns.append_array(base.get("nouns", []))
 	pool_suffixes.append_array(base.get("suffixes", []))
 	
-	# 2. Add Alignment Words
+	# 2. Add Culture Words (contribute moderately so culture flavors the name)
+	var culture_str = Definitions.Culture.keys()[sect.culture]
+	var culture_db = name_db.get("cultures", {}).get(culture_str, {})
+	pool_prefixes.append_array(culture_db.get("prefixes", []))
+	pool_nouns.append_array(culture_db.get("nouns", []))
+	pool_suffixes.append_array(culture_db.get("suffixes", []))
+	
+	# 3. Add Alignment Words
 	var align_str = Definitions.SectAlignment.keys()[sect.alignment]
 	var align_db = name_db.get("alignments", {}).get(align_str, {})
 	pool_prefixes.append_array(align_db.get("prefixes", []))
 	pool_nouns.append_array(align_db.get("nouns", []))
 	pool_suffixes.append_array(align_db.get("suffixes", []))
 	
-	# 3. Add Tenet Specific Words
+	# 4. Add Tenet Specific Words (triple-weight so belief shows in the name)
 	for t_id in sect.active_tenets:
 		var t_data = DataManager.tenets_registry.get(t_id, {})
 		var contributions = t_data.get("name_contributions", {})
 		
-		# Tenet words are added multiple times to artificially weight them 
-		# so the sect is highly likely to reflect its core belief in its name!
 		for i in range(3): 
 			pool_prefixes.append_array(contributions.get("prefixes", []))
 			pool_nouns.append_array(contributions.get("nouns", []))
@@ -200,6 +225,8 @@ func _assign_starting_laws(sect: SectData) -> void:
 		var default_opt = law_data.get("default_option", "")
 		if default_opt != "":
 			sect.active_laws[law_id] = default_opt
+	
+	sect.recalculate_sect_tags()
 
 #endregion
 
@@ -228,10 +255,10 @@ func _populate_sect(sect: SectData, total_members: int) -> void:
 			"sect_id": sect.sect_id, "age": randi_range(16, 35)
 		})
 		var rank = Definitions.SectRank.OUTER_DISCIPLE
-		if disciple.current_realm >= Definitions.MartialRealm.SECOND_RATE:
-			rank = Definitions.SectRank.INNER_DISCIPLE
-		elif disciple.current_realm >= Definitions.MartialRealm.FIRST_RATE:
+		if disciple.current_realm >= Definitions.MartialRealm.FIRST_RATE:
 			rank = Definitions.SectRank.CORE_DISCIPLE
+		elif disciple.current_realm >= Definitions.MartialRealm.SECOND_RATE:
+			rank = Definitions.SectRank.INNER_DISCIPLE
 		sect.add_member(disciple.char_id, rank)
 
 	sect.recalculate_sect_strength()

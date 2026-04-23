@@ -1,29 +1,157 @@
 {
 	"way_of_the_sword": {
 		"name": "Way of the Sword",
-		"description": "This sect venerates the sword above all other weapons.",
+		"description": "This sect venerates the sword above all other weapons. The blade is an extension of the self.",
 		"allowed_alignments": ["ORTHODOX", "NEUTRAL", "UNORTHODOX"],
 		"name_contributions": {
-			"nouns": ["Sword", "Blade", "Edge"],
-			"suffixes": ["Pavilion"]
-		}
+			"nouns": ["Sword", "Blade", "Edge", "Steel"],
+			"suffixes": ["Pavilion", "Order"]
+		},
+		"unlocks_sect_tags": ["sword_training"]
 	},
 	"strength_is_justice": {
 		"name": "Strength is Justice",
-		"description": "The weak are meat, the strong do eat.",
+		"description": "The weak are meat, the strong do eat. Power alone determines right from wrong.",
 		"allowed_alignments": ["DEMONIC", "UNORTHODOX", "EVIL"],
 		"name_contributions": {
-			"prefixes": ["Fierce", "Savage", "Conquering"],
-			"nouns": ["Fist", "Might"]
-		}
+			"prefixes": ["Fierce", "Savage", "Conquering", "Iron"],
+			"nouns": ["Fist", "Might", "Iron"]
+		},
+		"unlocks_sect_tags": ["intimidation_doctrine"]
 	},
 	"ascetic_vows": {
 		"name": "Ascetic Vows",
-		"description": "Rejects worldly pleasures for pure cultivation.",
+		"description": "Rejects all worldly pleasures. The body is a vessel for Qi, not indulgence.",
 		"allowed_alignments": ["ORTHODOX", "NEUTRAL"],
 		"name_contributions": {
-			"prefixes": ["Silent", "Fasting", "Austere"],
-			"nouns": ["Monk", "Spirit"]
-		}
+			"prefixes": ["Silent", "Fasting", "Austere", "Hollow"],
+			"nouns": ["Monk", "Spirit", "Void"]
+		},
+		"unlocks_sect_tags": ["ascetic_training"]
+	},
+	"purity_of_heart": {
+		"name": "Purity of Heart",
+		"description": "Karma is everything. Acts of compassion compound in the spirit as surely as meridian refinement.",
+		"allowed_alignments": ["ORTHODOX"],
+		"name_contributions": {
+			"prefixes": ["Pure", "Holy", "Bright", "Righteous"],
+			"nouns": ["Heart", "Light", "Virtue"]
+		},
+		"unlocks_sect_tags": ["karma_cultivation"]
+	},
+	"guardian_of_jianghu": {
+		"name": "Guardian of the Jianghu",
+		"description": "This sect considers itself the protector of the weak and the upholder of righteous law in the martial world.",
+		"allowed_alignments": ["ORTHODOX"],
+		"name_contributions": {
+			"prefixes": ["Heavenly", "Guardian", "Vigilant"],
+			"nouns": ["Shield", "Protector", "Warden"],
+			"suffixes": ["Order", "Monastery"]
+		},
+		"unlocks_sect_tags": ["peacekeeping_mandate"]
+	},
+	"scholarly_tradition": {
+		"name": "Scholarly Tradition",
+		"description": "The pen and the sword are one. This sect maintains libraries, trains scholars, and holds knowledge sacred.",
+		"allowed_alignments": ["ORTHODOX", "NEUTRAL"],
+		"name_contributions": {
+			"prefixes": ["Scholarly", "Learned", "Ink"],
+			"nouns": ["Brush", "Scroll", "Canon"],
+			"suffixes": ["Academy", "Hall", "Institute"]
+		},
+		"unlocks_sect_tags": ["scholarly_arts", "library_access"]
+	},
+	"blood_sacrifice": {
+		"name": "Blood Sacrifice",
+		"description": "Power is drawn from life itself. Ritual sacrifices fuel the sect's cultivation. The weak exist to serve the strong.",
+		"allowed_alignments": ["DEMONIC", "EVIL"],
+		"name_contributions": {
+			"prefixes": ["Blood", "Crimson", "Scarlet"],
+			"nouns": ["Altar", "Sacrifice", "Rite"]
+		},
+		"unlocks_sect_tags": ["blood_ritual"]
+	},
+	"forbidden_arts": {
+		"name": "Forbidden Arts",
+		"description": "The sect traffics openly in techniques banned by the orthodox world. Power through transgression.",
+		"allowed_alignments": ["DEMONIC", "UNORTHODOX"],
+		"name_contributions": {
+			"prefixes": ["Forbidden", "Shadow", "Hidden", "Dark"],
+			"nouns": ["Arts", "Tome", "Secret"]
+		},
+		"unlocks_sect_tags": ["forbidden_techniques"]
+	},
+	"master_and_slave": {
+		"name": "Master and Slave",
+		"description": "Absolute hierarchy. The master's word is law. Disciples surrender all autonomy in exchange for cultivation resources.",
+		"allowed_alignments": ["DEMONIC", "EVIL"],
+		"name_contributions": {
+			"prefixes": ["Absolute", "Supreme", "Iron"],
+			"suffixes": ["Palace", "Court", "Throne"]
+		},
+		"unlocks_sect_tags": ["slave_brand"]
+	},
+	"merchant_ways": {
+		"name": "Merchant Ways",
+		"description": "Wealth fuels cultivation. This sect maintains trade networks and treats resources as a form of spiritual merit.",
+		"allowed_alignments": ["NEUTRAL", "UNORTHODOX"],
+		"name_contributions": {
+			"prefixes": ["Golden", "Silver", "Wealthy"],
+			"nouns": ["Coin", "Market", "Trade"],
+			"suffixes": ["Guild", "House", "Association"]
+		},
+		"unlocks_sect_tags": ["trade_network", "merchant_discount"]
+	},
+	"wanderer_sect": {
+		"name": "Wanderer Sect",
+		"description": "This sect has no fixed home. Members roam the Jianghu freely, gathering experience and avoiding entanglements.",
+		"allowed_alignments": ["NEUTRAL", "UNORTHODOX"],
+		"name_contributions": {
+			"prefixes": ["Wandering", "Drifting", "Rootless"],
+			"nouns": ["Wind", "Cloud", "River"],
+			"suffixes": ["Vagabonds", "Path", "Way"]
+		},
+		"unlocks_sect_tags": ["wandering_lifestyle"]
+	},
+	"balance_of_qi": {
+		"name": "Balance of Qi",
+		"description": "Neither purely orthodox nor demonic, this sect seeks harmony between opposing forces in cultivation.",
+		"allowed_alignments": ["NEUTRAL"],
+		"name_contributions": {
+			"prefixes": ["Balanced", "Harmonious", "Yin-Yang"],
+			"nouns": ["Balance", "Harmony", "Duality"]
+		},
+		"unlocks_sect_tags": ["dual_cultivation"]
+	},
+	"innovation_above_tradition": {
+		"name": "Innovation Above Tradition",
+		"description": "Ancient techniques are starting points, not destinations. This sect actively creates new martial knowledge.",
+		"allowed_alignments": ["UNORTHODOX", "NEUTRAL"],
+		"name_contributions": {
+			"prefixes": ["New", "Unbound", "Reformist"],
+			"nouns": ["Forge", "Crucible", "Workshop"],
+			"suffixes": ["Institute", "Workshop"]
+		},
+		"unlocks_sect_tags": ["technique_development"]
+	},
+	"eclectic_methods": {
+		"name": "Eclectic Methods",
+		"description": "This sect borrows from every tradition without belonging to any. Disciples study weapons, alchemy, and mental arts equally.",
+		"allowed_alignments": ["NEUTRAL", "UNORTHODOX"],
+		"name_contributions": {
+			"prefixes": ["All-Path", "Broad", "Convergent"],
+			"nouns": ["Confluence", "Union", "Crossroads"]
+		},
+		"unlocks_sect_tags": ["multi_path_training"]
+	},
+	"terror_doctrine": {
+		"name": "Terror Doctrine",
+		"description": "Fear is the sect's primary resource. Reputation built on atrocity ensures no enemy dares approach.",
+		"allowed_alignments": ["EVIL", "DEMONIC"],
+		"name_contributions": {
+			"prefixes": ["Dread", "Feared", "Terror"],
+			"nouns": ["Fear", "Shadow", "Nightmare"]
+		},
+		"unlocks_sect_tags": ["fear_aura", "intimidation_doctrine"]
 	}
 }

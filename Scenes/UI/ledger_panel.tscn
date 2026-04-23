@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://b34erchstwbbc"]
+
+[ext_resource type="Script" uid="uid://b453hoavyujfs" path="res://Scripts/UI/SectUI/ledger_panel.gd" id="1_7auym"]
+
+[node name="LedgerPanel" type="VBoxContainer" unique_id=233494681]
+script = ExtResource("1_7auym")
+
+[node name="WealthIncome" type="PanelContainer" parent="." unique_id=2013521080]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="WealthIncome" unique_id=1313354311]
+layout_mode = 2
+
+[node name="WealthTitle" type="Label" parent="WealthIncome/HBoxContainer" unique_id=1981233862]
+custom_minimum_size = Vector2(65, 0)
+layout_mode = 2
+text = "Wealth:"
+
+[node name="CurrentWealth" type="Label" parent="WealthIncome/HBoxContainer" unique_id=154934290]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "999"
+
+[node name="WealthDeltaTooltip" type="Label" parent="WealthIncome/HBoxContainer" unique_id=1369086963]
+unique_name_in_owner = true
+layout_mode = 2
+text = "+15 / month"
+
+[node name="OtherResources" type="PanelContainer" parent="." unique_id=1081241046]
+layout_mode = 2
+
+[node name="ResourcesGrid" type="GridContainer" parent="OtherResources" unique_id=1155612826]
+layout_mode = 2
+columns = 3
+
+[node name="Label" type="Label" parent="OtherResources/ResourcesGrid" unique_id=800267477]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="OtherResources/ResourcesGrid" unique_id=1608721247]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="OtherResources/ResourcesGrid" unique_id=1026373260]
+layout_mode = 2
+
+[node name="SectStats" type="PanelContainer" parent="." unique_id=368725858]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SectStats" unique_id=1201967753]
+layout_mode = 2
+
+[node name="FaceLabel" type="Label" parent="SectStats/HBoxContainer" unique_id=1056975527]
+layout_mode = 2
+text = "Face: "
+
+[node name="FaceStat" type="Label" parent="SectStats/HBoxContainer" unique_id=788455401]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ReputationLabel" type="Label" parent="SectStats/HBoxContainer" unique_id=1857336105]
+layout_mode = 2
+text = "Reputation: "
+
+[node name="ReputationStat" type="Label" parent="SectStats/HBoxContainer" unique_id=953769448]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="KarmaLabel" type="Label" parent="SectStats/HBoxContainer" unique_id=252370390]
+layout_mode = 2
+text = "Karma: "
+
+[node name="KarmaStat" type="Label" parent="SectStats/HBoxContainer" unique_id=818448618]
+unique_name_in_owner = true
+layout_mode = 2

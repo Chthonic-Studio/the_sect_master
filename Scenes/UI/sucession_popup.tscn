@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://brswqyjulatjn"]
+
+[ext_resource type="Script" uid="uid://cd63kj1dxjjvp" path="res://Scripts/UI/SectUI/sucession_popup.gd" id="1_s6dhy"]
+
+[node name="SuccessionPopup" type="ColorRect" unique_id=325320256]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
+script = ExtResource("1_s6dhy")
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=1823926151]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -150.0
+offset_right = 200.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Panel" unique_id=1882761378]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Title" type="Label" parent="Panel/VBox" unique_id=1464582042]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "A Legacy Passes On"
+horizontal_alignment = 1
+
+[node name="DescLabel" type="Label" parent="Panel/VBox" unique_id=993616170]
+unique_name_in_owner = true
+layout_mode = 2
+text = "The Sect Master has fallen..."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ConfirmButton" type="Button" parent="Panel/VBox" unique_id=443178861]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Accept"

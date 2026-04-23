@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://b6x40hbcb6byg"]
+
+[node name="RosterItem" type="PanelContainer" unique_id=1573130340]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=299613675]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="HBoxContainer" unique_id=58706256]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Realm" type="Label" parent="HBoxContainer" unique_id=1613761031]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CurrentPosition" type="Label" parent="HBoxContainer" unique_id=1596212623]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AssignJobButton" type="Button" parent="HBoxContainer" unique_id=1405840212]
+layout_mode = 2
+size_flags_horizontal = 3

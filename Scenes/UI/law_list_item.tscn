@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dc65kmaf72vhc"]
+
+[node name="LawListItem" type="HBoxContainer" unique_id=172888959]
+
+[node name="Label" type="Label" parent="." unique_id=1157715604]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Elder Stipends: "
+
+[node name="OptionButton" type="OptionButton" parent="." unique_id=380758076]
+layout_mode = 2
+size_flags_horizontal = 3

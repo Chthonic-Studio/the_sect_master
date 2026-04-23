@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://bi8jkwih1d5lc"]
+
+[sub_resource type="GDScript" id="GDScript_1j65t"]
+script/source = "extends PopupMenu
+class_name CharacterContextMenu
+
+## A reusable Right-Click Context Menu for Character Interactions.
+
+signal action_executed(action_id: String)
+
+var _current_initiator: CharacterData
+var _current_target: CharacterData
+var _active_actions: Array[PlayerAction] = []
+
+func _ready() -> void:
+	# Connect Godot's built-in signal for when an item in the PopupMenu is clicked
+	id_pressed.connect(_on_item_pressed)
+
+## Opens the menu, populates it with valid actions, and places it at the mouse.
+func open(initiator: CharacterData, target: CharacterData, spawn_position: Vector2) -> void:
+	_current_initiator = initiator
+	_current_target = target
+	
+	clear()
+	_active_actions.clear()
+	
+	# Ask the InteractionManager what we are legally allowed to do
+	var valid_actions = InteractionManager.get_valid_actions(initiator, target)
+	
+	if valid_actions.is_empty():
+		add_item(\"No valid actions\")
+		set_item_disabled(0, true)
+	else:
+		for i in range(valid_actions.size()):
+			var action = valid_actions[i]
+			add_item(action.display_name, i)
+			set_item_tooltip(i, action.tooltip)
+			_active_actions.append(action)
+			
+	position = spawn_position
+	popup()
+
+func _on_item_pressed(id: int) -> void:
+	if id >= 0 and id < _active_actions.size():
+		var action = _active_actions[id]
+		action.execute(_current_initiator, _current_target)
+		
+		action_executed.emit(action.id)
+		
+		# If the character dashboard is open, force it to refresh 
+		# so we can see the updated Wealth or Logs immediately.
+		if _current_target.stats_recalculated:
+			_current_target.recalculate_all_stats()
+		if _current_initiator.stats_recalculated:
+			_current_initiator.recalculate_all_stats()
+"
+
+[node name="CharacterContextMenu" type="PopupMenu" unique_id=975342176]
+oversampling_override = 1.0
+visible = true
+script = SubResource("GDScript_1j65t")

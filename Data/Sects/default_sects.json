@@ -2,7 +2,8 @@
 	"shaolin_temple": {
 		"id": "shaolin_temple",
 		"name": "Shaolin Temple",
-		"alignment": 0, 
+		"alignment": 0,
+		"culture": 0,
 		"rival_sect_id": "blood_cult",
 		"resources": { "WEALTH": 500, "MATERIALS": 1000, "MEDICINE": 300, "ELIXIRS": 50 },
 		"stats": { "FACE": 100, "REPUTATION": 90, "KARMA": 85 },
@@ -19,6 +20,7 @@
 		"id": "wudang_sect",
 		"name": "Wudang Sect",
 		"alignment": 0,
+		"culture": 0,
 		"rival_sect_id": "heavenly_demon_cult",
 		"resources": { "WEALTH": 600, "MATERIALS": 800, "MEDICINE": 400, "ELIXIRS": 150 },
 		"stats": { "FACE": 95, "REPUTATION": 95, "KARMA": 90 }
@@ -27,6 +29,7 @@
 		"id": "mount_hua_sect",
 		"name": "Mount Hua Sect",
 		"alignment": 0,
+		"culture": 0,
 		"rival_sect_id": "tang_clan",
 		"resources": { "WEALTH": 300, "MATERIALS": 500, "MEDICINE": 200, "ELIXIRS": 100 },
 		"stats": { "FACE": 85, "REPUTATION": 80, "KARMA": 70 }
@@ -35,6 +38,7 @@
 		"id": "emei_sect",
 		"name": "Emei Sect",
 		"alignment": 0,
+		"culture": 3,
 		"rival_sect_id": "heavenly_demon_cult",
 		"resources": { "WEALTH": 400, "MATERIALS": 400, "MEDICINE": 300, "ELIXIRS": 120 },
 		"stats": { "FACE": 80, "REPUTATION": 85, "KARMA": 75 }
@@ -43,6 +47,7 @@
 		"id": "beggar_sect",
 		"name": "Beggar Sect",
 		"alignment": 0,
+		"culture": 0,
 		"rival_sect_id": "blood_cult",
 		"resources": { "WEALTH": 50, "MATERIALS": 100, "MEDICINE": 150, "ELIXIRS": 10 },
 		"stats": { "FACE": 70, "REPUTATION": 75, "KARMA": 80 }
@@ -51,6 +56,7 @@
 		"id": "tang_clan",
 		"name": "Tang Clan",
 		"alignment": 3,
+		"culture": 2,
 		"rival_sect_id": "mount_hua_sect",
 		"resources": { "WEALTH": 800, "MATERIALS": 600, "MEDICINE": 1000, "ELIXIRS": 400 },
 		"stats": { "FACE": 75, "REPUTATION": 60, "KARMA": 40 },
@@ -62,6 +68,7 @@
 		"id": "namgoong_family",
 		"name": "Namgoong Family",
 		"alignment": 0,
+		"culture": 5,
 		"rival_sect_id": "heavenly_demon_cult",
 		"resources": { "WEALTH": 1200, "MATERIALS": 800, "MEDICINE": 200, "ELIXIRS": 300 },
 		"stats": { "FACE": 95, "REPUTATION": 80, "KARMA": 65 }
@@ -70,6 +77,7 @@
 		"id": "heavenly_demon_cult",
 		"name": "Heavenly Demon Divine Cult",
 		"alignment": 1,
+		"culture": 0,
 		"rival_sect_id": "wudang_sect",
 		"resources": { "WEALTH": 1000, "MATERIALS": 1200, "MEDICINE": 500, "ELIXIRS": 600 },
 		"stats": { "FACE": 100, "REPUTATION": 15, "KARMA": 20 }
@@ -78,6 +86,7 @@
 		"id": "blood_cult",
 		"name": "Blood Cult",
 		"alignment": 4,
+		"culture": 0,
 		"rival_sect_id": "shaolin_temple",
 		"resources": { "WEALTH": 400, "MATERIALS": 500, "MEDICINE": 800, "ELIXIRS": 700 },
 		"stats": { "FACE": 40, "REPUTATION": 5, "KARMA": 0 }

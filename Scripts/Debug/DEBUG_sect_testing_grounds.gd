@@ -37,6 +37,14 @@ func _ready() -> void:
 	
 	_update_time_display()
 	TimeManager.set_time_speed(TimeManager.Speed.NORMAL)
+		
+	# 2. Generate a fully populated test sect
+	var test_sect = SectGenerator.generate_custom_sect(SectGenerator.SectTier.AVERAGE, {
+		"name": "Celestial prototype Sect"
+	})
+	
+	# 3. Inject it into the UI!
+	%SectDashboard.setup_dashboard(test_sect)
 
 func _update_time_display() -> void:
 	time_label.text = TimeManager.get_date_string()
@@ -64,7 +72,10 @@ func _refresh_sect_list() -> void:
 		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		
 		# Bind the button press to display the info
-		btn.pressed.connect(_display_sect_info.bind(sect))
+		btn.pressed.connect(func():
+			_display_sect_info(sect)
+			UIManager.open_panel("sect_dashboard", sect)
+		)
 		sect_list_vbox.add_child(btn)
 
 func _display_sect_info(sect: SectData) -> void:
@@ -89,13 +100,15 @@ func _display_sect_info(sect: SectData) -> void:
 	add_label.call("Name:", sect.sect_name)
 	add_label.call("Alignment:", Definitions.SectAlignment.keys()[sect.alignment])
 	
-	# --- TENETS ---
+	# --- TENETS & TAGS ---
 	var tenet_names: Array[String] = []
 	for t_id in sect.active_tenets:
 		var t_data = DataManager.tenets_registry.get(t_id, {})
 		tenet_names.append(t_data.get("name", t_id))
 	var tenet_str = ", ".join(tenet_names) if not tenet_names.is_empty() else "None"
 	add_label.call("Tenets:", tenet_str)
+	
+	add_label.call("Sect Tags:", ", ".join(sect.unlocked_tags) if not sect.unlocked_tags.is_empty() else "None")
 	
 	# --- RIVAL & RELATIONSHIPS ---
 	var rival_name = "None"

@@ -62,10 +62,10 @@ text = "x3"
 
 [node name="DEBUG_LastCharInfo" type="ScrollContainer" parent="." unique_id=1440528619]
 layout_mode = 0
-offset_left = 21.0
-offset_top = 573.0
-offset_right = 687.0
-offset_bottom = 779.0
+offset_left = 10.0
+offset_top = 256.0
+offset_right = 676.0
+offset_bottom = 462.0
 
 [node name="GridContainer" type="GridContainer" parent="DEBUG_LastCharInfo" unique_id=873657799]
 layout_mode = 2

@@ -1,7 +1,8 @@
 extends Node
 
 enum GenerationContext {
-	WORLD_GEN,
+	WORLD_GEN_MARTIAL,
+	WORLD_GEN_PEASANT,
 	BIRTH,
 	RECRUIT_COMMON,
 	RECRUIT_ELITE,
@@ -11,6 +12,15 @@ enum GenerationContext {
 
 func create_character(context: GenerationContext, overrides: Dictionary = {}) -> CharacterData:
 	var character = CharacterData.new()
+	
+	# Determine if they are born into the Jianghu or the common world
+	if context in [GenerationContext.WORLD_GEN_PEASANT, GenerationContext.REPOPULATE]:
+		character.is_martial_artist = false
+		var tags = overrides.get("ai_tags", ["peasant", "worker"])
+		character.ai_tags.assign(tags) # Safely cast untyped array to Array[String]
+	else:
+		character.is_martial_artist = true
+		character.ai_tags.assign(["general", "martial_artist"])
 	
 	_apply_demographics(character, context, overrides)
 	_apply_talents(character, context, overrides)
@@ -29,23 +39,51 @@ func create_character(context: GenerationContext, overrides: Dictionary = {}) ->
 func _apply_demographics(_char: CharacterData, context: GenerationContext, overrides: Dictionary) -> void:
 	_char.gender = overrides.get("gender", randi() % 3)
 	
-	# Using generic for fallback if specific cultures aren't passed yet
-	var pools = DataManager.name_pools.get("cultures", {}).get("CENTRAL_PLAINS", {})
+	# Inherit culture from sect if generating a sect member, otherwise roll from world proportions
+	if overrides.has("culture"):
+		_char.culture = overrides["culture"]
+	elif overrides.has("sect_id"):
+		var parent_sect = SimulationManager.get_sect(overrides["sect_id"])
+		_char.culture = parent_sect.culture if parent_sect else _roll_world_culture()
+	else:
+		_char.culture = _roll_world_culture()
+	
+	# Select name pool from the character's own culture
+	var culture_key = Definitions.Culture.keys()[_char.culture]
+	var pools = DataManager.name_pools.get("cultures", {}).get(culture_key, {})
+	if pools.is_empty():
+		pools = DataManager.name_pools.get("cultures", {}).get("CENTRAL_PLAINS", {})
 	if pools.is_empty(): return
 	
-	if _char.gender == 0:
-		_char.first_name = pools.get("male_given", []).pick_random()
+	if _char.gender == Definitions.Gender.FEMALE:
+		_char.first_name = overrides.get("first_name", pools.get("female_given", []).pick_random())
+	elif _char.gender == Definitions.Gender.MALE:
+		_char.first_name = overrides.get("first_name", pools.get("male_given", []).pick_random())
 	else:
-		_char.first_name = pools.get("female_given", []).pick_random()
+		# NON_BINARY / NON_HUMAN: draw from whichever pool is non-empty, or combine both
+		var combined: Array = pools.get("male_given", []) + pools.get("female_given", [])
+		_char.first_name = overrides.get("first_name", combined.pick_random() if not combined.is_empty() else "Unknown")
 		
 	_char.last_name = overrides.get("last_name", pools.get("surnames", []).pick_random())
 	
 	match context:
 		GenerationContext.BIRTH: _char.age = 0
 		GenerationContext.RECRUIT_COMMON: _char.age = randi_range(14, 20)
-		GenerationContext.WORLD_GEN: _char.age = _get_weighted_age_roll()
+		GenerationContext.WORLD_GEN_MARTIAL: _char.age = _get_weighted_age_roll()
+		GenerationContext.WORLD_GEN_PEASANT: _char.age = _get_weighted_age_roll()
 		GenerationContext.SECT_MEMBER: _char.age = overrides.get("age", randi_range(16, 60))
 		_: _char.age = overrides.get("age", randi_range(18, 40))
+
+## Returns a culture enum value weighted toward Central Plains with smaller populations elsewhere.
+func _roll_world_culture() -> int:
+	# Weighted distribution: Central Plains 40%, others ~12% each
+	var roll = randi_range(0, 99)
+	if roll < 40: return Definitions.Culture.CENTRAL_PLAINS
+	elif roll < 52: return Definitions.Culture.JIANGNAN
+	elif roll < 64: return Definitions.Culture.SICHUAN
+	elif roll < 76: return Definitions.Culture.LINGNAN
+	elif roll < 88: return Definitions.Culture.NORTHERN_BORDER
+	else: return Definitions.Culture.WESTERN_REGIONS
 
 func _apply_talents(_char: CharacterData, context: GenerationContext, _overrides: Dictionary) -> void:
 	# 1. Roll Realm
@@ -162,14 +200,21 @@ func _is_trait_valid(_char: CharacterData, trait_id: String) -> bool:
 func _calculate_initial_stats(_char: CharacterData) -> void:
 	# --- CORE STATS (Dictated by Age/Biology) ---
 	var base_val = 10
-	if _char.age < 12: base_val = Definitions.BASE_STATS_BY_AGE["child"]
-	elif _char.age > 60: base_val = Definitions.BASE_STATS_BY_AGE["elder"]
-	else: base_val = Definitions.BASE_STATS_BY_AGE["adult"]
+	if _char.age <= 12: base_val = Definitions.BASE_STATS_BY_AGE["child"]
+	elif _char.age <= 19: base_val = Definitions.BASE_STATS_BY_AGE["teen"]
+	elif _char.age <= 60: base_val = Definitions.BASE_STATS_BY_AGE["adult"]
+	else: base_val = Definitions.BASE_STATS_BY_AGE["elder"]
 	
 	for s in Definitions.Stat.values():
 		_char.base_stats[s] = base_val + randi_range(-2, 5)
 
-	# --- MARTIAL STATS (Dictated by Realm & Aptitude) ---
+	# --- MARTIAL STATS ---
+	if _char.is_martial_artist:
+		roll_martial_awakening(_char)
+		
+## A public function so non-martials can have their martial stats generated 
+## organically later in their life if an event triggers it.
+func roll_martial_awakening(_char: CharacterData) -> void:
 	var realm_tier = _char.current_realm
 	var is_withered = _char.aptitude == Definitions.Aptitude.WITHERED
 	
@@ -187,14 +232,12 @@ func _calculate_initial_stats(_char: CharacterData) -> void:
 			if is_withered:
 				_char.base_martial[ms] = randi_range(0, 10) # Blocked meridians
 			else:
-				# Example: Realm 3 = 900 base Qi. Realm 6 = 3600 base Qi.
 				_char.base_martial[ms] = (realm_tier * realm_tier * 100) + randi_range(10, 50 * maxi(1, realm_tier))
 			continue
 
 		# 3. Combat Skills (Linear scaling for Technique, Insight, Qinggong, etc.)
 		var stat_val = (realm_tier * 15) + randi_range(0, 10)
 		
-		# Apply Aptitude specialized bonuses for narrative combat flavor
 		match _char.aptitude:
 			Definitions.Aptitude.GENIUS:
 				if ms == Definitions.MartialStat.TECHNIQUE: stat_val += 20
@@ -203,7 +246,7 @@ func _calculate_initial_stats(_char: CharacterData) -> void:
 			Definitions.Aptitude.FLEXIBLE:
 				if ms == Definitions.MartialStat.QINGGONG: stat_val += 20
 			Definitions.Aptitude.HEAVEN_SENT:
-				stat_val += 20 # Flat bonus to all combat skills
+				stat_val += 20 
 				
 		_char.base_martial[ms] = maxi(0, stat_val)
 
