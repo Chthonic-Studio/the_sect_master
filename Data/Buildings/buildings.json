@@ -13,30 +13,30 @@
 	"grand_kitchen": {
 		"id": "grand_kitchen",
 		"name": "Grand Kitchen",
-		"description": "A facility capable of feeding hundreds of disciples.",
+		"description": "A facility capable of feeding hundreds of disciples properly.",
 		"build_days_base": 45,
 		"cost": { "MATERIALS": 300, "WEALTH": 100 },
 		"monthly_upkeep": { "WEALTH": 15 },
 		"yields": {},
 		"prerequisite_tags": [],
-		"unlocks_sect_tags": ["advanced_cooking"]
+		"unlocks_sect_tags": ["advanced_cooking", "well_fed_disciples"]
 	},
 	"massive_kitchen": {
 		"id": "massive_kitchen",
 		"name": "Massive Kitchen",
-		"description": "An upgraded kitchen complex that can support grand banquets.",
+		"description": "An upgraded kitchen complex capable of supporting grand banquets and large sect feasts.",
 		"build_days_base": 90,
 		"cost": { "MATERIALS": 800, "WEALTH": 300 },
 		"monthly_upkeep": { "WEALTH": 40 },
 		"yields": {},
 		"prerequisite_tags": ["advanced_cooking"],
 		"replaces": "grand_kitchen",
-		"unlocks_sect_tags": ["advanced_cooking", "master_cooking"]
+		"unlocks_sect_tags": ["advanced_cooking", "master_cooking", "well_fed_disciples"]
 	},
 	"alchemy_furnace": {
 		"id": "alchemy_furnace",
 		"name": "Bronze Alchemy Furnace",
-		"description": "A heavy furnace for refining basic medicinal herbs into pills.",
+		"description": "A heavy furnace for refining basic medicinal herbs into restorative pills.",
 		"build_days_base": 60,
 		"cost": { "MATERIALS": 500, "WEALTH": 200 },
 		"monthly_upkeep": { "WEALTH": 25, "MATERIALS": 10 },
@@ -44,15 +44,160 @@
 		"prerequisite_tags": [],
 		"unlocks_sect_tags": ["basic_alchemy"]
 	},
+	"grand_alchemy_lab": {
+		"id": "grand_alchemy_lab",
+		"name": "Grand Alchemy Laboratory",
+		"description": "A full refining complex with multiple furnaces and herb storage vaults.",
+		"build_days_base": 120,
+		"cost": { "MATERIALS": 1200, "WEALTH": 600 },
+		"monthly_upkeep": { "WEALTH": 60, "MATERIALS": 25 },
+		"yields": { "MEDICINE": 35, "ELIXIRS": 5 },
+		"prerequisite_tags": ["basic_alchemy"],
+		"replaces": "alchemy_furnace",
+		"unlocks_sect_tags": ["basic_alchemy", "advanced_alchemy", "elixir_production"]
+	},
 	"martial_arena": {
 		"id": "martial_arena",
 		"name": "Sparring Arena",
-		"description": "A stone-paved ring for disciples to safely test their forms.",
+		"description": "A stone-paved ring for disciples to safely test their forms and spar under supervision.",
 		"build_days_base": 30,
 		"cost": { "MATERIALS": 400, "WEALTH": 50 },
 		"monthly_upkeep": { "WEALTH": 10 },
 		"yields": {},
 		"prerequisite_tags": [],
-		"unlocks_sect_tags": ["sparring"]
+		"unlocks_sect_tags": ["sparring", "martial_training"]
+	},
+	"grand_training_hall": {
+		"id": "grand_training_hall",
+		"name": "Grand Training Hall",
+		"description": "An enclosed training hall with proper equipment racks, targets, and training dummies.",
+		"build_days_base": 60,
+		"cost": { "MATERIALS": 800, "WEALTH": 200 },
+		"monthly_upkeep": { "WEALTH": 20, "MATERIALS": 5 },
+		"yields": {},
+		"prerequisite_tags": ["martial_training"],
+		"replaces": "martial_arena",
+		"unlocks_sect_tags": ["sparring", "martial_training", "advanced_forms"]
+	},
+	"disciple_barracks": {
+		"id": "disciple_barracks",
+		"name": "Disciple Barracks",
+		"description": "Proper sleeping quarters for outer and inner disciples. Improves living conditions significantly.",
+		"build_days_base": 50,
+		"cost": { "MATERIALS": 600, "WEALTH": 150 },
+		"monthly_upkeep": { "WEALTH": 20 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["proper_housing", "comfort_boost"]
+	},
+	"elder_courtyard": {
+		"id": "elder_courtyard",
+		"name": "Elder's Private Courtyard",
+		"description": "A secluded courtyard with personal meditation chambers for the sect's Elders. They are noticeably more at ease.",
+		"build_days_base": 60,
+		"cost": { "MATERIALS": 700, "WEALTH": 300 },
+		"monthly_upkeep": { "WEALTH": 25 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["elder_comfort", "elder_loyalty_bonus"]
+	},
+	"qi_circulation_chamber": {
+		"id": "qi_circulation_chamber",
+		"name": "Inner Qi Circulation Chamber",
+		"description": "A sealed stone room saturated with ambient spiritual energy. Extended sessions here accelerate meridian development.",
+		"build_days_base": 90,
+		"cost": { "MATERIALS": 1000, "WEALTH": 400, "ELIXIRS": 10 },
+		"monthly_upkeep": { "WEALTH": 30, "ELIXIRS": 2 },
+		"yields": {},
+		"prerequisite_tags": ["basic_meditation"],
+		"unlocks_sect_tags": ["qi_refinement_chamber", "deep_cultivation"]
+	},
+	"weapons_vault": {
+		"id": "weapons_vault",
+		"name": "Weapons Vault",
+		"description": "A secured armory housing a variety of weapons for disciples to train with and study.",
+		"build_days_base": 40,
+		"cost": { "MATERIALS": 500, "WEALTH": 200 },
+		"monthly_upkeep": { "WEALTH": 10 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["weapon_variety", "weapon_proficiency_training"]
+	},
+	"herb_garden": {
+		"id": "herb_garden",
+		"name": "Medicinal Herb Garden",
+		"description": "A carefully tended garden of healing herbs. Supplements the sect's medical supplies each month.",
+		"build_days_base": 30,
+		"cost": { "MATERIALS": 150, "WEALTH": 80 },
+		"monthly_upkeep": { "WEALTH": 5 },
+		"yields": { "MEDICINE": 10 },
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["herbal_medicine"]
+	},
+	"trade_hall": {
+		"id": "trade_hall",
+		"name": "Trade Hall",
+		"description": "A formal trading pavilion that facilitates commerce with traveling merchants and other sects.",
+		"build_days_base": 60,
+		"cost": { "MATERIALS": 500, "WEALTH": 350 },
+		"monthly_upkeep": { "WEALTH": 20 },
+		"yields": { "WEALTH": 40 },
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["trade_network", "merchant_access"]
+	},
+	"council_hall": {
+		"id": "council_hall",
+		"name": "Council Hall",
+		"description": "A formal chamber for Elder councils and sect governance. Legitimizes council votes and improves deliberation quality.",
+		"build_days_base": 45,
+		"cost": { "MATERIALS": 400, "WEALTH": 180 },
+		"monthly_upkeep": { "WEALTH": 10 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["formal_council", "requires_council"]
+	},
+	"spy_network": {
+		"id": "spy_network",
+		"name": "Shadow Information Network",
+		"description": "A web of informants, coded couriers, and dead-drops woven through neighboring territories.",
+		"build_days_base": 90,
+		"cost": { "MATERIALS": 200, "WEALTH": 600 },
+		"monthly_upkeep": { "WEALTH": 50 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["intelligence_gathering", "rival_sect_espionage"]
+	},
+	"ancestral_shrine": {
+		"id": "ancestral_shrine",
+		"name": "Ancestral Shrine",
+		"description": "A sacred hall honoring the sect's founders and fallen elders. Improves karmic standing and morale.",
+		"build_days_base": 45,
+		"cost": { "MATERIALS": 350, "WEALTH": 250 },
+		"monthly_upkeep": { "WEALTH": 8 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["ancestral_rites", "karma_boost"]
+	},
+	"grand_gate": {
+		"id": "grand_gate",
+		"name": "Grand Sect Gate",
+		"description": "An imposing ceremonial gate that announces the sect's prestige to all who approach.",
+		"build_days_base": 45,
+		"cost": { "MATERIALS": 800, "WEALTH": 400 },
+		"monthly_upkeep": {},
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["prestige_architecture", "reputation_bonus"]
+	},
+	"poison_laboratory": {
+		"id": "poison_laboratory",
+		"name": "Hidden Poison Laboratory",
+		"description": "A concealed lab for studying poisons, antidotes, and assassination techniques. Associated with Sichuan culture.",
+		"build_days_base": 75,
+		"cost": { "MATERIALS": 400, "WEALTH": 300, "MEDICINE": 50 },
+		"monthly_upkeep": { "WEALTH": 20, "MEDICINE": 5 },
+		"yields": { "MEDICINE": 8 },
+		"prerequisite_tags": ["herbal_medicine"],
+		"unlocks_sect_tags": ["poison_arts", "antidote_research"]
 	}
 }
