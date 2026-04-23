@@ -39,14 +39,26 @@ func create_character(context: GenerationContext, overrides: Dictionary = {}) ->
 func _apply_demographics(_char: CharacterData, context: GenerationContext, overrides: Dictionary) -> void:
 	_char.gender = overrides.get("gender", randi() % 3)
 	
-	# Using generic for fallback if specific cultures aren't passed yet
-	var pools = DataManager.name_pools.get("cultures", {}).get("CENTRAL_PLAINS", {})
+	# Inherit culture from sect if generating a sect member, otherwise roll from world proportions
+	if overrides.has("culture"):
+		_char.culture = overrides["culture"]
+	elif overrides.has("sect_id"):
+		var parent_sect = SimulationManager.get_sect(overrides["sect_id"])
+		_char.culture = parent_sect.culture if parent_sect else _roll_world_culture()
+	else:
+		_char.culture = _roll_world_culture()
+	
+	# Select name pool from the character's own culture
+	var culture_key = Definitions.Culture.keys()[_char.culture]
+	var pools = DataManager.name_pools.get("cultures", {}).get(culture_key, {})
+	if pools.is_empty():
+		pools = DataManager.name_pools.get("cultures", {}).get("CENTRAL_PLAINS", {})
 	if pools.is_empty(): return
 	
-	if _char.gender == 0:
-		_char.first_name = pools.get("male_given", []).pick_random()
+	if _char.gender == Definitions.Gender.FEMALE:
+		_char.first_name = overrides.get("first_name", pools.get("female_given", []).pick_random())
 	else:
-		_char.first_name = pools.get("female_given", []).pick_random()
+		_char.first_name = overrides.get("first_name", pools.get("male_given", []).pick_random())
 		
 	_char.last_name = overrides.get("last_name", pools.get("surnames", []).pick_random())
 	
@@ -57,6 +69,17 @@ func _apply_demographics(_char: CharacterData, context: GenerationContext, overr
 		GenerationContext.WORLD_GEN_PEASANT: _char.age = _get_weighted_age_roll()
 		GenerationContext.SECT_MEMBER: _char.age = overrides.get("age", randi_range(16, 60))
 		_: _char.age = overrides.get("age", randi_range(18, 40))
+
+## Returns a culture enum value weighted toward Central Plains with smaller populations elsewhere.
+func _roll_world_culture() -> int:
+	# Weighted distribution: Central Plains 40%, others ~12% each
+	var roll = randi_range(0, 99)
+	if roll < 40: return Definitions.Culture.CENTRAL_PLAINS
+	elif roll < 52: return Definitions.Culture.JIANGNAN
+	elif roll < 64: return Definitions.Culture.SICHUAN
+	elif roll < 76: return Definitions.Culture.LINGNAN
+	elif roll < 88: return Definitions.Culture.NORTHERN_BORDER
+	else: return Definitions.Culture.WESTERN_REGIONS
 
 func _apply_talents(_char: CharacterData, context: GenerationContext, _overrides: Dictionary) -> void:
 	# 1. Roll Realm

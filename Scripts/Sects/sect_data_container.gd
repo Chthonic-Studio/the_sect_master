@@ -12,6 +12,7 @@ signal tenet_removed(sect: SectData, tenet_id: String)
 var sect_id: String = ""
 var sect_name: String = "Unnamed Sect"
 var alignment: int = Definitions.SectAlignment.NEUTRAL
+var culture: int = Definitions.Culture.CENTRAL_PLAINS
 var rival_sect_id: String = ""
 
 # --- MACRO STATS & ECONOMY ---
@@ -534,6 +535,7 @@ func to_dictionary() -> Dictionary:
 		"sect_id": sect_id,
 		"sect_name": sect_name,
 		"alignment": alignment,
+		"culture": culture,
 		"rival_sect_id": rival_sect_id,
 		"resources": resources,
 		"stats": stats,
@@ -554,6 +556,7 @@ func from_dictionary(data: Dictionary) -> void:
 	sect_id = data.get("sect_id", "")
 	sect_name = data.get("sect_name", "Unnamed Sect")
 	alignment = data.get("alignment", Definitions.SectAlignment.NEUTRAL)
+	culture = data.get("culture", Definitions.Culture.CENTRAL_PLAINS)
 	rival_sect_id = data.get("rival_sect_id", "")
 	cached_sect_strength = data.get("cached_sect_strength", 0)
 	

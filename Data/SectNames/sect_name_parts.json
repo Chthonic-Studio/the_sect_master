@@ -4,15 +4,58 @@
 		"nouns": ["Lotus", "Dragon", "Tiger", "Crane", "Moon", "Sun", "Star", "Cloud"],
 		"suffixes": ["Sect", "Clan", "Valley", "Temple", "School"]
 	},
+	"cultures": {
+		"CENTRAL_PLAINS": {
+			"prefixes": ["Great", "Central", "Heaven", "Noble", "Eternal", "Divine", "Pure"],
+			"nouns": ["Mountain", "River", "Eagle", "Falcon", "Pine", "Bamboo", "Jade"],
+			"suffixes": ["Sect", "Gate", "Manor", "Hall", "Palace"]
+		},
+		"SICHUAN": {
+			"prefixes": ["Mist", "Hidden", "Poison", "Blazing", "Scarlet", "Thunder"],
+			"nouns": ["Tang", "Valley", "Needle", "Fog", "Peak", "Viper", "Orchid"],
+			"suffixes": ["Clan", "Cave", "Grotto", "Hollow", "Den"]
+		},
+		"JIANGNAN": {
+			"prefixes": ["Jade", "River", "Scholar", "Silver", "Silk", "Gentle", "Willow"],
+			"nouns": ["Pavilion", "Ink", "Brush", "Reed", "Lake", "Heron", "Plum"],
+			"suffixes": ["Pavilion", "Academy", "Studio", "Garden", "Retreat"]
+		},
+		"LINGNAN": {
+			"prefixes": ["Stone", "Iron", "Sea", "Fierce", "Coastal", "Bronze", "Hardy"],
+			"nouns": ["Fist", "Rock", "Wave", "Banyan", "Shore", "Anchor", "Shell"],
+			"suffixes": ["School", "Clan", "Association", "Guild", "Brotherhood"]
+		},
+		"WESTERN_REGIONS": {
+			"prefixes": ["Desert", "Nomad", "Wind", "Sand", "Endless", "Sky", "Storm"],
+			"nouns": ["Horse", "Hawk", "Blade", "Steppe", "Dune", "Camel", "Eagle"],
+			"suffixes": ["Tribe", "Riders", "Horde", "Wanderers", "Clan"]
+		},
+		"NORTHERN_BORDER": {
+			"prefixes": ["Frost", "Iron", "Snow", "Savage", "Steel", "Bitter", "Dark"],
+			"nouns": ["Wolf", "Bear", "Spear", "Tundra", "Hammer", "Ice", "Glacier"],
+			"suffixes": ["Legion", "Vanguard", "Clan", "Brotherhood", "Order"]
+		}
+	},
 	"alignments": {
 		"ORTHODOX": {
-			"prefixes": ["Heavenly", "Jade", "Pure", "Righteous"],
-			"suffixes": ["Pavilion", "Orthodoxy", "Monastery"]
+			"prefixes": ["Heavenly", "Jade", "Pure", "Righteous", "Sacred", "Holy"],
+			"nouns": ["Phoenix", "Lotus", "Heaven", "Virtue"],
+			"suffixes": ["Pavilion", "Orthodoxy", "Monastery", "Order"]
 		},
 		"DEMONIC": {
-			"prefixes": ["Blood", "Shadow", "Crimson", "Nether", "Vile"],
-			"nouns": ["Demon", "Fiend", "Serpent", "Bone"],
-			"suffixes": ["Cult", "Palace", "Grotto"]
+			"prefixes": ["Blood", "Shadow", "Crimson", "Nether", "Vile", "Dark"],
+			"nouns": ["Demon", "Fiend", "Serpent", "Bone", "Skull", "Wraith"],
+			"suffixes": ["Cult", "Palace", "Grotto", "Lair"]
+		},
+		"EVIL": {
+			"prefixes": ["Dread", "Vile", "Death", "Cursed", "Black"],
+			"nouns": ["Skull", "Ghost", "Plague", "Abyss"],
+			"suffixes": ["Cult", "Coven", "Brotherhood", "Grotto"]
+		},
+		"UNORTHODOX": {
+			"prefixes": ["Wandering", "Unbound", "Free", "Wild", "Strange"],
+			"nouns": ["Path", "Way", "Crossroads", "Bridge"],
+			"suffixes": ["School", "House", "Path", "Way"]
 		}
 	}
 }
