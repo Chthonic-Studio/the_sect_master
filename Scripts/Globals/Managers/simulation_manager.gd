@@ -102,6 +102,7 @@ func register_sect(sect_data: SectData) -> void:
 		sect_data.sect_id = "sect_" + str(next_sect_id)
 		next_sect_id += 1
 	sect_repo[sect_data.sect_id] = sect_data
+	sect_data.building_completed.connect(_on_building_completed)
 
 func get_sect(sect_id: String) -> SectData:
 	return sect_repo.get(sect_id, null)
@@ -173,3 +174,37 @@ func clear_simulation() -> void:
 	_active_char_ids.clear()
 	_process_index = 0
 	_current_processing_day = 0
+
+## Called when a sect completes a building. Injects AI tags into members so new desires become available.
+func _on_building_completed(sect: SectData, building_id: String) -> void:
+	var b_data = DataManager.buildings_registry.get(building_id, {})
+	var tags_to_inject: Array = b_data.get("unlocks_sect_tags", [])
+	
+	# Map sect-level tags to the individual ai_tags that enable new desires
+	var member_tag_map: Dictionary = {
+		"sparring": "sparring",
+		"martial_training": "sparring",
+		"advanced_forms": "sparring",
+		"basic_meditation": "meditator",
+		"deep_cultivation": "meditator",
+		"qi_refinement_chamber": "meditator",
+		"well_fed_disciples": "worker"
+	}
+	
+	var new_member_tags: Array[String] = []
+	for sect_tag in tags_to_inject:
+		if member_tag_map.has(sect_tag):
+			var member_tag: String = member_tag_map[sect_tag]
+			if not new_member_tags.has(member_tag):
+				new_member_tags.append(member_tag)
+	
+	if new_member_tags.is_empty():
+		return
+	
+	# Inject the new tags into all current sect members
+	for char_id in sect.all_members:
+		var character = get_character(char_id)
+		if character and character.is_alive:
+			for tag in new_member_tags:
+				if not character.ai_tags.has(tag):
+					character.ai_tags.append(tag)

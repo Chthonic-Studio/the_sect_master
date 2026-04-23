@@ -19,6 +19,7 @@ func _ready() -> void:
 	# Connect Panel Shortcuts
 	%BtnSect.pressed.connect(_on_sect_pressed)
 	%BtnPlayer.pressed.connect(_on_player_pressed)
+	%BtnChronicle.pressed.connect(_on_chronicle_pressed)
 
 ## Initializes the HUD with current data right when it's opened.
 func setup_panel(_payload: Variant = null) -> void:
@@ -49,3 +50,6 @@ func _on_player_pressed() -> void:
 		UIManager.open_panel("character_dashboard", player_char)
 	else:
 		printerr("HUD: No player character assigned!")
+
+func _on_chronicle_pressed() -> void:
+	UIManager.open_panel("world_log")
