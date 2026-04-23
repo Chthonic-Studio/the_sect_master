@@ -46,17 +46,22 @@ func _add_log_entry_at_top(entry: Dictionary) -> void:
 
 func _create_log_label(entry: Dictionary) -> RichTextLabel:
 	var lbl := RichTextLabel.new()
-	lbl.bbcode_enabled = true
+	lbl.bbcode_enabled = false
 	lbl.fit_content = true
 	lbl.size_flags_horizontal = Control.SIZE_FILL | Control.SIZE_EXPAND
 	lbl.custom_minimum_size = Vector2(0, 24)
 	
 	var log_type = entry.get("type", "system").to_lower()
 	var color = TYPE_COLORS.get(log_type, Color.WHITE)
-	var hex = color.to_html(false)
 	
-	var date_str = entry.get("date", "?")
-	var msg = entry.get("message", "")
-	lbl.text = "[color=#888888][%s][/color] [color=#%s]%s[/color]" % [date_str, hex, msg]
+	var date_str = str(entry.get("date", "?"))
+	var msg = str(entry.get("message", ""))
+	lbl.push_color(Color(0.533333, 0.533333, 0.533333))
+	lbl.add_text("[%s]" % date_str)
+	lbl.pop()
+	lbl.add_text(" ")
+	lbl.push_color(color)
+	lbl.add_text(msg)
+	lbl.pop()
 	
 	return lbl

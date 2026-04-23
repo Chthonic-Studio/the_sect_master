@@ -153,6 +153,8 @@ func _repopulate_tenets(align_index: int) -> void:
 	if %TenetDropdown.item_count == 0:
 		%TenetDropdown.add_item("(None available)")
 		%TenetDropdown.set_item_metadata(0, "")
+	# Always select the first item to ensure 'selected' is never -1
+	%TenetDropdown.selected = 0
 
 # ---- PAGE NAVIGATION ----
 func _on_page1_next() -> void:
@@ -223,14 +225,14 @@ func _generate_game(
 	
 	# 1. Apply world settings
 	TimeManager.year = start_year
-	WorldManager.population_multiplier = pop_scale
+	WorldManager.target_world_population = pop_scale
 	
 	# 2. Generate rival world sects based on difficulty and count
 	var num_minor: int = num_rival_sects
 	var num_average: int = 0
 	var num_major: int = 0
 	if difficulty >= 1:
-		num_average = max(1, num_rival_sects / 3)
+		num_average = max(1, int(num_rival_sects / 3))
 		num_minor = num_rival_sects - num_average
 	if difficulty >= 2:
 		num_major = 1

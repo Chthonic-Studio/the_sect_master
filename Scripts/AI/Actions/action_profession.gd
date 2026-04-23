@@ -42,10 +42,12 @@ func process_tick(character: CharacterData) -> void:
 	# Determine the character's position contribution
 	var contribution_wealth = 0
 	var contribution_materials = 0
+	var has_position = false
 	
 	# Check assigned position in sect
 	for pos_name in sect.members_by_position:
 		if sect.members_by_position[pos_name].has(character.char_id):
+			has_position = true
 			match pos_name:
 				"cook":
 					# Cooks improve the sect's food security (not a resource, but reduce upkeep cost)
@@ -57,9 +59,10 @@ func process_tick(character: CharacterData) -> void:
 					contribution_wealth = randi_range(5, 12)
 				_:
 					contribution_wealth = randi_range(1, 4)
+			break
 	
 	# Generic sect member labor contribution (when not assigned a specific position)
-	if contribution_wealth == 0:
+	if not has_position:
 		contribution_wealth = randi_range(1, 3)
 	
 	# Bonus from trade network tag

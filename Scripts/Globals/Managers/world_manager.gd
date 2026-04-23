@@ -2,12 +2,13 @@ extends Node
 
 const MAX_YEARLY_RECOVERY_RATE: float = 0.05 # The world only heals 5% of its max population per year
 
-## Set by the Setup Screen World Settings. Overrides the base target population.
-var population_multiplier: int = 3000
+## The absolute target world population. Set by the World Settings screen.
+## Use values like 1500 / 3000 / 5000 matching the pop-scale presets.
+var target_world_population: int = 3000
 
 ## The effective target population, used by the repopulation logic.
 var target_population: int:
-	get: return population_multiplier
+	get: return target_world_population
 
 # Stores spawns as Dict[Day_Of_Year(int) : Spawn_Count(int)]
 var _spawns_by_day: Dictionary = {}
