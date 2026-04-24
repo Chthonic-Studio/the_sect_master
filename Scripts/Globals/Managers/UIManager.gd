@@ -167,8 +167,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 	
-	# Keyboard shortcut: open debug screen
-	if event.is_action_pressed("debug_screen"):
+	# Keyboard shortcut: open debug screen (debug builds only)
+	if OS.is_debug_build() and event.is_action_pressed("debug_screen"):
 		_handle_debug_screen()
 		get_viewport().set_input_as_handled()
 		return
@@ -221,6 +221,8 @@ func _handle_sect_screen() -> void:
 		printerr("UIManager: sect_screen shortcut — no valid sect to display.")
 
 func _handle_debug_screen() -> void:
+	if not OS.is_debug_build():
+		return
 	if is_panel_open("debug_screen"):
 		close_panel("debug_screen")
 	else:
