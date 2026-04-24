@@ -86,7 +86,7 @@ func _populate_province(province_id: String) -> Array[SectData]:
 var region_id := MapManager.get_region_for_province(province_id)
 var region_data: Dictionary = DataManager.regions_registry.get(region_id, {})
 var culture_key: String = region_data.get("culture", "CENTRAL_PLAINS")
-var culture_enum: int = Definitions.Culture.get(culture_key, Definitions.Culture.CENTRAL_PLAINS)
+var culture_val: int = Definitions.Culture.get(culture_key, Definitions.Culture.CENTRAL_PLAINS)
 
 # Strength factor: 0.0 (no dominant sect) → 1.0 (max 100 rep)
 var region_max_rep := _get_region_max_reputation(region_id)
@@ -100,19 +100,19 @@ var spawned: Array[SectData] = []
 if existing["major"] == 0:
 var spawn_chance := 1.0 - strength_factor
 if randf() < spawn_chance:
-spawned.append(_generate_sect_in_province(SectTier.MAJOR, province_id, culture_enum))
+spawned.append(_generate_sect_in_province(SectTier.MAJOR, province_id, culture_val))
 
 # 2. Medium sects — 2-5 target, reduced by regional strength, minus existing
 var target_avg := roundi(lerpf(5.0, 2.0, strength_factor))
 var to_spawn_avg := maxi(0, target_avg - existing["average"])
 for _i in range(to_spawn_avg):
-spawned.append(_generate_sect_in_province(SectTier.AVERAGE, province_id, culture_enum))
+spawned.append(_generate_sect_in_province(SectTier.AVERAGE, province_id, culture_val))
 
 # 3. Small sects — 3-7 target, minus existing
 var target_minor := randi_range(3, 7)
 var to_spawn_minor := maxi(0, target_minor - existing["minor"])
 for _i in range(to_spawn_minor):
-spawned.append(_generate_sect_in_province(SectTier.MINOR, province_id, culture_enum))
+spawned.append(_generate_sect_in_province(SectTier.MINOR, province_id, culture_val))
 
 return spawned
 
