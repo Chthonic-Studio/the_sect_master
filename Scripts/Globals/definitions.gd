@@ -140,6 +140,17 @@ enum Culture {
 	GORYEO				# Korean peninsula — disciplined forms, honour-bound traditions
 }
 
+# Short lore descriptions shown in the setup screen when a region is selected.
+const CULTURE_DESCRIPTIONS: Dictionary = {
+	"CENTRAL_PLAINS": "The cradle of civilisation and the beating heart of the Jianghu. Sects here inherit millennia of orthodox martial tradition — codified forms, strict hierarchies of honour, and an enduring belief that virtue and skill are inseparable.",
+	"SICHUAN": "A land of mist-shrouded peaks and fertile river valleys teeming with rare herbs and hidden dangers. Sichuan cultivators are famed for their mastery of poison, hidden weapons, and the art of striking from concealment.",
+	"JIANGNAN": "South of the great river lies a world of silk merchants, canal cities, and scholarly academies. Jiangnan sects favour elegant internal sword arts, superior cultivation methods, and a sharp political acumen born of centuries of courtly intrigue.",
+	"LINGNAN": "The humid southern frontier, far from imperial eyes and orthodox censure. Lingnan martial arts are grounded and fierce — raw external power shaped by centuries of hard labour, tropical hardship, and constant border conflict.",
+	"WESTERN_REGIONS": "Vast deserts, ancient oasis cities, and towering mountain ranges define this distant frontier. Sects here blend diverse cultural influences — Central Plains orthodoxy, steppe ferocity, and exotic foreign arts — into styles that are unpredictable and formidable.",
+	"NORTHERN_BORDER": "Forged by endless conflict with steppe riders and bitter northern winters, Border sects prize brute strength, heavy weapons, mounted fighting, and an unbreakable will to endure. Honour here is earned in blood and wind.",
+	"GORYEO": "Across the eastern sea lies the Goryeo peninsula — disciplined, honour-bound, and fiercely independent. Their martial traditions emphasise perfect form, clan loyalty above all else, and a philosophical depth that rivals the great orthodox sects of the mainland."
+}
+
 # --- SECT HIERARCHY ---
 enum SectRank {
 	LABORER,

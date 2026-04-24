@@ -5,77 +5,49 @@
 			"name": "Central Plains",
 			"culture": "CENTRAL_PLAINS",
 			"description": "The heartland of the martial world. Home to the most prestigious orthodox sects.",
-			"color": "8BC34A",
-			"polygon": [
-				[700, 350], [1100, 350], [1200, 500], [1100, 700],
-				[800, 750], [600, 650], [600, 450]
-			]
+			"mask_color": "#ff0000"
 		},
 		"sichuan": {
 			"id": "sichuan",
 			"name": "Sichuan",
 			"culture": "SICHUAN",
 			"description": "A land of mist and mountain fog. The Tang Clan and other hidden weapon experts trace their roots here.",
-			"color": "FF7043",
-			"polygon": [
-				[350, 600], [700, 600], [750, 800], [700, 1050],
-				[400, 1000], [250, 800]
-			]
+			"mask_color": "#228b22"
 		},
 		"northern_border": {
 			"id": "northern_border",
 			"name": "Northern Border",
 			"culture": "NORTHERN_BORDER",
 			"description": "A harsh land of steppe and fortress. Border clans and nomadic sects dominate.",
-			"color": "78909C",
-			"polygon": [
-				[200, 0], [1800, 0], [1900, 200], [1700, 350],
-				[1100, 350], [600, 350], [300, 300], [150, 150]
-			]
+			"mask_color": "#00bfff"
 		},
 		"western_regions": {
 			"id": "western_regions",
 			"name": "Western Regions",
 			"culture": "WESTERN_REGIONS",
 			"description": "A land of sand and silk roads. Sects here blend local traditions with Jianghu arts.",
-			"color": "FFB300",
-			"polygon": [
-				[0, 100], [200, 0], [300, 300], [350, 600],
-				[250, 900], [100, 1000], [0, 800]
-			]
+			"mask_color": "#ffb0e8"
 		},
 		"lingnan": {
 			"id": "lingnan",
 			"name": "Lingnan",
 			"culture": "LINGNAN",
 			"description": "A lush, humid region in the far south. Sects here favour powerful external styles.",
-			"color": "26A69A",
-			"polygon": [
-				[400, 1000], [700, 1050], [1000, 1050], [1200, 1150],
-				[1100, 1400], [800, 1500], [500, 1400], [300, 1250]
-			]
+			"mask_color": "#ff00e4"
 		},
 		"jiangnan": {
 			"id": "jiangnan",
 			"name": "Jiangnan",
 			"culture": "JIANGNAN",
 			"description": "A prosperous river delta region of silk, scholars, and elegant swordplay.",
-			"color": "7E57C2",
-			"polygon": [
-				[1100, 500], [1500, 400], [1700, 500], [1700, 900],
-				[1400, 1100], [1100, 1050], [1000, 900], [1100, 700]
-			]
+			"mask_color": "#7b2fbe"
 		},
 		"goryeo": {
 			"id": "goryeo",
 			"name": "Goryeo",
 			"culture": "GORYEO",
 			"description": "The Korean peninsula. A proud martial culture with its own distinct lineages.",
-			"color": "EC407A",
-			"polygon": [
-				[1700, 0], [2000, 0], [2100, 200], [2000, 500],
-				[1800, 600], [1700, 400], [1700, 200]
-			]
+			"mask_color": "#191970"
 		}
 	}
 }

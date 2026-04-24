@@ -1,176 +1,211 @@
 extends Node2D
 class_name MapRenderer
 
-## Renders the world map as procedurally generated Polygon2D nodes.
-## Three render layers:
-##   - background: a solid coloured backdrop
-##   - regions: one Polygon2D per region
-##   - provinces: one Polygon2D per province
-## On hover, the currently highlighted polygon gains a visible outline.
+## Renders the world map using three pre-authored PNG images:
+##   base_map.png     — decorative art layer, always visible
+##   region_map.png   — flat colour mask one colour per region
+##   province_map.png — flat colour mask one colour per province
+##
+## Hover detection is done by pixel-colour sampling (no polygon maths).
+## A shader overlay highlights the currently hovered region or province.
 
 # ── CONFIGURATION ────────────────────────────────────────────────
-@export var region_alpha: float = 0.55
+@export var region_alpha:   float = 0.55
 @export var province_alpha: float = 0.65
-@export var hover_outline_color: Color = Color(1.0, 1.0, 1.0, 0.85)
-@export var hover_outline_width: float = 3.0
+@export var highlight_color: Color = Color(1.0, 1.0, 1.0, 0.75)
+@export var hover_sample_interval: float = 0.04   # seconds between pixel samples
+
+# Inline GLSL shader: highlights pixels whose colour matches target_color.
+const _HIGHLIGHT_SHADER := """
+shader_type canvas_item;
+uniform vec3  target_color  : source_color = vec3(1.0, 0.0, 0.0);
+uniform vec4  hilite_color  : source_color = vec4(1.0, 1.0, 1.0, 0.75);
+uniform float tolerance     : hint_range(0.0, 0.5) = 0.04;
+
+void fragment() {
+    vec3 px = texture(TEXTURE, UV).rgb;
+    if (length(px - target_color) < tolerance) {
+        COLOR = hilite_color;
+    } else {
+        discard;
+    }
+}
+"""
 
 # ── INTERNAL ─────────────────────────────────────────────────────
-var _region_polys: Dictionary = {}    # region_id → Polygon2D
-var _province_polys: Dictionary = {}  # province_id → Polygon2D
-var _current_hover_poly: Polygon2D = null
+var _base_sprite:     Sprite2D
+var _region_sprite:   Sprite2D
+var _province_sprite: Sprite2D
+var _highlight_sprite: Sprite2D
+var _highlight_mat:   ShaderMaterial
 
-# Layer nodes (children set up in _ready)
-var _background_layer: ColorRect
-var _region_layer: Node2D
-var _province_layer: Node2D
-var _outline_layer: Node2D
+# Raw Image objects used for pixel sampling
+var _region_img:   Image
+var _province_img: Image
+
+# ImageTexture objects kept alive so GC doesn't collect them
+var _base_tex:     ImageTexture
+var _region_tex:   ImageTexture
+var _province_tex: ImageTexture
+
+var _sample_timer: float = 0.0
+
+# ── READY ─────────────────────────────────────────────────────────
 
 func _ready() -> void:
-	_setup_layers()
-	_build_region_polygons()
-	_build_province_polygons()
-	_apply_layer_visibility()
-	
-	MapManager.map_layer_changed.connect(_on_map_layer_changed)
-	MapManager.hovered_province_changed.connect(_on_hovered_province_changed)
-	MapManager.hovered_region_changed.connect(_on_hovered_region_changed)
+_load_map_images()
+_setup_sprites()
+_apply_layer_visibility()
 
-func _setup_layers() -> void:
-	_background_layer = ColorRect.new()
-	_background_layer.name = "BackgroundLayer"
-	_background_layer.color = Color(0.14, 0.12, 0.10, 1.0)
-	_background_layer.size = Vector2(MapManager.map_width, MapManager.map_height)
-	add_child(_background_layer)
-	
-	_region_layer = Node2D.new()
-	_region_layer.name = "RegionLayer"
-	add_child(_region_layer)
-	
-	_province_layer = Node2D.new()
-	_province_layer.name = "ProvinceLayer"
-	add_child(_province_layer)
-	
-	_outline_layer = Node2D.new()
-	_outline_layer.name = "OutlineLayer"
-	add_child(_outline_layer)
+MapManager.map_layer_changed.connect(_on_map_layer_changed)
+MapManager.hovered_province_changed.connect(_on_hovered_province_changed)
+MapManager.hovered_region_changed.connect(_on_hovered_region_changed)
 
-func _build_region_polygons() -> void:
-	for r_id in DataManager.regions_registry:
-		var r_data: Dictionary = DataManager.regions_registry[r_id]
-		var poly := Polygon2D.new()
-		poly.name = "Region_" + r_id
-		poly.polygon = _parse_polygon(r_data.get("polygon", []))
-		var col := Color(r_data.get("color", "888888"))
-		col.a = region_alpha
-		poly.color = col
-		poly.set_meta("map_id", r_id)
-		_region_layer.add_child(poly)
-		_region_polys[r_id] = poly
+# ── IMAGE LOADING ─────────────────────────────────────────────────
 
-func _build_province_polygons() -> void:
-	for p_id in DataManager.provinces_registry:
-		var p_data: Dictionary = DataManager.provinces_registry[p_id]
-		var poly := Polygon2D.new()
-		poly.name = "Province_" + p_id
-		poly.polygon = _parse_polygon(p_data.get("polygon", []))
-		var col := Color(p_data.get("color", "888888"))
-		col.a = province_alpha
-		poly.color = col
-		poly.set_meta("map_id", p_id)
-		_province_layer.add_child(poly)
-		_province_polys[p_id] = poly
+func _load_map_images() -> void:
+_region_img   = _try_load_image("res://Assets/Map/region_map.png")
+_province_img = _try_load_image("res://Assets/Map/province_map.png")
 
-func _parse_polygon(raw: Array) -> PackedVector2Array:
-	var out := PackedVector2Array()
-	for pt in raw:
-		if pt is Array and pt.size() >= 2:
-			out.append(Vector2(float(pt[0]), float(pt[1])))
-	return out
+var base_img  = _try_load_image("res://Assets/Map/base_map.png")
+if base_img:
+_base_tex     = ImageTexture.create_from_image(base_img)
+if _region_img:
+_region_tex   = ImageTexture.create_from_image(_region_img)
+if _province_img:
+_province_tex = ImageTexture.create_from_image(_province_img)
 
-# ── LAYER VISIBILITY ─────────────────────────────────────────────
+func _try_load_image(path: String) -> Image:
+if not FileAccess.file_exists(path):
+push_warning("MapRenderer: Map image not found: %s" % path)
+return null
+var img = Image.load_from_file(path)
+if not img:
+push_warning("MapRenderer: Failed to load image: %s" % path)
+return img
+
+# ── SPRITE SETUP ──────────────────────────────────────────────────
+
+func _setup_sprites() -> void:
+_base_sprite     = _make_sprite("BaseMap",     _base_tex,     1.0)
+_region_sprite   = _make_sprite("RegionMap",   _region_tex,   region_alpha)
+_province_sprite = _make_sprite("ProvinceMap", _province_tex, province_alpha)
+_highlight_sprite = _make_highlight_sprite()
+
+func _make_sprite(node_name: String, tex: ImageTexture, alpha: float) -> Sprite2D:
+var s := Sprite2D.new()
+s.name = node_name
+s.centered = false           # top-left origin → pixel coords match world coords
+s.texture = tex
+s.modulate.a = alpha
+add_child(s)
+return s
+
+func _make_highlight_sprite() -> Sprite2D:
+# The highlight sprite uses the active mask texture + a shader to glow one colour.
+var s := Sprite2D.new()
+s.name = "HoverHighlight"
+s.centered = false
+
+var shader := Shader.new()
+shader.code = _HIGHLIGHT_SHADER
+_highlight_mat = ShaderMaterial.new()
+_highlight_mat.shader = shader
+_highlight_mat.set_shader_parameter("hilite_color", highlight_color)
+s.material = _highlight_mat
+
+# Start with no texture (cleared when nothing is hovered)
+add_child(s)
+return s
+
+# ── LAYER VISIBILITY ──────────────────────────────────────────────
 
 func _apply_layer_visibility() -> void:
-	match MapManager.current_layer:
-		MapManager.MapLayer.VISUAL:
-			_region_layer.visible = false
-			_province_layer.visible = false
-		MapManager.MapLayer.REGIONS:
-			_region_layer.visible = true
-			_province_layer.visible = false
-		MapManager.MapLayer.PROVINCES:
-			_region_layer.visible = true
-			_province_layer.visible = true
+match MapManager.current_layer:
+MapManager.MapLayer.VISUAL:
+_region_sprite.visible   = false
+_province_sprite.visible = false
+MapManager.MapLayer.REGIONS:
+_region_sprite.visible   = true
+_province_sprite.visible = false
+MapManager.MapLayer.PROVINCES:
+_region_sprite.visible   = true
+_province_sprite.visible = true
 
 func _on_map_layer_changed(_layer: int) -> void:
-	_apply_layer_visibility()
-	_clear_outline()
+_apply_layer_visibility()
+_clear_highlight()
 
-# ── MOUSE HOVER DETECTION ─────────────────────────────────────────
+# ── HOVER DETECTION ───────────────────────────────────────────────
 
-func _process(_delta: float) -> void:
-	if not is_visible_in_tree():
-		return
-	_check_mouse_hover()
+func _process(delta: float) -> void:
+if not is_visible_in_tree():
+return
+_sample_timer += delta
+if _sample_timer >= hover_sample_interval:
+_sample_timer = 0.0
+_check_mouse_hover()
 
 func _check_mouse_hover() -> void:
-	var mouse_world := get_global_mouse_position()
-	
-	match MapManager.current_layer:
-		MapManager.MapLayer.PROVINCES:
-			var found := ""
-			for p_id in _province_polys:
-				var poly: Polygon2D = _province_polys[p_id]
-				if Geometry2D.is_point_in_polygon(mouse_world, poly.polygon):
-					found = p_id
-					break
-			MapManager.set_hovered_province(found)
-		
-		MapManager.MapLayer.REGIONS:
-			var found := ""
-			for r_id in _region_polys:
-				var poly: Polygon2D = _region_polys[r_id]
-				if Geometry2D.is_point_in_polygon(mouse_world, poly.polygon):
-					found = r_id
-					break
-			MapManager.set_hovered_region(found)
-			MapManager.set_hovered_province("")
+var mouse_world := get_global_mouse_position()
+var px := int(mouse_world.x)
+var py := int(mouse_world.y)
 
-# ── OUTLINE DRAWING ───────────────────────────────────────────────
+match MapManager.current_layer:
+MapManager.MapLayer.PROVINCES:
+if _province_img and _in_image_bounds(px, py, _province_img):
+var hex := _pixel_to_hex(_province_img.get_pixel(px, py))
+MapManager.set_hovered_province(MapManager.get_province_by_color(hex))
+else:
+MapManager.set_hovered_province("")
+
+MapManager.MapLayer.REGIONS:
+if _region_img and _in_image_bounds(px, py, _region_img):
+var hex := _pixel_to_hex(_region_img.get_pixel(px, py))
+MapManager.set_hovered_region(MapManager.get_region_by_color(hex))
+MapManager.set_hovered_province("")
+else:
+MapManager.set_hovered_region("")
+MapManager.set_hovered_province("")
+
+MapManager.MapLayer.VISUAL:
+MapManager.set_hovered_province("")
+MapManager.set_hovered_region("")
+
+func _in_image_bounds(px: int, py: int, img: Image) -> bool:
+return px >= 0 and py >= 0 and px < img.get_width() and py < img.get_height()
+
+func _pixel_to_hex(c: Color) -> String:
+return "#%02x%02x%02x" % [int(round(c.r * 255)), int(round(c.g * 255)), int(round(c.b * 255))]
+
+# ── HOVER HIGHLIGHT ───────────────────────────────────────────────
 
 func _on_hovered_province_changed(province_id: String) -> void:
-	if MapManager.current_layer == MapManager.MapLayer.PROVINCES:
-		_draw_outline_for_poly(
-			_province_polys.get(province_id) if province_id != "" else null
-		)
+if MapManager.current_layer != MapManager.MapLayer.PROVINCES:
+return
+if province_id == "":
+_clear_highlight()
+return
+var hex: String = DataManager.provinces_registry.get(province_id, {}).get("mask_color", "")
+_set_highlight(_province_tex, hex)
 
 func _on_hovered_region_changed(region_id: String) -> void:
-	if MapManager.current_layer == MapManager.MapLayer.REGIONS:
-		_draw_outline_for_poly(
-			_region_polys.get(region_id) if region_id != "" else null
-		)
+if MapManager.current_layer != MapManager.MapLayer.REGIONS:
+return
+if region_id == "":
+_clear_highlight()
+return
+var hex: String = DataManager.regions_registry.get(region_id, {}).get("mask_color", "")
+_set_highlight(_region_tex, hex)
 
-func _draw_outline_for_poly(poly: Polygon2D) -> void:
-	_clear_outline()
-	if poly == null or poly.polygon.is_empty():
-		return
-	
-	# Draw the outline as a Line2D on the outline layer
-	var line := Line2D.new()
-	line.width = hover_outline_width
-	line.default_color = hover_outline_color
-	line.joint_mode = Line2D.LINE_JOINT_ROUND
-	line.begin_cap_mode = Line2D.LINE_CAP_ROUND
-	line.end_cap_mode = Line2D.LINE_CAP_ROUND
-	
-	var pts: PackedVector2Array = poly.polygon
-	for pt in pts:
-		line.add_point(pt)
-	# Close the loop
-	if pts.size() > 0:
-		line.add_point(pts[0])
-	
-	_outline_layer.add_child(line)
+func _set_highlight(tex: ImageTexture, hex: String) -> void:
+if not tex or hex == "":
+_clear_highlight()
+return
+_highlight_sprite.texture = tex
+var col := Color(hex)
+_highlight_mat.set_shader_parameter("target_color", Vector3(col.r, col.g, col.b))
+_highlight_mat.set_shader_parameter("hilite_color", highlight_color)
 
-func _clear_outline() -> void:
-	for child in _outline_layer.get_children():
-		child.queue_free()
+func _clear_highlight() -> void:
+_highlight_sprite.texture = null
