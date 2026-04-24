@@ -5,6 +5,8 @@ extends Node
 
 signal panel_opened(panel_id: String)
 signal panel_closed(panel_id: String)
+## Emitted when the player requests the map camera to fit to screen (world_screen while map is clean).
+signal map_fit_requested()
 
 enum Layer {
 	HUD = 0,      # Constantly visible elements (Time controls, mini-map)
@@ -21,6 +23,10 @@ var _layers: Dictionary = {}
 
 # Stack to track which popups/panels are open so the 'Escape' key closes the topmost one
 var _ui_stack: Array[Node] = []
+
+# Track last character and sect that were opened so keyboard shortcuts can reopen them
+var _last_character_id: String = ""
+var _last_sect_id: String = ""
 
 func _ready() -> void:
 	_setup_canvas_layers()
@@ -88,6 +94,12 @@ func open_panel(panel_id: String, payload: Variant = null) -> void:
 		_ui_stack.erase(panel)
 	_ui_stack.append(panel)
 	
+	# Track last-opened character and sect for keyboard shortcut recall
+	if panel_id == "character_dashboard" and payload != null:
+		_last_character_id = (payload as CharacterData).char_id if payload is CharacterData else _last_character_id
+	elif panel_id == "sect_dashboard" and payload != null:
+		_last_sect_id = (payload as SectData).sect_id if payload is SectData else _last_sect_id
+	
 	panel_opened.emit(panel_id)
 
 func close_panel(panel_id: String) -> void:
@@ -100,6 +112,11 @@ func close_panel(panel_id: String) -> void:
 func close_all_panels() -> void:
 	for id in _registered_panels:
 		close_panel(id)
+
+func is_panel_open(panel_id: String) -> bool:
+	if not _registered_panels.has(panel_id):
+		return false
+	return _registered_panels[panel_id].visible
 
 # --- POPUPS (Transient, instantiated on demand) ---
 
@@ -138,6 +155,30 @@ func _on_player_succession_required(heir_char_id: String) -> void:
 # --- INPUT HANDLING ---
 
 func _unhandled_input(event: InputEvent) -> void:
+	# Keyboard shortcut: open character screen
+	if event.is_action_pressed("char_screen"):
+		_handle_char_screen()
+		get_viewport().set_input_as_handled()
+		return
+	
+	# Keyboard shortcut: open sect screen
+	if event.is_action_pressed("sect_screen"):
+		_handle_sect_screen()
+		get_viewport().set_input_as_handled()
+		return
+	
+	# Keyboard shortcut: open debug screen
+	if event.is_action_pressed("debug_screen"):
+		_handle_debug_screen()
+		get_viewport().set_input_as_handled()
+		return
+	
+	# Keyboard shortcut: return to map / reset zoom
+	if event.is_action_pressed("world_screen"):
+		_handle_world_screen()
+		get_viewport().set_input_as_handled()
+		return
+	
 	if event.is_action_pressed("ui_cancel"): # Usually the 'Escape' key
 		if not _ui_stack.is_empty():
 			var top_node = _ui_stack.pop_back()
@@ -150,3 +191,52 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			# If the stack is empty, open the System Pause Menu
 			open_panel("system_menu")
+
+# --- KEYBOARD SHORTCUT HANDLERS ---
+
+func _handle_char_screen() -> void:
+	if is_panel_open("character_dashboard"):
+		close_panel("character_dashboard")
+		return
+	
+	var char_id = _last_character_id if _last_character_id != "" else GameManager.player_char_id
+	var character = SimulationManager.get_character(char_id)
+	if character:
+		_last_character_id = char_id
+		open_panel("character_dashboard", character)
+	else:
+		printerr("UIManager: char_screen shortcut — no valid character to display.")
+
+func _handle_sect_screen() -> void:
+	if is_panel_open("sect_dashboard"):
+		close_panel("sect_dashboard")
+		return
+	
+	var sect_id = _last_sect_id if _last_sect_id != "" else GameManager.player_sect_id
+	var sect = SimulationManager.get_sect(sect_id)
+	if sect:
+		_last_sect_id = sect_id
+		open_panel("sect_dashboard", sect)
+	else:
+		printerr("UIManager: sect_screen shortcut — no valid sect to display.")
+
+func _handle_debug_screen() -> void:
+	if is_panel_open("debug_screen"):
+		close_panel("debug_screen")
+	else:
+		open_panel("debug_screen")
+
+func _handle_world_screen() -> void:
+	var any_panel_open := false
+	for id in _registered_panels:
+		if id != "hud" and _registered_panels[id].visible:
+			any_panel_open = true
+			break
+	
+	if any_panel_open:
+		for id in _registered_panels:
+			if id != "hud":
+				close_panel(id)
+	else:
+		# Already on the map — request camera to fit the map to screen
+		map_fit_requested.emit()

@@ -67,6 +67,12 @@ func _load_premade_sects() -> void:
 		_assign_starting_laws(sect)
 		SimulationManager.register_sect(sect)
 		_populate_sect(sect, randi_range(20, 40))
+		
+		# Province placement for premade sects
+		if not DataManager.provinces_registry.is_empty():
+			var province := data.get("province_id", _pick_province_for_culture(sect.culture))
+			sect.province_id = province
+			MapManager.assign_sect_to_province(sect.sect_id, province)
 
 ## Spawns a sect, allowing specific parameters to be forced via the overrides Dictionary.
 ## Supported keys: "name" (String), "alignment" (int), "culture" (int),
@@ -125,6 +131,12 @@ func generate_custom_sect(tier: SectTier, overrides: Dictionary = {}) -> SectDat
 	var starting_size = overrides.get("members_count", randi_range(10 * int(tier), 20 * int(tier)))
 	_populate_sect(sect, starting_size)
 	
+	# 7. Province placement
+	if not DataManager.provinces_registry.is_empty():
+		var province := _pick_province_for_culture(sect.culture)
+		sect.province_id = province
+		MapManager.assign_sect_to_province(sect.sect_id, province)
+	
 	sect.recalculate_sect_tags()
 	
 	return sect
@@ -135,12 +147,28 @@ func _generate_dynamic_sect(tier: SectTier) -> SectData:
 ## Picks a culture for a new dynamically-generated sect.
 func _roll_sect_culture() -> int:
 	var roll = randi_range(0, 99)
-	if roll < 40: return Definitions.Culture.CENTRAL_PLAINS
-	elif roll < 52: return Definitions.Culture.JIANGNAN
-	elif roll < 64: return Definitions.Culture.SICHUAN
-	elif roll < 76: return Definitions.Culture.LINGNAN
-	elif roll < 88: return Definitions.Culture.NORTHERN_BORDER
-	else: return Definitions.Culture.WESTERN_REGIONS
+	if roll < 35: return Definitions.Culture.CENTRAL_PLAINS
+	elif roll < 47: return Definitions.Culture.JIANGNAN
+	elif roll < 59: return Definitions.Culture.SICHUAN
+	elif roll < 71: return Definitions.Culture.LINGNAN
+	elif roll < 82: return Definitions.Culture.NORTHERN_BORDER
+	elif roll < 93: return Definitions.Culture.WESTERN_REGIONS
+	else: return Definitions.Culture.GORYEO
+
+## Returns a province_id appropriate for the sect's culture.
+func _pick_province_for_culture(culture: int) -> String:
+	# Map culture enum to region_id
+	var culture_to_region := {
+		Definitions.Culture.CENTRAL_PLAINS:   "central_plains",
+		Definitions.Culture.JIANGNAN:         "jiangnan",
+		Definitions.Culture.SICHUAN:          "sichuan",
+		Definitions.Culture.LINGNAN:          "lingnan",
+		Definitions.Culture.NORTHERN_BORDER:  "northern_border",
+		Definitions.Culture.WESTERN_REGIONS:  "western_regions",
+		Definitions.Culture.GORYEO:           "goryeo"
+	}
+	var region_id: String = culture_to_region.get(culture, "central_plains")
+	return MapManager.get_random_province(region_id)
 
 func _roll_tenets(sect: SectData, amount: int) -> void:
 	var alignment_string = Definitions.SectAlignment.keys()[sect.alignment]

@@ -1,0 +1,61 @@
+{
+	"battle_scarred": {
+		"name": "Battle Scarred",
+		"description": "Fresh wounds from recent combat. Movement is restricted and pain is constant.",
+		"stat_modifiers": {
+			"agility": -10,
+			"strength": -5
+		},
+		"martial_modifiers": {
+			"internal_force": -10
+		}
+	},
+	"injured": {
+		"name": "Injured",
+		"description": "Suffering from a significant physical injury that impairs martial arts.",
+		"stat_modifiers": {
+			"agility": -15,
+			"strength": -10,
+			"constitution": -5
+		},
+		"martial_modifiers": {
+			"internal_force": -15,
+			"technique": -10
+		}
+	},
+	"internal_injury": {
+		"name": "Internal Injury",
+		"description": "The meridians have been disrupted by external force or Qi backlash. A dangerous condition requiring rest.",
+		"stat_modifiers": {
+			"constitution": -10,
+			"strength": -8
+		},
+		"martial_modifiers": {
+			"internal_force": -20,
+			"qi_flow": -20,
+			"technique": -15
+		}
+	},
+	"combat_high": {
+		"name": "Combat High",
+		"description": "The rush of recent combat has sharpened the senses and quickened reflexes.",
+		"stat_modifiers": {
+			"agility": 8,
+			"strength": 5
+		},
+		"martial_modifiers": {
+			"ferocity": 10
+		}
+	},
+	"suppressed_injury": {
+		"name": "Suppressed Injury",
+		"description": "Training through a hidden injury. The pain is manageable today, but it is accumulating.",
+		"stat_modifiers": {
+			"constitution": -5
+		},
+		"martial_modifiers": {
+			"technique": -8,
+			"qi_flow": -5
+		}
+	}
+}

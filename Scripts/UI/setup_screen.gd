@@ -13,11 +13,12 @@ const CULTURE_ORDER: Array = [
 	Definitions.Culture.SICHUAN,
 	Definitions.Culture.LINGNAN,
 	Definitions.Culture.WESTERN_REGIONS,
-	Definitions.Culture.NORTHERN_BORDER
+	Definitions.Culture.NORTHERN_BORDER,
+	Definitions.Culture.GORYEO
 ]
 const CULTURE_LABELS: Array = [
 	"Central Plains", "Jiangnan", "Sichuan", "Lingnan",
-	"Western Regions", "Northern Border"
+	"Western Regions", "Northern Border", "Goryeo"
 ]
 
 const ALIGNMENT_ORDER: Array = [

@@ -1,0 +1,139 @@
+{
+	"sect_war_declaration": {
+		"id": "sect_war_declaration",
+		"title": "Declaration of War",
+		"description": "Diplomacy has failed. [initiator_sect_name] has officially declared a state of blood-feud upon [target_sect_name]!",
+		"options": {
+			"acknowledge": {
+				"text": "The rivers will run red.",
+				"ai_base_weight": 100.0,
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": -100 },
+					{ "type": "add_world_log", "log_type": "war", "text": "[initiator_sect_name] declared war on [target_sect_name]." }
+				]
+			}
+		}
+	},
+	"rival_spy_caught": {
+		"id": "rival_spy_caught",
+		"title": "A Wolf Among Sheep",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "One of your disciples has uncovered a spy within the sect, a man who had been feeding information to a rival. The traitor now kneels before you.",
+		"options": {
+			"opt_execute": {
+				"text": "Execute them publicly. Let the Jianghu know betrayal has a price.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "cruel"], "multiplier": 3.0 },
+					{ "condition": ["stat_greater_than", "initiator", "ruthlessness", 65], "add": 30.0 }
+				],
+				"effects": [
+					{ "type": "add_world_log", "log_type": "war", "text": "[initiator_sect_name] executed a captured spy from a rival sect." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "executed_spy", "payload": {} }
+				]
+			},
+			"opt_interrogate": {
+				"text": "Interrogate them for intelligence before deciding their fate.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "scheming"], "multiplier": 2.5 },
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 65], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_memory", "target": "initiator", "memory_id": "interrogated_spy", "payload": {} },
+					{ "type": "add_personal_log", "target": "initiator", "text": "We wrung useful secrets from the spy before sentencing them." }
+				]
+			},
+			"opt_exile": {
+				"text": "Cripple their meridians and cast them out. A mercy they do not deserve.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "righteous"], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I crippled the spy's meridians and banished them. Let the Jianghu see my restraint." }
+				]
+			}
+		}
+	},
+	"tribute_demand": {
+		"id": "tribute_demand",
+		"title": "A Demand from Above",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"trigger_conditions": [
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "An emissary from a hegemon sect arrives bearing demands: pay tribute of 300 silver, or face 'consequences'. Their sect's strength is undeniable.",
+		"options": {
+			"opt_pay": {
+				"text": "Pay the tribute. Live to fight another day.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": -300 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I swallowed my pride and paid tribute. The sect endures." }
+				]
+			},
+			"opt_refuse": {
+				"text": "Refuse. The sect will not bow.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "righteous"], "multiplier": 2.0 },
+					{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] refused to pay tribute, defying the hegemons." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I refused the tribute demand. We will face whatever comes." }
+				]
+			}
+		}
+	},
+	"ambush_on_the_road": {
+		"id": "ambush_on_the_road",
+		"title": "Blades in the Mountain Pass",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 50], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A messenger arrives at dawn with grim news: three of your disciples were ambushed in the mountain pass. One is dead, two survived with injuries. Rival sect banners were found at the scene.",
+		"options": {
+			"opt_retaliate_immediately": {
+				"text": "Strike back now. Blood demands blood.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 3.0 },
+					{ "condition": ["has_trait", "initiator", "righteous"], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "add_world_log", "log_type": "war", "text": "[initiator_sect_name] launched retaliatory strikes after a road ambush." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "launched_retaliation", "payload": {} }
+				]
+			},
+			"opt_investigate_first": {
+				"text": "Investigate before acting. The banners may be a false flag.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "scheming"], "multiplier": 2.5 },
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I ordered an investigation before pointing fingers. Rashness is the enemy's weapon." }
+				]
+			}
+		}
+	}
+}

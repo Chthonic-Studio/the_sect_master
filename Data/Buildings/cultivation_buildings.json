@@ -1,0 +1,46 @@
+{
+	"meditation_mats": {
+		"id": "meditation_mats",
+		"name": "Courtyard Mats",
+		"description": "Basic woven mats in the courtyard for collective breathing exercises.",
+		"build_days_base": 15,
+		"cost": { "MATERIALS": 100, "WEALTH": 20 },
+		"monthly_upkeep": {},
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["basic_meditation"]
+	},
+	"qi_circulation_chamber": {
+		"id": "qi_circulation_chamber",
+		"name": "Inner Qi Circulation Chamber",
+		"description": "A sealed stone room saturated with ambient spiritual energy. Extended sessions here accelerate meridian development.",
+		"build_days_base": 90,
+		"cost": { "MATERIALS": 1000, "WEALTH": 400, "ELIXIRS": 10 },
+		"monthly_upkeep": { "WEALTH": 30, "ELIXIRS": 2 },
+		"yields": {},
+		"prerequisite_tags": ["basic_meditation"],
+		"unlocks_sect_tags": ["qi_refinement_chamber", "deep_cultivation"]
+	},
+	"celestial_observation_tower": {
+		"id": "celestial_observation_tower",
+		"name": "Celestial Observation Tower",
+		"description": "A tall pagoda for stargazing and cosmic Qi alignment. Said to improve sensitivity to Heaven's will.",
+		"build_days_base": 75,
+		"cost": { "MATERIALS": 900, "WEALTH": 500 },
+		"monthly_upkeep": { "WEALTH": 20 },
+		"yields": {},
+		"prerequisite_tags": ["basic_meditation"],
+		"unlocks_sect_tags": ["cosmic_attunement", "insight_boost"]
+	},
+	"scripture_vault": {
+		"id": "scripture_vault",
+		"name": "Scripture Vault",
+		"description": "A secure library containing the sect's foundational cultivation manuals and technique scrolls.",
+		"build_days_base": 50,
+		"cost": { "MATERIALS": 600, "WEALTH": 400 },
+		"monthly_upkeep": { "WEALTH": 15 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["technique_library", "learning_boost"]
+	}
+}

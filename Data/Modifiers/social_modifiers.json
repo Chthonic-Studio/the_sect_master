@@ -1,0 +1,56 @@
+{
+	"inspired_by_master": {
+		"name": "Inspired by the Master",
+		"description": "A recent lesson or speech by the Sect Master has invigorated this disciple.",
+		"martial_modifiers": {
+			"insight": 10
+		},
+		"personality_modifiers": {
+			"loyalty": 15,
+			"ambition": 10
+		}
+	},
+	"in_mourning": {
+		"name": "In Mourning",
+		"description": "Grieving the loss of a sect brother or trusted elder.",
+		"stat_modifiers": {
+			"intelligence": -5
+		},
+		"personality_modifiers": {
+			"sociability": -15,
+			"discipline": -10
+		}
+	},
+	"humiliated_publicly": {
+		"name": "Publicly Humiliated",
+		"description": "Was shamed before the sect. Pride and focus are shaken.",
+		"personality_modifiers": {
+			"ambition": -10,
+			"sociability": -10,
+			"ruthlessness": 15
+		}
+	},
+	"loved": {
+		"name": "Beloved",
+		"description": "Surrounded by genuine affection and strong bonds. The heart is full.",
+		"stat_modifiers": {
+			"constitution": 5,
+			"charisma": 10
+		},
+		"personality_modifiers": {
+			"sociability": 15,
+			"ambition": 5
+		}
+	},
+	"lonely": {
+		"name": "Deeply Lonely",
+		"description": "Isolation — whether chosen or imposed — has begun to eat away at the spirit.",
+		"stat_modifiers": {
+			"charisma": -8
+		},
+		"personality_modifiers": {
+			"sociability": -20,
+			"discipline": -10
+		}
+	}
+}

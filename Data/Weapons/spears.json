@@ -1,0 +1,38 @@
+{
+	"war_spear": {
+		"name": "War Spear",
+		"description": "A long-shafted spear designed for battlefield use. Keeps enemies at distance.",
+		"weapon_type": "SPEAR",
+		"damage_type": "PIERCING",
+		"base_damage": 22,
+		"rarity": "common",
+		"stat_modifiers": { "strength": 8 },
+		"martial_modifiers": { "technique": 8 },
+		"strong_against": ["SABER", "HAMMER"],
+		"weak_against": ["SWORD", "STAFF"]
+	},
+	"silver_serpent_lance": {
+		"name": "Silver Serpent Lance",
+		"description": "A flexible lance whose tip weaves like a striking serpent. Mastery of its oscillation can deflect almost any blow.",
+		"weapon_type": "SPEAR",
+		"damage_type": "PIERCING",
+		"base_damage": 26,
+		"rarity": "uncommon",
+		"stat_modifiers": { "agility": 8, "strength": 5 },
+		"martial_modifiers": { "technique": 12, "qinggong": 5 },
+		"strong_against": ["SABER", "HAMMER", "UNARMED"],
+		"weak_against": ["SWORD"]
+	},
+	"black_iron_halberd": {
+		"name": "Black Iron Halberd",
+		"description": "A combined spear and curved blade on a heavy shaft. Devastating sweep attacks but demands tremendous strength.",
+		"weapon_type": "SPEAR",
+		"damage_type": "PIERCING",
+		"base_damage": 30,
+		"rarity": "uncommon",
+		"stat_modifiers": { "strength": 15, "agility": -5 },
+		"martial_modifiers": { "ferocity": 10, "technique": 5 },
+		"strong_against": ["SABER", "HAMMER", "SWORD"],
+		"weak_against": ["STAFF", "NEEDLE"]
+	}
+}

@@ -1,0 +1,38 @@
+{
+	"bronze_saber": {
+		"name": "Bronze Saber",
+		"description": "A single-edged blade suited for fast, aggressive slashing techniques.",
+		"weapon_type": "SABER",
+		"damage_type": "SLASHING",
+		"base_damage": 18,
+		"rarity": "common",
+		"stat_modifiers": { "agility": 8, "strength": 3 },
+		"martial_modifiers": { "ferocity": 5 },
+		"strong_against": ["STAFF", "UNARMED"],
+		"weak_against": ["SWORD", "SPEAR"]
+	},
+	"wolf_fang_saber": {
+		"name": "Wolf-Fang Saber",
+		"description": "A heavily serrated blade that tears rather than cuts. Brutal in close quarters.",
+		"weapon_type": "SABER",
+		"damage_type": "SLASHING",
+		"base_damage": 24,
+		"rarity": "uncommon",
+		"stat_modifiers": { "strength": 8, "agility": 4 },
+		"martial_modifiers": { "ferocity": 12 },
+		"strong_against": ["STAFF", "UNARMED"],
+		"weak_against": ["SWORD", "SPEAR"]
+	},
+	"bloodmoon_saber": {
+		"name": "Bloodmoon Curved Saber",
+		"description": "A long, deeply curved blade associated with demonic sects. The red tint in the metal is not cosmetic.",
+		"weapon_type": "SABER",
+		"damage_type": "SLASHING",
+		"base_damage": 30,
+		"rarity": "rare",
+		"stat_modifiers": { "strength": 10, "agility": 5 },
+		"martial_modifiers": { "ferocity": 20, "internal_force": 10 },
+		"strong_against": ["STAFF", "UNARMED", "SWORD"],
+		"weak_against": ["SPEAR"]
+	}
+}

@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://debug_screen_tscn"]
+
+[ext_resource type="Script" path="res://Scripts/UI/debug_screen.gd" id="1_debug"]
+
+[node name="DebugScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_debug")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.05, 0.08, 0.92)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TitleBar" type="HBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBox/TitleBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "DEBUG CONSOLE"
+theme_override_font_sizes/font_size = 16
+
+[node name="CloseButton" type="Button" parent="MarginContainer/VBox/TitleBar"]
+layout_mode = 2
+text = "X"
+tooltip_text = "Close  [~]"
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Console" type="VBoxContainer" parent="MarginContainer/VBox/TabContainer"]
+layout_mode = 2
+
+[node name="CommandOutput" type="RichTextLabel" parent="MarginContainer/VBox/TabContainer/Console"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+scroll_following = true
+text = ""
+
+[node name="CommandInput" type="LineEdit" parent="MarginContainer/VBox/TabContainer/Console"]
+layout_mode = 2
+placeholder_text = "Enter command..."
+
+[node name="Statistics" type="ScrollContainer" parent="MarginContainer/VBox/TabContainer"]
+layout_mode = 2
+
+[node name="StatsLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Statistics"]
+layout_mode = 2
+text = ""
+
+[node name="WorldLog" type="ScrollContainer" parent="MarginContainer/VBox/TabContainer"]
+layout_mode = 2
+
+[node name="LogLabel" type="RichTextLabel" parent="MarginContainer/VBox/TabContainer/WorldLog"]
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = ""

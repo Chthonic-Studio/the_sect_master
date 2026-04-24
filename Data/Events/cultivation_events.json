@@ -1,0 +1,162 @@
+{
+	"cultivation_breakthrough_attempt": {
+		"id": "cultivation_breakthrough_attempt",
+		"title": "On the Cusp of Enlightenment",
+		"pulse": "monthly_character",
+		"base_weight": 3.0,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "discipline", 70], "multiplier": 2.0 },
+			{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 2.5 },
+			{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 1.5 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "discipline", 50]
+		],
+		"description": "[initiator_name] senses their internal energy reaching a critical juncture. A breakthrough may be at hand — or a dangerous Qi Deviation.",
+		"options": {
+			"opt_push_through": {
+				"text": "Push through the barrier. Risk everything for glory.",
+				"ai_base_weight": 25.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "impulsive"], "multiplier": 3.0 },
+					{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 0.5 },
+					{ "condition": ["stat_greater_than", "initiator", "ruthlessness", 60], "add": 20.0 }
+				],
+				"effects": [
+					{ "type": "trigger_event", "event_id": "cultivation_result_risky", "delay_days": 1 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I pushed my Qi to the limit. The outcome will reveal itself soon." }
+				]
+			},
+			"opt_meditate": {
+				"text": "Retreat into seclusion. Let the breakthrough come naturally.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 2.0 },
+					{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "trigger_event", "event_id": "cultivation_result_safe", "delay_days": 7 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I entered seclusion to guide my Qi carefully." }
+				]
+			}
+		}
+	},
+	"cultivation_result_safe": {
+		"id": "cultivation_result_safe",
+		"title": "A Steady Advance",
+		"description": "[initiator_name] emerges from seclusion with a clearer mind and stronger meridians. The Dao rewards patience.",
+		"options": {
+			"acknowledge": {
+				"text": "The Dao rewards patience.",
+				"ai_base_weight": 100.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "My patient cultivation has borne fruit." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "breakthrough_safe", "payload": {} }
+				]
+			}
+		}
+	},
+	"cultivation_result_risky": {
+		"id": "cultivation_result_risky",
+		"title": "The Edge of the Abyss",
+		"description": "[initiator_name]'s gamble with their Qi bears consequences. The channels burn...",
+		"options": {
+			"opt_survive": {
+				"text": "Fight through the pain.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "discipline", 70], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "The breakthrough was agonizing, but I endured." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "breakthrough_risky", "payload": {} }
+				]
+			},
+			"opt_fail": {
+				"text": "The Qi spirals out of control.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "impulsive"], "multiplier": 1.5 },
+					{ "condition": ["has_trait", "initiator", "crippled"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_trait", "target": "initiator", "trait": "qi_deviation_survivor" },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I suffered a Qi Deviation. My foundation is damaged." }
+				]
+			}
+		}
+	},
+	"personal_existential_doubt": {
+		"id": "personal_existential_doubt",
+		"title": "The Void Between Breaths",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "stress", 60], "multiplier": 3.0 },
+			{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 1.5 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "stress", 50]
+		],
+		"description": "[initiator_name] finds themselves unable to enter meditation. For three days they have sat unmoving, confronting an emptiness they cannot name.",
+		"options": {
+			"opt_seek_master": {
+				"text": "Seek guidance from a senior cultivator.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "loyalty", 60], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sought a senior's guidance through my spiritual crisis." }
+				]
+			},
+			"opt_endure": {
+				"text": "Endure alone. The Dao tests those it favors.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 2.0 },
+					{ "condition": ["has_trait", "initiator", "stoic"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sat with the emptiness alone until it passed. The Dao tests those it favors." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "survived_doubt_alone", "payload": {} }
+				]
+			}
+		}
+	},
+	"meridian_injury_seclusion": {
+		"id": "meridian_injury_seclusion",
+		"title": "Cracked Meridians",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "injured"], "multiplier": 3.0 },
+			{ "condition": ["has_trait", "initiator", "internal_injury"], "multiplier": 4.0 }
+		],
+		"trigger_conditions": [
+			["has_trait", "initiator", "internal_injury"]
+		],
+		"description": "[initiator_name] has been quietly nursing cracked meridians from a recent battle or cultivation accident. Left unaddressed, permanent damage is possible.",
+		"options": {
+			"opt_forced_rest": {
+				"text": "Enter mandatory healing seclusion.",
+				"ai_base_weight": 70.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I entered healing seclusion. Slow recovery is better than none." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "meridian_healing_seclusion", "payload": {} }
+				]
+			},
+			"opt_ignore": {
+				"text": "Train through the pain. Weakness is temporary.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 2.5 },
+					{ "condition": ["stat_greater_than", "initiator", "discipline", 75], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I trained through my injuries. The pain is my teacher." }
+				]
+			}
+		}
+	}
+}

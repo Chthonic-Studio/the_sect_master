@@ -30,6 +30,11 @@
 			"male_given": ["Feng", "Biao", "Mang", "Zhan", "Kuo", "Tie", "Han", "Kuang", "Shuai", "Jue", "Ying", "Ge", "Duo", "Ba", "Mang"],
 			"female_given": ["Bing", "Xue", "Shuang", "Han", "Leng", "Ao", "Ya", "Mei", "Su", "Ying", "Qing", "Zhen", "Xuan", "Luo", "Ran"]
 		},
+		"GORYEO": {
+			"surnames": ["Kim", "Lee", "Park", "Choi", "Jung", "Han", "Jang", "Oh", "Yoon", "Shin", "Gong", "Ryu"],
+			"male_given": ["Soo", "Hyun", "Jun", "Jae", "Min", "Woo", "Chan", "Ho", "Seok", "Bin", "Tae", "Hoon", "Kyu", "Sung", "Won"],
+			"female_given": ["Soo", "Hye", "Ji", "Young", "Eun", "Mi", "Sun", "Yeon", "Kyung", "In", "Ae", "Na", "Ha", "Song", "Bo"]
+		},
 		"generic": {
 			"surnames": ["Li", "Wang", "Zhang", "Liu", "Chen", "Yang", "Huang", "Zhao", "Wu", "Zhou", "Xu", "Sun", "Ma", "Zhu", "Hu", "Guo", "He", "Lin", "Luo", "Gao"],
 			"male_given": ["Wei", "Qiang", "Lei", "Jun", "Yang", "Yong", "Ying", "Jian", "Lun", "Hao", "Sheng", "Zhen", "Ming", "Bo", "Tai"],

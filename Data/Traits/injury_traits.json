@@ -1,0 +1,62 @@
+[
+{
+	"id": "injured",
+	"display_name": "Injured",
+	"type": "injury",
+	"description": "Currently suffering from a physical injury that impairs movement and martial arts.",
+	"rarity_weight": 30,
+	"stat_modifiers": { "agility": -15, "strength": -10, "constitution": -5 },
+	"martial_modifiers": { "internal_force": -15, "technique": -10 },
+	"conflicts": ["body_of_iron"]
+},
+{
+	"id": "internal_injury",
+	"display_name": "Internal Injury",
+	"type": "injury",
+	"description": "The meridians have been disrupted by force or Qi backlash. A severe condition requiring extended rest.",
+	"rarity_weight": 15,
+	"stat_modifiers": { "constitution": -10, "strength": -8 },
+	"martial_modifiers": { "internal_force": -20, "qi_flow": -20, "technique": -15 },
+	"conflicts": ["body_of_iron", "divine_aptitude"]
+},
+{
+	"id": "crippled_leg",
+	"display_name": "Crippled Leg",
+	"type": "injury",
+	"description": "Permanently damaged leg. Movement-based techniques are halved in effectiveness.",
+	"rarity_weight": 5,
+	"stat_modifiers": { "agility": -25 },
+	"martial_modifiers": { "qinggong": -30 },
+	"conflicts": ["master_of_qinggong", "swift_footed"]
+},
+{
+	"id": "broken_arm",
+	"display_name": "Broken Arm",
+	"type": "injury",
+	"description": "An arm that was broken and poorly set. Grip strength never fully recovered.",
+	"rarity_weight": 10,
+	"stat_modifiers": { "strength": -20, "agility": -10 },
+	"martial_modifiers": { "technique": -15, "ferocity": -10 },
+	"conflicts": ["iron_grip"]
+},
+{
+	"id": "overexerted",
+	"display_name": "Overexerted",
+	"type": "injury",
+	"description": "Has pushed physical and Qi limits dangerously far. Resting is the only cure.",
+	"rarity_weight": 25,
+	"stat_modifiers": { "constitution": -8, "agility": -5 },
+	"martial_modifiers": { "qi_flow": -12, "internal_force": -8 },
+	"conflicts": []
+},
+{
+	"id": "blinded_one_eye",
+	"display_name": "Blind in One Eye",
+	"type": "injury",
+	"description": "Lost the use of one eye to a blade or poison. Perception at distance suffers greatly.",
+	"rarity_weight": 8,
+	"stat_modifiers": { "perception": -20 },
+	"martial_modifiers": { "technique": -8 },
+	"conflicts": []
+}
+]

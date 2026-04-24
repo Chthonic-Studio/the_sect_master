@@ -1,0 +1,26 @@
+{
+	"iron_dagger": {
+		"name": "Iron Dagger",
+		"description": "A short, broad-bladed dagger. Unremarkable but reliable in close quarters or as a backup weapon.",
+		"weapon_type": "DAGGER",
+		"damage_type": "PIERCING",
+		"base_damage": 10,
+		"rarity": "common",
+		"stat_modifiers": { "agility": 5 },
+		"martial_modifiers": {},
+		"strong_against": ["UNARMED", "FAN"],
+		"weak_against": ["SWORD", "SPEAR", "STAFF"]
+	},
+	"serpent_tongue_dagger": {
+		"name": "Serpent-Tongue Dagger",
+		"description": "A double-edged blade with a groove cut for applying poison. The forked tip widens wounds.",
+		"weapon_type": "DAGGER",
+		"damage_type": "PIERCING",
+		"base_damage": 14,
+		"rarity": "uncommon",
+		"stat_modifiers": { "agility": 8, "intelligence": 5 },
+		"martial_modifiers": { "ferocity": 5, "insight": 5 },
+		"strong_against": ["UNARMED", "FAN"],
+		"weak_against": ["SWORD", "SPEAR"]
+	}
+}

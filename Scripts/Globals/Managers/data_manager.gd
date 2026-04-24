@@ -18,6 +18,10 @@ var buildings_registry: Dictionary = {}
 var tenets_registry: Dictionary = {}      
 var sect_names_registry: Dictionary = {}  
 
+# --- MAP REGISTRIES ---
+var regions_registry: Dictionary = {}    # region_id -> region data
+var provinces_registry: Dictionary = {}  # province_id -> province data
+
 # --- AI LOGIC REGISTRIES ---
 var micro_desires: Dictionary = {} # Dict[String, Array[Desire]] mapped by tag
 var macro_desires: Dictionary = {} # Dict[String, Array[Desire]] mapped by tag
@@ -45,6 +49,9 @@ func load_all_data() -> void:
 	_scan_directory_for_json(BASE_DATA_PATH + "Buildings", _load_buildings)
 	_scan_directory_for_json(BASE_DATA_PATH + "Tenets", _load_tenets)
 	_scan_directory_for_json(BASE_DATA_PATH + "SectNames", _load_sect_names)
+	
+	# 1c. Load Map data
+	_scan_directory_for_json(BASE_DATA_PATH + "Map", _load_map_data)
 	
 	# 2. Load modded data (overwrites vanilla IDs or adds new ones)
 	_scan_directory_for_json(MOD_DATA_PATH + "Traits", _load_trait_data)
@@ -214,6 +221,7 @@ func _ensure_mod_directories() -> void:
 		dir.make_dir("Mods/Tenets")
 		dir.make_dir("Mods/SectNames")
 		dir.make_dir("Mods/Events")
+		dir.make_dir("Mods/Map")
 
 ## Generic directory scanner that applies a specific loading Callable to each JSON found
 func _scan_directory_for_json(path: String, load_func: Callable) -> void:
@@ -314,6 +322,34 @@ func _load_events(path: String) -> void:
 	var json = JSON.new()
 	if json.parse(file.get_as_text()) == OK and json.data is Dictionary:
 		events_registry.merge(json.data, true)
+
+func _load_map_data(path: String) -> void:
+	var file = FileAccess.open(path, FileAccess.READ)
+	if not file: return
+	var json := JSON.new()
+	if json.parse(file.get_as_text()) != OK:
+		printerr("DataManager: JSON parse error in map file: ", path)
+		return
+	var data = json.data
+	if not (data is Dictionary):
+		return
+	# Detect whether this file contains regions or provinces by its "type" key,
+	# or by the presence of known root keys.
+	if data.has("regions"):
+		for r_id in data["regions"]:
+			regions_registry[r_id] = data["regions"][r_id]
+	elif data.has("provinces"):
+		for p_id in data["provinces"]:
+			provinces_registry[p_id] = data["provinces"][p_id]
+	else:
+		# Flat dictionary: try to detect by first entry's keys
+		for key in data:
+			var entry = data[key]
+			if entry is Dictionary:
+				if entry.has("culture"):
+					regions_registry[key] = entry
+				elif entry.has("region_id"):
+					provinces_registry[key] = entry
 
 ## Helper to merge nested dictionaries (crucial for names.json mods)
 func _deep_merge_dict(target: Dictionary, patch: Dictionary) -> void:

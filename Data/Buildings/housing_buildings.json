@@ -1,0 +1,58 @@
+{
+	"grand_kitchen": {
+		"id": "grand_kitchen",
+		"name": "Grand Kitchen",
+		"description": "A facility capable of feeding hundreds of disciples properly.",
+		"build_days_base": 45,
+		"cost": { "MATERIALS": 300, "WEALTH": 100 },
+		"monthly_upkeep": { "WEALTH": 15 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["advanced_cooking", "well_fed_disciples"]
+	},
+	"massive_kitchen": {
+		"id": "massive_kitchen",
+		"name": "Massive Kitchen",
+		"description": "An upgraded kitchen complex capable of supporting grand banquets and large sect feasts.",
+		"build_days_base": 90,
+		"cost": { "MATERIALS": 800, "WEALTH": 300 },
+		"monthly_upkeep": { "WEALTH": 40 },
+		"yields": {},
+		"prerequisite_tags": ["advanced_cooking"],
+		"replaces": "grand_kitchen",
+		"unlocks_sect_tags": ["advanced_cooking", "master_cooking", "well_fed_disciples"]
+	},
+	"disciple_barracks": {
+		"id": "disciple_barracks",
+		"name": "Disciple Barracks",
+		"description": "Proper sleeping quarters for outer and inner disciples. Improves living conditions significantly.",
+		"build_days_base": 50,
+		"cost": { "MATERIALS": 600, "WEALTH": 150 },
+		"monthly_upkeep": { "WEALTH": 20 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["proper_housing", "comfort_boost"]
+	},
+	"elder_courtyard": {
+		"id": "elder_courtyard",
+		"name": "Elder's Private Courtyard",
+		"description": "A secluded courtyard with personal meditation chambers for the sect's Elders. They are noticeably more at ease.",
+		"build_days_base": 60,
+		"cost": { "MATERIALS": 700, "WEALTH": 300 },
+		"monthly_upkeep": { "WEALTH": 25 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["elder_comfort", "elder_loyalty_bonus"]
+	},
+	"guest_pavilion": {
+		"id": "guest_pavilion",
+		"name": "Guest Pavilion",
+		"description": "A comfortable pavilion for hosting visiting dignitaries, wandering masters, and allied sects. Increases prestige when visitors arrive.",
+		"build_days_base": 35,
+		"cost": { "MATERIALS": 300, "WEALTH": 200 },
+		"monthly_upkeep": { "WEALTH": 10 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["hospitality", "guest_welcome"]
+	}
+}

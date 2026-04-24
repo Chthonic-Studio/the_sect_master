@@ -1,0 +1,38 @@
+{
+	"iron_staff": {
+		"name": "Iron Staff",
+		"description": "A six-foot iron staff, favored by monks and wandering fighters for its defensive versatility.",
+		"weapon_type": "STAFF",
+		"damage_type": "BLUNT",
+		"base_damage": 18,
+		"rarity": "common",
+		"stat_modifiers": { "constitution": 5 },
+		"martial_modifiers": { "technique": 5 },
+		"strong_against": ["SWORD", "HAMMER", "SABER"],
+		"weak_against": ["SPEAR"]
+	},
+	"dragon_head_staff": {
+		"name": "Dragon-Head Staff",
+		"description": "A heavy wooden staff topped with a carved iron dragon head. Channels Qi through its hollow core.",
+		"weapon_type": "STAFF",
+		"damage_type": "BLUNT",
+		"base_damage": 22,
+		"rarity": "uncommon",
+		"stat_modifiers": { "constitution": 8, "intelligence": 5 },
+		"martial_modifiers": { "technique": 10, "qi_flow": 8 },
+		"strong_against": ["SWORD", "HAMMER", "SABER"],
+		"weak_against": ["SPEAR"]
+	},
+	"celestial_bamboo_staff": {
+		"name": "Celestial Bamboo Staff",
+		"description": "Carved from mountain bamboo rumoured to have absorbed decades of ambient Qi. Impossibly light yet immovable when Qi is channelled through it.",
+		"weapon_type": "STAFF",
+		"damage_type": "BLUNT",
+		"base_damage": 20,
+		"rarity": "rare",
+		"stat_modifiers": { "constitution": 5, "intelligence": 10 },
+		"martial_modifiers": { "technique": 15, "qi_flow": 15, "insight": 10 },
+		"strong_against": ["SWORD", "HAMMER", "SABER"],
+		"weak_against": ["SPEAR"]
+	}
+}

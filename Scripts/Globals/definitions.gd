@@ -136,7 +136,8 @@ enum Culture {
 	JIANGNAN,			# Scholar/Elegant arts, high comprehension
 	LINGNAN,			# Hard physical styles, resilient
 	WESTERN_REGIONS,	# Exotic styles, high agility
-	NORTHERN_BORDER		# Heavy weapons, high strength
+	NORTHERN_BORDER,	# Heavy weapons, high strength
+	GORYEO				# Korean peninsula — disciplined forms, honour-bound traditions
 }
 
 # --- SECT HIERARCHY ---

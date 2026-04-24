@@ -1,0 +1,105 @@
+{
+	"harsh_training_session": {
+		"id": "harsh_training_session",
+		"title": "The Breaking Point",
+		"pulse": "monthly_character",
+		"base_weight": 3.0,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 2.0 },
+			{ "condition": ["stat_greater_than", "initiator", "discipline", 70], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "discipline", 50]
+		],
+		"description": "[initiator_name] has been pushing their training regimen to its absolute limit for the past two weeks. Their body trembles at the verge of exhaustion — or transformation.",
+		"options": {
+			"opt_push_further": {
+				"text": "Train harder. The breakthrough is close.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 2.0 },
+					{ "condition": ["has_trait", "initiator", "impulsive"], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "add_trait", "target": "initiator", "trait": "overexerted" },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I pushed my body beyond its limits. Whether this forges me or breaks me remains to be seen." }
+				]
+			},
+			"opt_rest_and_recover": {
+				"text": "Rest and consolidate. The path is long.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I chose rest over recklessness. Steady progress is still progress." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "chose_recovery_over_strain", "payload": {} }
+				]
+			}
+		}
+	},
+	"secret_technique_discovered": {
+		"id": "secret_technique_discovered",
+		"title": "The Hidden Scroll",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "curious"], "multiplier": 3.0 },
+			{ "condition": ["stat_greater_than", "initiator", "intelligence", 65], "multiplier": 2.0 }
+		],
+		"description": "[initiator_name] discovers a hidden compartment in the sect library containing a scroll written in an archaic cipher. The title reads: 'Seven-Step Soul Shattering Palm'.",
+		"options": {
+			"opt_study_immediately": {
+				"text": "Begin deciphering it at once. Knowledge waits for no one.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I found a forbidden scroll and began studying it immediately." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "studying_secret_scroll", "payload": {} }
+				]
+			},
+			"opt_report_to_master": {
+				"text": "Report it to the Sect Master. Forbidden techniques need oversight.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "loyalty", 70], "multiplier": 3.0 },
+					{ "condition": ["has_trait", "initiator", "righteous"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned the hidden scroll over to the Sect Master. Honor before power." },
+					{ "type": "add_world_log", "log_type": "positive", "text": "A loyal disciple of [initiator_sect_name] reported a forbidden scroll to their master." }
+				]
+			}
+		}
+	},
+	"sparring_accident": {
+		"id": "sparring_accident",
+		"title": "Steel Meets Flesh",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "impulsive"], "multiplier": 2.5 },
+			{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 2.0 }
+		],
+		"description": "During a supervised sparring match, [initiator_name]'s technique slipped and they struck their partner with real force. The partner is injured, the match has ended, and the training ground is silent.",
+		"options": {
+			"opt_apologise_publicly": {
+				"text": "Bow and apologise openly. It was an accident.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "honor", 60], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I apologised publicly for my error. It cost me face, but it was the right thing." }
+				]
+			},
+			"opt_deflect_blame": {
+				"text": "Claim the partner was careless in their guard.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 3.0 },
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I redirected the blame. Survival in this sect demands self-preservation." }
+				]
+			}
+		}
+	}
+}

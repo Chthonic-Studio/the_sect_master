@@ -1,0 +1,50 @@
+{
+	"basic_iron_sword": {
+		"name": "Iron Sword",
+		"description": "A standard three-foot blade. The weapon of a gentleman, but often wielded by scoundrels.",
+		"weapon_type": "SWORD",
+		"damage_type": "SLASHING",
+		"base_damage": 15,
+		"rarity": "common",
+		"stat_modifiers": { "agility": 5 },
+		"martial_modifiers": {},
+		"strong_against": ["SPEAR", "FAN"],
+		"weak_against": ["HAMMER", "STAFF"]
+	},
+	"jade_sword": {
+		"name": "Jade Frost Sword",
+		"description": "A rare sword with a blade that faintly glows. Said to have been forged in a glacier. Conducts Qi beautifully.",
+		"weapon_type": "SWORD",
+		"damage_type": "SLASHING",
+		"base_damage": 28,
+		"rarity": "rare",
+		"stat_modifiers": { "agility": 10, "intelligence": 5 },
+		"martial_modifiers": { "qi_flow": 15, "technique": 10 },
+		"strong_against": ["SPEAR", "FAN", "SABER"],
+		"weak_against": ["HAMMER"]
+	},
+	"ghost_blade": {
+		"name": "Ghost Edge Sword",
+		"description": "A narrow, dark blade said to carry the chill of the underworld. Favoured by shadow cults.",
+		"weapon_type": "SWORD",
+		"damage_type": "SLASHING",
+		"base_damage": 22,
+		"rarity": "uncommon",
+		"stat_modifiers": { "agility": 8, "charisma": -5 },
+		"martial_modifiers": { "ferocity": 8, "technique": 5 },
+		"strong_against": ["SPEAR", "FAN"],
+		"weak_against": ["HAMMER", "STAFF"]
+	},
+	"golden_light_sword": {
+		"name": "Golden Light Sword",
+		"description": "A ceremonial blade forged from refined bronze and inlaid with gold. More symbol than weapon — until it isn't.",
+		"weapon_type": "SWORD",
+		"damage_type": "SLASHING",
+		"base_damage": 18,
+		"rarity": "uncommon",
+		"stat_modifiers": { "charisma": 10, "agility": 3 },
+		"martial_modifiers": { "technique": 8 },
+		"strong_against": ["SPEAR", "FAN"],
+		"weak_against": ["HAMMER"]
+	}
+}
