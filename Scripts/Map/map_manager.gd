@@ -13,6 +13,10 @@ enum MapLayer {
 	PROVINCES   # Shows province-level borders and highlights
 }
 
+# Map dimensions — set by main_game.gd before MapRenderer initialises.
+var map_width: float = 2100.0
+var map_height: float = 1500.0
+
 # Currently active interaction layer
 var current_layer: MapLayer = MapLayer.REGIONS
 
@@ -102,17 +106,19 @@ func get_provinces_in_region(region_id: String) -> Array[String]:
 	return result
 
 ## Returns a random province_id, optionally filtered by region_id.
+## Returns an empty string if no provinces exist for the requested region.
 func get_random_province(region_id: String = "") -> String:
 	var pool: Array[String] = []
 	if region_id != "":
 		pool = get_provinces_in_region(region_id)
+		if pool.is_empty():
+			push_warning("MapManager: No provinces found for region '%s'." % region_id)
+			return ""
 	else:
 		for p_id in DataManager.provinces_registry:
 			pool.append(p_id)
 	
 	if pool.is_empty():
-		# Fallback: return first province
-		var all := DataManager.provinces_registry.keys()
-		return all[0] if not all.is_empty() else ""
+		return ""
 	
 	return pool[randi() % pool.size()]

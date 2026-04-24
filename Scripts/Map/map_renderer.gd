@@ -39,10 +39,7 @@ func _setup_layers() -> void:
 	_background_layer = ColorRect.new()
 	_background_layer.name = "BackgroundLayer"
 	_background_layer.color = Color(0.14, 0.12, 0.10, 1.0)
-	# Use the map dimensions stored as metadata by main_game.gd
-	var map_w: float = MapManager.get_meta("map_width", 2100.0)
-	var map_h: float = MapManager.get_meta("map_height", 1500.0)
-	_background_layer.size = Vector2(map_w, map_h)
+	_background_layer.size = Vector2(MapManager.map_width, MapManager.map_height)
 	add_child(_background_layer)
 	
 	_region_layer = Node2D.new()

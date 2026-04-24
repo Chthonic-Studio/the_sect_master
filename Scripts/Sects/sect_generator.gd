@@ -70,9 +70,12 @@ func _load_premade_sects() -> void:
 		
 		# Province placement for premade sects
 		if not DataManager.provinces_registry.is_empty():
-			var province := data.get("province_id", _pick_province_for_culture(sect.culture))
-			sect.province_id = province
-			MapManager.assign_sect_to_province(sect.sect_id, province)
+			var province: String = data.get("province_id", "")
+			if province == "":
+				province = _pick_province_for_culture(sect.culture)
+			if province != "":
+				sect.province_id = province
+				MapManager.assign_sect_to_province(sect.sect_id, province)
 
 ## Spawns a sect, allowing specific parameters to be forced via the overrides Dictionary.
 ## Supported keys: "name" (String), "alignment" (int), "culture" (int),
@@ -134,8 +137,9 @@ func generate_custom_sect(tier: SectTier, overrides: Dictionary = {}) -> SectDat
 	# 7. Province placement
 	if not DataManager.provinces_registry.is_empty():
 		var province := _pick_province_for_culture(sect.culture)
-		sect.province_id = province
-		MapManager.assign_sect_to_province(sect.sect_id, province)
+		if province != "":
+			sect.province_id = province
+			MapManager.assign_sect_to_province(sect.sect_id, province)
 	
 	sect.recalculate_sect_tags()
 	

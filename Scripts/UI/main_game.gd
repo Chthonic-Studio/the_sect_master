@@ -41,9 +41,9 @@ func _ready() -> void:
 	TimeManager.set_time_speed(TimeManager.Speed.NORMAL)
 
 func _setup_map() -> void:
-	# Tell the MapManager the map dimensions so the camera can read them
-	MapManager.set_meta("map_width", MAP_WIDTH)
-	MapManager.set_meta("map_height", MAP_HEIGHT)
+	# Store map dimensions on the MapManager for other systems to query
+	MapManager.map_width = MAP_WIDTH
+	MapManager.map_height = MAP_HEIGHT
 	
 	# Renderer (draws polygons for regions and provinces)
 	var renderer := MapRenderer.new()

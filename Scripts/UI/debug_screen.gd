@@ -8,6 +8,7 @@ const MAX_LOG_LINES := 200
 
 var _command_history: Array[String] = []
 var _history_index: int = -1
+var _log_append_count: int = 0
 
 func _ready() -> void:
 	UIManager.register_panel("debug_screen", self, UIManager.Layer.SYSTEM)
@@ -135,11 +136,14 @@ func _execute_command(cmd: String) -> void:
 func _log_line(text: String) -> void:
 	var output: RichTextLabel = $MarginContainer/VBox/TabContainer/Console/CommandOutput
 	output.append_text(text + "\n")
-	# Trim to keep line count manageable (RichTextLabel has no built-in limit)
-	if output.get_line_count() > MAX_LOG_LINES:
-		var raw_lines := output.text.split("\n")
-		raw_lines = raw_lines.slice(raw_lines.size() - MAX_LOG_LINES)
-		output.text = "\n".join(raw_lines)
+	# Trim every 10 appends to avoid parsing the full text on every line
+	_log_append_count += 1
+	if _log_append_count >= 10:
+		_log_append_count = 0
+		if output.get_line_count() > MAX_LOG_LINES:
+			var raw_lines := output.text.split("\n")
+			raw_lines = raw_lines.slice(raw_lines.size() - MAX_LOG_LINES)
+			output.text = "\n".join(raw_lines)
 
 # --- STATS TAB ---
 
