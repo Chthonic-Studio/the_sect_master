@@ -53,7 +53,6 @@ const LAW_PRESET_LABELS: Array = ["Council Traditions (Elders share power)", "Ir
 const SECT_TIER_ORDER: Array = [SectGenerator.SectTier.MINOR, SectGenerator.SectTier.AVERAGE]
 const SECT_TIER_LABELS: Array = ["Small Band (~10 members)", "Established Sect (~20 members)"]
 
-const DIFFICULTY_LABELS: Array = ["Scholar (Easy)", "Warrior (Normal)", "Grandmaster (Hard)"]
 const POP_SCALE_LABELS: Array = ["Low (1,500)", "Normal (3,000)", "High (5,000)"]
 const POP_SCALE_VALUES: Array = [1500, 3000, 5000]
 
@@ -119,9 +118,6 @@ func _populate_page2_dropdowns() -> void:
 	_on_region_changed(0)
 
 func _populate_page3_dropdowns() -> void:
-	for lbl in DIFFICULTY_LABELS:
-		%DifficultyDropdown.add_item(lbl)
-	%DifficultyDropdown.selected = 1
 	for lbl in POP_SCALE_LABELS:
 		%PopScaleDropdown.add_item(lbl)
 	%PopScaleDropdown.selected = 1
@@ -248,14 +244,13 @@ func _on_start_pressed() -> void:
 	if %SectProvinceDropdown.item_count > 0:
 		province_id = %SectProvinceDropdown.get_item_metadata(%SectProvinceDropdown.selected)
 
-	var difficulty  = %DifficultyDropdown.selected
 	var pop_scale   = POP_SCALE_VALUES[%PopScaleDropdown.selected]
 	var start_year  = int(%StartYearSpinBox.value)
 
 	_generate_game(
 		first_name, last_name, gender, char_culture, aptitude, avatar_idx, starting_trait,
 		sect_name, alignment, sect_culture, province_id, tenet_id, law_preset, sect_tier,
-		difficulty, pop_scale, start_year
+		pop_scale, start_year
 	)
 
 func _generate_game(
@@ -263,7 +258,7 @@ func _generate_game(
 	aptitude: int, avatar_idx: int, starting_trait: String,
 	sect_name: String, alignment: int, sect_culture: int, province_id: String,
 	tenet_id: String, law_preset: String, sect_tier: SectGenerator.SectTier,
-	difficulty: int, pop_scale: int, start_year: int
+	pop_scale: int, start_year: int
 ) -> void:
 
 	# 1. Apply world settings
@@ -271,8 +266,7 @@ func _generate_game(
 	WorldManager.target_world_population = pop_scale
 
 	# 2. Generate the world's rival sects.
-	# difficulty: 0=easy (fewer/weaker rivals), 1=normal, 2=hard (more/stronger rivals)
-	SectGenerator.generate_world_sects(difficulty)
+	SectGenerator.generate_world_sects()
 
 	# 3. Generate the player's sect with full overrides
 	var sect_tenets: Array[String] = []

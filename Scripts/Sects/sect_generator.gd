@@ -4,10 +4,6 @@ extends Node
 ## Province-based generation: after loading premade sects, each province
 ## is populated with a big sect (if absent), 2-5 medium sects, and 3-7 small sects.
 ## Counts are inversely proportional to the dominant regional reputation.
-##
-## difficulty: 0 = easy  (fewer rival sects overall)
-##             1 = normal
-##             2 = hard   (more rival sects, stronger premades)
 
 enum SectTier { MINOR = 1, AVERAGE = 2, MAJOR = 3, HEGEMON = 4 }
 
@@ -15,13 +11,10 @@ enum SectTier { MINOR = 1, AVERAGE = 2, MAJOR = 3, HEGEMON = 4 }
 const REP_MAJOR_THRESHOLD   := 70
 const REP_AVERAGE_THRESHOLD := 40
 
-# difficulty -> multiplier applied to maximum dynamic sect counts per province
-const DIFFICULTY_MULTIPLIERS: Array = [0.5, 1.0, 1.5]
-
-func generate_world_sects(difficulty: int = 1) -> void:
-	print("SectGenerator: Beginning World Generation (difficulty=%d)..." % difficulty)
+func generate_world_sects() -> void:
+	print("SectGenerator: Beginning World Generation...")
 	_load_premade_sects()
-	var dynamic_sects := _populate_all_provinces(difficulty)
+	var dynamic_sects := _populate_all_provinces()
 	_run_rival_matchmaker(dynamic_sects)
 	print("SectGenerator: World Generation Complete. Generated ",
 		SimulationManager.sect_repo.size(), " active sects.")
@@ -82,14 +75,14 @@ func _load_premade_sects() -> void:
 
 ## Iterates every known province and generates sects to populate it.
 ## Returns all dynamically generated sects for rival matchmaking.
-func _populate_all_provinces(difficulty: int) -> Array[SectData]:
+func _populate_all_provinces() -> Array[SectData]:
 	var dynamic: Array[SectData] = []
 	for province_id in DataManager.provinces_registry:
-		dynamic.append_array(_populate_province(province_id, difficulty))
+		dynamic.append_array(_populate_province(province_id))
 	return dynamic
 
 ## Generates sects for a single province. Returns the newly created sects.
-func _populate_province(province_id: String, difficulty: int) -> Array[SectData]:
+func _populate_province(province_id: String) -> Array[SectData]:
 	var region_id := MapManager.get_region_for_province(province_id)
 	var region_data: Dictionary = DataManager.regions_registry.get(region_id, {})
 	var culture_key: String = region_data.get("culture", "CENTRAL_PLAINS")
@@ -99,27 +92,24 @@ func _populate_province(province_id: String, difficulty: int) -> Array[SectData]
 	var region_max_rep := _get_region_max_reputation(region_id)
 	var strength_factor := region_max_rep / 100.0
 
-	# Difficulty multiplier scales max counts up or down
-	var diff_mult: float = DIFFICULTY_MULTIPLIERS[clampi(difficulty, 0, 2)]
-
 	# Classify sects already in this province
 	var existing := _classify_province_sects(province_id)
 	var spawned: Array[SectData] = []
 
 	# 1. Big sect: spawn if none exists; probability inversely scaled by regional strength
 	if existing["major"] == 0:
-		var spawn_chance := (1.0 - strength_factor) * diff_mult
+		var spawn_chance := 1.0 - strength_factor
 		if randf() < spawn_chance:
 			spawned.append(_generate_sect_in_province(SectTier.MAJOR, province_id, culture_val))
 
-	# 2. Medium sects: 2-5 target, scaled by difficulty, reduced by regional strength, minus existing
-	var target_avg := roundi(lerpf(5.0, 2.0, strength_factor) * diff_mult)
+	# 2. Medium sects: 2-5 target, reduced by regional strength, minus existing
+	var target_avg := roundi(lerpf(5.0, 2.0, strength_factor))
 	var to_spawn_avg := maxi(0, target_avg - existing["average"])
 	for _i in range(to_spawn_avg):
 		spawned.append(_generate_sect_in_province(SectTier.AVERAGE, province_id, culture_val))
 
-	# 3. Small sects: 3-7 target, scaled by difficulty, minus existing
-	var target_minor := roundi(randi_range(3, 7) * diff_mult)
+	# 3. Small sects: 3-7 target, minus existing
+	var target_minor := randi_range(3, 7)
 	var to_spawn_minor := maxi(0, target_minor - existing["minor"])
 	for _i in range(to_spawn_minor):
 		spawned.append(_generate_sect_in_province(SectTier.MINOR, province_id, culture_val))
