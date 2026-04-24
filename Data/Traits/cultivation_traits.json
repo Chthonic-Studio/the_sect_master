@@ -6,7 +6,7 @@
 	"description": "Believes they have achieved a deeper understanding of the Dao than they actually possess. Blind spots in their foundation.",
 	"rarity_weight": 15,
 	"martial_modifiers": { "insight": -15, "technique": -10 },
-	"personality_modifiers": { "arrogance": 15 },
+	"personality_modifiers": { "ambition": 15 },
 	"conflicts": ["enlightened_mind", "clear_comprehension"]
 },
 {
