@@ -1,0 +1,38 @@
+{
+	"iron_fist": {
+		"name": "Iron Fist Style",
+		"description": "Raw physical power channelled through hardened fists and elbows. The foundation of countless external martial arts.",
+		"weapon_type": "FIST",
+		"damage_type": "BLUNT",
+		"base_damage": 12,
+		"rarity": "common",
+		"stat_modifiers": { "strength": 10, "constitution": 5 },
+		"martial_modifiers": { "ferocity": 8, "technique": 5 },
+		"strong_against": ["NEEDLE", "HIDDEN_WEAPON"],
+		"weak_against": ["SWORD", "SABER", "SPEAR"]
+	},
+	"eagle_claw": {
+		"name": "Eagle Claw Technique",
+		"description": "A grappling style that seizes limbs and pressure points. Excels at disarming and incapacitating.",
+		"weapon_type": "FIST",
+		"damage_type": "BLUNT",
+		"base_damage": 10,
+		"rarity": "uncommon",
+		"stat_modifiers": { "agility": 10, "strength": 8 },
+		"martial_modifiers": { "technique": 12, "insight": 8 },
+		"strong_against": ["NEEDLE", "HIDDEN_WEAPON", "FAN"],
+		"weak_against": ["SWORD", "SPEAR"]
+	},
+	"diamond_palm": {
+		"name": "Diamond Iron Palm",
+		"description": "Decades of tempering condense Qi into the palm until it can shatter stone. Internal and external power in perfect unity.",
+		"weapon_type": "FIST",
+		"damage_type": "INTERNAL",
+		"base_damage": 20,
+		"rarity": "rare",
+		"stat_modifiers": { "strength": 15, "constitution": 10 },
+		"martial_modifiers": { "ferocity": 15, "internal_force": 20 },
+		"strong_against": ["SWORD", "HAMMER", "SABER"],
+		"weak_against": ["BOW", "SPEAR"]
+	}
+}

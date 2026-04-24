@@ -1,0 +1,69 @@
+[
+{
+	"id": "false_enlightenment",
+	"display_name": "False Enlightenment",
+	"type": "cultivation",
+	"description": "Believes they have achieved a deeper understanding of the Dao than they actually possess. Blind spots in their foundation.",
+	"rarity_weight": 15,
+	"martial_modifiers": { "insight": -15, "technique": -10 },
+	"personality_modifiers": { "ambition": 15 },
+	"conflicts": ["enlightened_mind", "clear_comprehension"]
+},
+{
+	"id": "dual_cultivation_foundation",
+	"display_name": "Dual Cultivation Foundation",
+	"type": "cultivation",
+	"description": "Has trained in both internal and external styles from an early age. Excellent balance between force and technique.",
+	"rarity_weight": 8,
+	"martial_modifiers": { "internal_force": 10, "technique": 10, "qi_flow": 5 },
+	"conflicts": []
+},
+{
+	"id": "poison_body",
+	"display_name": "Poison Body",
+	"type": "cultivation",
+	"description": "The body has adapted to centuries of toxin exposure. Immune to most poisons, but Qi tends towards a corrosive quality.",
+	"rarity_weight": 5,
+	"stat_modifiers": { "constitution": 15 },
+	"martial_modifiers": { "qi_flow": 10 },
+	"alignment_modifiers": { "karma": -10 },
+	"conflicts": ["qi_purified", "divine_aptitude"]
+},
+{
+	"id": "iron_dantian",
+	"display_name": "Iron Dantian",
+	"type": "cultivation",
+	"description": "The core energy centre is unusually stable and resistant to disruption. Hard to damage, but also slower to advance.",
+	"rarity_weight": 10,
+	"martial_modifiers": { "internal_force": 20, "qi_flow": -8 },
+	"conflicts": ["dantian_damaged"]
+},
+{
+	"id": "dantian_damaged",
+	"display_name": "Damaged Dantian",
+	"type": "cultivation",
+	"description": "The core is cracked or partially sealed. Cultivation advancement is permanently impaired.",
+	"rarity_weight": 10,
+	"martial_modifiers": { "internal_force": -25, "qi_flow": -20, "insight": -10 },
+	"conflicts": ["iron_dantian", "divine_aptitude", "dual_cultivation_foundation"]
+},
+{
+	"id": "meridian_resonance",
+	"display_name": "Meridian Resonance",
+	"type": "cultivation",
+	"description": "Rare harmonic alignment of all twelve major meridians. Qi circulates without effort and accumulates rapidly.",
+	"rarity_weight": 5,
+	"martial_modifiers": { "qi_flow": 30, "internal_force": 15 },
+	"conflicts": ["dantian_damaged", "qi_deviation_survivor"]
+},
+{
+	"id": "reversed_meridians",
+	"display_name": "Reversed Meridians",
+	"type": "cultivation",
+	"description": "Qi flows in an unorthodox direction through their channels. Incompatible with standard sect manuals but devastatingly powerful once mastered.",
+	"rarity_weight": 5,
+	"martial_modifiers": { "qi_flow": 15, "internal_force": 10 },
+	"personality_modifiers": { "curiosity": 15 },
+	"conflicts": ["iron_dantian", "dual_cultivation_foundation"]
+}
+]

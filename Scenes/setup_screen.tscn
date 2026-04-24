@@ -212,20 +212,51 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SectCultureRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page2"]
+[node name="SectRegionRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page2"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Label_SectCulture" type="Label" parent="CenterContainer/MainBox/Page2/SectCultureRow"]
+[node name="Label_SectRegion" type="Label" parent="CenterContainer/MainBox/Page2/SectRegionRow"]
 layout_mode = 2
 custom_minimum_size = Vector2(190, 0)
 vertical_alignment = 1
-text = "Sect Culture:"
+text = "Starting Region:"
 
-[node name="SectCultureDropdown" type="OptionButton" parent="CenterContainer/MainBox/Page2/SectCultureRow"]
+[node name="SectRegionDropdown" type="OptionButton" parent="CenterContainer/MainBox/Page2/SectRegionRow"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="SectProvinceRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page2"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_SectProvince" type="Label" parent="CenterContainer/MainBox/Page2/SectProvinceRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "Province:"
+
+[node name="SectProvinceDropdown" type="OptionButton" parent="CenterContainer/MainBox/Page2/SectProvinceRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SectCultureInfoBox" type="VBoxContainer" parent="CenterContainer/MainBox/Page2"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="SectCultureNameLabel" type="Label" parent="CenterContainer/MainBox/Page2/SectCultureInfoBox"]
+unique_name_in_owner = true
+layout_mode = 2
+modulate = Color(0.9, 0.85, 0.5, 1.0)
+text = ""
+
+[node name="SectCultureDescLabel" type="Label" parent="CenterContainer/MainBox/Page2/SectCultureInfoBox"]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+text = ""
 
 [node name="TenetRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page2"]
 layout_mode = 2
@@ -316,21 +347,6 @@ horizontal_alignment = 1
 
 [node name="P3HSep1" type="HSeparator" parent="CenterContainer/MainBox/Page3"]
 layout_mode = 2
-
-[node name="DiffRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page3"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Label_Diff" type="Label" parent="CenterContainer/MainBox/Page3/DiffRow"]
-layout_mode = 2
-custom_minimum_size = Vector2(190, 0)
-vertical_alignment = 1
-text = "Difficulty:"
-
-[node name="DifficultyDropdown" type="OptionButton" parent="CenterContainer/MainBox/Page3/DiffRow"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="PopRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page3"]
 layout_mode = 2

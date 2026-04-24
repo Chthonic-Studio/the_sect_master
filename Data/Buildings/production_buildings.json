@@ -1,0 +1,69 @@
+{
+	"alchemy_furnace": {
+		"id": "alchemy_furnace",
+		"name": "Bronze Alchemy Furnace",
+		"description": "A heavy furnace for refining basic medicinal herbs into restorative pills.",
+		"build_days_base": 60,
+		"cost": { "MATERIALS": 500, "WEALTH": 200 },
+		"monthly_upkeep": { "WEALTH": 25, "MATERIALS": 10 },
+		"yields": { "MEDICINE": 15 },
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["basic_alchemy"]
+	},
+	"grand_alchemy_lab": {
+		"id": "grand_alchemy_lab",
+		"name": "Grand Alchemy Laboratory",
+		"description": "A full refining complex with multiple furnaces and herb storage vaults.",
+		"build_days_base": 120,
+		"cost": { "MATERIALS": 1200, "WEALTH": 600 },
+		"monthly_upkeep": { "WEALTH": 60, "MATERIALS": 25 },
+		"yields": { "MEDICINE": 35, "ELIXIRS": 5 },
+		"prerequisite_tags": ["basic_alchemy"],
+		"replaces": "alchemy_furnace",
+		"unlocks_sect_tags": ["basic_alchemy", "advanced_alchemy", "elixir_production"]
+	},
+	"herb_garden": {
+		"id": "herb_garden",
+		"name": "Medicinal Herb Garden",
+		"description": "A carefully tended garden of healing herbs. Supplements the sect's medical supplies each month.",
+		"build_days_base": 30,
+		"cost": { "MATERIALS": 150, "WEALTH": 80 },
+		"monthly_upkeep": { "WEALTH": 5 },
+		"yields": { "MEDICINE": 10 },
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["herbal_medicine"]
+	},
+	"poison_laboratory": {
+		"id": "poison_laboratory",
+		"name": "Hidden Poison Laboratory",
+		"description": "A concealed lab for studying poisons, antidotes, and assassination techniques. Associated with Sichuan culture.",
+		"build_days_base": 75,
+		"cost": { "MATERIALS": 400, "WEALTH": 300, "MEDICINE": 50 },
+		"monthly_upkeep": { "WEALTH": 20, "MEDICINE": 5 },
+		"yields": { "MEDICINE": 8 },
+		"prerequisite_tags": ["herbal_medicine"],
+		"unlocks_sect_tags": ["poison_arts", "antidote_research"]
+	},
+	"trade_hall": {
+		"id": "trade_hall",
+		"name": "Trade Hall",
+		"description": "A formal trading pavilion that facilitates commerce with traveling merchants and other sects.",
+		"build_days_base": 60,
+		"cost": { "MATERIALS": 500, "WEALTH": 350 },
+		"monthly_upkeep": { "WEALTH": 20 },
+		"yields": { "WEALTH": 40 },
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["trade_network", "merchant_access"]
+	},
+	"lumber_yard": {
+		"id": "lumber_yard",
+		"name": "Sect Lumber Yard",
+		"description": "A managed forest and sawmill operation. Provides a steady flow of building materials.",
+		"build_days_base": 40,
+		"cost": { "MATERIALS": 200, "WEALTH": 150 },
+		"monthly_upkeep": { "WEALTH": 10 },
+		"yields": { "MATERIALS": 20 },
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["material_production"]
+	}
+}

@@ -1,0 +1,26 @@
+{
+	"poison_needle": {
+		"name": "Poison Needle",
+		"description": "A slender steel needle barely visible in flight. Favored by the Tang Clan and shadow fighters.",
+		"weapon_type": "NEEDLE",
+		"damage_type": "PIERCING",
+		"base_damage": 8,
+		"rarity": "uncommon",
+		"stat_modifiers": { "agility": 10, "intelligence": 5 },
+		"martial_modifiers": { "qi_flow": 5 },
+		"strong_against": ["HAMMER", "STAFF"],
+		"weak_against": ["BOW"]
+	},
+	"golden_silk_thread": {
+		"name": "Golden Silk Thread",
+		"description": "An invisible razor-thin wire wielded with Qi manipulation. Almost impossible to deflect without knowing its patterns.",
+		"weapon_type": "NEEDLE",
+		"damage_type": "SLASHING",
+		"base_damage": 12,
+		"rarity": "rare",
+		"stat_modifiers": { "agility": 15, "intelligence": 10 },
+		"martial_modifiers": { "technique": 15, "insight": 10 },
+		"strong_against": ["HAMMER", "STAFF", "UNARMED"],
+		"weak_against": ["BOW", "SPEAR"]
+	}
+}

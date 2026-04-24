@@ -1,0 +1,175 @@
+{
+	"new_year_banquet": {
+		"id": "new_year_banquet",
+		"title": "The New Year Banquet",
+		"pulse": "monthly_character",
+		"base_weight": 8.0,
+		"trigger_conditions": [
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "The New Year approaches. Tradition demands the sect hold a grand banquet. Disciples look forward to this with great anticipation.",
+		"options": {
+			"opt_lavish": {
+				"text": "Hold a grand banquet. Spare no expense.",
+				"ai_base_weight": 50.0,
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": -200 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] celebrated the New Year with a magnificent banquet. Morale soars." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "new_year_banquet_lavish", "payload": {} }
+				]
+			},
+			"opt_modest": {
+				"text": "A modest but sincere gathering.",
+				"ai_base_weight": 70.0,
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": -50 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] marked the New Year with a simple but heartfelt gathering." }
+				]
+			},
+			"opt_skip": {
+				"text": "Skip the festivities. Resources are scarce.",
+				"ai_base_weight": 15.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I cancelled the New Year banquet. The disciples are unhappy." }
+				]
+			}
+		}
+	},
+	"tournament_invitation": {
+		"id": "tournament_invitation",
+		"title": "An Invitation to the Grand Tournament",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 40], "multiplier": 2.5 }
+		],
+		"trigger_conditions": [
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A sealed invitation arrives from a well-known regional sect, announcing the Great Martial Tournament of the Jianghu. First place commands legendary reputation.",
+		"options": {
+			"opt_enter": {
+				"text": "Enter our best disciples. The Jianghu must know our strength.",
+				"ai_base_weight": 70.0,
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": -100 },
+					{ "type": "add_world_log", "log_type": "event", "text": "[initiator_sect_name] announced their participation in the Grand Tournament." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "entered_tournament", "payload": {} }
+				]
+			},
+			"opt_decline": {
+				"text": "Decline. We are not yet ready to show our hand.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I declined the tournament invitation. We will be ready when the time is right." }
+				]
+			}
+		}
+	},
+	"resource_windfall": {
+		"id": "resource_windfall",
+		"title": "An Unexpected Discovery",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "blessed_by_fortune"], "multiplier": 3.0 },
+			{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 1.5 }
+		],
+		"trigger_conditions": [
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "While expanding the sect's training grounds, your disciples unearthed a cache of long-buried spiritual herbs — a windfall from a forgotten age.",
+		"options": {
+			"opt_distribute": {
+				"text": "Distribute the herbs among the disciples equally.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": 150 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] discovered a cache of spiritual herbs and shared them with all disciples." }
+				]
+			},
+			"opt_keep": {
+				"text": "Secure the herbs in the sect vault for strategic use.",
+				"ai_base_weight": 40.0,
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": 300 }
+				]
+			}
+		}
+	},
+	"building_completed_celebration": {
+		"id": "building_completed_celebration",
+		"title": "A New Foundation",
+		"pulse": "monthly_character",
+		"base_weight": 5.0,
+		"trigger_conditions": [
+			["has_memory", "initiator", "building_recently_completed"],
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "The construction is complete. The disciples gather to admire the new structure. This milestone deserves acknowledgment.",
+		"options": {
+			"opt_ceremony": {
+				"text": "Hold an opening ceremony. Toast the builders.",
+				"ai_base_weight": 80.0,
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": -30 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] completed a new building and celebrated its opening." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "held_opening_ceremony", "payload": {} }
+				]
+			},
+			"opt_skip": {
+				"text": "No ceremonies. Get back to training.",
+				"ai_base_weight": 20.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "The building is done. No celebration — there is still work to be done." }
+				]
+			}
+		}
+	},
+	"stress_mental_strain": {
+		"id": "stress_mental_strain",
+		"title": "The Weight of Command",
+		"pulse": "monthly_character",
+		"base_weight": 2.5,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "stress", 75], "multiplier": 4.0 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "stress", 70],
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "[initiator_name] has been pushing themselves without rest. Their eyes are hollow, their movements erratic. Those closest to them speak of worry.",
+		"options": {
+			"opt_take_rest": {
+				"text": "Enter brief seclusion. The sect can manage.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I entered seclusion to restore my mind and spirit." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "took_seclusion_rest", "payload": {} }
+				]
+			},
+			"opt_push_through": {
+				"text": "Push through. Great leaders do not rest.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 2.0 },
+					{ "condition": ["stat_greater_than", "initiator", "discipline", 70], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I refused to rest. The fire in my chest will either forge me or consume me." }
+				]
+			}
+		}
+	}
+}

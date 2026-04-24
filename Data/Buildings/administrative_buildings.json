@@ -1,0 +1,57 @@
+{
+	"council_hall": {
+		"id": "council_hall",
+		"name": "Council Hall",
+		"description": "A formal chamber for Elder councils and sect governance. Legitimizes council votes and improves deliberation quality.",
+		"build_days_base": 45,
+		"cost": { "MATERIALS": 400, "WEALTH": 180 },
+		"monthly_upkeep": { "WEALTH": 10 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["formal_council", "requires_council"]
+	},
+	"grand_gate": {
+		"id": "grand_gate",
+		"name": "Grand Sect Gate",
+		"description": "An imposing ceremonial gate that announces the sect's prestige to all who approach.",
+		"build_days_base": 45,
+		"cost": { "MATERIALS": 800, "WEALTH": 400 },
+		"monthly_upkeep": {},
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["prestige_architecture", "reputation_bonus"]
+	},
+	"spy_network": {
+		"id": "spy_network",
+		"name": "Shadow Information Network",
+		"description": "A web of informants, coded couriers, and dead-drops woven through neighboring territories.",
+		"build_days_base": 90,
+		"cost": { "MATERIALS": 200, "WEALTH": 600 },
+		"monthly_upkeep": { "WEALTH": 50 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["intelligence_gathering", "rival_sect_espionage"]
+	},
+	"ancestral_shrine": {
+		"id": "ancestral_shrine",
+		"name": "Ancestral Shrine",
+		"description": "A sacred hall honoring the sect's founders and fallen elders. Improves karmic standing and morale.",
+		"build_days_base": 45,
+		"cost": { "MATERIALS": 350, "WEALTH": 250 },
+		"monthly_upkeep": { "WEALTH": 8 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["ancestral_rites", "karma_boost"]
+	},
+	"messenger_post": {
+		"id": "messenger_post",
+		"name": "Courier Post Station",
+		"description": "A relay station for fast couriers. Accelerates communication with allied sects and distant disciples.",
+		"build_days_base": 30,
+		"cost": { "MATERIALS": 200, "WEALTH": 120 },
+		"monthly_upkeep": { "WEALTH": 12 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["fast_communication", "diplomacy_range"]
+	}
+}

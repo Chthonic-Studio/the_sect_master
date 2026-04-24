@@ -1,0 +1,38 @@
+{
+	"hunting_bow": {
+		"name": "Hunting Bow",
+		"description": "A simple recurve bow for ranged combat. Less powerful than war bows but accurate in skilled hands.",
+		"weapon_type": "BOW",
+		"damage_type": "PIERCING",
+		"base_damage": 20,
+		"rarity": "common",
+		"stat_modifiers": { "perception": 8 },
+		"martial_modifiers": { "technique": 5 },
+		"strong_against": ["UNARMED", "SABER"],
+		"weak_against": ["HIDDEN_WEAPON"]
+	},
+	"composite_war_bow": {
+		"name": "Composite War Bow",
+		"description": "A layered horn-and-sinew bow capable of punching arrows through armour at range. Requires significant strength to draw.",
+		"weapon_type": "BOW",
+		"damage_type": "PIERCING",
+		"base_damage": 30,
+		"rarity": "uncommon",
+		"stat_modifiers": { "strength": 8, "perception": 10 },
+		"martial_modifiers": { "technique": 10 },
+		"strong_against": ["UNARMED", "SABER", "HAMMER"],
+		"weak_against": ["HIDDEN_WEAPON"]
+	},
+	"jade_crossbow": {
+		"name": "Jade-Inlaid Crossbow",
+		"description": "A precision repeating crossbow. Fires three bolts in quick succession. Associated with Jiangnan artisan sects.",
+		"weapon_type": "BOW",
+		"damage_type": "PIERCING",
+		"base_damage": 18,
+		"rarity": "rare",
+		"stat_modifiers": { "perception": 15, "intelligence": 8 },
+		"martial_modifiers": { "technique": 15, "insight": 5 },
+		"strong_against": ["UNARMED", "SABER", "SWORD"],
+		"weak_against": ["HIDDEN_WEAPON", "FAN"]
+	}
+}

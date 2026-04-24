@@ -1,0 +1,118 @@
+{
+	"elder_teaches_technique": {
+		"id": "elder_teaches_technique",
+		"title": "The Elder's Wisdom",
+		"pulse": "monthly_character",
+		"base_weight": 4.0,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 2.5 },
+			{ "condition": ["stat_greater_than", "initiator", "sociability", 65], "multiplier": 1.5 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "sociability", 40]
+		],
+		"description": "Elder [initiator_name] watches a young disciple struggling with a difficult form and considers sharing a shortcut.",
+		"options": {
+			"opt_teach": {
+				"text": "Share the technique. The sect's strength grows through its disciples.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "add_memory", "target": "initiator", "memory_id": "taught_a_disciple", "payload": {} },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I took time to guide a struggling disciple today." },
+					{ "type": "add_world_log", "log_type": "positive", "text": "Elder [initiator_name] of [initiator_sect_name] passed down ancient wisdom." }
+				]
+			},
+			"opt_ignore": {
+				"text": "They must find their own path. Struggle forges iron.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 2.5 },
+					{ "condition": ["has_trait", "initiator", "cruel"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I watched a disciple struggle and said nothing. They must earn their knowledge." }
+				]
+			}
+		}
+	},
+	"elder_challenges_authority": {
+		"id": "elder_challenges_authority",
+		"title": "The Elder Speaks Out",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 2.5 },
+			{ "condition": ["stat_greater_than", "initiator", "ambition", 70], "multiplier": 2.0 },
+			{ "condition": ["stat_greater_than", "initiator", "loyalty", 60], "multiplier": 0.3 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "ambition", 60],
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "Elder [initiator_name] has been openly criticizing your recent decisions in front of the disciples. The atmosphere in the sect is tense.",
+		"options": {
+			"opt_confront": {
+				"text": "Confront them openly. Authority must be absolute.",
+				"ai_base_weight": 40.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "politics", "text": "Tension between the Sect Master and an Elder erupted in [initiator_sect_name]." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "The Sect Master confronted me directly. My position is precarious." }
+				]
+			},
+			"opt_discuss_privately": {
+				"text": "Request a private audience. Let them air their grievances.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "sociability", 60], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_memory", "target": "initiator", "memory_id": "heard_out_elder", "payload": {} },
+					{ "type": "add_personal_log", "target": "initiator", "text": "The Sect Master listened to my concerns. A rare show of respect." }
+				]
+			},
+			"opt_demote": {
+				"text": "Demote them publicly. An example must be set.",
+				"ai_base_weight": 20.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "ruthless"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_world_log", "log_type": "politics", "text": "An Elder was publicly demoted in [initiator_sect_name]." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I was publicly demoted for daring to speak my mind. Humiliation burns." }
+				]
+			}
+		}
+	},
+	"elder_retirement_offer": {
+		"id": "elder_retirement_offer",
+		"title": "The Elder Seeks Rest",
+		"pulse": "monthly_character",
+		"base_weight": 1.0,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "loyalty", 65], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "Elder [initiator_name] comes to you with a formal request: they wish to retire from active duty and enter peaceful seclusion, leaving their position open. Their service has been long and loyal.",
+		"options": {
+			"opt_grant": {
+				"text": "Grant the retirement. They have earned their rest.",
+				"ai_base_weight": 70.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "positive", "text": "Elder [initiator_name] of [initiator_sect_name] was granted an honourable retirement." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "honourably_retired", "payload": {} }
+				]
+			},
+			"opt_ask_to_stay": {
+				"text": "Ask them to remain. Their experience is irreplaceable.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "The Sect Master asked me to stay. I owe them that much." }
+				]
+			}
+		}
+	}
+}

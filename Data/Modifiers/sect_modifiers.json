@@ -1,0 +1,63 @@
+{
+	"well_fed": {
+		"name": "Well Fed",
+		"description": "A full stomach and proper nourishment from the sect's kitchen.",
+		"stat_modifiers": {
+			"constitution": 5
+		},
+		"personality_modifiers": {
+			"discipline": 5
+		}
+	},
+	"enriched_by_trade": {
+		"name": "Enriched by Commerce",
+		"description": "A profitable trading period has filled the coffers and eased daily tensions.",
+		"personality_modifiers": {
+			"greed": -10,
+			"sociability": 10
+		}
+	},
+	"blessed_by_omen": {
+		"name": "Blessed by Heaven's Omen",
+		"description": "A rare celestial phenomenon was witnessed at birth or during a critical moment. Fate seems to smile.",
+		"martial_modifiers": {
+			"destiny": 20
+		},
+		"alignment_modifiers": {
+			"karma": 15
+		}
+	},
+	"cursed_by_heaven": {
+		"name": "Cursed by Heaven",
+		"description": "Something has drawn the ire of the cosmic order. Ill fortune stalks every step.",
+		"martial_modifiers": {
+			"destiny": -20
+		},
+		"alignment_modifiers": {
+			"karma": -15
+		}
+	},
+	"resource_shortage": {
+		"name": "Resource Shortage",
+		"description": "The sect is struggling to meet its needs. Disciples are on reduced rations and morale is suffering.",
+		"stat_modifiers": {
+			"constitution": -5
+		},
+		"personality_modifiers": {
+			"loyalty": -15,
+			"discipline": -8,
+			"greed": 10
+		}
+	},
+	"bountiful_harvest": {
+		"name": "Bountiful Harvest",
+		"description": "The herb garden and supply routes yielded exceptional returns this season.",
+		"stat_modifiers": {
+			"constitution": 8
+		},
+		"personality_modifiers": {
+			"loyalty": 10,
+			"discipline": 5
+		}
+	}
+}

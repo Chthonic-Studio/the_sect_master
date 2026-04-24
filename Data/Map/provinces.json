@@ -1,0 +1,132 @@
+{
+"provinces": {
+"luoyang": {
+"id": "luoyang",
+"name": "Luoyang",
+"region_id": "central_plains",
+"description": "The ancient capital, seat of orthodoxy and political intrigue.",
+"mask_color": "#ff2200",
+"neighbours": ["kaifeng", "zhongdu", "yanmen_pass", "western_mountains"]
+},
+"kaifeng": {
+"id": "kaifeng",
+"name": "Kaifeng",
+"region_id": "central_plains",
+"description": "A thriving commercial city on the plains. Wealthy and well-connected.",
+"mask_color": "#cc0000",
+"neighbours": ["luoyang", "zhongdu", "yanmen_pass", "yanzhou", "hangzhou"]
+},
+"zhongdu": {
+"id": "zhongdu",
+"name": "Zhongdu",
+"region_id": "central_plains",
+"description": "The 'Middle Capital', a crossroads city where merchants and wandering sects converge.",
+"mask_color": "#ff6600",
+"neighbours": ["luoyang", "kaifeng", "chengdu", "hangzhou"]
+},
+"chengdu": {
+"id": "chengdu",
+"name": "Chengdu",
+"region_id": "sichuan",
+"description": "Capital of the Sichuan basin. The Tang Clan's ancestral home lies nearby.",
+"mask_color": "#32cd32",
+"neighbours": ["western_mountains", "zhongdu", "emei_mountains"]
+},
+"emei_mountains": {
+"id": "emei_mountains",
+"name": "Emei Mountains",
+"region_id": "sichuan",
+"description": "Sacred peaks where the Emei Sect holds court. Mist-wreathed and spiritually potent.",
+"mask_color": "#006400",
+"neighbours": ["chengdu", "guangzhou", "hangzhou"]
+},
+"yanmen_pass": {
+"id": "yanmen_pass",
+"name": "Yanmen Pass",
+"region_id": "northern_border",
+"description": "A critical mountain pass that guards the northern frontier. Heavily fortified.",
+"mask_color": "#00a8e8",
+"neighbours": ["luoyang", "kaifeng", "yanzhou", "dunhuang"]
+},
+"yanzhou": {
+"id": "yanzhou",
+"name": "Yanzhou",
+"region_id": "northern_border",
+"description": "A frontier city with a permanent garrison and a rough, martial culture.",
+"mask_color": "#0090cc",
+"neighbours": ["kaifeng", "yanmen_pass", "north_steppe", "goryeo_capital"]
+},
+"north_steppe": {
+"id": "north_steppe",
+"name": "Northern Steppe",
+"region_id": "northern_border",
+"description": "Rolling grasslands where mounted nomadic sects roam freely.",
+"mask_color": "#0070b0",
+"neighbours": ["yanzhou", "goryeo_capital", "dunhuang"]
+},
+"dunhuang": {
+"id": "dunhuang",
+"name": "Dunhuang",
+"region_id": "western_regions",
+"description": "An oasis city at the edge of the great desert. A meeting point of cultures.",
+"mask_color": "#ff80d0",
+"neighbours": ["north_steppe", "yanmen_pass", "western_mountains"]
+},
+"western_mountains": {
+"id": "western_mountains",
+"name": "Western Mountains",
+"region_id": "western_regions",
+"description": "Rugged highland terrain. Isolated sects here guard ancient and heretical techniques.",
+"mask_color": "#ff40c0",
+"neighbours": ["dunhuang", "luoyang", "chengdu"]
+},
+"guangzhou": {
+"id": "guangzhou",
+"name": "Guangzhou",
+"region_id": "lingnan",
+"description": "A prosperous port city. Trade and foreign influences make it a cosmopolitan hub.",
+"mask_color": "#ff00ff",
+"neighbours": ["emei_mountains", "pearl_river_delta"]
+},
+"pearl_river_delta": {
+"id": "pearl_river_delta",
+"name": "Pearl River Delta",
+"region_id": "lingnan",
+"description": "Fertile river delta. Southern sects here favour powerful, grounded martial styles.",
+"mask_color": "#c800c8",
+"neighbours": ["guangzhou", "hangzhou", "suzhou"]
+},
+"hangzhou": {
+"id": "hangzhou",
+"name": "Hangzhou",
+"region_id": "jiangnan",
+"description": "Famed for its beauty. Scholarly sects and elegant swordsmen call this home.",
+"mask_color": "#9932cc",
+"neighbours": ["kaifeng", "zhongdu", "suzhou", "emei_mountains", "pearl_river_delta"]
+},
+"suzhou": {
+"id": "suzhou",
+"name": "Suzhou",
+"region_id": "jiangnan",
+"description": "A city of canals and gardens. The Jiangnan Sword Arts are said to have originated here.",
+"mask_color": "#4b0082",
+"neighbours": ["hangzhou", "goryeo_south", "pearl_river_delta"]
+},
+"goryeo_capital": {
+"id": "goryeo_capital",
+"name": "Gaegyeong",
+"region_id": "goryeo",
+"description": "The Goryeo capital. A disciplined martial culture with strong clan loyalty.",
+"mask_color": "#000080",
+"neighbours": ["yanzhou", "north_steppe", "goryeo_south"]
+},
+"goryeo_south": {
+"id": "goryeo_south",
+"name": "Southern Goryeo",
+"region_id": "goryeo",
+"description": "The southern reaches of Goryeo. Closer contact with the Jianghu has produced hybrid martial styles.",
+"mask_color": "#4169e1",
+"neighbours": ["goryeo_capital", "suzhou"]
+}
+}
+}

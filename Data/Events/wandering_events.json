@@ -1,0 +1,137 @@
+{
+	"disciple_requests_leave": {
+		"id": "disciple_requests_leave",
+		"title": "A Request to Wander",
+		"pulse": "monthly_character",
+		"base_weight": 2.5,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "curious"], "multiplier": 2.0 },
+			{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 2.5 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "curiosity", 60],
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "[initiator_name] approaches you with a formal bow. They wish to travel the Jianghu and seek advanced martial knowledge before returning.",
+		"options": {
+			"opt_grant_leave": {
+				"text": "Grant them leave. Go and return wiser.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "add_memory", "target": "initiator", "memory_id": "granted_wandering_leave", "payload": {} },
+					{ "type": "add_personal_log", "target": "initiator", "text": "The Sect Master granted my request to wander. I will not waste this chance." },
+					{ "type": "trigger_event", "event_id": "wanderer_returns", "delay_days": 90 }
+				]
+			},
+			"opt_deny_leave": {
+				"text": "Deny the request. The sect needs them here.",
+				"ai_base_weight": 40.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "My request to wander was denied. I must suppress my restlessness." }
+				]
+			}
+		}
+	},
+	"wanderer_returns": {
+		"id": "wanderer_returns",
+		"title": "The Wanderer Returns",
+		"description": "[initiator_name] has returned from their journey through the Jianghu, carrying stories of distant sects and new techniques.",
+		"requires_pause": true,
+		"options": {
+			"acknowledge": {
+				"text": "Welcome back, disciple.",
+				"ai_base_weight": 100.0,
+				"effects": [
+					{ "type": "add_trait", "target": "initiator", "trait": "perceptive" },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I have returned from my travels, changed by what I experienced." },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_name] returned to [initiator_sect_name] after months of wandering the Jianghu." }
+				]
+			}
+		}
+	},
+	"wandering_master_visits": {
+		"id": "wandering_master_visits",
+		"title": "A Grand Master Passes Through",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 50], "multiplier": 2.5 }
+		],
+		"trigger_conditions": [
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A renowned wandering master of the Jianghu has arrived at your sect's gates, seeking hospitality for the night. Their bearing speaks of tremendous cultivation.",
+		"options": {
+			"opt_welcome_and_invite": {
+				"text": "Welcome them lavishly and invite them to exchange pointers.",
+				"ai_base_weight": 70.0,
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": -100 },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "hosted_wandering_master", "payload": {} },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] welcomed a renowned wandering master." },
+					{ "type": "trigger_event", "event_id": "wandering_master_departs", "delay_days": 3 }
+				]
+			},
+			"opt_turn_away": {
+				"text": "Turn them away politely. Strangers bring risks.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "scheming"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned away the wandering master. My sect's secrets must be guarded." }
+				]
+			}
+		}
+	},
+	"wandering_master_departs": {
+		"id": "wandering_master_departs",
+		"title": "Parting Words",
+		"requires_pause": true,
+		"description": "The wandering master prepares to depart. Before leaving, they offer a parting gift for your hospitality — a technique scroll or a personal blessing.",
+		"options": {
+			"opt_accept_scroll": {
+				"text": "Accept the technique scroll.",
+				"ai_base_weight": 100.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "positive", "text": "A wandering grandmaster bestowed a technique scroll upon [initiator_sect_name]." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "received_technique_scroll", "payload": {} }
+				]
+			}
+		}
+	},
+	"chance_encounter_rival": {
+		"id": "chance_encounter_rival",
+		"title": "A Face from the Past",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"description": "[initiator_name] is travelling through the mountain roads when they cross paths with a rival they once wronged — or were wronged by. The air between them is electric.",
+		"options": {
+			"opt_challenge": {
+				"text": "Draw weapons. Settle the old score now.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "vengeful"], "multiplier": 3.0 },
+					{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I met an old enemy on the road. We settled our score with steel." },
+					{ "type": "add_world_log", "log_type": "event", "text": "[initiator_name] fought a duel on the mountain road." }
+				]
+			},
+			"opt_parley": {
+				"text": "Stop and talk. Perhaps old wounds can be eased.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "sociability", 60], "multiplier": 2.0 },
+					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I met an old rival on the road and chose words over weapons." }
+				]
+			}
+		}
+	}
+}

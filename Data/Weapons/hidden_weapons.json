@@ -1,0 +1,38 @@
+{
+	"hidden_darts": {
+		"name": "Flying Feather Darts",
+		"description": "A set of concealed throwing darts that can be launched in rapid succession.",
+		"weapon_type": "HIDDEN_WEAPON",
+		"damage_type": "PIERCING",
+		"base_damage": 10,
+		"rarity": "uncommon",
+		"stat_modifiers": { "agility": 12, "perception": 5 },
+		"martial_modifiers": {},
+		"strong_against": ["HAMMER", "STAFF", "SWORD"],
+		"weak_against": ["BOW"]
+	},
+	"sleeve_arrows": {
+		"name": "Spring-Loaded Sleeve Arrows",
+		"description": "A mechanism strapped to the forearm launches small bolts at the flick of a wrist. Almost impossible to detect.",
+		"weapon_type": "HIDDEN_WEAPON",
+		"damage_type": "PIERCING",
+		"base_damage": 14,
+		"rarity": "rare",
+		"stat_modifiers": { "agility": 10, "intelligence": 10 },
+		"martial_modifiers": { "insight": 5 },
+		"strong_against": ["HAMMER", "STAFF", "SWORD"],
+		"weak_against": ["BOW"]
+	},
+	"smoke_bombs": {
+		"name": "Smoke-Powder Grenades",
+		"description": "Clay spheres packed with blinding powder. Not a weapon in the classical sense, but invaluable for creating distance.",
+		"weapon_type": "HIDDEN_WEAPON",
+		"damage_type": "POISON",
+		"base_damage": 5,
+		"rarity": "common",
+		"stat_modifiers": { "intelligence": 8 },
+		"martial_modifiers": { "qinggong": 10 },
+		"strong_against": ["SWORD", "SABER", "STAFF"],
+		"weak_against": ["BOW"]
+	}
+}

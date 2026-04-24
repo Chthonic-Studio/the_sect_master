@@ -1,0 +1,38 @@
+{
+	"heavy_hammer": {
+		"name": "Meteor Hammer",
+		"description": "A brutal chunk of iron on a handle. Crushes armor and finesse alike.",
+		"weapon_type": "HAMMER",
+		"damage_type": "BLUNT",
+		"base_damage": 25,
+		"rarity": "common",
+		"stat_modifiers": { "strength": 10, "agility": -5 },
+		"martial_modifiers": { "ferocity": 10 },
+		"strong_against": ["SWORD", "SABER"],
+		"weak_against": ["NEEDLE", "HIDDEN_WEAPON"]
+	},
+	"twin_maces": {
+		"name": "Twin Iron Maces",
+		"description": "A pair of short maces used in tandem. Their rhythm disorients opponents trained for single weapons.",
+		"weapon_type": "HAMMER",
+		"damage_type": "BLUNT",
+		"base_damage": 20,
+		"rarity": "common",
+		"stat_modifiers": { "strength": 8, "agility": 3 },
+		"martial_modifiers": { "ferocity": 8, "technique": 5 },
+		"strong_against": ["SWORD", "SABER"],
+		"weak_against": ["NEEDLE", "HIDDEN_WEAPON"]
+	},
+	"thunder_war_hammer": {
+		"name": "Thunder War Hammer",
+		"description": "An enormous two-handed iron hammer. Said to replicate the force of a thunderbolt with every downswing.",
+		"weapon_type": "HAMMER",
+		"damage_type": "BLUNT",
+		"base_damage": 35,
+		"rarity": "rare",
+		"stat_modifiers": { "strength": 20, "agility": -10, "constitution": 10 },
+		"martial_modifiers": { "ferocity": 20, "internal_force": 10 },
+		"strong_against": ["SWORD", "SABER", "SPEAR"],
+		"weak_against": ["NEEDLE", "HIDDEN_WEAPON", "BOW"]
+	}
+}

@@ -14,6 +14,7 @@ var sect_name: String = "Unnamed Sect"
 var alignment: int = Definitions.SectAlignment.NEUTRAL
 var culture: int = Definitions.Culture.CENTRAL_PLAINS
 var rival_sect_id: String = ""
+var province_id: String = ""  # Geographic location on the world map
 
 # --- MACRO STATS & ECONOMY ---
 var resources: Dictionary = {}
@@ -537,6 +538,7 @@ func to_dictionary() -> Dictionary:
 		"alignment": alignment,
 		"culture": culture,
 		"rival_sect_id": rival_sect_id,
+		"province_id": province_id,
 		"resources": resources,
 		"stats": stats,
 		"cached_sect_strength": cached_sect_strength,
@@ -558,6 +560,7 @@ func from_dictionary(data: Dictionary) -> void:
 	alignment = data.get("alignment", Definitions.SectAlignment.NEUTRAL)
 	culture = data.get("culture", Definitions.Culture.CENTRAL_PLAINS)
 	rival_sect_id = data.get("rival_sect_id", "")
+	province_id = data.get("province_id", "")
 	cached_sect_strength = data.get("cached_sect_strength", 0)
 	
 	if data.has("resources"):

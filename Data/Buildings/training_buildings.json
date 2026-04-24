@@ -1,0 +1,58 @@
+{
+	"martial_arena": {
+		"id": "martial_arena",
+		"name": "Sparring Arena",
+		"description": "A stone-paved ring for disciples to safely test their forms and spar under supervision.",
+		"build_days_base": 30,
+		"cost": { "MATERIALS": 400, "WEALTH": 50 },
+		"monthly_upkeep": { "WEALTH": 10 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["sparring", "martial_training"]
+	},
+	"grand_training_hall": {
+		"id": "grand_training_hall",
+		"name": "Grand Training Hall",
+		"description": "An enclosed training hall with proper equipment racks, targets, and training dummies.",
+		"build_days_base": 60,
+		"cost": { "MATERIALS": 800, "WEALTH": 200 },
+		"monthly_upkeep": { "WEALTH": 20, "MATERIALS": 5 },
+		"yields": {},
+		"prerequisite_tags": ["martial_training"],
+		"replaces": "martial_arena",
+		"unlocks_sect_tags": ["sparring", "martial_training", "advanced_forms"]
+	},
+	"weapons_vault": {
+		"id": "weapons_vault",
+		"name": "Weapons Vault",
+		"description": "A secured armory housing a variety of weapons for disciples to train with and study.",
+		"build_days_base": 40,
+		"cost": { "MATERIALS": 500, "WEALTH": 200 },
+		"monthly_upkeep": { "WEALTH": 10 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["weapon_variety", "weapon_proficiency_training"]
+	},
+	"archery_range": {
+		"id": "archery_range",
+		"name": "Archery Range",
+		"description": "A long open range with straw targets for practicing projectile and hidden weapon techniques.",
+		"build_days_base": 25,
+		"cost": { "MATERIALS": 250, "WEALTH": 80 },
+		"monthly_upkeep": { "WEALTH": 8 },
+		"yields": {},
+		"prerequisite_tags": [],
+		"unlocks_sect_tags": ["projectile_training", "bow_proficiency"]
+	},
+	"outdoor_obstacle_course": {
+		"id": "outdoor_obstacle_course",
+		"name": "Mountain Obstacle Course",
+		"description": "Ropes, walls, and uneven terrain carved into the mountain face. Builds Qinggong fundamentals.",
+		"build_days_base": 45,
+		"cost": { "MATERIALS": 350, "WEALTH": 100 },
+		"monthly_upkeep": { "WEALTH": 12 },
+		"yields": {},
+		"prerequisite_tags": ["martial_training"],
+		"unlocks_sect_tags": ["qinggong_training", "agility_boost"]
+	}
+}

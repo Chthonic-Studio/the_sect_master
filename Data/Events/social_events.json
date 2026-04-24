@@ -1,0 +1,137 @@
+{
+	"social_brawl_minor": {
+		"id": "social_brawl_minor",
+		"title": "A Disagreement Escalates",
+		"description": "Tensions boiled over. [initiator_name] and [target_name] came to blows over a petty dispute during morning forms.",
+		"options": {
+			"opt_brutalize": {
+				"text": "Crush them without mercy.",
+				"ai_base_weight": 10.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "cruel"], "multiplier": 3.0 },
+					{ "condition": ["stat_greater_than", "initiator", "ruthlessness", 70], "add": 20.0 }
+				],
+				"effects": [
+					{ "type": "add_trait", "target": "target", "trait": "injured" },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I severely beat [target_name] in a brawl." },
+					{ "type": "add_personal_log", "target": "target", "text": "I was brutally beaten by [initiator_name]." }
+				]
+			},
+			"opt_restrain": {
+				"text": "Teach them a lesson, but hold back.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "honor", 60], "multiplier": 2.0 },
+					{ "condition": ["has_trait", "initiator", "altruistic"], "add": 50.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sparred with [target_name] to settle a dispute." },
+					{ "type": "add_personal_log", "target": "target", "text": "[initiator_name] bested me, but showed mercy." }
+				]
+			}
+		}
+	},
+	"internal_duel_challenge": {
+		"id": "internal_duel_challenge",
+		"title": "A Challenge on the Training Ground",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 3.0 },
+			{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 2.0 },
+			{ "condition": ["stat_greater_than", "initiator", "ambition", 70], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "ambition", 55]
+		],
+		"description": "[initiator_name] publicly challenges a sect brother to a formal duel to prove their superiority. The training ground falls silent.",
+		"options": {
+			"opt_accept_formally": {
+				"text": "Bow and accept. Victory brings prestige.",
+				"ai_base_weight": 50.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "event", "text": "A formal duel was held within [initiator_sect_name]." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I issued a formal challenge to prove my superiority." }
+				]
+			},
+			"opt_refuse": {
+				"text": "Refuse with contempt. They are beneath notice.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I refused to dignify their challenge. They are not worthy of my blade." }
+				]
+			}
+		}
+	},
+	"disciple_defects": {
+		"id": "disciple_defects",
+		"title": "Betrayal in the Night",
+		"pulse": "monthly_character",
+		"base_weight": 1.0,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "loyalty", 70], "multiplier": 0.1 },
+			{ "condition": ["stat_greater_than", "initiator", "ambition", 75], "multiplier": 3.0 }
+		],
+		"trigger_conditions": [
+			["stat_greater_than", "initiator", "ambition", 65],
+			["is_player_sect", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "[initiator_name] has vanished in the night, taking stolen technique manuals with them. Rumor says they have joined a rival sect.",
+		"options": {
+			"opt_hunt_them": {
+				"text": "Send pursuers. Theft cannot stand.",
+				"ai_base_weight": 50.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "politics", "text": "A disciple defected from [initiator_sect_name], taking stolen scrolls." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "defection_occurred", "payload": {} }
+				]
+			},
+			"opt_let_go": {
+				"text": "Let them go. Good riddance to faithless disciples.",
+				"ai_base_weight": 50.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I let the traitor flee. Chasing them would cost more than they are worth." }
+				]
+			}
+		}
+	},
+	"romantic_rivalry": {
+		"id": "romantic_rivalry",
+		"title": "Hearts and Blades",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "sociability", 65], "multiplier": 2.0 }
+		],
+		"description": "[initiator_name] and a rival disciple are both infatuated with the same person, and their rivalry has grown sharp enough to affect training.",
+		"options": {
+			"opt_step_back": {
+				"text": "Step back gracefully. The heart must not rule the blade.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "stoic"], "multiplier": 2.5 },
+					{ "condition": ["stat_greater_than", "initiator", "honor", 60], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I stepped aside in the matter of the heart. Discipline above emotion." }
+				]
+			},
+			"opt_confront_rival": {
+				"text": "Settle it with a duel. Winner takes all.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 2.5 },
+					{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_world_log", "log_type": "event", "text": "A duel of hearts was fought within [initiator_sect_name]." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I challenged my rival for the right to pursue the one I desire." }
+				]
+			}
+		}
+	}
+}

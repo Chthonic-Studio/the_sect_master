@@ -1,0 +1,26 @@
+{
+	"silk_fan": {
+		"name": "Iron-Ribbed Fan",
+		"description": "A fan whose spine is reinforced with cold iron. Concealment is its greatest virtue.",
+		"weapon_type": "FAN",
+		"damage_type": "SLASHING",
+		"base_damage": 12,
+		"rarity": "uncommon",
+		"stat_modifiers": { "intelligence": 8, "agility": 5 },
+		"martial_modifiers": { "technique": 10 },
+		"strong_against": ["NEEDLE", "HIDDEN_WEAPON"],
+		"weak_against": ["HAMMER", "SPEAR"]
+	},
+	"bone_white_war_fan": {
+		"name": "Bone-White War Fan",
+		"description": "Forged from layered steel plates painted to look like paper. Deflects sword blows and tears flesh in equal measure.",
+		"weapon_type": "FAN",
+		"damage_type": "SLASHING",
+		"base_damage": 18,
+		"rarity": "rare",
+		"stat_modifiers": { "intelligence": 12, "charisma": 8, "agility": 5 },
+		"martial_modifiers": { "technique": 15, "insight": 10 },
+		"strong_against": ["NEEDLE", "HIDDEN_WEAPON", "SWORD"],
+		"weak_against": ["HAMMER"]
+	}
+}
