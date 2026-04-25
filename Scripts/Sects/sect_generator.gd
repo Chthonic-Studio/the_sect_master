@@ -237,10 +237,10 @@ func _pick_province_for_culture(culture: int) -> String:
 	return MapManager.get_random_province(region_id)
 
 func _roll_tenets(sect: SectData, amount: int) -> void:
-	var alignment_string := Definitions.SectAlignment.keys()[sect.alignment]
+	var alignment_string : String = Definitions.SectAlignment.keys()[sect.alignment]
 	var valid_tenets := []
 	for t_id in DataManager.tenets_registry:
-		var tenet := DataManager.tenets_registry[t_id]
+		var tenet = DataManager.tenets_registry[t_id]
 		if alignment_string in tenet.get("allowed_alignments", []):
 			valid_tenets.append(t_id)
 	valid_tenets.shuffle()
@@ -257,26 +257,26 @@ func _generate_sect_name(sect: SectData) -> String:
 	var pool_nouns:    Array[String] = []
 	var pool_suffixes: Array[String] = []
 
-	var base := name_db.get("base", {})
+	var base = name_db.get("base", {})
 	pool_prefixes.append_array(base.get("prefixes", []))
 	pool_nouns.append_array(base.get("nouns", []))
 	pool_suffixes.append_array(base.get("suffixes", []))
 
-	var culture_str := Definitions.Culture.keys()[sect.culture]
-	var culture_db  := name_db.get("cultures", {}).get(culture_str, {})
+	var culture_str = Definitions.Culture.keys()[sect.culture]
+	var culture_db  = name_db.get("cultures", {}).get(culture_str, {})
 	pool_prefixes.append_array(culture_db.get("prefixes", []))
 	pool_nouns.append_array(culture_db.get("nouns", []))
 	pool_suffixes.append_array(culture_db.get("suffixes", []))
 
-	var align_str := Definitions.SectAlignment.keys()[sect.alignment]
-	var align_db  := name_db.get("alignments", {}).get(align_str, {})
+	var align_str = Definitions.SectAlignment.keys()[sect.alignment]
+	var align_db  = name_db.get("alignments", {}).get(align_str, {})
 	pool_prefixes.append_array(align_db.get("prefixes", []))
 	pool_nouns.append_array(align_db.get("nouns", []))
 	pool_suffixes.append_array(align_db.get("suffixes", []))
 
 	for t_id in sect.active_tenets:
-		var t_data := DataManager.tenets_registry.get(t_id, {})
-		var contributions := t_data.get("name_contributions", {})
+		var t_data = DataManager.tenets_registry.get(t_id, {})
+		var contributions = t_data.get("name_contributions", {})
 		for _i in range(3):
 			pool_prefixes.append_array(contributions.get("prefixes", []))
 			pool_nouns.append_array(contributions.get("nouns", []))
@@ -303,7 +303,7 @@ func _roll_sect_stats(sect: SectData) -> void:
 
 func _assign_starting_laws(sect: SectData) -> void:
 	for law_id in DataManager.sect_laws_registry:
-		var law_data := DataManager.sect_laws_registry[law_id]
+		var law_data = DataManager.sect_laws_registry[law_id]
 		var default_opt: String = law_data.get("default_option", "")
 		if default_opt != "":
 			sect.active_laws[law_id] = default_opt
@@ -380,7 +380,7 @@ func _calculate_sect_friction(sect_a: SectData, sect_b: SectData) -> float:
 		   (b == Definitions.SectAlignment.ORTHODOX and
 			(a == Definitions.SectAlignment.DEMONIC or a == Definitions.SectAlignment.EVIL)):
 			friction += 100.0
-	var rep_diff := abs(
+	var rep_diff = abs(
 		sect_a.stats.get(Definitions.SectStat.REPUTATION, 50) -
 		sect_b.stats.get(Definitions.SectStat.REPUTATION, 50))
 	friction += rep_diff

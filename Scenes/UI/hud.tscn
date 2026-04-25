@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://hud123456"]
 
-[ext_resource type="Script" path="res://Scripts/UI/hud.gd" id="1_hud"]
+[ext_resource type="Script" uid="uid://cucwt6kjy1fwj" path="res://Scripts/UI/hud.gd" id="1_hud"]
 
-[node name="HUD" type="Control"]
+[node name="HUD" type="Control" unique_id=461195104]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,7 +12,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_hud")
 
-[node name="TopBar" type="MarginContainer" parent="."]
+[node name="TopBar" type="MarginContainer" parent="." unique_id=1369450120]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -22,66 +22,66 @@ theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 15
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TopBar"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TopBar" unique_id=877478831]
 layout_mode = 2
 
-[node name="LeftControls" type="HBoxContainer" parent="TopBar/HBoxContainer"]
+[node name="LeftControls" type="HBoxContainer" parent="TopBar/HBoxContainer" unique_id=1630195310]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
-[node name="BtnSect" type="Button" parent="TopBar/HBoxContainer/LeftControls"]
+[node name="BtnSect" type="Button" parent="TopBar/HBoxContainer/LeftControls" unique_id=2048566263]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
 text = "My Sect"
 
-[node name="BtnPlayer" type="Button" parent="TopBar/HBoxContainer/LeftControls"]
+[node name="BtnPlayer" type="Button" parent="TopBar/HBoxContainer/LeftControls" unique_id=2092319931]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
 text = "Sect Master"
 
-[node name="BtnChronicle" type="Button" parent="TopBar/HBoxContainer/LeftControls"]
+[node name="BtnChronicle" type="Button" parent="TopBar/HBoxContainer/LeftControls" unique_id=1613452446]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
 text = "Chronicle"
 
-[node name="RightControls" type="HBoxContainer" parent="TopBar/HBoxContainer"]
+[node name="RightControls" type="HBoxContainer" parent="TopBar/HBoxContainer" unique_id=1442538226]
 layout_mode = 2
-alignment = 2
 theme_override_constants/separation = 10
+alignment = 2
 
-[node name="DateLabel" type="Label" parent="TopBar/HBoxContainer/RightControls"]
+[node name="DateLabel" type="Label" parent="TopBar/HBoxContainer/RightControls" unique_id=474869808]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 text = "Year 1, Month 1, Day 1"
 horizontal_alignment = 2
 
-[node name="TimeControls" type="HBoxContainer" parent="TopBar/HBoxContainer/RightControls"]
+[node name="TimeControls" type="HBoxContainer" parent="TopBar/HBoxContainer/RightControls" unique_id=1117962989]
 layout_mode = 2
 
-[node name="BtnPause" type="Button" parent="TopBar/HBoxContainer/RightControls/TimeControls"]
+[node name="BtnPause" type="Button" parent="TopBar/HBoxContainer/RightControls/TimeControls" unique_id=1790182669]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 text = "||"
 
-[node name="BtnNormal" type="Button" parent="TopBar/HBoxContainer/RightControls/TimeControls"]
+[node name="BtnNormal" type="Button" parent="TopBar/HBoxContainer/RightControls/TimeControls" unique_id=43285311]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 text = "x1"
 
-[node name="BtnFast" type="Button" parent="TopBar/HBoxContainer/RightControls/TimeControls"]
+[node name="BtnFast" type="Button" parent="TopBar/HBoxContainer/RightControls/TimeControls" unique_id=2007827870]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 text = "x2"
 
-[node name="BtnSuperFast" type="Button" parent="TopBar/HBoxContainer/RightControls/TimeControls"]
+[node name="BtnSuperFast" type="Button" parent="TopBar/HBoxContainer/RightControls/TimeControls" unique_id=1075404987]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2

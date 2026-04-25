@@ -5,49 +5,49 @@
 			"name": "Central Plains",
 			"culture": "CENTRAL_PLAINS",
 			"description": "The heartland of the martial world. Home to the most prestigious orthodox sects.",
-			"mask_color": "#ff0000"
+			"mask_color": "#ed1212"
 		},
 		"sichuan": {
 			"id": "sichuan",
 			"name": "Sichuan",
 			"culture": "SICHUAN",
 			"description": "A land of mist and mountain fog. The Tang Clan and other hidden weapon experts trace their roots here.",
-			"mask_color": "#228b22"
+			"mask_color": "#07f200"
 		},
 		"northern_border": {
 			"id": "northern_border",
 			"name": "Northern Border",
 			"culture": "NORTHERN_BORDER",
 			"description": "A harsh land of steppe and fortress. Border clans and nomadic sects dominate.",
-			"mask_color": "#00bfff"
+			"mask_color": "#04aaf6"
 		},
 		"western_regions": {
 			"id": "western_regions",
 			"name": "Western Regions",
 			"culture": "WESTERN_REGIONS",
 			"description": "A land of sand and silk roads. Sects here blend local traditions with Jianghu arts.",
-			"mask_color": "#ffb0e8"
+			"mask_color": "#f2b1e5"
 		},
 		"lingnan": {
 			"id": "lingnan",
 			"name": "Lingnan",
 			"culture": "LINGNAN",
 			"description": "A lush, humid region in the far south. Sects here favour powerful external styles.",
-			"mask_color": "#ff00e4"
+			"mask_color": "#000ff6"
 		},
 		"jiangnan": {
 			"id": "jiangnan",
 			"name": "Jiangnan",
 			"culture": "JIANGNAN",
 			"description": "A prosperous river delta region of silk, scholars, and elegant swordplay.",
-			"mask_color": "#7b2fbe"
+			"mask_color": "#f200c3"
 		},
 		"goryeo": {
 			"id": "goryeo",
 			"name": "Goryeo",
 			"culture": "GORYEO",
 			"description": "The Korean peninsula. A proud martial culture with its own distinct lineages.",
-			"mask_color": "#191970"
+			"mask_color": "#f200c3"
 		}
 	}
 }

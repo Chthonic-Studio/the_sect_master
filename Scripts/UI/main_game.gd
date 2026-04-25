@@ -10,8 +10,8 @@ const CHARACTER_DASHBOARD_SCENE = preload("res://Scenes/UI/character_dashboard.t
 const DEBUG_SCREEN_SCENE = preload("res://Scenes/UI/debug_screen.tscn")
 
 # Map dimensions — keep in sync with MapCameraController and MapRenderer
-const MAP_WIDTH := 2100.0
-const MAP_HEIGHT := 1500.0
+const MAP_WIDTH := 1200	
+const MAP_HEIGHT := 800
 
 func _ready() -> void:
 	# 1. Instance map renderer and camera

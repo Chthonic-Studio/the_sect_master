@@ -1,52 +1,44 @@
-{
+{ 
 "provinces": {
-"luoyang": {
-"id": "luoyang",
-"name": "Luoyang",
-"region_id": "central_plains",
-"description": "The ancient capital, seat of orthodoxy and political intrigue.",
-"mask_color": "#ff2200",
-"neighbours": ["kaifeng", "zhongdu", "yanmen_pass", "western_mountains"]
+"gyeongsang": {
+"id": "gyeonsang",
+"name": "Gyeonsang",
+"region_id": "goryeo",
+"description": "x",
+"mask_color": "#663931",
+"neighbours": ["hanyang"]
 },
-"kaifeng": {
-"id": "kaifeng",
-"name": "Kaifeng",
-"region_id": "central_plains",
-"description": "A thriving commercial city on the plains. Wealthy and well-connected.",
-"mask_color": "#cc0000",
-"neighbours": ["luoyang", "zhongdu", "yanmen_pass", "yanzhou", "hangzhou"]
+"hanyang": {
+"id": "hanyang",
+"name": "Hanyang",
+"region_id": "goryeo",
+"description": "x",
+"mask_color": "#45283c",
+"neighbours": ["gyeonsang", "pyongyang"]
 },
-"zhongdu": {
-"id": "zhongdu",
-"name": "Zhongdu",
-"region_id": "central_plains",
-"description": "The 'Middle Capital', a crossroads city where merchants and wandering sects converge.",
-"mask_color": "#ff6600",
-"neighbours": ["luoyang", "kaifeng", "chengdu", "hangzhou"]
+"pyongyang": {
+"id": "pyongyang",
+"name": "Pyongyang",
+"region_id": "goryeo",
+"description": "x",
+"mask_color": "#8f563b",
+"neighbours": ["hanyang", "liaoning", "heilongjiang"]
 },
-"chengdu": {
-"id": "chengdu",
-"name": "Chengdu",
-"region_id": "sichuan",
-"description": "Capital of the Sichuan basin. The Tang Clan's ancestral home lies nearby.",
-"mask_color": "#32cd32",
-"neighbours": ["western_mountains", "zhongdu", "emei_mountains"]
-},
-"emei_mountains": {
-"id": "emei_mountains",
-"name": "Emei Mountains",
-"region_id": "sichuan",
-"description": "Sacred peaks where the Emei Sect holds court. Mist-wreathed and spiritually potent.",
-"mask_color": "#006400",
-"neighbours": ["chengdu", "guangzhou", "hangzhou"]
-},
-"yanmen_pass": {
-"id": "yanmen_pass",
-"name": "Yanmen Pass",
+"liaoning": {
+"id": "liaoning",
+"name": "Liaoning",
 "region_id": "northern_border",
-"description": "A critical mountain pass that guards the northern frontier. Heavily fortified.",
-"mask_color": "#00a8e8",
-"neighbours": ["luoyang", "kaifeng", "yanzhou", "dunhuang"]
+"description": "x",
+"mask_color": "#45a1ca",
+"neighbours": ["pyongyang", "heilongjiang", "jilin"]
+},
+"heilongjiang": {
+"id": "heilongjiang",
+"name": "Heilongjiang",
+"region_id": "northern_border",
+"description": "x",
+"mask_color": "#28434f",
+"neighbours": ["liaoning", "pyongyang", "jilin"]
 },
 "yanzhou": {
 "id": "yanzhou",
