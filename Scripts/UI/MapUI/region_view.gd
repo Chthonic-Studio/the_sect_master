@@ -51,7 +51,7 @@ func _refresh() -> void:
 	_desc_label.text = description
 
 	_rebuild_provinces_list(provinces)
-	_rebuild_sects_list()
+	_rebuild_sects_list(sects)
 
 func _rebuild_provinces_list(province_ids: Array) -> void:
 	for child in _provinces_list.get_children():
@@ -76,11 +76,10 @@ func _rebuild_provinces_list(province_ids: Array) -> void:
 		count_lbl.add_theme_color_override("font_color", Color(0.75, 0.75, 0.75))
 		hbox.add_child(count_lbl)
 
-func _rebuild_sects_list() -> void:
+func _rebuild_sects_list(sect_ids: Array) -> void:
 	for child in _sects_list.get_children():
 		child.queue_free()
 
-	var sect_ids: Array = MapManager.get_sects_in_region(_region_id)
 	var sect_objects: Array = []
 	for s_id in sect_ids:
 		var s: SectData = SimulationManager.get_sect(s_id)
@@ -302,7 +301,7 @@ func _make_sort_button(label: String, mode: SortMode, parent: Control) -> Button
 	btn.custom_minimum_size = Vector2(80, 28)
 	btn.pressed.connect(func():
 		_sort_mode = mode
-		_rebuild_sects_list())
+		_rebuild_sects_list(MapManager.get_sects_in_region(_region_id)))
 	parent.add_child(btn)
 	return btn
 
