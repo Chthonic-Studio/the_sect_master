@@ -7,6 +7,8 @@ extends Node
 signal hovered_province_changed(province_id: String)
 signal hovered_region_changed(region_id: String)
 signal map_layer_changed(layer: MapLayer)
+signal province_clicked(province_id: String)
+signal region_clicked(region_id: String)
 
 enum MapLayer {
 	VISUAL,     # Purely aesthetic background — no interaction
@@ -15,8 +17,8 @@ enum MapLayer {
 }
 
 # Map dimensions — set by main_game.gd before MapRenderer initialises.
-var map_width: float = 2100.0
-var map_height: float = 1500.0
+var map_width: float = 3840.0
+var map_height: float = 2160.0
 
 # Currently active interaction layer
 var current_layer: MapLayer = MapLayer.REGIONS

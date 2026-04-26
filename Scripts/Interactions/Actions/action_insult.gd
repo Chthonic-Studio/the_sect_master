@@ -12,9 +12,6 @@ func execute(initiator: CharacterData, target: CharacterData) -> void:
 	# Add a decaying negative opinion (Lasts 1 in-game year)
 	target.add_directed_opinion(initiator.char_id, "insulted", -30, 360)
 	
-	# Update logs
+	# Update personal logs only — a public insult is beneath the Chronicle of the Jianghu.
 	initiator.add_log("I insulted " + target.get_full_name() + ".")
 	target.add_log("I was insulted by " + initiator.get_full_name() + ".")
-	
-	# Public actions hit the World Log
-	WorldLogManager.add_log("Social", initiator.get_full_name() + " publicly insulted " + target.get_full_name() + ".")

@@ -8,10 +8,12 @@ const WORLD_LOG_PANEL_SCENE = preload("res://Scenes/UI/world_log_panel.tscn")
 const SECT_DASHBOARD_SCENE = preload("res://Scenes/UI/sect_dashboard.tscn")
 const CHARACTER_DASHBOARD_SCENE = preload("res://Scenes/UI/character_dashboard.tscn")
 const DEBUG_SCREEN_SCENE = preload("res://Scenes/UI/debug_screen.tscn")
+const PROVINCE_VIEW_SCENE = preload("res://Scenes/UI/province_view.tscn")
+const REGION_VIEW_SCENE = preload("res://Scenes/UI/region_view.tscn")
 
-# Map dimensions — keep in sync with MapCameraController and MapRenderer
-const MAP_WIDTH := 1200	
-const MAP_HEIGHT := 800
+# Map dimensions — keep in sync with actual map image size (Assets/Map/*.png)
+const MAP_WIDTH := 3840
+const MAP_HEIGHT := 2160
 
 func _ready() -> void:
 	# 1. Instance map renderer and camera
@@ -34,10 +36,20 @@ func _ready() -> void:
 	var debug_screen_instance = DEBUG_SCREEN_SCENE.instantiate()
 	add_child(debug_screen_instance)
 	
-	# 3. Tell the UIManager to open the HUD
+	var province_view_instance = PROVINCE_VIEW_SCENE.instantiate()
+	add_child(province_view_instance)
+	
+	var region_view_instance = REGION_VIEW_SCENE.instantiate()
+	add_child(region_view_instance)
+	
+	# 3. Connect map click signals to open the appropriate view panels
+	MapManager.province_clicked.connect(_on_province_clicked)
+	MapManager.region_clicked.connect(_on_region_clicked)
+	
+	# 4. Tell the UIManager to open the HUD
 	UIManager.open_panel("hud")
 	
-	# 4. Ensure the simulation is unpaused
+	# 5. Ensure the simulation is unpaused
 	TimeManager.set_time_speed(TimeManager.Speed.NORMAL)
 
 func _setup_map() -> void:
@@ -56,3 +68,9 @@ func _setup_map() -> void:
 	camera.map_width = MAP_WIDTH
 	camera.map_height = MAP_HEIGHT
 	add_child(camera)
+
+func _on_province_clicked(province_id: String) -> void:
+	UIManager.open_panel("province_view", province_id)
+
+func _on_region_clicked(region_id: String) -> void:
+	UIManager.open_panel("region_view", region_id)

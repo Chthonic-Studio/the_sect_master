@@ -16,8 +16,8 @@ class_name MapCameraController
 
 # Map world bounds — set these to match your actual map dimensions.
 # The renderer and MapManager own the canonical size; we read it here.
-@export var map_width: float = 2100.0
-@export var map_height: float = 1500.0
+@export var map_width: float = 3840.0
+@export var map_height: float = 2160.0
 
 # ── INTERNAL ─────────────────────────────────────────────────────
 var _target_position: Vector2 = Vector2.ZERO

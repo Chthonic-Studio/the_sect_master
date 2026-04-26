@@ -13,7 +13,7 @@ signal log_added(log_entry: Dictionary)
 func add_log(type: String, message: String) -> void:
 	var entry = {
 		"date": TimeManager.get_date_string(),
-		"type": type,
+		"type": type.to_lower(),
 		"message": message
 	}
 	

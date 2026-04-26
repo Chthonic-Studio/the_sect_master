@@ -8,6 +8,8 @@ const TYPE_COLORS: Dictionary = {
 	"positive": Color(0.4, 0.9, 0.5),
 	"event": Color(0.6, 0.7, 0.9),
 	"succession": Color(0.8, 0.5, 0.9),
+	"sect collapse": Color(0.95, 0.4, 0.2),
+	"social": Color(0.9, 0.85, 0.5),
 	"system": Color(0.7, 0.7, 0.7)
 }
 
