@@ -52,13 +52,11 @@ func _refresh() -> void:
 	_sect_count_label.text = "Sects: %d" % sects.size()
 	_desc_label.text = description
 
-	_rebuild_sects_list()
+	_rebuild_sects_list(sects)
 
-func _rebuild_sects_list() -> void:
+func _rebuild_sects_list(sects: Array) -> void:
 	for child in _sects_list.get_children():
 		child.queue_free()
-
-	var sects: Array = MapManager.get_sects_in_province(_province_id)
 	var sect_objects: Array = []
 	for s_id in sects:
 		var s: SectData = SimulationManager.get_sect(s_id)
