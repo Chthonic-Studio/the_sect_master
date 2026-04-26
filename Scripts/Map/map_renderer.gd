@@ -192,10 +192,11 @@ func _build_province_labels() -> void:
 		lbl.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.8))
 		lbl.add_theme_constant_override("shadow_offset_x", 1)
 		lbl.add_theme_constant_override("shadow_offset_y", 1)
-		lbl.custom_minimum_size = Vector2(120, 20)
-		# Position so that the label is centred on the centroid
-		lbl.position = Vector2(cx - lbl.custom_minimum_size.x * 0.5,
-							   cy - lbl.custom_minimum_size.y * 0.5)
+		var label_size: Vector2 = lbl.get_combined_minimum_size()
+		lbl.size = label_size
+		# Position so that the label is centred on the centroid using its actual size
+		lbl.position = Vector2(cx - label_size.x * 0.5,
+							   cy - label_size.y * 0.5)
 		lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_province_label_node.add_child(lbl)
 
