@@ -225,6 +225,7 @@ func _build_sects_tab() -> void:
 	_btn_sort_size     = _make_sort_button("Size",     SortMode.SIZE,     sort_row)
 	_btn_sort_relation = _make_sort_button("Relation", SortMode.RELATIONSHIP, sort_row)
 	_btn_sort_name     = _make_sort_button("Name",     SortMode.NAME,    sort_row)
+	_update_sort_buttons()
 
 	# Column headers
 	var header := HBoxContainer.new()
@@ -247,13 +248,20 @@ func _build_sects_tab() -> void:
 	_sects_list.add_theme_constant_override("separation", 2)
 	scroll.add_child(_sects_list)
 
+func _update_sort_buttons() -> void:
+	_btn_sort_strength.disabled = (_sort_mode == SortMode.STRENGTH)
+	_btn_sort_size.disabled     = (_sort_mode == SortMode.SIZE)
+	_btn_sort_relation.disabled = (_sort_mode == SortMode.RELATIONSHIP)
+	_btn_sort_name.disabled     = (_sort_mode == SortMode.NAME)
+
 func _make_sort_button(label: String, mode: SortMode, parent: Control) -> Button:
 	var btn := Button.new()
 	btn.text = label
 	btn.custom_minimum_size = Vector2(80, 28)
 	btn.pressed.connect(func():
 		_sort_mode = mode
-		_rebuild_sects_list())
+		_update_sort_buttons()
+		_rebuild_sects_list(MapManager.get_sects_in_province(_province_id)))
 	parent.add_child(btn)
 	return btn
 
