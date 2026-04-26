@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://region_view_panel"]
+
+[ext_resource type="Script" path="res://Scripts/UI/MapUI/region_view.gd" id="1_rvscr"]
+
+[node name="RegionView" type="Control"]
+custom_minimum_size = Vector2(780, 580)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -390.0
+offset_top = -290.0
+offset_right = 390.0
+offset_bottom = 290.0
+script = ExtResource("1_rvscr")

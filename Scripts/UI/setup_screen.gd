@@ -219,6 +219,7 @@ func _on_page3_back() -> void:
 
 # ---- GAME START ----
 func _on_start_pressed() -> void:
+	# Collect all form data first
 	var first_name     = %FirstNameInput.text.strip_edges()
 	var last_name      = %LastNameInput.text.strip_edges()
 	var gender         = Definitions.Gender.values()[%GenderDropdown.selected]
@@ -247,11 +248,43 @@ func _on_start_pressed() -> void:
 	var pop_scale   = POP_SCALE_VALUES[%PopScaleDropdown.selected]
 	var start_year  = int(%StartYearSpinBox.value)
 
+	# Disable the start button to prevent double-clicks during generation
+	%BtnStart.disabled = true
+
+	# Show the loading overlay and wait one frame so it actually renders before
+	# the heavy generation work begins.
+	var overlay = _create_loading_overlay()
+	add_child(overlay)
+	await get_tree().process_frame
+	await get_tree().process_frame
+
 	_generate_game(
 		first_name, last_name, gender, char_culture, aptitude, avatar_idx, starting_trait,
 		sect_name, alignment, sect_culture, province_id, tenet_id, law_preset, sect_tier,
 		pop_scale, start_year
 	)
+
+## Builds a fullscreen dark overlay with a "Generating World…" message.
+func _create_loading_overlay() -> Control:
+	var overlay := Control.new()
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+
+	var bg := ColorRect.new()
+	bg.color = Color(0.04, 0.04, 0.07, 0.92)
+	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.add_child(bg)
+
+	var lbl := Label.new()
+	lbl.text = "Generating World…\nPlease wait."
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	lbl.set_anchors_preset(Control.PRESET_FULL_RECT)
+	lbl.add_theme_font_size_override("font_size", 28)
+	lbl.add_theme_color_override("font_color", Color(0.9, 0.85, 0.6))
+	overlay.add_child(lbl)
+
+	return overlay
 
 func _generate_game(
 	first_name: String, last_name: String, gender: int, char_culture: int,
