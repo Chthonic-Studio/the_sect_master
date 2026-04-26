@@ -192,8 +192,6 @@ func _build_province_labels() -> void:
 		lbl.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.8))
 		lbl.add_theme_constant_override("shadow_offset_x", 1)
 		lbl.add_theme_constant_override("shadow_offset_y", 1)
-		# Anchor the label so it grows around its centre point
-		lbl.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 		lbl.custom_minimum_size = Vector2(120, 20)
 		# Position so that the label is centred on the centroid
 		lbl.position = Vector2(cx - lbl.custom_minimum_size.x * 0.5,
