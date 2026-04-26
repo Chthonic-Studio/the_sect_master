@@ -155,7 +155,9 @@ func _build_province_labels() -> void:
 
 	var img_w: int = _province_img.get_width()
 	var img_h: int = _province_img.get_height()
-	var stride: int = centroid_sample_stride
+	var stride: int = max(1, centroid_sample_stride)
+	if stride != centroid_sample_stride:
+		push_warning("centroid_sample_stride must be >= 1; using %d instead of %d." % [stride, centroid_sample_stride])
 
 	for y in range(0, img_h, stride):
 		for x in range(0, img_w, stride):
