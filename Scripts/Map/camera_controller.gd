@@ -2,8 +2,9 @@ extends Camera2D
 class_name MapCameraController
 
 ## Map camera controller.
-## Supports WASD / arrow key panning, scroll-wheel zoom,
-## and a "fit map to screen" reset triggered by UIManager.map_fit_requested.
+## Supports WASD / arrow key panning (via project input actions),
+## scroll-wheel zoom (via zoom_in / zoom_out input actions),
+## middle-mouse drag pan, and a "fit map to screen" reset.
 
 # ── CONFIGURATION ────────────────────────────────────────────────
 @export var pan_speed: float = 400.0          # pixels per second at zoom 1
@@ -19,6 +20,11 @@ class_name MapCameraController
 @export var map_width: float = 3840.0
 @export var map_height: float = 2160.0
 
+## Viewport (game resolution) — must match Project Settings → Display → Window.
+## Used for fit-to-screen zoom calculation and pan clamping.
+@export var viewport_width: float = 1200.0
+@export var viewport_height: float = 800.0
+
 # ── INTERNAL ─────────────────────────────────────────────────────
 var _target_position: Vector2 = Vector2.ZERO
 var _target_zoom: Vector2 = Vector2.ONE
@@ -27,6 +33,11 @@ var _pan_start_mouse: Vector2 = Vector2.ZERO
 var _pan_start_pos: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
+	# Set Camera2D built-in limits so Godot also enforces the map boundary.
+	limit_left = 0
+	limit_top = 0
+	limit_right = int(map_width)
+	limit_bottom = int(map_height)
 	_fit_to_screen()
 	# Listen for the "world_screen" shortcut emitted by UIManager
 	UIManager.map_fit_requested.connect(_fit_to_screen)
@@ -42,25 +53,23 @@ func _process(delta: float) -> void:
 		zoom = _target_zoom
 
 func _unhandled_input(event: InputEvent) -> void:
-	# ── Scroll Wheel Zoom ─────────────────────────────────────────
 	if event is InputEventMouseButton:
-		if event.pressed:
-			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-				_zoom_toward_mouse(event.position, 1.0 + zoom_step)
-				get_viewport().set_input_as_handled()
-			elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-				_zoom_toward_mouse(event.position, 1.0 - zoom_step)
-				get_viewport().set_input_as_handled()
-			elif event.button_index == MOUSE_BUTTON_MIDDLE:
-				_panning = true
-				_pan_start_mouse = event.position
-				_pan_start_pos = _target_position
-				get_viewport().set_input_as_handled()
-		else:
-			if event.button_index == MOUSE_BUTTON_MIDDLE:
-				_panning = false
+		# ── Scroll Wheel Zoom (via input actions) ────────────────
+		if event.is_action_pressed("zoom_in"):
+			_zoom_toward_mouse(event.position, 1.0 + zoom_step)
+			get_viewport().set_input_as_handled()
+		elif event.is_action_pressed("zoom_out"):
+			_zoom_toward_mouse(event.position, 1.0 - zoom_step)
+			get_viewport().set_input_as_handled()
+		# ── Middle-Mouse Drag Pan ─────────────────────────────────
+		elif event.pressed and event.button_index == MOUSE_BUTTON_MIDDLE:
+			_panning = true
+			_pan_start_mouse = event.position
+			_pan_start_pos = _target_position
+			get_viewport().set_input_as_handled()
+		elif not event.pressed and event.button_index == MOUSE_BUTTON_MIDDLE:
+			_panning = false
 	
-	# ── Middle-Mouse Drag Pan ─────────────────────────────────────
 	if event is InputEventMouseMotion and _panning:
 		var delta_px: Vector2 = event.position - _pan_start_mouse
 		_target_position = _pan_start_pos - delta_px / _target_zoom
@@ -72,13 +81,13 @@ func _unhandled_input(event: InputEvent) -> void:
 func _handle_keyboard_pan(delta: float) -> void:
 	var dir := Vector2.ZERO
 	
-	if Input.is_action_pressed("ui_left") or Input.is_key_pressed(KEY_A):
+	if Input.is_action_pressed("left"):
 		dir.x -= 1.0
-	if Input.is_action_pressed("ui_right") or Input.is_key_pressed(KEY_D):
+	if Input.is_action_pressed("right"):
 		dir.x += 1.0
-	if Input.is_action_pressed("ui_up") or Input.is_key_pressed(KEY_W):
+	if Input.is_action_pressed("up"):
 		dir.y -= 1.0
-	if Input.is_action_pressed("ui_down") or Input.is_key_pressed(KEY_S):
+	if Input.is_action_pressed("down"):
 		dir.y += 1.0
 	
 	if dir == Vector2.ZERO:
@@ -101,23 +110,23 @@ func _zoom_toward_mouse(mouse_screen_pos: Vector2, factor: float) -> void:
 		return
 	
 	# Keep the world point under the cursor fixed
-	var viewport_size := get_viewport_rect().size
-	var old_world := _target_position + (mouse_screen_pos - viewport_size * 0.5) / old_zoom
+	var vp_size := Vector2(viewport_width, viewport_height)
+	var old_world := _target_position + (mouse_screen_pos - vp_size * 0.5) / old_zoom
 	
 	_target_zoom = Vector2(new_zoom, new_zoom)
-	_target_position = old_world - (mouse_screen_pos - viewport_size * 0.5) / new_zoom
+	_target_position = old_world - (mouse_screen_pos - vp_size * 0.5) / new_zoom
 	_clamp_position()
 
 func _clamp_position() -> void:
-	var half_screen := get_viewport_rect().size * 0.5 / _target_zoom.x
+	var half_screen := Vector2(viewport_width, viewport_height) * 0.5 / _target_zoom.x
 	_target_position.x = clampf(_target_position.x, half_screen.x, map_width - half_screen.x)
 	_target_position.y = clampf(_target_position.y, half_screen.y, map_height - half_screen.y)
 
 ## Zooms and pans so the entire map fits within the viewport.
 func _fit_to_screen() -> void:
-	var viewport_size := get_viewport_rect().size
-	var zoom_x := viewport_size.x / map_width
-	var zoom_y := viewport_size.y / map_height
+	var vp_size := Vector2(viewport_width, viewport_height)
+	var zoom_x := vp_size.x / map_width
+	var zoom_y := vp_size.y / map_height
 	var fit_zoom := minf(zoom_x, zoom_y)
 	fit_zoom = clampf(fit_zoom, zoom_min, zoom_max)
 	
@@ -126,3 +135,4 @@ func _fit_to_screen() -> void:
 	# Snap immediately so the first frame shows the full map instead of the raw top-left corner.
 	zoom = _target_zoom
 	position = _target_position
+
