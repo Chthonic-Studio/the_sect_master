@@ -57,7 +57,9 @@ All technical documentation, guides, and references for *The Sect Master* are co
 
 ### 📚 Technical Documentation
 
-The [`Docs/`](Docs/README.md) folder is the main hub for codebase documentation — covering every autoload singleton, core data container, and gameplay system.
+| Index | Description |
+|---|---|
+| [Docs/README — Documentation Index](Docs/README.md) | Top-level index: autoload load order, architecture overview, links to all subsections |
 
 #### Autoload Singletons
 
