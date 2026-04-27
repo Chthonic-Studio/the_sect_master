@@ -111,7 +111,7 @@ When `open_panel()` is called, the panel is moved to the back of the stack (topm
 `UIManager` connects to two global signals at startup:
 
 - `EventManager.player_event_triggered` → spawns `event_popup.tscn`, pauses time.
-- `GameManager.player_succession_required` → spawns `sucession_popup.tscn` on the SYSTEM layer.
+- `GameManager.player_succession_required` → spawns `succession_popup.tscn` on the SYSTEM layer.
 
 ---
 

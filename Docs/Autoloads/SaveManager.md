@@ -63,7 +63,7 @@ SaveManager.load_game("my_save")
 7. Restore `player_char_id` via `GameManager.set_player_character()`.
 8. Clear and restore `WorldLogManager` logs.
 
-> **Critical:** After loading, `SimulationManager.register_sect()` is **not called** during character/sect reconstruction — `sector_repo` and `character_repo` are populated directly. This means the `building_completed` signal connection is **not re-established** on loaded sects. If this becomes a problem, loop over `sect_repo` after loading and call `register_sect()` or reconnect the signal manually.
+> **Critical:** After loading, `SimulationManager.register_sect()` is **not called** during character/sect reconstruction — `sect_repo` and `character_repo` are populated directly. This means the `building_completed` signal connection is **not re-established** on loaded sects. If this becomes a problem, loop over `sect_repo` after loading and call `register_sect()` or reconnect the signal manually.
 
 ---
 
