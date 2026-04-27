@@ -47,10 +47,13 @@ func _ready() -> void:
 	# Compute zoom limits from map and viewport dimensions.
 	# zoom_min: entire map visible (max zoom-out).
 	# zoom_max: 1 : 1 pixels (max zoom-in, no upscaling of the art).
-	var fit_x := viewport_width / map_width
-	var fit_y := viewport_height / map_height
-	zoom_min = minf(fit_x, fit_y)
 	zoom_max = 1.0
+	if map_width <= 0.0 or map_height <= 0.0:
+		zoom_min = zoom_max
+	else:
+		var fit_x := viewport_width / map_width
+		var fit_y := viewport_height / map_height
+		zoom_min = minf(minf(fit_x, fit_y), zoom_max)
 
 	# Set Camera2D built-in limits so Godot also enforces the map boundary.
 	limit_left = 0
