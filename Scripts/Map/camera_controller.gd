@@ -123,3 +123,6 @@ func _fit_to_screen() -> void:
 	
 	_target_zoom = Vector2(fit_zoom, fit_zoom)
 	_target_position = Vector2(map_width * 0.5, map_height * 0.5)
+	# Snap immediately so the first frame shows the full map instead of the raw top-left corner.
+	zoom = _target_zoom
+	position = _target_position
