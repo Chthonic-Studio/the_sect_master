@@ -20,10 +20,11 @@ class_name MapCameraController
 @export var map_width: float = 3840.0
 @export var map_height: float = 2160.0
 
-## Viewport (game resolution) — must match Project Settings → Display → Window.
-## Used for fit-to-screen zoom calculation and pan clamping.
-@export var viewport_width: float = 1200.0
-@export var viewport_height: float = 800.0
+## Viewport (game resolution). Leave at 0 to auto-read from
+## ProjectSettings (display/window/size/viewport_width|height) at runtime.
+## Set a non-zero value in the Inspector only when you need non-standard sizing.
+@export var viewport_width: float = 0.0
+@export var viewport_height: float = 0.0
 
 # ── INTERNAL ─────────────────────────────────────────────────────
 var _target_position: Vector2 = Vector2.ZERO
@@ -33,6 +34,11 @@ var _pan_start_mouse: Vector2 = Vector2.ZERO
 var _pan_start_pos: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
+	# Resolve viewport size from ProjectSettings when not overridden in the Inspector.
+	if viewport_width <= 0.0:
+		viewport_width = float(ProjectSettings.get_setting("display/window/size/viewport_width", 1200))
+	if viewport_height <= 0.0:
+		viewport_height = float(ProjectSettings.get_setting("display/window/size/viewport_height", 800))
 	# Set Camera2D built-in limits so Godot also enforces the map boundary.
 	limit_left = 0
 	limit_top = 0

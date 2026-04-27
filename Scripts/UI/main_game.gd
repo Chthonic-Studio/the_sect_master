@@ -16,11 +16,6 @@ const REGION_VIEW_SCENE = preload("res://Scenes/UI/region_view.tscn")
 @export var map_width: int = 3840
 @export var map_height: int = 2160
 
-## Viewport (game resolution) — must match Project Settings → Display → Window.
-## The camera uses these to compute the fit-to-screen zoom and to clamp the pan position.
-@export var viewport_width: int = 1200
-@export var viewport_height: int = 800
-
 func _ready() -> void:
 	# 1. Instance map renderer and camera
 	_setup_map()
@@ -73,8 +68,6 @@ func _setup_map() -> void:
 	camera.name = "MapCamera"
 	camera.map_width = map_width
 	camera.map_height = map_height
-	camera.viewport_width = viewport_width
-	camera.viewport_height = viewport_height
 	add_child(camera)
 
 func _on_province_clicked(province_id: String) -> void:
