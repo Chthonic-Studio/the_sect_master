@@ -28,9 +28,9 @@
 
 ```gdscript
 enum MapLayer {
-    VISUAL,     # Background art only — no interaction
-    REGIONS,    # Region-level borders and highlighting
-    PROVINCES   # Province-level borders and highlighting
+	VISUAL,     # Background art only — no interaction
+	REGIONS,    # Region-level borders and highlighting
+	PROVINCES   # Province-level borders and highlighting
 }
 ```
 
