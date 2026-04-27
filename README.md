@@ -48,3 +48,51 @@ Inspiration for grand strategy elements, procedural faction generation, technolo
 Influence for autonomous character AI (Desires/Needs), individual inventories, and detailed character logs.
 
 Wuxia Literature: The foundational thematic and aesthetic inspiration for politics, martial arts sects, progression, and the pursuit of power and immortality.
+
+---
+
+## Documentation Library
+
+All technical documentation, guides, and references for *The Sect Master* are collected below.
+
+### 📚 Technical Documentation
+
+The [`Docs/`](Docs/README.md) folder is the main hub for codebase documentation — covering every autoload singleton, core data container, and gameplay system.
+
+#### Autoload Singletons
+
+| Autoload | Description |
+|---|---|
+| [Definitions](Docs/Autoloads/Definitions.md) | All enums, constants, and stat name maps |
+| [TimeManager](Docs/Autoloads/TimeManager.md) | In-game clock, speed control, day/month/year signals |
+| [DataManager](Docs/Autoloads/DataManager.md) | JSON data loading, registries, mod support, validation |
+| [SaveManager](Docs/Autoloads/SaveManager.md) | Save/load game state to JSON |
+| [SimulationManager](Docs/Autoloads/SimulationManager.md) | Character & sect repos, daily tick, death handling |
+| [CharacterGenerator](Docs/Autoloads/CharacterGenerator.md) | Procedural character creation |
+| [SectGenerator](Docs/Autoloads/SectGenerator.md) | World-gen sect creation and province population |
+| [GameManager](Docs/Autoloads/GameManager.md) | Player identity, sect authority, succession signals |
+| [EventManager](Docs/Autoloads/EventManager.md) | Pulse engine, event triggering, conditions, effects |
+| [WorldManager](Docs/Autoloads/WorldManager.md) | World population replenishment |
+| [InteractionManager](Docs/Autoloads/InteractionManager.md) | Player right-click action registry |
+| [OpinionManager](Docs/Autoloads/OpinionManager.md) | Dynamic character relationship scoring |
+| [WorldLogManager](Docs/Autoloads/WorldLogManager.md) | Global event log |
+| [SceneManager](Docs/Autoloads/SceneManager.md) | Scene transitions and full state reset |
+| [UIManager](Docs/Autoloads/UIManager.md) | Panel routing, layer management, keyboard shortcuts |
+| [MapManager](Docs/Autoloads/MapManager.md) | Province/region colour maps, hover tracking, ownership |
+
+#### Core Systems
+
+| System | Description |
+|---|---|
+| [CharacterData](Docs/Systems/CharacterData.md) | The character container: stats, AI, needs, serialization |
+| [SectData](Docs/Systems/SectData.md) | The sect container: economy, politics, construction, succession |
+| [AI System](Docs/Systems/AI_System.md) | CharacterBrain, Desire, ActionPlan, Directive, Blackboard |
+
+---
+
+### 🗺️ Content & Data Guides
+
+| Guide | Description |
+|---|---|
+| [Event Creation Guide](Data/Events/README.md) | How to write and chain events in JSON — pulse system, conditions, effects, dynamic text |
+| [Modding Guide](Data/Modding/README.md) | How to create Data Mods (JSON traits/items) and Logic Mods (packed GDScript) |
