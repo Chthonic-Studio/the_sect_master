@@ -72,7 +72,7 @@ enum MartialRealm {
 	FIRST_RATE,			# Master level, can lead a branch
 	PEAK_MASTER,		# Famous in the region
 	GRANDMASTER,		# Sect leader level, legendary status
-	TRASCENDENT,		# Mythical, "Invincible under the Heavens"
+	TRANSCENDENT,		# Mythical, "Invincible under the Heavens"
 	SUMMIT,				# Last step before immortality
 }
 

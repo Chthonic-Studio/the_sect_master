@@ -43,9 +43,7 @@ Use `Definitions.MARTIAL_STAT_NAMES[stat_enum]` for the lowercase string key.
 ---
 
 ### `MartialRealm` — Cultivation progression tiers
-`UNINITIATED → THIRD_RATE → SECOND_RATE → FIRST_RATE → PEAK_MASTER → GRANDMASTER → TRASCENDENT → SUMMIT`
-
-> **Pitfall:** Note the typo `TRASCENDENT` (missing an 'n'). Matching this in code requires using the exact spelling. Do not correct this without a project-wide find-and-replace.
+`UNINITIATED → THIRD_RATE → SECOND_RATE → FIRST_RATE → PEAK_MASTER → GRANDMASTER → TRANSCENDENT → SUMMIT`
 
 ---
 

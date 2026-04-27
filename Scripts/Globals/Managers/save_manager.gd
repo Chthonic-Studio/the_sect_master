@@ -98,6 +98,10 @@ func load_game(save_name: String) -> void:
 		var new_sect = SectData.new()
 		new_sect.from_dictionary(all_sect_data[s_id])
 		SimulationManager.sect_repo[s_id] = new_sect
+		# Reconnect the signal that was set up by register_sect() during normal flow.
+		# Bypassing register_sect() here avoids overwriting the already-restored sect_id.
+		if not new_sect.building_completed.is_connected(SimulationManager._on_building_completed):
+			new_sect.building_completed.connect(SimulationManager._on_building_completed)
 	
 	# 3. Restore Player State
 	var player_id = data.get("player_char_id", "")

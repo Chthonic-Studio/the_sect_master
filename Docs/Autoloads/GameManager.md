@@ -61,7 +61,7 @@ GameManager.trigger_player_succession("char_5")
 3. `player_died` signal → **not connected to anything yet** — UI will listen here in a future phase.
 4. If the dead character was the Sect Master, `SectData.handle_succession()` is called.
 5. Succession evaluates the heir and calls `GameManager.trigger_player_succession(heir_id)`.
-6. `player_succession_required` signal → `UIManager._on_player_succession_required()` → spawns `sucession_popup.tscn`.
+6. `player_succession_required` signal → `UIManager._on_player_succession_required()` → spawns `succession_popup.tscn`.
 7. Player clicks "Play as Heir" in the popup → calls `GameManager.set_player_character(heir_id)` and `SectData.execute_succession(heir_id)`.
 
 ---

@@ -229,7 +229,7 @@ If no living members remain, `WorldLogManager` logs a sect collapse event.
 
 - `cached_sect_strength` is recalculated every time a member is added or removed. For bulk operations (world gen), this causes O(n²) strength recalculations. Consider deferring with a dirty flag pattern if this becomes a bottleneck.
 - `members_by_rank` and `members_by_position` can go out of sync if you modify `all_members` directly. Always use `add_member()` and `remove_member()`.
-- The `building_completed` signal is connected in `SimulationManager.register_sect()`. Sects loaded from save via `SectData.new()` + `from_dictionary()` do **not** have this signal connected automatically. See [SaveManager pitfalls](../Autoloads/SaveManager.md).
+- The `building_completed` signal is connected in `SimulationManager.register_sect()` during normal sect creation. For sects loaded from a save file, `SaveManager` explicitly reconnects this signal after deserialization.
 
 ---
 

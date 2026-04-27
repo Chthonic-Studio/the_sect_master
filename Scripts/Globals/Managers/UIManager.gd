@@ -148,7 +148,7 @@ func _on_player_event_triggered(event_id: String, context: Dictionary) -> void:
 	TimeManager.set_time_speed(TimeManager.Speed.PAUSED)
 
 func _on_player_succession_required(heir_char_id: String) -> void:
-	var succ_scene = load("res://Scenes/UI/sucession_popup.tscn")
+	var succ_scene = load("res://Scenes/UI/succession_popup.tscn")
 	# Spawn on the highest system layer so it eclipses everything
 	var _popup = spawn_popup(succ_scene, {"heir_id": heir_char_id})
 
