@@ -10,10 +10,14 @@ class_name MapCameraController
 @export var pan_speed: float = 400.0          # pixels per second at zoom 1
 @export var pan_speed_fast_multiplier: float = 2.5  # held with Shift
 @export var zoom_step: float = 0.15           # zoom fraction per scroll tick
-@export var zoom_min: float = 0.25
-@export var zoom_max: float = 3.0
 @export var smooth_pan: bool = true           # lerp pan for feel
 @export var smooth_factor: float = 8.0        # lerp speed (higher = snappier)
+
+# Zoom limits — computed at runtime in _ready() from map/viewport dimensions.
+# zoom_min = fit the full map into the viewport (max zoom-out).
+# zoom_max = 1.0 = 1 : 1 pixel (max zoom-in, original art quality).
+var zoom_min: float = 0.25   # overridden at runtime
+var zoom_max: float = 1.0    # 1:1 pixels
 
 # Map world bounds — set these to match your actual map dimensions.
 # The renderer and MapManager own the canonical size; we read it here.
@@ -39,12 +43,23 @@ func _ready() -> void:
 		viewport_width = float(ProjectSettings.get_setting("display/window/size/viewport_width", 1200))
 	if viewport_height <= 0.0:
 		viewport_height = float(ProjectSettings.get_setting("display/window/size/viewport_height", 800))
+
+	# Compute zoom limits from map and viewport dimensions.
+	# zoom_min: entire map visible (max zoom-out).
+	# zoom_max: 1 : 1 pixels (max zoom-in, no upscaling of the art).
+	var fit_x := viewport_width / map_width
+	var fit_y := viewport_height / map_height
+	zoom_min = minf(fit_x, fit_y)
+	zoom_max = 1.0
+
 	# Set Camera2D built-in limits so Godot also enforces the map boundary.
 	limit_left = 0
 	limit_top = 0
 	limit_right = int(map_width)
 	limit_bottom = int(map_height)
 	_fit_to_screen()
+	# Ensure this camera is the active one (overrides any static Camera2D in the scene).
+	make_current()
 	# Listen for the "world_screen" shortcut emitted by UIManager
 	UIManager.map_fit_requested.connect(_fit_to_screen)
 

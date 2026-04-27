@@ -63,13 +63,15 @@ func _rebuild_provinces_list(province_ids: Array) -> void:
 		var sect_count: int = MapManager.get_sects_in_province(p_id).size()
 
 		var hbox := HBoxContainer.new()
-		hbox.custom_minimum_size = Vector2(0, 24)
+		hbox.custom_minimum_size = Vector2(0, 28)
 		_provinces_list.add_child(hbox)
 
-		var name_lbl := Label.new()
-		name_lbl.text = prov_name
-		name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		hbox.add_child(name_lbl)
+		var name_btn := LinkButton.new()
+		name_btn.text = prov_name
+		name_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		var pid_capture: String = p_id
+		name_btn.pressed.connect(func(): UIManager.open_panel("province_view", pid_capture))
+		hbox.add_child(name_btn)
 
 		var count_lbl := Label.new()
 		count_lbl.text = "%d sect(s)" % sect_count
@@ -121,10 +123,12 @@ func _make_sect_row(sect: SectData) -> Control:
 	var prov_data: Dictionary = DataManager.provinces_registry.get(sect.province_id, {})
 	var prov_name: String = prov_data.get("name", sect.province_id) if sect.province_id != "" else "—"
 
-	var name_lbl := Label.new()
-	name_lbl.text = sect.sect_name
-	name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	hbox.add_child(name_lbl)
+	var name_btn := LinkButton.new()
+	name_btn.text = sect.sect_name
+	name_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var sect_capture: SectData = sect
+	name_btn.pressed.connect(func(): UIManager.open_panel("sect_dashboard", sect_capture))
+	hbox.add_child(name_btn)
 
 	var prov_lbl := Label.new()
 	prov_lbl.text = prov_name
