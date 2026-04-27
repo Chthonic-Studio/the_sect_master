@@ -119,8 +119,16 @@ func _zoom_toward_mouse(mouse_screen_pos: Vector2, factor: float) -> void:
 
 func _clamp_position() -> void:
 	var half_screen := Vector2(viewport_width, viewport_height) * 0.5 / _target_zoom.x
-	_target_position.x = clampf(_target_position.x, half_screen.x, map_width - half_screen.x)
-	_target_position.y = clampf(_target_position.y, half_screen.y, map_height - half_screen.y)
+	
+	if half_screen.x * 2.0 >= map_width:
+		_target_position.x = map_width * 0.5
+	else:
+		_target_position.x = clampf(_target_position.x, half_screen.x, map_width - half_screen.x)
+	
+	if half_screen.y * 2.0 >= map_height:
+		_target_position.y = map_height * 0.5
+	else:
+		_target_position.y = clampf(_target_position.y, half_screen.y, map_height - half_screen.y)
 
 ## Zooms and pans so the entire map fits within the viewport.
 func _fit_to_screen() -> void:
