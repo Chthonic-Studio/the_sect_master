@@ -11,9 +11,10 @@ const DEBUG_SCREEN_SCENE = preload("res://Scenes/UI/debug_screen.tscn")
 const PROVINCE_VIEW_SCENE = preload("res://Scenes/UI/province_view.tscn")
 const REGION_VIEW_SCENE = preload("res://Scenes/UI/region_view.tscn")
 
-# Map dimensions — keep in sync with actual map image size (Assets/Map/*.png)
-const MAP_WIDTH := 3840
-const MAP_HEIGHT := 2160
+## Map dimensions — keep in sync with actual map image size (Assets/Map/*.png).
+## Exposed as export vars so they can be tweaked from the editor without touching code.
+@export var map_width: int = 3840
+@export var map_height: int = 2160
 
 func _ready() -> void:
 	# 1. Instance map renderer and camera
@@ -54,8 +55,8 @@ func _ready() -> void:
 
 func _setup_map() -> void:
 	# Store map dimensions on the MapManager for other systems to query
-	MapManager.map_width = MAP_WIDTH
-	MapManager.map_height = MAP_HEIGHT
+	MapManager.map_width = map_width
+	MapManager.map_height = map_height
 	
 	# Renderer (draws polygons for regions and provinces)
 	var renderer := MapRenderer.new()
@@ -65,8 +66,8 @@ func _setup_map() -> void:
 	# Camera (WASD / scroll zoom)
 	var camera := MapCameraController.new()
 	camera.name = "MapCamera"
-	camera.map_width = MAP_WIDTH
-	camera.map_height = MAP_HEIGHT
+	camera.map_width = map_width
+	camera.map_height = map_height
 	add_child(camera)
 
 func _on_province_clicked(province_id: String) -> void:
@@ -74,3 +75,11 @@ func _on_province_clicked(province_id: String) -> void:
 
 func _on_region_clicked(region_id: String) -> void:
 	UIManager.open_panel("region_view", region_id)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("province_mode"):
+		MapManager.set_map_layer(MapManager.MapLayer.PROVINCES)
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("region_mode"):
+		MapManager.set_map_layer(MapManager.MapLayer.REGIONS)
+		get_viewport().set_input_as_handled()
