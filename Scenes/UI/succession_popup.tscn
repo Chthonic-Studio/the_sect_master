@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://brswqyjulatjn"]
 
-[ext_resource type="Script" uid="uid://cd63kj1dxjjvp" path="res://Scripts/UI/SectUI/sucession_popup.gd" id="1_s6dhy"]
+[ext_resource type="Script" uid="uid://cd63kj1dxjjvp" path="res://Scripts/UI/SectUI/succession_popup.gd" id="1_s6dhy"]
 
 [node name="SuccessionPopup" type="ColorRect" unique_id=325320256]
 anchors_preset = 15

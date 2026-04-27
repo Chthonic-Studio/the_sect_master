@@ -162,7 +162,7 @@ func _roll_reputation_by_realm(realm: int) -> int:
 		Definitions.MartialRealm.FIRST_RATE: return randi_range(30, 50)
 		Definitions.MartialRealm.PEAK_MASTER: return randi_range(50, 70)
 		Definitions.MartialRealm.GRANDMASTER: return randi_range(70, 90)
-		Definitions.MartialRealm.TRASCENDENT: return randi_range(80, 100)
+		Definitions.MartialRealm.TRANSCENDENT: return randi_range(80, 100)
 		Definitions.MartialRealm.SUMMIT: return randi_range(90, 100)
 		_: return 0
 
