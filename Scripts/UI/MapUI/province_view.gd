@@ -94,10 +94,12 @@ func _make_sect_row(sect: SectData) -> Control:
 	var player_sect_id: String = GameManager.player_sect_id
 	var relation: int = SimulationManager.get_sect_relationship(player_sect_id, sect.sect_id)
 
-	var name_lbl := Label.new()
-	name_lbl.text = sect.sect_name
-	name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	hbox.add_child(name_lbl)
+	var name_btn := LinkButton.new()
+	name_btn.text = sect.sect_name
+	name_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var sect_capture: SectData = sect
+	name_btn.pressed.connect(func(): UIManager.open_panel("sect_dashboard", sect_capture))
+	hbox.add_child(name_btn)
 
 	var align_lbl := Label.new()
 	align_lbl.text = align_str
