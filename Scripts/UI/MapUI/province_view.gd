@@ -10,6 +10,10 @@ enum SortMode { STRENGTH, SIZE, RELATIONSHIP, NAME }
 var _province_id: String = ""
 var _sort_mode: SortMode = SortMode.STRENGTH
 
+# ── DRAG STATE ───────────────────────────────────────────────────
+var _dragging: bool = false
+var _drag_offset: Vector2 = Vector2.ZERO
+
 # ── SORT BUTTON REFS ─────────────────────────────────────────────
 var _btn_sort_strength: Button
 var _btn_sort_size: Button
@@ -23,6 +27,36 @@ var _sect_count_label: Label
 var _desc_label: Label
 var _sects_list: VBoxContainer
 var _tab_container: TabContainer
+
+## Bring this panel to the front whenever the player clicks anywhere on it.
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		move_to_front()
+
+## Handles drag-and-drop input from the title bar.
+func _on_drag_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			# Snapshot absolute position then clear anchors for free movement
+			var abs_pos := get_global_rect().position
+			anchor_left = 0.0
+			anchor_top = 0.0
+			anchor_right = 0.0
+			anchor_bottom = 0.0
+			position = abs_pos
+			_drag_offset = event.global_position - abs_pos
+			_dragging = true
+			move_to_front()
+			accept_event()
+		else:
+			_dragging = false
+	elif event is InputEventMouseMotion and _dragging:
+		var new_pos := event.global_position - _drag_offset
+		var vp := get_viewport_rect().size
+		new_pos.x = clamp(new_pos.x, 0.0, vp.x - size.x)
+		new_pos.y = clamp(new_pos.y, 0.0, vp.y - size.y)
+		position = new_pos
+		accept_event()
 
 func _ready() -> void:
 	UIManager.register_panel("province_view", self, UIManager.Layer.PANELS)
@@ -136,6 +170,8 @@ func _build_ui() -> void:
 	var bg := ColorRect.new()
 	bg.color = Color(0.08, 0.08, 0.11, 0.97)
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	# PASS so clicks propagate to the root Control's _gui_input for bring-to-front
+	bg.mouse_filter = Control.MOUSE_FILTER_PASS
 	add_child(bg)
 
 	var margin := MarginContainer.new()
@@ -150,8 +186,11 @@ func _build_ui() -> void:
 	vbox.add_theme_constant_override("separation", 8)
 	margin.add_child(vbox)
 
-	# Title row
+	# Title row — used as drag handle
 	var title_row := HBoxContainer.new()
+	title_row.mouse_filter = Control.MOUSE_FILTER_STOP
+	title_row.mouse_default_cursor_shape = Control.CURSOR_DRAG
+	title_row.gui_input.connect(_on_drag_input)
 	vbox.add_child(title_row)
 
 	_title_label = Label.new()

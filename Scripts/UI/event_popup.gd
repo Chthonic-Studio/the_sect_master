@@ -6,9 +6,42 @@ extends Control
 var current_event_id: String = ""
 var current_context: Dictionary = {}
 
+# ── DRAG STATE ───────────────────────────────────────────────────
+var _dragging: bool = false
+var _drag_offset: Vector2 = Vector2.ZERO
+
 func _ready() -> void:
 	# Ensure the popup blocks interactions behind it
 	mouse_filter = Control.MOUSE_FILTER_STOP
+
+## Bring this panel to the front whenever the player clicks anywhere on it.
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		move_to_front()
+
+## Handles drag-and-drop input from the title label.
+func _on_drag_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			var abs_pos := get_global_rect().position
+			anchor_left = 0.0
+			anchor_top = 0.0
+			anchor_right = 0.0
+			anchor_bottom = 0.0
+			position = abs_pos
+			_drag_offset = event.global_position - abs_pos
+			_dragging = true
+			move_to_front()
+			accept_event()
+		else:
+			_dragging = false
+	elif event is InputEventMouseMotion and _dragging:
+		var new_pos := event.global_position - _drag_offset
+		var vp := get_viewport_rect().size
+		new_pos.x = clamp(new_pos.x, 0.0, vp.x - size.x)
+		new_pos.y = clamp(new_pos.y, 0.0, vp.y - size.y)
+		position = new_pos
+		accept_event()
 
 ## Called automatically by UIManager.spawn_popup() if passed in payload
 func setup_popup(payload: Dictionary) -> void:
@@ -21,10 +54,12 @@ func setup_popup(payload: Dictionary) -> void:
 	%TitleLabel.text = event_data.get("title", "Event")
 	%DescLabel.text = EventManager._format_string(event_data.get("description", ""), current_context)
 	
-	# 2. Pause Game if requested
-	if event_data.get("requires_pause", false):
-		TimeManager.set_time_speed(TimeManager.Speed.PAUSED)
-		
+	# 2. Wire TitleLabel as a drag handle
+	%TitleLabel.mouse_filter = Control.MOUSE_FILTER_STOP
+	%TitleLabel.mouse_default_cursor_shape = Control.CURSOR_DRAG
+	if not %TitleLabel.gui_input.is_connected(_on_drag_input):
+		%TitleLabel.gui_input.connect(_on_drag_input)
+	
 	# 3. Build Buttons
 	_build_options(event_data.get("options", {}))
 

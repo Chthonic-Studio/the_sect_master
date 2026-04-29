@@ -89,6 +89,7 @@ func open_panel(panel_id: String, payload: Variant = null) -> void:
 		panel.setup_panel(payload)
 		
 	panel.show()
+	panel.move_to_front()
 	
 	if _ui_stack.has(panel):
 		_ui_stack.erase(panel)
@@ -142,10 +143,17 @@ func spawn_popup(packed_scene: PackedScene, payload: Variant = null) -> Node:
 func _on_player_event_triggered(event_id: String, context: Dictionary) -> void:
 	# You will need to create this generic event_popup.tscn later
 	var event_scene = load("res://Scenes/UI/event_popup.tscn")
-	var _popup = spawn_popup(event_scene, {"event_id": event_id, "context": context})
+	var popup = spawn_popup(event_scene, {"event_id": event_id, "context": context})
 	
+	# Remember the speed before pausing so we can restore it when the popup closes
+	var speed_before := TimeManager.current_speed
 	# Auto-pause the game when an event fires
 	TimeManager.set_time_speed(TimeManager.Speed.PAUSED)
+	# Restore the pre-event speed when the popup is dismissed
+	popup.tree_exited.connect(func():
+		if TimeManager.current_speed == TimeManager.Speed.PAUSED:
+			TimeManager.set_time_speed(speed_before)
+	, CONNECT_ONE_SHOT)
 
 func _on_player_succession_required(heir_char_id: String) -> void:
 	var succ_scene = load("res://Scenes/UI/succession_popup.tscn")
