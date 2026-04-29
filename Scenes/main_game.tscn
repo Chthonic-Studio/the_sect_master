@@ -5,10 +5,4 @@
 [node name="MainGame" type="Node2D" unique_id=411409901]
 script = ExtResource("1_l756w")
 
-[node name="MapBackground" type="Sprite2D" parent="." unique_id=1037220994]
 
-[node name="MapRegions" type="Sprite2D" parent="." unique_id=7708342]
-centered = false
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=273978203]
-anchor_mode = 0

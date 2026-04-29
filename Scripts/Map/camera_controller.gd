@@ -10,21 +10,19 @@ class_name MapCameraController
 @export var pan_speed: float = 400.0          # pixels per second at zoom 1
 @export var pan_speed_fast_multiplier: float = 2.5  # held with Shift
 @export var zoom_step: float = 0.15           # zoom fraction per scroll tick
-@export var zoom_min: float = 0.25
-@export var zoom_max: float = 3.0
 @export var smooth_pan: bool = true           # lerp pan for feel
 @export var smooth_factor: float = 8.0        # lerp speed (higher = snappier)
+
+# Zoom limits — recomputed whenever the viewport resizes.
+# zoom_min = fit the full map into the viewport (max zoom-out).
+# zoom_max = 1.0 = 1 : 1 pixel (max zoom-in, original art quality).
+var zoom_min: float = 0.25   # overridden at runtime
+var zoom_max: float = 1.0    # 1:1 pixels
 
 # Map world bounds — set these to match your actual map dimensions.
 # The renderer and MapManager own the canonical size; we read it here.
 @export var map_width: float = 3840.0
 @export var map_height: float = 2160.0
-
-## Viewport (game resolution). Leave at 0 to auto-read from
-## ProjectSettings (display/window/size/viewport_width|height) at runtime.
-## Set a non-zero value in the Inspector only when you need non-standard sizing.
-@export var viewport_width: float = 0.0
-@export var viewport_height: float = 0.0
 
 # ── INTERNAL ─────────────────────────────────────────────────────
 var _target_position: Vector2 = Vector2.ZERO
@@ -33,20 +31,49 @@ var _panning: bool = false      # mouse middle-button drag
 var _pan_start_mouse: Vector2 = Vector2.ZERO
 var _pan_start_pos: Vector2 = Vector2.ZERO
 
+## Returns the actual rendered viewport size, which is correct even when the
+## window is resized or when window_width/height_override differs from the
+## logical viewport_width/height set in ProjectSettings.
+func _get_viewport_size() -> Vector2:
+	return get_viewport().get_visible_rect().size
+
 func _ready() -> void:
-	# Resolve viewport size from ProjectSettings when not overridden in the Inspector.
-	if viewport_width <= 0.0:
-		viewport_width = float(ProjectSettings.get_setting("display/window/size/viewport_width", 1200))
-	if viewport_height <= 0.0:
-		viewport_height = float(ProjectSettings.get_setting("display/window/size/viewport_height", 800))
+	# Recompute zoom limits whenever the window is resized so pan/zoom math
+	# stays correct even if the window size differs from the logical viewport.
+	get_viewport().size_changed.connect(_on_viewport_size_changed)
+
+	_recompute_zoom_limits()
+
 	# Set Camera2D built-in limits so Godot also enforces the map boundary.
 	limit_left = 0
 	limit_top = 0
 	limit_right = int(map_width)
 	limit_bottom = int(map_height)
 	_fit_to_screen()
+	# Ensure this camera is the active one (overrides any static Camera2D in the scene).
+	make_current()
 	# Listen for the "world_screen" shortcut emitted by UIManager
 	UIManager.map_fit_requested.connect(_fit_to_screen)
+
+## Recomputes zoom_min/zoom_max from the current viewport and map dimensions.
+## Called once on ready and again whenever the viewport is resized.
+func _recompute_zoom_limits() -> void:
+	zoom_max = 1.0
+	if map_width <= 0.0 or map_height <= 0.0:
+		zoom_min = zoom_max
+		return
+	var vp := _get_viewport_size()
+	var fit_x := vp.x / map_width
+	var fit_y := vp.y / map_height
+	zoom_min = minf(minf(fit_x, fit_y), zoom_max)
+
+func _on_viewport_size_changed() -> void:
+	_recompute_zoom_limits()
+	# Re-clamp the current target so it stays valid after a resize.
+	_target_zoom = Vector2(
+		clampf(_target_zoom.x, zoom_min, zoom_max),
+		clampf(_target_zoom.y, zoom_min, zoom_max))
+	_clamp_position()
 
 func _process(delta: float) -> void:
 	_handle_keyboard_pan(delta)
@@ -116,7 +143,7 @@ func _zoom_toward_mouse(mouse_screen_pos: Vector2, factor: float) -> void:
 		return
 	
 	# Keep the world point under the cursor fixed
-	var vp_size := Vector2(viewport_width, viewport_height)
+	var vp_size := _get_viewport_size()
 	var old_world := _target_position + (mouse_screen_pos - vp_size * 0.5) / old_zoom
 	
 	_target_zoom = Vector2(new_zoom, new_zoom)
@@ -124,7 +151,8 @@ func _zoom_toward_mouse(mouse_screen_pos: Vector2, factor: float) -> void:
 	_clamp_position()
 
 func _clamp_position() -> void:
-	var half_screen := Vector2(viewport_width, viewport_height) * 0.5 / _target_zoom.x
+	var vp_size := _get_viewport_size()
+	var half_screen := vp_size * 0.5 / _target_zoom.x
 	
 	if half_screen.x * 2.0 >= map_width:
 		_target_position.x = map_width * 0.5
@@ -138,7 +166,7 @@ func _clamp_position() -> void:
 
 ## Zooms and pans so the entire map fits within the viewport.
 func _fit_to_screen() -> void:
-	var vp_size := Vector2(viewport_width, viewport_height)
+	var vp_size := _get_viewport_size()
 	var zoom_x := vp_size.x / map_width
 	var zoom_y := vp_size.y / map_height
 	var fit_zoom := minf(zoom_x, zoom_y)
