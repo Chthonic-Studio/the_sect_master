@@ -231,7 +231,7 @@ func _on_building_completed(sect: SectData, building_id: String) -> void:
 	if new_member_tags.is_empty():
 		return
 	
-## Inject the new tags into all current sect members
+	# Inject the new tags into all current sect members
 	for char_id in sect.all_members:
 		var character = get_character(char_id)
 		if character and character.is_alive:
@@ -242,7 +242,6 @@ func _on_building_completed(sect: SectData, building_id: String) -> void:
 ## Removes very old dead characters from memory to prevent unbounded repo growth.
 ## Only prunes characters dead 10+ in-game years with no active dependencies.
 func _prune_old_dead_characters() -> void:
-	var current_year: int = TimeManager.year
 	var keys_to_remove: Array[String] = []
 	for c_id in character_repo:
 		var c: CharacterData = character_repo[c_id]
@@ -261,5 +260,3 @@ func _prune_old_dead_characters() -> void:
 
 	for c_id in keys_to_remove:
 		character_repo.erase(c_id)
-				if not character.ai_tags.has(tag):
-					character.ai_tags.append(tag)
