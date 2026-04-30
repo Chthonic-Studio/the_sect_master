@@ -53,8 +53,10 @@ func _on_drag_input(event: InputEvent) -> void:
 	elif event is InputEventMouseMotion and _dragging:
 		var new_pos := event.global_position - _drag_offset
 		var vp := get_viewport_rect().size
-		new_pos.x = clamp(new_pos.x, 0.0, max(0.0, vp.x - size.x))
-		new_pos.y = clamp(new_pos.y, 0.0, max(0.0, vp.y - size.y))
+		var max_x := max(0.0, vp.x - size.x)
+		var max_y := max(0.0, vp.y - size.y)
+		new_pos.x = clamp(new_pos.x, 0.0, max_x)
+		new_pos.y = clamp(new_pos.y, 0.0, max_y)
 		position = new_pos
 		accept_event()
 
