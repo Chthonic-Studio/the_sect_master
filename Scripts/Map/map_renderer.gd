@@ -366,12 +366,13 @@ func _on_hovered_province_changed(province_id: String) -> void:
 		_hovered_province_label = lbl
 
 func _on_hovered_region_changed(region_id: String) -> void:
-	if MapManager.current_layer != MapManager.MapLayer.REGIONS:
-		return
 	# Clear the outline on the previously hovered label
 	if is_instance_valid(_hovered_region_label):
 		_hovered_region_label.add_theme_constant_override("outline_size", 0)
 		_hovered_region_label = null
+
+	if MapManager.current_layer != MapManager.MapLayer.REGIONS:
+		return
 
 	if region_id == "":
 		_clear_highlight()
