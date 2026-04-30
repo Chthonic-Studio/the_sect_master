@@ -68,6 +68,8 @@ func load_all_data() -> void:
 	_scan_directory_for_scripts("res://Scripts/AI/Directives", _load_directive_script)
 	
 	_validate_loaded_data()
+	# Rebuild the EventManager pulse cache now that all events are loaded
+	EventManager.rebuild_pulse_cache()
 
 func _load_json_to_registry(path: String, target_dict: Dictionary) -> void:
 	if not FileAccess.file_exists(path):

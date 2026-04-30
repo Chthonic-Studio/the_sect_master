@@ -4,7 +4,7 @@
 "id": "gyeongsang",
 "name": "Gyeonsang",
 "region_id": "goryeo",
-"description": "x",
+"description": "The southernmost tip of the Goryeo peninsula, where the sea meets rugged mountains. Renowned for its fierce warriors and proud noble houses whose rivalries have shaped the fate of kingdoms. The coastal ports bring wealth and foreign martial knowledge.",
 "mask_color": "#663931",
 "neighbours": ["hanyang"]
 },
@@ -12,7 +12,7 @@
 "id": "hanyang",
 "name": "Hanyang",
 "region_id": "goryeo",
-"description": "x",
+"description": "The heart of Goryeo, seat of the royal court and centre of scholarly and martial culture. Great academies train the next generation of sword masters amid palaces of carved stone and vast ceremonial grounds. All roads in the peninsula lead here.",
 "mask_color": "#45283c",
 "neighbours": ["gyeonsang", "pyongyang"]
 },
@@ -20,7 +20,7 @@
 "id": "pyongyang",
 "name": "Pyongyang",
 "region_id": "goryeo",
-"description": "x",
+"description": "The northern gateway of Goryeo, guarding the approach from the mainland. A martial tradition forged in endless border skirmishes has produced warriors of iron discipline and unbreakable resolve. The city walls have never fallen in living memory.",
 "mask_color": "#8f563b",
 "neighbours": ["hanyang", "liaoning", "heilongjiang"]
 },
@@ -28,7 +28,7 @@
 "id": "liaoning",
 "name": "Liaoning",
 "region_id": "northern_border",
-"description": "x",
+"description": "A crossroads of empires where steppe horsemen, Goryeo exiles, and Central Plains wanderers have mingled for centuries. The clans here blend diverse fighting traditions into unpredictable and lethal styles. Loyalty is bought with steel, not words.",
 "mask_color": "#45a1ca",
 "neighbours": ["pyongyang", "heilongjiang", "jilin"]
 },
@@ -36,7 +36,7 @@
 "id": "heilongjiang",
 "name": "Heilongjiang",
 "region_id": "northern_border",
-"description": "x",
+"description": "Named for its black, serpentine river, this vast frozen territory is home to hunters and shamans whose knowledge of the land is unmatched. The extreme cold has shaped a martial tradition that emphasises endurance, brutal efficiency, and survival above all else.",
 "mask_color": "#28434f",
 "neighbours": ["liaoning", "pyongyang", "jilin"]
 },
@@ -44,7 +44,7 @@
 "id": "jilin",
 "name": "Jilin",
 "region_id": "northern_border",
-"description": "x",
+"description": "The primeval forests of Jilin conceal ancient temples and forgotten mountain fortresses. The Changbai range shelters reclusive masters who train in bitter cold, developing internal arts of extraordinary depth. Tigers and bears are as common as disciples.",
 "mask_color": "#13739e",
 "neighbours": ["liaoning", "heilongjiang", "tianjin", "cloud_pass"]
 },
@@ -52,7 +52,7 @@
 "id": "tianjin",
 "name": "Tianjin",
 "region_id": "northern_border",
-"description": "x",
+"description": "A great port city where the northern steppe meets the sea. Merchants, soldiers, and sailors from dozens of nations crowd its docks. The chaos of commerce has given birth to a pragmatic, street-honed martial tradition that values deception and adaptability.",
 "mask_color": "#9fd8f2",
 "neighbours": ["jilin", "shandong", "hebei", "shaanxi", "shanxi", "kaifeng", "cloud_pass"]
 },
@@ -60,7 +60,7 @@
 "id": "cloud_pass",
 "name": "Cloud Pass",
 "region_id": "northern_border",
-"description": "x",
+"description": "The great mountain pass that separates the northern frontier from the heartland. Whoever controls Cloud Pass controls the gateway to the Central Plains. Generations of battles have soaked this ground in blood, and the ghosts of fallen warriors still haunt the mist-wrapped cliffs.",
 "mask_color": "#0b3a4f",
 "neighbours": ["jilin", "tianjin", "kaifeng", "shanxi", "yanmen", "frozen_steppe"]
 },
@@ -68,7 +68,7 @@
 "id": "frozen_steppe",
 "name": "Frozen Steppe",
 "region_id": "northern_border",
-"description": "x",
+"description": "An endless white sea of grass and permafrost where nomadic tribes live and die by the horse and the bow. The wind cuts like a blade and the cold kills the careless. The few martial traditions that survive here are stripped of all elegance — only what works remains.",
 "mask_color": "#0575a7",
 "neighbours": ["cloud_pass", "yanmen", "ningxia", "dunhuang"]
 },
@@ -76,7 +76,7 @@
 "id": "dunhuang",
 "name": "Dunhuang",
 "region_id": "northern_border",
-"description": "x",
+"description": "An ancient oasis city on the edge of the great desert, where the Silk Road splits into a dozen trails. Buddhist cave murals depicting heavenly warriors line the cliffs. Traders, pilgrims, and wandering masters from as far as the Western Regions pass through its famous gates.",
 "mask_color": "#2c789a",
 "neighbours": ["frozen_steppe", "ningxia", "gansu"]
 },
@@ -84,7 +84,7 @@
 "id": "gansu",
 "name": "Gansu",
 "region_id": "western_regions",
-"description": "x",
+"description": "A long, narrow corridor flanked by towering mountains and arid plateaus that serves as the neck between the Central Plains and the Western Regions. The home of the Kongtong Sect, whose Seven Injury Fist is feared across the Jianghu for the terrible cost it exacts upon its own user.",
 "mask_color": "#ffe400",
 "neighbours": ["dunhuang", "ningxia", "serxu", "qinghai"]
 },
@@ -92,7 +92,7 @@
 "id": "qinghai",
 "name": "Qinghai",
 "region_id": "western_regions",
-"description": "x",
+"description": "A vast plateau of cold alpine lakes, sacred peaks, and thin, crystalline air. The Kunlun Sect dwells here in deliberate isolation, cultivating cold-elemental inner qi in mountain hermitages where mortals cannot survive. Those who find their way to these heights are never the same.",
 "mask_color": "#e0d150",
 "neighbours": ["gansu", "serxu", "tibet", "xinjiang"]
 },
@@ -100,7 +100,7 @@
 "id": "xinjiang",
 "name": "Xinjiang",
 "region_id": "western_regions",
-"description": "x",
+"description": "A land of vast deserts, jade-green oases, and domed mosques where the martial arts of the Central Plains blur into the exotic fighting traditions of the far west. Styles here rely on acrobatic footwork, curved blades, and techniques borrowed from a dozen distant cultures.",
 "mask_color": "#ab9b0f",
 "neighbours": ["tibet", "qinghai"]
 },
@@ -108,7 +108,7 @@
 "id": "tibet",
 "name": "Tibet",
 "region_id": "western_regions",
-"description": "x",
+"description": "The roof of the world, where temples perch on impossible cliffs and warrior-monks guard sacred texts with their lives. Tibetan martial arts fuse deep tantric philosophy with devastating physical power. The altitude itself is a training ground — those who master it can breathe where others cannot.",
 "mask_color": "#8d822a",
 "neighbours": ["xinjiang", "qinghai", "serxu"]
 },
@@ -116,7 +116,7 @@
 "id": "serxu",
 "name": "Serxu",
 "region_id": "sichuan",
-"description": "x",
+"description": "A high-altitude marshland where three great rivers find their source. Nomadic herders, wandering monks, and herb-gatherers share this remote terrain. The solitude and altitude have produced hermit masters whose internal cultivation techniques surpass anything found in established sects.",
 "mask_color": "#2eb929",
 "neighbours": ["gansu", "qinghai", "tibet", "deyang", "emei"]
 },
@@ -124,7 +124,7 @@
 "id": "deyang",
 "name": "Deyang",
 "region_id": "sichuan",
-"description": "x",
+"description": "A fertile plain of rolling hills and ancient Daoist temples, home to the Qingcheng Sect whose swift and pragmatic sword techniques are renowned as much for their moral ambiguity as their lethality. Disciples here are known to value results over righteousness.",
 "mask_color": "#6ad767",
 "neighbours": ["serxu", "emei", "chengdu", "yibin"]
 },
@@ -132,7 +132,7 @@
 "id": "emei",
 "name": "Emei",
 "region_id": "sichuan",
-"description": "x",
+"description": "The sacred mountain range where clouds swallow the peaks and sacred fire burns in eternal temples. Home to the Emei Sect, the legendary school of exclusively female disciples whose graceful but lethal swordplay has humbled countless arrogant challengers.",
 "mask_color": "#7b952f",
 "neighbours": ["serxu", "deyang", "yibin", "yunnan"]
 },
@@ -140,7 +140,7 @@
 "id": "chengdu",
 "name": "Chengdu",
 "region_id": "sichuan",
-"description": "x",
+"description": "The jewel of the Sichuan basin — a prosperous city of teahouses, spice markets, and martial academies where the pungent scent of Sichuan pepper mingles with incense and river mud. The Tang Clan's hidden fortress lies within its borders, infamous for its labyrinthine trap-corridors and poison treasury.",
 "mask_color": "#c1d77d",
 "neighbours": ["deyang", "yibin", "ningxia", "shaanxi"]
 },
@@ -148,7 +148,7 @@
 "id": "yibin",
 "name": "Yibin",
 "region_id": "sichuan",
-"description": "x",
+"description": "Where two great rivers meet and the Sichuan basin opens toward the south. A vital trade junction whose river docks handle everything from silk to contraband. The local martial world is rough-edged and commercial, producing fighters more comfortable with practical brawling than classical forms.",
 "mask_color": "#5b9a5a",
 "neighbours": ["emei", "deyang", "yunnan", "kuizhou", "chongqing", "henan", "yangtze_river"]
 },
@@ -156,7 +156,7 @@
 "id": "yunnan",
 "name": "Yunnan",
 "region_id": "sichuan",
-"description": "x",
+"description": "A province of extraordinary diversity — towering limestone peaks, terraced rice fields, and over a hundred distinct peoples. Home to the Diancang Sect, whose wind-based footwork and blinding speed have earned them a fearsome reputation along the southern trade routes. The Cangshan range hides their mountaintop training halls.",
 "mask_color": "#b5f204",
 "neighbours": ["yibin", "kuizhou", "emei", "guangxi"]
 },
@@ -164,7 +164,7 @@
 "id": "kuizhou",
 "name": "Kuizhou",
 "region_id": "sichuan",
-"description": "x",
+"description": "A dramatic gorge country where the great river squeezes through sheer cliffs of red stone. The watermen and boatmen of Kuizhou have developed their own fierce combat style suited to the swaying decks and treacherous currents of the gorges. Ambushes here are devastatingly effective.",
 "mask_color": "#2b3902",
 "neighbours": ["yunnan", "yibin", "guangxi", "guizhou", "chongqing"]
 },
@@ -172,7 +172,7 @@
 "id": "guangxi",
 "name": "Guangxi",
 "region_id": "lingnan",
-"description": "x",
+"description": "A lush borderland of limestone towers, underground rivers, and the dense jungle frontier with the far south. The Heavenly Demon Divine Cult has sunk roots deep into these hills, using the difficult terrain and local customs to mask their true power. Outsiders rarely find what they are looking for here.",
 "mask_color": "#4950b0",
 "neighbours": ["kuizhou", "chongqing", "guizhou", "hunan", "guangdong", "hainan", "yunnan"]
 },
@@ -180,7 +180,7 @@
 "id": "hainan",
 "name": "Hainan",
 "region_id": "lingnan",
-"description": "x",
+"description": "A tropical island isolated from the mainland by treacherous straits. Its martial tradition is almost entirely self-developed — a fusion of indigenous fighting arts, shipwrecked foreign techniques, and the desperate pragmatism of a people who have survived invasion and storm alike.",
 "mask_color": "#111cc1",
 "neighbours": ["guangxi"]
 },
@@ -188,7 +188,7 @@
 "id": "guangdong",
 "name": "Guangdong",
 "region_id": "lingnan",
-"description": "x",
+"description": "The great southern port province where the Pearl River delta feeds into the sea and foreign ships bring wealth and strange martial scrolls. The Hao Sect holds influence across these prosperous coastal cities, known for external strength training and the raw power of their Lingnan iron-body techniques.",
 "mask_color": "#161d88",
 "neighbours": ["guangxi", "hunan", "jiangxi", "fujian", "chaozhou"]
 },
@@ -196,7 +196,7 @@
 "id": "chaozhou",
 "name": "Chaozhou",
 "region_id": "lingnan",
-"description": "x",
+"description": "A coastal city-state culture of proud merchant families and tea ceremonies concealing a martial underground of extraordinary depth. The local fighting style prioritises deceptive short-range strikes and the disruption of the opponent's qi flow — techniques developed over centuries of clan feuds.",
 "mask_color": "#3e4177",
 "neighbours": ["guangdong", "fujian"]
 },
@@ -204,7 +204,7 @@
 "id": "fujian",
 "name": "Fujian",
 "region_id": "jiangnan",
-"description": "x",
+"description": "A rugged coastal province of sailors, pirates, and craggy mountain monasteries. Fujian martial arts are famous for their powerful low stances, explosive short-range power, and the legendary Five Ancestors style developed in its ancient southern Shaolin branch. The sea and the mountain shaped them equally.",
 "mask_color": "#f2b1e5",
 "neighbours": ["jiangxi", "chaozhou", "guangdong", "zhejiang"]
 },
@@ -212,7 +212,7 @@
 "id": "zhejiang",
 "name": "Zhejiang",
 "region_id": "jiangnan",
-"description": "x",
+"description": "A province of silk towns, canal cities, and classical academies where poetry and sword arts are considered two sides of the same coin. Elegant and precise swordsmanship schools flourish here, and the local martial culture prizes refinement and philosophy as much as raw power.",
 "mask_color": "#542e53",
 "neighbours": ["fujian", "jiangxi", "huzhou", "ningbo"]
 },
@@ -220,7 +220,7 @@
 "id": "ningbo",
 "name": "Ningbo",
 "region_id": "jiangnan",
-"description": "x",
+"description": "A great maritime trading city where the sea merchants and mercenary guilds maintain a careful balance of power. The harbour district's martial world is pragmatic and coin-driven, blending coastal fighting traditions with influences from overseas. Information and weapons flow through here freely.",
 "mask_color": "#542e4c",
 "neighbours": ["zhejiang", "huzhou", "jiangxi", "shaoxing", "yangtze_river"]
 },
@@ -228,7 +228,7 @@
 "id": "shaoxing",
 "name": "Shaoxing",
 "region_id": "jiangnan",
-"description": "x",
+"description": "Famous for its rice wine and its scholars, Shaoxing's martial tradition is deeply rooted in classical Jiangnan sword arts. The city's numerous private academies train internal cultivators who blend literary philosophy with devastating precision swordsmanship, embodying the ideal of the scholar-warrior.",
 "mask_color": "#6a0956",
 "neighbours": ["ningbo", "yangtze_river", "huzhou"]
 },
@@ -236,7 +236,7 @@
 "id": "yangtze_river",
 "name": "Yangtze River",
 "region_id": "jiangnan",
-"description": "x",
+"description": "The great river that divides China between north and south. Its waters carry the wealth of the empire and host a lawless underworld of river pirates, fishermen-warriors, and itinerant martial artists. The Yangtze River Stronghold rules this watery highway, collecting tolls and dispensing rough justice from their armoured war-junks.",
 "mask_color": "#540f53",
 "neighbours": ["ningbo", "shaoxing", "jiangsu", "huzhou", "anhui", "jiangxi", "hubei", "henan", "chongqing", "yibin"]
 },
@@ -244,7 +244,7 @@
 "id": "huzhou",
 "name": "Huzhou",
 "region_id": "jiangnan",
-"description": "x",
+"description": "A prosperous lakeside city of mulberry groves and silk workshops nestled between Lake Tai and the Tianmu mountains. The Peng Clan has maintained a fortified estate here for generations, their reputation for devastating heavy saber techniques keeping rivals at a respectful distance.",
 "mask_color": "#a35393",
 "neighbours": ["yangtze_river", "shaoxing", "ningbo", "zhejiang", "jiangxi"]
 },
@@ -252,7 +252,7 @@
 "id": "jiangxi",
 "name": "Jiangxi",
 "region_id": "jiangnan",
-"description": "x",
+"description": "A landlocked province of mountain temples, porcelain kilns, and ancient Daoist academies. Its diverse terrain — from the sacred peaks of Lushan to the red clay valleys — has nurtured dozens of distinctive regional fighting styles that blend philosophical depth with practical lethality.",
 "mask_color": "#772075",
 "neighbours": ["yangtze_river", "huzhou", "fujian", "guangdong", "hunan", "hubei"]
 },
@@ -260,7 +260,7 @@
 "id": "hubei",
 "name": "Hubei",
 "region_id": "jiangnan",
-"description": "x",
+"description": "The holy land of Daoist martial arts, dominated by the legendary Wudang Mountains rising from its forests. The Wudang Sect's principles of softness overcoming hardness, of Taiji flow, and of internal cultivation over brute force have permeated the entire region's martial culture for centuries.",
 "mask_color": "#b4369b",
 "neighbours": ["yangtze_river", "jiangxi", "hunan", "chongqing"]
 },
@@ -268,7 +268,7 @@
 "id": "hunan",
 "name": "Hunan",
 "region_id": "jiangnan",
-"description": "x",
+"description": "A mountainous province of spicy food and fierce temperaments, where independent-minded martial artists carve out territories in the deep valleys between the peaks. The local martial tradition is eclectic and aggressive, shaped by centuries of resisting outside interference from north and south alike.",
 "mask_color": "#e548c5",
 "neighbours": ["hubei", "chongqing", "guangdong", "guangxi", "jiangxi", "guizhou"]
 },
@@ -276,7 +276,7 @@
 "id": "chongqing",
 "name": "Chongqing",
 "region_id": "jiangnan",
-"description": "x",
+"description": "A fog-shrouded city of steep stone staircases cascading down to the confluence of two great rivers. Its martial world thrives in the cramped spaces between merchant warehouses and river docks, producing fighters supremely adapted to close-quarters combat in treacherous urban terrain.",
 "mask_color": "#f200c3",
 "neighbours": ["guizhou", "hunan", "yangtze_river", "hubei", "yibin", "kuizhou"]
 },
@@ -284,7 +284,7 @@
 "id": "guizhou",
 "name": "Guizhou",
 "region_id": "jiangnan",
-"description": "x",
+"description": "A province of hidden waterfalls, impenetrable karst valleys, and fiercely independent minority peoples who have resisted outside rule for centuries. Its martial traditions are unconventional and terrain-adapted, exploiting the broken ground with ambush tactics and acrobatic mountain fighting techniques.",
 "mask_color": "#95167d",
 "neighbours": ["chongqing", "guangxi", "yibin", "kuizhou", "hunan"]
 },
@@ -292,7 +292,7 @@
 "id": "henan",
 "name": "Henan",
 "region_id": "central_plains",
-"description": "x",
+"description": "The cradle of Chinese civilisation and the spiritual heartland of orthodox martial arts. Home to the legendary Shaolin Temple on Mount Song, where generations of monks have refined their iron-body training and secret combat arts under the watchful eyes of the Buddha. Every great sect traces some lineage back to Henan.",
 "mask_color": "#e00d46",
 "neighbours": ["yangtze_river", "yibin", "anhui", "hebei", "shaanxi"]
 },
@@ -300,7 +300,7 @@
 "id": "anhui",
 "name": "Anhui",
 "region_id": "central_plains",
-"description": "x",
+"description": "A province of dramatic mountains and ancient academies where the Yellow Mountains inspire poets and reclusive masters alike. The Namgoong Family maintains a prestigious estate here, their arrogant mastery of sword arts earning them both reverence and resentment across the Jianghu.",
 "mask_color": "#ed1212",
 "neighbours": ["henan", "yangtze_river", "jiangsu", "runan", "hebei"]
 },
@@ -308,7 +308,7 @@
 "id": "jiangsu",
 "name": "Jiangsu",
 "region_id": "central_plains",
-"description": "x",
+"description": "A flat, fertile province of canal networks, walled cities, and wealthy merchant guilds that sponsor martial brotherhoods for protection. The sophisticated urban culture here values elegant forms and sharp wit over raw brutality, producing swordsmen as comfortable in a debate as in a duel.",
 "mask_color": "#b0441d",
 "neighbours": ["anhui", "runan", "shangdong"]
 },
@@ -316,7 +316,7 @@
 "id": "shandong",
 "name": "Shandong",
 "region_id": "central_plains",
-"description": "x",
+"description": "A rugged coastal province of sacred mountains, where Confucian academies sit alongside martial training halls. The Hwangbo Clan holds vast estates here, their lineage of external-art masters producing warriors of legendary physical strength. The local saying goes: 'A Shandong man's fist weighs as much as a millstone.'",
 "mask_color": "#e55826",
 "neighbours": ["hebei", "tianjin", "jiangsu", "runan"]
 },
@@ -324,7 +324,7 @@
 "id": "runan",
 "name": "Runan",
 "region_id": "central_plains",
-"description": "x",
+"description": "An ancient and strategically vital province that has been a battlefield in every major war in recorded history. The Sima Clan have administered these lands for generations, their mastery of strategy and political manoeuvre making them as dangerous in a council hall as in open combat.",
 "mask_color": "#ca4e4e",
 "neighbours": ["shandong", "jiangsu", "anhui", "hebei"]
 },
@@ -332,7 +332,7 @@
 "id": "hebei",
 "name": "Hebei",
 "region_id": "central_plains",
-"description": "x",
+"description": "The martial heartland of the northern plains, where the great horse roads meet and armies have clashed for millennia. Hebei fighters are known for powerful straight-line attacks and relentless aggressive pressure. The province produces more first-rate warriors per capita than anywhere else in the Jianghu.",
 "mask_color": "#ff4400",
 "neighbours": ["tianjin", "shandong", "runan", "anhui", "shaanxi", "henan"]
 },
@@ -340,7 +340,7 @@
 "id": "shaanxi",
 "name": "Shaanxi",
 "region_id": "central_plains",
-"description": "x",
+"description": "The ancient imperial heartland of the First Emperor, where Mount Hua rises like a blade from the Wei River plain. The Mount Hua Sect's elegant and swift sword arts were born in the treacherous five peaks of this sacred mountain, and their plum blossom swordplay has enchanted and killed in equal measure.",
 "mask_color": "#ffa000",
 "neighbours": ["tianjin", "shanxi", "hebei", "ningxia", "chengdu", "henan"]
 },
@@ -348,7 +348,7 @@
 "id": "shanxi",
 "name": "Shanxi",
 "region_id": "central_plains",
-"description": "x",
+"description": "A plateau province of coal-black mountains and ancient walled cities that grew wealthy on the trade routes between north and south. The merchant clans here sponsor private armies and martial retainers, creating a martial culture defined by coin, contract, and careful pragmatism.",
 "mask_color": "#a31111",
 "neighbours": ["shaanxi", "kaifeng", "cloud_pass", "yanmen", "ningxia", "tianjin"]
 },
@@ -356,7 +356,7 @@
 "id": "kaifeng",
 "name": "Kaifeng",
 "region_id": "central_plains",
-"description": "x",
+"description": "The great former imperial capital, still one of the most populated and cosmopolitan cities in the known world. Its enormous population and centuries of imperial patronage have made Kaifeng a hotbed of martial innovation and political intrigue, where five different major sects maintain embassies within the same city walls.",
 "mask_color": "#6e3939",
 "neighbours": ["shanxi", "cloud_pass", "tianjin"]
 },
@@ -364,7 +364,7 @@
 "id": "yanmen",
 "name": "Yanmen",
 "region_id": "central_plains",
-"description": "x",
+"description": "The legendary Yanmen Pass fortress, gateway to the northern steppe and site of a hundred famous last stands. The Blood Cult operates in the wild ravines outside the pass, their sinister practices hidden beneath the shadow of the ancient walls. Local martial arts are hardened by generations of siege warfare.",
 "mask_color": "#9e6753",
 "neighbours": ["cloud_pass", "ningxia", "shanxi", "frozen_steppe"]
 },
@@ -372,7 +372,7 @@
 "id": "ningxia",
 "name": "Ningxia",
 "region_id": "central_plains",
-"description": "x",
+"description": "A frontier province where the fertile Yellow River valley meets the encroaching desert. Multiple cultures have contested this ground for centuries, leaving a martial tradition that is eclectic, battle-hardened, and deeply suspicious of outsiders. The masters here train with one eye always on the horizon.",
 "mask_color": "#b47305",
 "neighbours": ["frozen_steppe", "yanmen", "shanxi", "shaanxi", "gansu"]
 }

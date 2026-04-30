@@ -178,6 +178,28 @@ enum SectAlignment {
 	EVIL
 }
 
+## Distinguishes the organizational model of a martial world faction.
+## SECT:  Formal school/institution with merit-based hierarchy (派/宗).
+## CLAN:  Family or bloodline organisation; leadership through lineage (家/门).
+## CULT:  Religious or fanatical order; doctrine-driven with absolute loyalty (教).
+enum OrgType {
+	SECT,
+	CLAN,
+	CULT
+}
+
+const ORG_TYPE_LABELS: Dictionary = {
+	"SECT": "Sect",
+	"CLAN": "Clan",
+	"CULT": "Cult"
+}
+
+const ORG_TYPE_DESCRIPTIONS: Dictionary = {
+	"SECT": "A formal martial school bound by merit and tradition. Disciples are accepted regardless of bloodline and advance through demonstrated skill and virtue. Leadership may be elected by elders or passed to the strongest disciple.",
+	"CLAN": "A family lineage where blood is paramount. The patriarch or matriarch commands absolute authority. Clan secrets are jealously guarded, and outsiders are rarely trusted with the highest techniques.",
+	"CULT": "A zealous religious or ideological order built on absolute devotion to a doctrine or divine figure. Loyalty is total and dissent is heresy. Power radiates from a supreme figure whose word is law."
+}
+
 # The physical and abstract currencies used by Sects for expansion and upkeep.
 enum ResourceType {
 	WEALTH,     # Gold/Silver, used for wages and standard purchases

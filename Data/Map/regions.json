@@ -4,49 +4,49 @@
 			"id": "central_plains",
 			"name": "Central Plains",
 			"culture": "CENTRAL_PLAINS",
-			"description": "The heartland of the martial world. Home to the most prestigious orthodox sects.",
+			"description": "The heartland of the martial world and cradle of civilisation itself. Home to the Shaolin Temple, Mount Hua Sect, Wudang Sect, and the great aristocratic clans of Hebei and Shandong. The most prestigious orthodox sects hold court here, and the cities teem with rivals competing for fame and supremacy.",
 			"mask_color": "#ed1212"
 		},
 		"sichuan": {
 			"id": "sichuan",
 			"name": "Sichuan",
 			"culture": "SICHUAN",
-			"description": "A land of mist and mountain fog. The Tang Clan and other hidden weapon experts trace their roots here.",
+			"description": "A basin of misty mountains, sacred peaks, and hidden valleys separating the heartland from the south and west. Birthplace of the Tang Clan's poison arts, the Emei Sect's iron sisterhood, the swift Qingcheng blades, and the legendary Diancang masters of Yunnan. Sichuan martial culture is rich, diverse, and rarely what it appears to be on the surface.",
 			"mask_color": "#07f200"
 		},
 		"northern_border": {
 			"id": "northern_border",
 			"name": "Northern Border",
 			"culture": "NORTHERN_BORDER",
-			"description": "A harsh land of steppe and fortress. Border clans and nomadic sects dominate.",
+			"description": "A vast arc of steppe, frozen forest, and mountain passes where the civilised world meets the limitless north. Clans here are forged in constant conflict with nomadic raiders and harsh winters. The Moyong Clan, Changbai masters, and the gatekeepers of Cloud Pass embody a martial tradition that prizes endurance, ferocity, and an iron will to survive.",
 			"mask_color": "#04aaf6"
 		},
 		"western_regions": {
 			"id": "western_regions",
 			"name": "Western Regions",
 			"culture": "WESTERN_REGIONS",
-			"description": "A land of sand and silk roads. Sects here blend local traditions with Jianghu arts.",
+			"description": "The ancient corridor of the Silk Road where east and west blur together. Home to the reclusive Kunlun Sect on their cold mountain peaks and the powerful Kongtong Sect in Gansu. Martial arts here are shaped by altitude, desert, and the mingling of Chinese, Tibetan, and Central Asian traditions into something unique and formidable.",
 			"mask_color": "#f2b1e5"
 		},
 		"lingnan": {
 			"id": "lingnan",
 			"name": "Lingnan",
 			"culture": "LINGNAN",
-			"description": "A lush, humid region in the far south. Sects here favour powerful external styles.",
+			"description": "South of the Five Ridges, where tropical rivers drain into the sea and ancient kingdoms left their mark. Lingnan martial arts favour explosive power, iron-body conditioning, and low powerful stances adapted to humid heat and tight terrain. The Hao Sect of Guangdong and the secretive masters of Chaozhou have influenced the martial world far beyond their borders.",
 			"mask_color": "#000ff6"
 		},
 		"jiangnan": {
 			"id": "jiangnan",
 			"name": "Jiangnan",
 			"culture": "JIANGNAN",
-			"description": "A prosperous river delta region of silk, scholars, and elegant swordplay.",
+			"description": "The prosperous river-and-lake country of silk merchants, scholar-swordsmen, and elegant canal cities. The Yangtze River Stronghold rules the waterways with iron authority, while the Peng Clan of Huzhou guards trade routes with their devastating heavy saber arts. Beneath the graceful surface of Jiangnan culture lies a world of lethal rivalries and hidden power.",
 			"mask_color": "#f200c3"
 		},
 		"goryeo": {
 			"id": "goryeo",
 			"name": "Goryeo",
 			"culture": "GORYEO",
-			"description": "The Korean peninsula. A proud martial culture with its own distinct lineages.",
+			"description": "The Korean peninsula, home to a proud martial culture with its own distinct lineages, royal academies, and noble house rivalries that mirror the Murim of the mainland. The great families of Goryeo guard ancient techniques with fierce jealousy, and their swordsmen are considered among the finest in the known world.",
 			"mask_color": "#3e4177"
 		}
 	}

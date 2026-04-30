@@ -4,6 +4,7 @@
 		"name": "Shaolin Temple",
 		"alignment": 0,
 		"culture": 0,
+		"org_type": 0,
 		"province_id": "hebei",
 		"rival_sect_id": "blood_cult",
 		"resources": {
@@ -31,6 +32,7 @@
 		"name": "Wudang Sect",
 		"alignment": 0,
 		"culture": 0,
+		"org_type": 0,
 		"province_id": "hubei",
 		"rival_sect_id": "heavenly_demon_cult",
 		"resources": {
@@ -50,6 +52,7 @@
 		"name": "Mount Hua Sect",
 		"alignment": 0,
 		"culture": 0,
+		"org_type": 0,
 		"province_id": "shaanxi",
 		"rival_sect_id": "tang_clan",
 		"resources": {
@@ -69,6 +72,7 @@
 		"name": "Emei Sect",
 		"alignment": 0,
 		"culture": 1,
+		"org_type": 0,
 		"province_id": "emei",
 		"rival_sect_id": "heavenly_demon_cult",
 		"resources": {
@@ -88,6 +92,7 @@
 		"name": "Beggar Sect",
 		"alignment": 0,
 		"culture": 0,
+		"org_type": 0,
 		"province_id": "henan",
 		"rival_sect_id": "blood_cult",
 		"resources": {
@@ -107,6 +112,7 @@
 		"name": "Tang Clan",
 		"alignment": 3,
 		"culture": 1,
+		"org_type": 1,
 		"province_id": "chengdu",
 		"rival_sect_id": "mount_hua_sect",
 		"resources": {
@@ -129,6 +135,7 @@
 		"name": "Namgoong Family",
 		"alignment": 0,
 		"culture": 6,
+		"org_type": 1,
 		"province_id": "anhui",
 		"rival_sect_id": "heavenly_demon_cult",
 		"resources": {
@@ -148,6 +155,7 @@
 		"name": "Heavenly Demon Divine Cult",
 		"alignment": 1,
 		"culture": 5,
+		"org_type": 2,
 		"province_id": "guangxi",
 		"rival_sect_id": "wudang_sect",
 		"resources": {
@@ -167,6 +175,7 @@
 		"name": "Blood Cult",
 		"alignment": 4,
 		"culture": 5,
+		"org_type": 2,
 		"province_id": "yanmen",
 		"rival_sect_id": "shaolin_temple",
 		"resources": {
@@ -179,6 +188,218 @@
 			"FACE": 40,
 			"REPUTATION": 5,
 			"KARMA": 0
+		}
+	},
+	"diancang_sect": {
+		"id": "diancang_sect",
+		"name": "Diancang Sect",
+		"alignment": 0,
+		"culture": 1,
+		"org_type": 0,
+		"province_id": "yunnan",
+		"resources": {
+			"WEALTH": 350,
+			"MATERIALS": 400,
+			"MEDICINE": 200,
+			"ELIXIRS": 80
+		},
+		"stats": {
+			"FACE": 70,
+			"REPUTATION": 72,
+			"KARMA": 68
+		}
+	},
+	"qingcheng_sect": {
+		"id": "qingcheng_sect",
+		"name": "Qingcheng Sect",
+		"alignment": 3,
+		"culture": 1,
+		"org_type": 0,
+		"province_id": "deyang",
+		"rival_sect_id": "emei_sect",
+		"resources": {
+			"WEALTH": 400,
+			"MATERIALS": 350,
+			"MEDICINE": 150,
+			"ELIXIRS": 90
+		},
+		"stats": {
+			"FACE": 65,
+			"REPUTATION": 60,
+			"KARMA": 45
+		}
+	},
+	"kongtong_sect": {
+		"id": "kongtong_sect",
+		"name": "Kongtong Sect",
+		"alignment": 0,
+		"culture": 4,
+		"org_type": 0,
+		"province_id": "gansu",
+		"resources": {
+			"WEALTH": 250,
+			"MATERIALS": 450,
+			"MEDICINE": 180,
+			"ELIXIRS": 60
+		},
+		"stats": {
+			"FACE": 65,
+			"REPUTATION": 68,
+			"KARMA": 62
+		}
+	},
+	"kunlun_sect": {
+		"id": "kunlun_sect",
+		"name": "Kunlun Sect",
+		"alignment": 0,
+		"culture": 4,
+		"org_type": 0,
+		"province_id": "qinghai",
+		"rival_sect_id": "heavenly_demon_cult",
+		"resources": {
+			"WEALTH": 300,
+			"MATERIALS": 500,
+			"MEDICINE": 250,
+			"ELIXIRS": 120
+		},
+		"stats": {
+			"FACE": 75,
+			"REPUTATION": 78,
+			"KARMA": 80
+		}
+	},
+	"peng_clan": {
+		"id": "peng_clan",
+		"name": "Peng Clan",
+		"alignment": 2,
+		"culture": 2,
+		"org_type": 1,
+		"province_id": "huzhou",
+		"resources": {
+			"WEALTH": 600,
+			"MATERIALS": 400,
+			"MEDICINE": 120,
+			"ELIXIRS": 70
+		},
+		"stats": {
+			"FACE": 60,
+			"REPUTATION": 55,
+			"KARMA": 50
+		}
+	},
+	"changbai_sect": {
+		"id": "changbai_sect",
+		"name": "Changbai Sect",
+		"alignment": 2,
+		"culture": 5,
+		"org_type": 0,
+		"province_id": "jilin",
+		"resources": {
+			"WEALTH": 200,
+			"MATERIALS": 350,
+			"MEDICINE": 150,
+			"ELIXIRS": 40
+		},
+		"stats": {
+			"FACE": 50,
+			"REPUTATION": 55,
+			"KARMA": 58
+		}
+	},
+	"moyong_clan": {
+		"id": "moyong_clan",
+		"name": "Moyong Clan",
+		"alignment": 3,
+		"culture": 5,
+		"org_type": 1,
+		"province_id": "liaoning",
+		"rival_sect_id": "namgoong_family",
+		"resources": {
+			"WEALTH": 700,
+			"MATERIALS": 400,
+			"MEDICINE": 150,
+			"ELIXIRS": 200
+		},
+		"stats": {
+			"FACE": 80,
+			"REPUTATION": 65,
+			"KARMA": 42
+		}
+	},
+	"hwangbo_clan": {
+		"id": "hwangbo_clan",
+		"name": "Hwangbo Clan",
+		"alignment": 0,
+		"culture": 0,
+		"org_type": 1,
+		"province_id": "shandong",
+		"resources": {
+			"WEALTH": 900,
+			"MATERIALS": 600,
+			"MEDICINE": 200,
+			"ELIXIRS": 150
+		},
+		"stats": {
+			"FACE": 85,
+			"REPUTATION": 70,
+			"KARMA": 60
+		}
+	},
+	"sima_clan": {
+		"id": "sima_clan",
+		"name": "Sima Clan",
+		"alignment": 2,
+		"culture": 0,
+		"org_type": 1,
+		"province_id": "runan",
+		"resources": {
+			"WEALTH": 1000,
+			"MATERIALS": 500,
+			"MEDICINE": 200,
+			"ELIXIRS": 180
+		},
+		"stats": {
+			"FACE": 80,
+			"REPUTATION": 65,
+			"KARMA": 55
+		}
+	},
+	"yangtze_stronghold": {
+		"id": "yangtze_stronghold",
+		"name": "Yangtze River Stronghold",
+		"alignment": 3,
+		"culture": 2,
+		"org_type": 0,
+		"province_id": "yangtze_river",
+		"resources": {
+			"WEALTH": 750,
+			"MATERIALS": 600,
+			"MEDICINE": 100,
+			"ELIXIRS": 50
+		},
+		"stats": {
+			"FACE": 55,
+			"REPUTATION": 45,
+			"KARMA": 35
+		}
+	},
+	"hao_sect": {
+		"id": "hao_sect",
+		"name": "Hao Sect",
+		"alignment": 2,
+		"culture": 3,
+		"org_type": 0,
+		"province_id": "guangdong",
+		"resources": {
+			"WEALTH": 400,
+			"MATERIALS": 350,
+			"MEDICINE": 180,
+			"ELIXIRS": 60
+		},
+		"stats": {
+			"FACE": 55,
+			"REPUTATION": 60,
+			"KARMA": 55
 		}
 	}
 }

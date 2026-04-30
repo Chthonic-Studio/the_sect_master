@@ -44,8 +44,7 @@
 				"ai_base_weight": 100.0,
 				"effects": [
 					{ "type": "add_trait", "target": "initiator", "trait": "perceptive" },
-					{ "type": "add_personal_log", "target": "initiator", "text": "I have returned from my travels, changed by what I experienced." },
-					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_name] returned to [initiator_sect_name] after months of wandering the Jianghu." }
+					{ "type": "add_personal_log", "target": "initiator", "text": "I have returned from my travels, changed by what I experienced." }
 				]
 			}
 		}
@@ -117,8 +116,7 @@
 					{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 2.0 }
 				],
 				"effects": [
-					{ "type": "add_personal_log", "target": "initiator", "text": "I met an old enemy on the road. We settled our score with steel." },
-					{ "type": "add_world_log", "log_type": "event", "text": "[initiator_name] fought a duel on the mountain road." }
+					{ "type": "add_personal_log", "target": "initiator", "text": "I met an old enemy on the road. We settled our score with steel." }
 				]
 			},
 			"opt_parley": {

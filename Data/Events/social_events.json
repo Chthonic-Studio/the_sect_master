@@ -3,6 +3,9 @@
 		"id": "social_brawl_minor",
 		"title": "A Disagreement Escalates",
 		"description": "Tensions boiled over. [initiator_name] and [target_name] came to blows over a petty dispute during morning forms.",
+		"trigger_conditions": [
+			["not_is_player", "initiator"]
+		],
 		"options": {
 			"opt_brutalize": {
 				"text": "Crush them without mercy.",
@@ -42,7 +45,8 @@
 			{ "condition": ["stat_greater_than", "initiator", "ambition", 70], "multiplier": 2.0 }
 		],
 		"trigger_conditions": [
-			["stat_greater_than", "initiator", "ambition", 55]
+			["stat_greater_than", "initiator", "ambition", 55],
+			["not_is_player", "initiator"]
 		],
 		"description": "[initiator_name] publicly challenges a sect brother to a formal duel to prove their superiority. The training ground falls silent.",
 		"options": {
@@ -50,7 +54,6 @@
 				"text": "Bow and accept. Victory brings prestige.",
 				"ai_base_weight": 50.0,
 				"effects": [
-					{ "type": "add_world_log", "log_type": "event", "text": "A formal duel was held within [initiator_sect_name]." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I issued a formal challenge to prove my superiority." }
 				]
 			},
@@ -77,7 +80,8 @@
 		],
 		"trigger_conditions": [
 			["stat_greater_than", "initiator", "ambition", 65],
-			["is_player_sect", "initiator"]
+			["is_player_sect", "initiator"],
+			["not_is_player", "initiator"]
 		],
 		"requires_pause": true,
 		"description": "[initiator_name] has vanished in the night, taking stolen technique manuals with them. Rumor says they have joined a rival sect.",
@@ -107,6 +111,9 @@
 		"weight_modifiers": [
 			{ "condition": ["stat_greater_than", "initiator", "sociability", 65], "multiplier": 2.0 }
 		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"]
+		],
 		"description": "[initiator_name] and a rival disciple are both infatuated with the same person, and their rivalry has grown sharp enough to affect training.",
 		"options": {
 			"opt_step_back": {
@@ -128,7 +135,6 @@
 					{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 2.0 }
 				],
 				"effects": [
-					{ "type": "add_world_log", "log_type": "event", "text": "A duel of hearts was fought within [initiator_sect_name]." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I challenged my rival for the right to pursue the one I desire." }
 				]
 			}

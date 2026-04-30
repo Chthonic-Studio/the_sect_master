@@ -23,8 +23,7 @@
 				"text": "A modest but sincere gathering.",
 				"ai_base_weight": 70.0,
 				"effects": [
-					{ "type": "modify_wealth", "target": "initiator", "amount": -50 },
-					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] marked the New Year with a simple but heartfelt gathering." }
+					{ "type": "modify_wealth", "target": "initiator", "amount": -50 }
 				]
 			},
 			"opt_skip": {
@@ -90,8 +89,7 @@
 					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 2.5 }
 				],
 				"effects": [
-					{ "type": "modify_wealth", "target": "initiator", "amount": 150 },
-					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] discovered a cache of spiritual herbs and shared them with all disciples." }
+					{ "type": "modify_wealth", "target": "initiator", "amount": 150 }
 				]
 			},
 			"opt_keep": {
@@ -120,7 +118,6 @@
 				"ai_base_weight": 80.0,
 				"effects": [
 					{ "type": "modify_wealth", "target": "initiator", "amount": -30 },
-					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] completed a new building and celebrated its opening." },
 					{ "type": "add_memory", "target": "initiator", "memory_id": "held_opening_ceremony", "payload": {} }
 				]
 			},

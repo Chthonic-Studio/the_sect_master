@@ -212,6 +212,27 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="OrgTypeRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page2"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label_OrgType" type="Label" parent="CenterContainer/MainBox/Page2/OrgTypeRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(190, 0)
+vertical_alignment = 1
+text = "Organisation Type:"
+
+[node name="OrgTypeDropdown" type="OptionButton" parent="CenterContainer/MainBox/Page2/OrgTypeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OrgTypeDescLabel" type="Label" parent="CenterContainer/MainBox/Page2"]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+text = ""
+
 [node name="SectRegionRow" type="HBoxContainer" parent="CenterContainer/MainBox/Page2"]
 layout_mode = 2
 theme_override_constants/separation = 12

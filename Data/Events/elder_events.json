@@ -18,8 +18,7 @@
 				"ai_base_weight": 60.0,
 				"effects": [
 					{ "type": "add_memory", "target": "initiator", "memory_id": "taught_a_disciple", "payload": {} },
-					{ "type": "add_personal_log", "target": "initiator", "text": "I took time to guide a struggling disciple today." },
-					{ "type": "add_world_log", "log_type": "positive", "text": "Elder [initiator_name] of [initiator_sect_name] passed down ancient wisdom." }
+					{ "type": "add_personal_log", "target": "initiator", "text": "I took time to guide a struggling disciple today." }
 				]
 			},
 			"opt_ignore": {
@@ -102,7 +101,6 @@
 				"text": "Grant the retirement. They have earned their rest.",
 				"ai_base_weight": 70.0,
 				"effects": [
-					{ "type": "add_world_log", "log_type": "positive", "text": "Elder [initiator_name] of [initiator_sect_name] was granted an honourable retirement." },
 					{ "type": "add_memory", "target": "initiator", "memory_id": "honourably_retired", "payload": {} }
 				]
 			},

@@ -30,6 +30,7 @@ func _load_premade_sects() -> void:
 		sect.sect_name     = data.get("name", "Unknown Sect")
 		sect.alignment     = data.get("alignment", Definitions.SectAlignment.NEUTRAL)
 		sect.culture       = data.get("culture", Definitions.Culture.CENTRAL_PLAINS)
+		sect.org_type      = data.get("org_type", Definitions.OrgType.SECT)
 		sect.rival_sect_id = data.get("rival_sect_id", "")
 
 		var res_data = data.get("resources", {})
@@ -144,7 +145,7 @@ func _generate_sect_in_province(tier: SectTier, province_id: String, culture: in
 	return generate_custom_sect(tier, {"culture": culture, "province_id": province_id})
 
 ## Spawns a sect, allowing specific parameters to be forced via the overrides Dictionary.
-## Supported keys: "name", "alignment", "culture", "province_id",
+## Supported keys: "name", "alignment", "culture", "org_type", "province_id",
 ##                 "tenets", "resources", "laws", "members_count"
 func generate_custom_sect(tier: SectTier, overrides: Dictionary = {}) -> SectData:
 	var sect := SectData.new()
@@ -160,6 +161,12 @@ func generate_custom_sect(tier: SectTier, overrides: Dictionary = {}) -> SectDat
 		sect.culture = overrides["culture"]
 	else:
 		sect.culture = _roll_sect_culture()
+
+	# 3. Org Type
+	if overrides.has("org_type"):
+		sect.org_type = overrides["org_type"]
+	else:
+		sect.org_type = Definitions.OrgType.SECT  # Default to Sect for generated factions
 
 	_roll_sect_stats(sect)
 
@@ -284,7 +291,13 @@ func _generate_sect_name(sect: SectData) -> String:
 
 	if pool_prefixes.is_empty(): pool_prefixes.append("Mystic")
 	if pool_nouns.is_empty():    pool_nouns.append("Lotus")
-	if pool_suffixes.is_empty(): pool_suffixes.append("Sect")
+	if pool_suffixes.is_empty():
+		# Fallback ensures every generated name has a recognisable organisational suffix
+		# even when no tenet/culture/alignment pools contribute suffix entries.
+		match sect.org_type:
+			Definitions.OrgType.CLAN: pool_suffixes.append("Clan")
+			Definitions.OrgType.CULT: pool_suffixes.append("Cult")
+			_:                        pool_suffixes.append("Sect")
 
 	return "%s %s %s" % [pool_prefixes.pick_random(), pool_nouns.pick_random(), pool_suffixes.pick_random()]
 
