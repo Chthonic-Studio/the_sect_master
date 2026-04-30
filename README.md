@@ -98,3 +98,4 @@ All technical documentation, guides, and references for *The Sect Master* are co
 |---|---|
 | [Event Creation Guide](Data/Events/README.md) | How to write and chain events in JSON — pulse system, conditions, effects, dynamic text |
 | [Modding Guide](Data/Modding/README.md) | How to create Data Mods (JSON traits/items) and Logic Mods (packed GDScript) |
+| [Genre Guide](Data/wuxia_genre_research.md) | Detailed research about the genre with common tropes, general knowledge and high-level information
