@@ -79,16 +79,45 @@ func _refresh_available_buildings() -> void:
 			container.add_child(lbl)
 		else:
 			lbl.text = b_data.get("name", b_id)
-			var btn = Button.new()
+
+			# Build cost/prereq label
+			var cost_lbl := Label.new()
+			cost_lbl.add_theme_font_size_override("font_size", 11)
+			cost_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+
+			var cost_parts: Array[String] = []
+			var costs: Dictionary = b_data.get("cost", {})
+			for res_key in costs:
+				var r_enum = Definitions.get_resource_enum(res_key)
+				var res_name = res_key.capitalize()
+				var cost_val: int = costs[res_key]
+				var has_enough: bool = r_enum != -1 and active_sect.resources.get(r_enum, 0) >= cost_val
+				if has_enough:
+					cost_parts.append("%s: %d" % [res_name, cost_val])
+				else:
+					cost_parts.append("[%s: %d — insufficient]" % [res_name, cost_val])
+			cost_lbl.text = ", ".join(cost_parts) if not cost_parts.is_empty() else "Free"
+
+			# Colour cost label red if can't afford, green if can
+			var can_afford: bool = active_sect.can_build(b_id)
+			cost_lbl.add_theme_color_override("font_color",
+				Color(0.4, 0.9, 0.4) if can_afford else Color(0.9, 0.4, 0.4))
+
+			var btn := Button.new()
 			btn.text = "Build"
-			btn.disabled = not active_sect.can_build(b_id)
-			
+			btn.disabled = not can_afford
+
 			btn.pressed.connect(func():
 				if active_sect.start_construction(b_id):
 					_refresh_panel()
 			)
 			container.add_child(btn)
-			container.add_child(lbl)
+
+			var info_vbox := VBoxContainer.new()
+			info_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			info_vbox.add_child(lbl)
+			info_vbox.add_child(cost_lbl)
+			container.add_child(info_vbox)
 			
 		available_list.add_child(container)
 

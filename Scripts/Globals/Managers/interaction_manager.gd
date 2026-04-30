@@ -13,7 +13,8 @@ func _load_core_actions() -> void:
 	registered_actions.append(load("res://Scripts/Interactions/Actions/action_insult.gd").new())
 	registered_actions.append(load("res://Scripts/Interactions/Actions/action_sway.gd").new())
 	registered_actions.append(load("res://Scripts/Interactions/Actions/action_gift_wealth.gd").new())
-	pass
+	registered_actions.append(load("res://Scripts/Interactions/Actions/action_challenge_duel.gd").new())
+	registered_actions.append(load("res://Scripts/Interactions/Actions/action_recruit.gd").new())
 
 ## Retrieves all valid actions the player can take against the target right now.
 func get_valid_actions(initiator: CharacterData, target: CharacterData) -> Array[PlayerAction]:

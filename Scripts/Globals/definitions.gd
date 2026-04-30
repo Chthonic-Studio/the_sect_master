@@ -218,6 +218,31 @@ enum TraitType {
 const STAT_CAP = 255
 const MAX_TRAITS_PER_CHARACTER = 5
 
+# --- REALM ADVANCEMENT THRESHOLDS ---
+# INTERNAL_FORCE value required to *attempt* a breakthrough to the next realm.
+# Characters below this value will not fire the breakthrough event.
+const REALM_THRESHOLDS: Dictionary = {
+	MartialRealm.UNINITIATED:  0,    # Always eligible to reach THIRD_RATE
+	MartialRealm.THIRD_RATE:   50,   # Need 50 IF to break to SECOND_RATE
+	MartialRealm.SECOND_RATE:  150,  # Need 150 IF to break to FIRST_RATE
+	MartialRealm.FIRST_RATE:   400,  # Need 400 IF to break to PEAK_MASTER
+	MartialRealm.PEAK_MASTER:  900,  # Need 900 IF to break to GRANDMASTER
+	MartialRealm.GRANDMASTER:  1800, # Need 1800 IF to break to TRANSCENDENT
+	MartialRealm.TRANSCENDENT: 3500, # Need 3500 IF to break to SUMMIT
+	MartialRealm.SUMMIT:       9999, # No further advancement
+}
+
+# Aptitude multipliers for martial stat gain rate (applied per training tick)
+const APTITUDE_TRAINING_MULT: Dictionary = {
+	Aptitude.WITHERED:    0.3,
+	Aptitude.MEDIOCRE:    0.7,
+	Aptitude.STURDY:      1.0,
+	Aptitude.FLEXIBLE:    1.0,
+	Aptitude.GENIUS:      1.5,
+	Aptitude.ENLIGHTENED: 1.5,
+	Aptitude.HEAVEN_SENT: 2.2,
+}
+
 # --- HELPER: STAT MAPPING ---
 # Translates string keys from JSON into the Enum values used in code.
 func get_stat_enum(stat_name: String) -> int:

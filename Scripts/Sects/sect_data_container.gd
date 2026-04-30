@@ -258,7 +258,10 @@ func process_monthly_tick() -> void:
 			# If a sect goes bankrupt on Wealth, they lose Face in the Jianghu
 			if r_enum == Definitions.ResourceType.WEALTH:
 				stats[Definitions.SectStat.FACE] = clampi(stats[Definitions.SectStat.FACE] - 5, 0, 100)
-				# Future Hook: Emit a signal here to lower Elder loyalty/mood!
+
+	# AI macro behaviour for non-player sects
+	if GameManager.player_sect_id != sect_id:
+		_process_ai_monthly_tick()
 
 ## Calculates the net income/expenses for the sect. 
 ## Separated from the tick so the UI can safely read it for tooltips.
@@ -297,6 +300,55 @@ func get_projected_monthly_deltas() -> Dictionary:
 	# 3. (Future Expansion) Base Taxes from controlled territory, tributary sects, etc.
 		
 	return deltas
+
+## AI monthly decision loop for non-player sects.
+## Simple probability rolls that modify sect relationships and member counts.
+func _process_ai_monthly_tick() -> void:
+	var all_sect_ids = SimulationManager.sect_repo.keys()
+
+	# 1. desire_macro_expand: attempt to recruit from world population (~20% chance)
+	if randf() < 0.20 and all_members.size() < 100:
+		# Simulate gaining 1-3 new members (no real character created — abstract)
+		# In future: spawn a new CharacterData and add them
+		pass  # Placeholder until full recruit world population is implemented
+
+	# 2. desire_macro_raid_rival: if relationship is -50 or worse, chance to raid (~15% monthly)
+	if randf() < 0.15:
+		var worst_rel = 0
+		var worst_id = ""
+		for s_id in all_sect_ids:
+			if s_id == sect_id: continue
+			var rel = SimulationManager.get_sect_relationship(sect_id, s_id)
+			if rel < worst_rel:
+				worst_rel = rel
+				worst_id = s_id
+		if worst_id != "" and worst_rel <= -50:
+			var target_sect = SimulationManager.get_sect(worst_id)
+			if target_sect:
+				# Raid outcome: compare member count as a simple strength proxy
+				var attacker_str = all_members.size() + stats.get(Definitions.SectStat.REPUTATION, 0)
+				var defender_str = target_sect.all_members.size() + target_sect.stats.get(Definitions.SectStat.REPUTATION, 0)
+				if attacker_str > defender_str * 0.8:
+					# Attacker wins: gain Face, target loses
+					stats[Definitions.SectStat.FACE] = clampi(stats.get(Definitions.SectStat.FACE, 0) + 8, 0, 100)
+					target_sect.stats[Definitions.SectStat.FACE] = clampi(target_sect.stats.get(Definitions.SectStat.FACE, 0) - 8, 0, 100)
+					WorldLogManager.add_log("war", sect_name + " launched a raid on " + target_sect.sect_name + " and emerged victorious!")
+				else:
+					# Attacker repelled
+					stats[Definitions.SectStat.FACE] = clampi(stats.get(Definitions.SectStat.FACE, 0) - 5, 0, 100)
+					WorldLogManager.add_log("war", sect_name + " launched a raid on " + target_sect.sect_name + " but was repelled.")
+
+	# 3. desire_macro_seek_alliance: improve relation with neutral neighbour (~10% monthly)
+	if randf() < 0.10:
+		var neutral_id = ""
+		for s_id in all_sect_ids:
+			if s_id == sect_id: continue
+			var rel = SimulationManager.get_sect_relationship(sect_id, s_id)
+			if absf(rel) < 30:
+				neutral_id = s_id
+				break
+		if neutral_id != "":
+			SimulationManager.modify_sect_relationship(sect_id, neutral_id, randi_range(3, 8))
 
 #endregion
 

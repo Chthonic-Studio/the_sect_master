@@ -10,6 +10,7 @@ const CHARACTER_DASHBOARD_SCENE = preload("res://Scenes/UI/character_dashboard.t
 const DEBUG_SCREEN_SCENE = preload("res://Scenes/UI/debug_screen.tscn")
 const PROVINCE_VIEW_SCENE = preload("res://Scenes/UI/province_view.tscn")
 const REGION_VIEW_SCENE = preload("res://Scenes/UI/region_view.tscn")
+const SYSTEM_MENU_SCENE = preload("res://Scenes/UI/system_menu.tscn")
 
 ## Map dimensions — keep in sync with actual map image size (Assets/Map/*.png).
 ## Exposed as export vars so they can be tweaked from the editor without touching code.
@@ -42,6 +43,9 @@ func _ready() -> void:
 	
 	var region_view_instance = REGION_VIEW_SCENE.instantiate()
 	add_child(region_view_instance)
+
+	var system_menu_instance = SYSTEM_MENU_SCENE.instantiate()
+	add_child(system_menu_instance)
 	
 	# 3. Connect map click signals to open the appropriate view panels
 	MapManager.province_clicked.connect(_on_province_clicked)

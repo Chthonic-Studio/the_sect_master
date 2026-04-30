@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://fu6a9s9kkapvc"]
+
+[ext_resource type="Script" path="res://Scripts/UI/mission_picker_popup.gd" id="1_mission"]
+
+[node name="MissionPickerPopup" type="Control"]
+script = ExtResource("1_mission")

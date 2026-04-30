@@ -341,6 +341,33 @@ func add_directed_opinion(target_id: String, opinion_id: String, value: int, dur
 	})
 
 
+## Checks whether this character qualifies to attempt a realm breakthrough.
+## Called after training actions complete and in the daily tick.
+func check_realm_advancement() -> void:
+	if not is_martial_artist: return
+	if current_realm >= Definitions.MartialRealm.SUMMIT: return
+
+	var threshold = Definitions.REALM_THRESHOLDS.get(current_realm, 9999)
+	var current_if = get_martial_stat(Definitions.MartialStat.INTERNAL_FORCE)
+	if current_if < threshold: return
+
+	# Already pending breakthrough? Don't fire again.
+	if has_memory("pending_breakthrough"): return
+
+	add_memory("pending_breakthrough", {"realm": current_realm})
+	EventManager.trigger_event("cultivation_breakthrough_attempt", {"initiator": char_id})
+
+## Called by EventManager effects or directives to advance the realm.
+func advance_realm(amount: int = 1) -> void:
+	var new_realm = clampi(current_realm + amount, 0, Definitions.MartialRealm.SUMMIT)
+	if new_realm != current_realm:
+		current_realm = new_realm
+		# Clear the pending flag so another breakthrough can be triggered later
+		event_memory.erase("pending_breakthrough")
+		WorldLogManager.add_log("cultivation", get_full_name() + " has broken through to " +
+			Definitions.MartialRealm.keys()[current_realm].capitalize() + " realm!")
+		recalculate_all_stats()
+
 ## Called by DataManager's daily tick
 func process_daily_tick(current_total_days: int) -> void:
 	# If frozen (dead, deep secluded meditation), completely skip the loop
@@ -409,6 +436,10 @@ func process_daily_tick(current_total_days: int) -> void:
 	# 3. Master State Calculation (Only necessary for on-screen UI feedback)
 	if current_sim_tier == SimTier.MICRO:
 		_calculate_mood()
+
+	# 4. Daily realm advancement check (martial artists only, low-frequency)
+	if is_martial_artist and current_total_days % 7 == 0:
+		check_realm_advancement()
 
 ## Applies baseline creeping of needs and state variables simply from existing.
 ## Can be overridden by Directives to simulate arduous missions or deep rest.

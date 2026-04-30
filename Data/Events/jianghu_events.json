@@ -1,0 +1,197 @@
+{
+	"wandering_master_arrival": {
+		"id": "wandering_master_arrival",
+		"title": "A Wandering Master Arrives",
+		"pulse": "monthly_character",
+		"base_weight": 0.8,
+		"weight_modifiers": [
+			{ "condition": ["is_player", "initiator"], "multiplier": 3.0 },
+			{ "condition": ["has_trait", "initiator", "curious"], "multiplier": 2.0 },
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 40], "multiplier": 1.5 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"],
+			["stat_greater_than", "initiator", "realm", 0]
+		],
+		"description": "A weathered traveler appears at the sect's gates — unmistakably a master of the jianghu. The stranger claims to carry a forgotten technique and offers to impart it... for a price.",
+		"options": {
+			"opt_pay_wealth": {
+				"text": "Pay 200 gold for their teachings.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": -200 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "TECHNIQUE", "amount": 25 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 10 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "Paid a wandering master for a rare technique. The investment was worthwhile." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "learned_from_wandering_master", "payload": {} }
+				]
+			},
+			"opt_challenge": {
+				"text": "Challenge them to a duel instead — prove worth by combat.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 3.0 },
+					{ "condition": ["stat_greater_than", "initiator", "ruthlessness", 60], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "FEROCITY", "amount": 15 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I challenged the wandering master to a duel. A worthy test." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "challenged_wandering_master", "payload": {} }
+				]
+			},
+			"opt_refuse": {
+				"text": "Politely decline. We have no need of outsiders.",
+				"ai_base_weight": 20.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned away the wandering master. Some things are better left unknown." }
+				]
+			}
+		}
+	},
+
+	"face_challenge": {
+		"id": "face_challenge",
+		"title": "An Arrogant Young Master",
+		"pulse": "monthly_character",
+		"base_weight": 1.2,
+		"weight_modifiers": [
+			{ "condition": ["is_player", "initiator"], "multiplier": 2.0 },
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 50], "multiplier": 3.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"],
+			["stat_greater_than", "initiator", "reputation", 30]
+		],
+		"description": "Word of [initiator_name]'s growing reputation has reached a young master from a rival sect. They have arrived with a retinue, loudly proclaiming they will 'expose the frauds of [sect_name]' before witnesses. A public humiliation hangs in the air.",
+		"options": {
+			"opt_accept": {
+				"text": "Accept the challenge publicly. Face must be defended.",
+				"ai_base_weight": 70.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "honor", 60], "multiplier": 2.0 },
+					{ "condition": ["stat_greater_than", "initiator", "ruthlessness", 60], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "target": "initiator", "amount": 0 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "FEROCITY", "amount": 5 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted the public challenge. The jianghu will know who prevails." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "accepted_face_challenge", "payload": {} }
+				]
+			},
+			"opt_defuse": {
+				"text": "Invite them to a formal tea ceremony and defuse the tension through diplomacy.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "sociability", 65], "multiplier": 2.5 },
+					{ "condition": ["has_trait", "initiator", "diplomat"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I defused the confrontation gracefully. Some called it wisdom; others called it weakness." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "defused_face_challenge", "payload": {} }
+				]
+			},
+			"opt_refuse_coward": {
+				"text": "Refuse. Let them think what they will.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I refused the challenge. My Face suffers for it." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "refused_face_challenge", "payload": {} }
+				]
+			}
+		}
+	},
+
+	"sect_anniversary": {
+		"id": "sect_anniversary",
+		"title": "The Sect's Founding Day",
+		"pulse": "monthly_character",
+		"base_weight": 0.5,
+		"weight_modifiers": [
+			{ "condition": ["is_player", "initiator"], "multiplier": 5.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"description": "Another year has passed since the sect's founding. Disciples gather in the main hall for a review ceremony. This is a moment to reflect on growth — and to reward those who have earned distinction.",
+		"options": {
+			"opt_promote_disciples": {
+				"text": "Promote the strongest disciples and feast in celebration.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "target": "initiator", "amount": -50 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "Held the annual founding ceremony. Disciples were promoted and spirits are high." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "held_anniversary_celebration", "payload": {} }
+				]
+			},
+			"opt_training_showcase": {
+				"text": "Invite rival sects as witnesses to a public training showcase.",
+				"ai_base_weight": 35.0,
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "FEROCITY", "amount": 3 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "Our annual showcase impressed rivals. The sect's reputation grows." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "held_anniversary_showcase", "payload": {} }
+				]
+			},
+			"opt_quiet_ceremony": {
+				"text": "Hold a quiet prayer ceremony. Strength comes from discipline, not spectacle.",
+				"ai_base_weight": 20.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "A quiet ceremony to mark another year. The Dao does not require witnesses." }
+				]
+			}
+		}
+	},
+
+	"disciple_betrayal_signs": {
+		"id": "disciple_betrayal_signs",
+		"title": "Whispers of Betrayal",
+		"pulse": "monthly_character",
+		"base_weight": 1.0,
+		"weight_modifiers": [
+			{ "condition": ["is_player", "initiator"], "multiplier": 2.0 },
+			{ "condition": ["has_trait", "initiator", "paranoid"], "multiplier": 2.5 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"description": "Rumours reach [initiator_name] through trusted channels: an inner disciple has been seen meeting in secret with a messenger bearing the colours of a rival sect. Their intentions are unclear, but the risk is grave.",
+		"options": {
+			"opt_confront": {
+				"text": "Confront the disciple directly. Demand an explanation.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "honor", 60], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I confronted the suspected disciple. Their answer was... unconvincing." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "confronted_suspected_traitor", "payload": {} }
+				]
+			},
+			"opt_observe": {
+				"text": "Watch from the shadows and gather evidence.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I chose to observe rather than confront. Patience will reveal the truth." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "monitoring_suspected_traitor", "payload": {} }
+				]
+			},
+			"opt_expel": {
+				"text": "Expel them immediately. The risk is too great.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "ruthlessness", 65], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I expelled the suspected traitor before they could cause damage. Harsh, but necessary." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "expelled_suspected_traitor", "payload": {} }
+				]
+			}
+		}
+	}
+}

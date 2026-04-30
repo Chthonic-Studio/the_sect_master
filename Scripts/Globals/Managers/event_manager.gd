@@ -140,6 +140,70 @@ func _execute_effects(effects: Array, context: Dictionary) -> void:
 			"modify_wealth":
 				var char_obj = SimulationManager.get_character(actual_id)
 				if char_obj: char_obj.wealth += effect["amount"]
+			"modify_sect_wealth":
+				var init_id = context.get("initiator", "")
+				var char_obj = SimulationManager.get_character(init_id)
+				if char_obj and char_obj.sect_id != "":
+					var sect_obj = SimulationManager.get_sect(char_obj.sect_id)
+					if sect_obj:
+						sect_obj.resources[Definitions.ResourceType.WEALTH] += effect["amount"]
+			"modify_stat":
+				var char_obj = SimulationManager.get_character(actual_id)
+				if char_obj:
+					var stat_name: String = effect.get("stat", "")
+					var amount: int = int(effect.get("amount", 0))
+					var ms_enum = Definitions.get_martial_enum(stat_name)
+					if ms_enum != -1 and char_obj.is_martial_artist:
+						char_obj.base_martial[ms_enum] = maxi(0, char_obj.base_martial.get(ms_enum, 0) + amount)
+						char_obj.recalculate_all_stats()
+						char_obj.check_realm_advancement()
+					else:
+						var s_enum = Definitions.get_stat_enum(stat_name)
+						if s_enum != -1:
+							char_obj.base_stats[s_enum] = clampi(char_obj.base_stats.get(s_enum, 0) + amount, 0, Definitions.STAT_CAP)
+							char_obj.recalculate_all_stats()
+			"modify_realm":
+				var char_obj = SimulationManager.get_character(actual_id)
+				if char_obj and char_obj.is_martial_artist:
+					char_obj.advance_realm(effect.get("amount", 1))
+			"kill_character":
+				var char_obj = SimulationManager.get_character(actual_id)
+				if char_obj: char_obj.die(effect.get("cause", "unknown causes"))
+			"recruit_member":
+				var char_obj = SimulationManager.get_character(actual_id)
+				var recruiter_id = context.get("initiator", "")
+				var recruiter = SimulationManager.get_character(recruiter_id)
+				if char_obj and recruiter and recruiter.sect_id != "":
+					var sect_obj = SimulationManager.get_sect(recruiter.sect_id)
+					if sect_obj:
+						var rank = effect.get("rank", Definitions.SectRank.OUTER_DISCIPLE)
+						char_obj.sect_id = recruiter.sect_id
+						sect_obj.add_member(char_obj.char_id, rank)
+						WorldLogManager.add_log("social", char_obj.get_full_name() + " has joined " + sect_obj.sect_name + ".")
+			"assign_directive":
+				var char_obj = SimulationManager.get_character(actual_id)
+				if char_obj:
+					var directive_id: String = effect.get("directive_id", "")
+					var dur: int = effect.get("duration", 30)
+					if directive_id != "":
+						var new_directive = DataManager.create_directive(directive_id, dur)
+						if new_directive:
+							char_obj.current_directive = new_directive
+			"set_war_state":
+				var init_sect_id = context.get("initiator_sect", "")
+				var targ_sect_id = context.get("target_sect", "")
+				if init_sect_id == "" and context.has("initiator"):
+					var ic = SimulationManager.get_character(context["initiator"])
+					if ic: init_sect_id = ic.sect_id
+				if targ_sect_id == "" and context.has("target"):
+					var tc = SimulationManager.get_character(context["target"])
+					if tc: targ_sect_id = tc.sect_id
+				if init_sect_id != "" and targ_sect_id != "" and init_sect_id != targ_sect_id:
+					SimulationManager.set_sect_relationship(init_sect_id, targ_sect_id, -100)
+					var si = SimulationManager.get_sect(init_sect_id)
+					var st = SimulationManager.get_sect(targ_sect_id)
+					if si and st:
+						WorldLogManager.add_log("war", si.sect_name + " has declared war upon " + st.sect_name + "!")
 			"add_memory":
 				var char_obj = SimulationManager.get_character(actual_id)
 				if char_obj: char_obj.add_memory(effect["memory_id"], effect.get("payload", {}))
@@ -213,7 +277,22 @@ func _check_condition(condition: Array, context: Dictionary) -> bool:
 			elif stat_name in Definitions.ALIGNMENT_STATS: val = char_obj.get_alignment_value(stat_name)
 			elif Definitions.get_stat_enum(stat_name) != -1: val = char_obj.get_stat(Definitions.get_stat_enum(stat_name))
 			elif Definitions.get_martial_enum(stat_name) != -1: val = char_obj.get_martial_stat(Definitions.get_martial_enum(stat_name))
+			elif stat_name == "realm": val = char_obj.current_realm
 			return val > threshold
+		"is_player":
+			var char_obj = SimulationManager.get_character(context.get(condition[1], ""))
+			return char_obj != null and GameManager.is_player(char_obj.char_id)
+		"not_is_player":
+			var char_obj = SimulationManager.get_character(context.get(condition[1], ""))
+			return char_obj == null or not GameManager.is_player(char_obj.char_id)
+		"sect_has_building":
+			var char_obj = SimulationManager.get_character(context.get(condition[1], ""))
+			if not char_obj or char_obj.sect_id == "": return false
+			var s = SimulationManager.get_sect(char_obj.sect_id)
+			return s != null and s.completed_buildings.has(condition[2])
+		"target_unaffiliated":
+			var char_obj = SimulationManager.get_character(context.get(condition[1], ""))
+			return char_obj != null and char_obj.sect_id == ""
 	return false
 
 func _format_string(text: String, context: Dictionary) -> String:
@@ -225,6 +304,7 @@ func _format_string(text: String, context: Dictionary) -> String:
 			formatted = formatted.replace("[initiator_name]", c.get_full_name())
 			var sect = SimulationManager.get_sect(c.sect_id)
 			formatted = formatted.replace("[initiator_sect_name]", sect.sect_name if sect else "Rogue Cultivators")
+			formatted = formatted.replace("[sect_name]", sect.sect_name if sect else "the sect")
 			
 	if context.has("target"):
 		var c = SimulationManager.get_character(context["target"])
