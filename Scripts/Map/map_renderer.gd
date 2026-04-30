@@ -345,12 +345,13 @@ func _unhandled_input(event: InputEvent) -> void:
 # ── HOVER HIGHLIGHT ───────────────────────────────────────────────
 
 func _on_hovered_province_changed(province_id: String) -> void:
-	if MapManager.current_layer != MapManager.MapLayer.PROVINCES:
-		return
 	# Clear the outline on the previously hovered label
 	if is_instance_valid(_hovered_province_label):
 		_hovered_province_label.add_theme_constant_override("outline_size", 0)
 		_hovered_province_label = null
+
+	if MapManager.current_layer != MapManager.MapLayer.PROVINCES:
+		return
 
 	if province_id == "":
 		_clear_highlight()
