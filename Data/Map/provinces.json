@@ -40,85 +40,341 @@
 "mask_color": "#28434f",
 "neighbours": ["liaoning", "pyongyang", "jilin"]
 },
-"yanzhou": {
-"id": "yanzhou",
-"name": "Yanzhou",
+"jilin": {
+"id": "jilin",
+"name": "Jilin",
 "region_id": "northern_border",
-"description": "A frontier city with a permanent garrison and a rough, martial culture.",
-"mask_color": "#0090cc",
-"neighbours": ["kaifeng", "yanmen_pass", "north_steppe", "goryeo_capital"]
+"description": "x",
+"mask_color": "#13739e",
+"neighbours": ["liaoning", "heilongjiang", "tianjin", "cloud_pass"]
 },
-"north_steppe": {
-"id": "north_steppe",
-"name": "Northern Steppe",
+"tianjin": {
+"id": "tianjin",
+"name": "Tianjin",
 "region_id": "northern_border",
-"description": "Rolling grasslands where mounted nomadic sects roam freely.",
-"mask_color": "#0070b0",
-"neighbours": ["yanzhou", "goryeo_capital", "dunhuang"]
+"description": "x",
+"mask_color": "#9fd8f2",
+"neighbours": ["jilin", "shandong", "hebei", "shaanxi", "shanxi", "kaifeng", "cloud_pass"]
+},
+"cloud_pass": {
+"id": "cloud_pass",
+"name": "Cloud Pass",
+"region_id": "northern_border",
+"description": "x",
+"mask_color": "#0b3a4f",
+"neighbours": ["jilin", "tianjin", "kaifeng", "shanxi", "yanmen", "frozen_steppe"]
+},
+"frozen_steppe": {
+"id": "frozen_steppe",
+"name": "Frozen Steppe",
+"region_id": "northern_border",
+"description": "x",
+"mask_color": "#0575a7",
+"neighbours": ["cloud_pass", "yanmen", "ningxia", "dunhuang"]
 },
 "dunhuang": {
 "id": "dunhuang",
 "name": "Dunhuang",
+"region_id": "northern_border",
+"description": "x",
+"mask_color": "#2c789a",
+"neighbours": ["frozen_steppe", "ningxia", "gansu"]
+},
+"gansu": {
+"id": "gansu",
+"name": "Gansu",
 "region_id": "western_regions",
-"description": "An oasis city at the edge of the great desert. A meeting point of cultures.",
-"mask_color": "#ff80d0",
-"neighbours": ["north_steppe", "yanmen_pass", "western_mountains"]
+"description": "x",
+"mask_color": "#ffe400",
+"neighbours": ["dunhuang", "ningxia", "serxu", "qinghai"]
 },
-"western_mountains": {
-"id": "western_mountains",
-"name": "Western Mountains",
+"qinghai": {
+"id": "qinghai",
+"name": "Qinghai",
 "region_id": "western_regions",
-"description": "Rugged highland terrain. Isolated sects here guard ancient and heretical techniques.",
-"mask_color": "#ff40c0",
-"neighbours": ["dunhuang", "luoyang", "chengdu"]
+"description": "x",
+"mask_color": "#e0d150",
+"neighbours": ["gansu", "serxu", "tibet", "xinjiang"]
 },
-"guangzhou": {
-"id": "guangzhou",
-"name": "Guangzhou",
+"xinjiang": {
+"id": "xinjiang",
+"name": "Xinjiang",
+"region_id": "western_regions",
+"description": "x",
+"mask_color": "#ab9b0f",
+"neighbours": ["tibet", "qinghai"]
+},
+"tibet": {
+"id": "tibet",
+"name": "Tibet",
+"region_id": "western_regions",
+"description": "x",
+"mask_color": "#8d822a",
+"neighbours": ["xinjiang", "qinghai", "serxu"]
+},
+"serxu": {
+"id": "serxu",
+"name": "Serxu",
+"region_id": "sichuan",
+"description": "x",
+"mask_color": "#2eb929",
+"neighbours": ["gansu", "qinghai", "tibet", "deyang", "emei"]
+},
+"deyang": {
+"id": "deyang",
+"name": "Deyang",
+"region_id": "sichuan",
+"description": "x",
+"mask_color": "#6ad767",
+"neighbours": ["serxu", "emei", "chengdu", "yibin"]
+},
+"emei": {
+"id": "emei",
+"name": "Emei",
+"region_id": "sichuan",
+"description": "x",
+"mask_color": "#7b952f",
+"neighbours": ["serxu", "deyang", "yibin", "yunnan"]
+},
+"chengdu": {
+"id": "chengdu",
+"name": "Chengdu",
+"region_id": "sichuan",
+"description": "x",
+"mask_color": "#c1d77d",
+"neighbours": ["deyang", "yibin", "ningxia", "shaanxi"]
+},
+"yibin": {
+"id": "yibin",
+"name": "Yibin",
+"region_id": "sichuan",
+"description": "x",
+"mask_color": "#5b9a5a",
+"neighbours": ["emei", "deyang", "yunnan", "kuizhou", "chongqing", "henan", "yangtze_river"]
+},
+"yunnan": {
+"id": "yunnan",
+"name": "Yunnan",
+"region_id": "sichuan",
+"description": "x",
+"mask_color": "#b5f204",
+"neighbours": ["yibin", "kuizhou", "emei", "guangxi"]
+},
+"kuizhou": {
+"id": "kuizhou",
+"name": "Kuizhou",
+"region_id": "sichuan",
+"description": "x",
+"mask_color": "#2b3902",
+"neighbours": ["yunnan", "yibin", "guangxi", "guizhou", "chongqing"]
+},
+"guangxi": {
+"id": "guangxi",
+"name": "Guangxi",
 "region_id": "lingnan",
-"description": "A prosperous port city. Trade and foreign influences make it a cosmopolitan hub.",
-"mask_color": "#ff00ff",
-"neighbours": ["emei_mountains", "pearl_river_delta"]
+"description": "x",
+"mask_color": "#4950b0",
+"neighbours": ["kuizhou", "chongqing", "guizhou", "hunan", "guangdong", "hainan", "yunnan"]
 },
-"pearl_river_delta": {
-"id": "pearl_river_delta",
-"name": "Pearl River Delta",
+"hainan": {
+"id": "hainan",
+"name": "Hainan",
 "region_id": "lingnan",
-"description": "Fertile river delta. Southern sects here favour powerful, grounded martial styles.",
-"mask_color": "#c800c8",
-"neighbours": ["guangzhou", "hangzhou", "suzhou"]
+"description": "x",
+"mask_color": "#111cc1",
+"neighbours": ["guangxi"]
 },
-"hangzhou": {
-"id": "hangzhou",
-"name": "Hangzhou",
+"guangdong": {
+"id": "guangdong",
+"name": "Guangdong",
+"region_id": "lingnan",
+"description": "x",
+"mask_color": "#161d88",
+"neighbours": ["guangxi", "hunan", "jiangxi", "fujian", "chaozhou"]
+},
+"chaozhou": {
+"id": "chaozhou",
+"name": "Chaozhou",
+"region_id": "lingnan",
+"description": "x",
+"mask_color": "#3e4177",
+"neighbours": ["guangdong", "fujian"]
+},
+"fujian": {
+"id": "fujian",
+"name": "Fujian",
 "region_id": "jiangnan",
-"description": "Famed for its beauty. Scholarly sects and elegant swordsmen call this home.",
-"mask_color": "#9932cc",
-"neighbours": ["kaifeng", "zhongdu", "suzhou", "emei_mountains", "pearl_river_delta"]
+"description": "x",
+"mask_color": "#f2b1e5",
+"neighbours": ["jiangxi", "chaozhou", "guangdong", "zhejiang"]
 },
-"suzhou": {
-"id": "suzhou",
-"name": "Suzhou",
+"zhejiang": {
+"id": "zhejiang",
+"name": "Zhejiang",
 "region_id": "jiangnan",
-"description": "A city of canals and gardens. The Jiangnan Sword Arts are said to have originated here.",
-"mask_color": "#4b0082",
-"neighbours": ["hangzhou", "goryeo_south", "pearl_river_delta"]
+"description": "x",
+"mask_color": "#542e53",
+"neighbours": ["fujian", "jiangxi", "huzhou", "ningbo"]
 },
-"goryeo_capital": {
-"id": "goryeo_capital",
-"name": "Gaegyeong",
-"region_id": "goryeo",
-"description": "The Goryeo capital. A disciplined martial culture with strong clan loyalty.",
-"mask_color": "#000080",
-"neighbours": ["yanzhou", "north_steppe", "goryeo_south"]
+"ningbo": {
+"id": "ningbo",
+"name": "Ningbo",
+"region_id": "jiangnan",
+"description": "x",
+"mask_color": "#542e4c",
+"neighbours": ["zhejiang", "huzhou", "jiangxi", "shaoxing", "yangtze_river"]
 },
-"goryeo_south": {
-"id": "goryeo_south",
-"name": "Southern Goryeo",
-"region_id": "goryeo",
-"description": "The southern reaches of Goryeo. Closer contact with the Jianghu has produced hybrid martial styles.",
-"mask_color": "#4169e1",
-"neighbours": ["goryeo_capital", "suzhou"]
+"shaoxing": {
+"id": "shaoxing",
+"name": "Shaoxing",
+"region_id": "jiangnan",
+"description": "x",
+"mask_color": "#6a0956",
+"neighbours": ["ningbo", "yangtze_river", "huzhou"]
+},
+"yangtze_river": {
+"id": "yangtze_river",
+"name": "Yangtze River",
+"region_id": "jiangnan",
+"description": "x",
+"mask_color": "#540f53",
+"neighbours": ["ningbo", "shaoxing", "jiangsu", "huzhou", "anhui", "jiangxi", "hubei", "henan", "chongqing", "yibin"]
+},
+"huzhou": {
+"id": "huzhou",
+"name": "Huzhou",
+"region_id": "jiangnan",
+"description": "x",
+"mask_color": "#a35393",
+"neighbours": ["yangtze_river", "shaoxing", "ningbo", "zhejiang", "jiangxi"]
+},
+"jiangxi": {
+"id": "jiangxi",
+"name": "Jiangxi",
+"region_id": "jiangnan",
+"description": "x",
+"mask_color": "#772075",
+"neighbours": ["yangtze_river", "huzhou", "fujian", "guangdong", "hunan", "hubei"]
+},
+"hubei": {
+"id": "hubei",
+"name": "Hubei",
+"region_id": "jiangnan",
+"description": "x",
+"mask_color": "#b4369b",
+"neighbours": ["yangtze_river", "jiangxi", "hunan", "chongqing"]
+},
+"hunan": {
+"id": "hunan",
+"name": "Hunan",
+"region_id": "jiangnan",
+"description": "x",
+"mask_color": "#e548c5",
+"neighbours": ["hubei", "chongqing", "guangdong", "guangxi", "jiangxi", "guizhou"]
+},
+"chongqing": {
+"id": "chongqing",
+"name": "Chongqing",
+"region_id": "jiangnan",
+"description": "x",
+"mask_color": "#f200c3",
+"neighbours": ["guizhou", "hunan", "yangtze_river", "hubei", "yibin", "kuizhou"]
+},
+"guizhou": {
+"id": "guizhou",
+"name": "Guizhou",
+"region_id": "jiangnan",
+"description": "x",
+"mask_color": "#95167d",
+"neighbours": ["chongqing", "guangxi", "yibin", "kuizhou", "hunan"]
+},
+"henan": {
+"id": "henan",
+"name": "Henan",
+"region_id": "central_plains",
+"description": "x",
+"mask_color": "#e00d46",
+"neighbours": ["yangtze_river", "yibin", "anhui", "hebei", "shaanxi"]
+},
+"anhui": {
+"id": "anhui",
+"name": "Anhui",
+"region_id": "central_plains",
+"description": "x",
+"mask_color": "#ed1212",
+"neighbours": ["henan", "yangtze_river", "jiangsu", "runan", "hebei"]
+},
+"jiangsu": {
+"id": "jiangsu",
+"name": "Jiangsu",
+"region_id": "central_plains",
+"description": "x",
+"mask_color": "#b0441d",
+"neighbours": ["anhui", "runan", "shangdong"]
+},
+"shandong": {
+"id": "shandong",
+"name": "Shandong",
+"region_id": "central_plains",
+"description": "x",
+"mask_color": "#e55826",
+"neighbours": ["hebei", "tianjin", "jiangsu", "runan"]
+},
+"runan": {
+"id": "runan",
+"name": "Runan",
+"region_id": "central_plains",
+"description": "x",
+"mask_color": "#ca4e4e",
+"neighbours": ["shandong", "jiangsu", "anhui", "hebei"]
+},
+"hebei": {
+"id": "hebei",
+"name": "Hebei",
+"region_id": "central_plains",
+"description": "x",
+"mask_color": "#ff4400",
+"neighbours": ["tianjin", "shandong", "runan", "anhui", "shaanxi", "henan"]
+},
+"shaanxi": {
+"id": "shaanxi",
+"name": "Shaanxi",
+"region_id": "central_plains",
+"description": "x",
+"mask_color": "#ffa000",
+"neighbours": ["tianjin", "shanxi", "hebei", "ningxia", "chengdu", "henan"]
+},
+"shanxi": {
+"id": "shanxi",
+"name": "Shanxi",
+"region_id": "central_plains",
+"description": "x",
+"mask_color": "#a31111",
+"neighbours": ["shaanxi", "kaifeng", "cloud_pass", "yanmen", "ningxia", "tianjin"]
+},
+"kaifeng": {
+"id": "kaifeng",
+"name": "Kaifeng",
+"region_id": "central_plains",
+"description": "x",
+"mask_color": "#6e3939",
+"neighbours": ["shanxi", "cloud_pass", "tianjin"]
+},
+"yanmen": {
+"id": "yanmen",
+"name": "Yanmen",
+"region_id": "central_plains",
+"description": "x",
+"mask_color": "#9e6753",
+"neighbours": ["cloud_pass", "ningxia", "shanxi", "frozen_steppe"]
+},
+"ningxia": {
+"id": "ningxia",
+"name": "Ningxia",
+"region_id": "central_plains",
+"description": "x",
+"mask_color": "#b47305",
+"neighbours": ["frozen_steppe", "yanmen", "shanxi", "shaanxi", "gansu"]
 }
 }
 }

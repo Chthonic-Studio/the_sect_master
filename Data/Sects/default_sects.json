@@ -4,7 +4,7 @@
 		"name": "Shaolin Temple",
 		"alignment": 0,
 		"culture": 0,
-		"province_id": "luoyang",
+		"province_id": "hebei",
 		"rival_sect_id": "blood_cult",
 		"resources": {
 			"WEALTH": 500,
@@ -31,7 +31,7 @@
 		"name": "Wudang Sect",
 		"alignment": 0,
 		"culture": 0,
-		"province_id": "zhongdu",
+		"province_id": "hubei",
 		"rival_sect_id": "heavenly_demon_cult",
 		"resources": {
 			"WEALTH": 600,
@@ -50,7 +50,7 @@
 		"name": "Mount Hua Sect",
 		"alignment": 0,
 		"culture": 0,
-		"province_id": "kaifeng",
+		"province_id": "shaanxi",
 		"rival_sect_id": "tang_clan",
 		"resources": {
 			"WEALTH": 300,
@@ -69,7 +69,7 @@
 		"name": "Emei Sect",
 		"alignment": 0,
 		"culture": 1,
-		"province_id": "emei_mountains",
+		"province_id": "emei",
 		"rival_sect_id": "heavenly_demon_cult",
 		"resources": {
 			"WEALTH": 400,
@@ -88,7 +88,7 @@
 		"name": "Beggar Sect",
 		"alignment": 0,
 		"culture": 0,
-		"province_id": "kaifeng",
+		"province_id": "henan",
 		"rival_sect_id": "blood_cult",
 		"resources": {
 			"WEALTH": 50,
@@ -129,7 +129,7 @@
 		"name": "Namgoong Family",
 		"alignment": 0,
 		"culture": 6,
-		"province_id": "goryeo_capital",
+		"province_id": "anhui",
 		"rival_sect_id": "heavenly_demon_cult",
 		"resources": {
 			"WEALTH": 1200,
@@ -148,7 +148,7 @@
 		"name": "Heavenly Demon Divine Cult",
 		"alignment": 1,
 		"culture": 5,
-		"province_id": "north_steppe",
+		"province_id": "guangxi",
 		"rival_sect_id": "wudang_sect",
 		"resources": {
 			"WEALTH": 1000,
@@ -167,7 +167,7 @@
 		"name": "Blood Cult",
 		"alignment": 4,
 		"culture": 5,
-		"province_id": "yanmen_pass",
+		"province_id": "yanmen",
 		"rival_sect_id": "shaolin_temple",
 		"resources": {
 			"WEALTH": 400,

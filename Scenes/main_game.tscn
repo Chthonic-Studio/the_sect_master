@@ -4,5 +4,3 @@
 
 [node name="MainGame" type="Node2D" unique_id=411409901]
 script = ExtResource("1_l756w")
-
-

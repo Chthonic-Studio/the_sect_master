@@ -1,8 +1,8 @@
-[gd_scene format=3 uid="uid://worldlogpanel1"]
+[gd_scene format=3 uid="uid://bd7wekd20syce"]
 
-[ext_resource type="Script" path="res://Scripts/UI/world_log_panel.gd" id="1_wlog"]
+[ext_resource type="Script" uid="uid://byrdkrgw5nmeg" path="res://Scripts/UI/world_log_panel.gd" id="1_wlog"]
 
-[node name="WorldLogPanel" type="Control"]
+[node name="WorldLogPanel" type="Control" unique_id=23988464]
 custom_minimum_size = Vector2(600, 500)
 layout_mode = 3
 anchors_preset = 0
@@ -12,57 +12,69 @@ offset_right = 900.0
 offset_bottom = 600.0
 script = ExtResource("1_wlog")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1946192981]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-mouse_filter = 0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.1, 0.1, 0.13, 0.95)
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1928340174]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1610840693]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="TitleRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="TitleRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=810008611]
 layout_mode = 2
 
-[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer/TitleRow"]
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer/TitleRow" unique_id=1207707890]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 22
 text = "Chronicle of the Jianghu"
 
-[node name="BtnClose" type="Button" parent="MarginContainer/VBoxContainer/TitleRow"]
+[node name="BtnClose" type="Button" parent="MarginContainer/VBoxContainer/TitleRow" unique_id=1315074480]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 text = "X"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=595151211]
 layout_mode = 2
 
-[node name="FilterRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer" unique_id=804969267]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
+
+[node name="FilterRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Control" unique_id=793297279]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 6
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=757228985]
+custom_minimum_size = Vector2(0, 380)
 layout_mode = 2
 size_flags_vertical = 3
-custom_minimum_size = Vector2(0, 380)
 
-[node name="LogList" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+[node name="LogList" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=110268147]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
