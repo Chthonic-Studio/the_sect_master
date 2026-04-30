@@ -145,7 +145,7 @@ func _generate_sect_in_province(tier: SectTier, province_id: String, culture: in
 	return generate_custom_sect(tier, {"culture": culture, "province_id": province_id})
 
 ## Spawns a sect, allowing specific parameters to be forced via the overrides Dictionary.
-## Supported keys: "name", "alignment", "culture", "province_id",
+## Supported keys: "name", "alignment", "culture", "org_type", "province_id",
 ##                 "tenets", "resources", "laws", "members_count"
 func generate_custom_sect(tier: SectTier, overrides: Dictionary = {}) -> SectData:
 	var sect := SectData.new()
