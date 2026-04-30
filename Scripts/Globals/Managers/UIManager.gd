@@ -28,6 +28,12 @@ var _ui_stack: Array[Node] = []
 var _last_character_id: String = ""
 var _last_sect_id: String = ""
 
+# Pause-token counter: the speed is only restored when the last event popup closes.
+# Incremented each time an event popup opens; decremented on each tree_exited.
+var _event_popup_count: int = 0
+# The speed to restore once _event_popup_count drops back to 0.
+var _speed_before_events: TimeManager.Speed = TimeManager.Speed.NORMAL
+
 func _ready() -> void:
 	_setup_canvas_layers()
 	
@@ -89,6 +95,7 @@ func open_panel(panel_id: String, payload: Variant = null) -> void:
 		panel.setup_panel(payload)
 		
 	panel.show()
+	panel.move_to_front()
 	
 	if _ui_stack.has(panel):
 		_ui_stack.erase(panel)
@@ -140,12 +147,24 @@ func spawn_popup(packed_scene: PackedScene, payload: Variant = null) -> Node:
 # --- EVENT INTEGRATION ---
 
 func _on_player_event_triggered(event_id: String, context: Dictionary) -> void:
-	# You will need to create this generic event_popup.tscn later
 	var event_scene = load("res://Scenes/UI/event_popup.tscn")
-	var _popup = spawn_popup(event_scene, {"event_id": event_id, "context": context})
+	var popup = spawn_popup(event_scene, {"event_id": event_id, "context": context})
 	
-	# Auto-pause the game when an event fires
-	TimeManager.set_time_speed(TimeManager.Speed.PAUSED)
+	# Only snapshot the speed for the *first* event popup that opens.
+	# If another popup was already open (and time already paused), we just
+	# increment the counter and don't overwrite the original speed.
+	if _event_popup_count == 0:
+		_speed_before_events = TimeManager.current_speed
+		TimeManager.set_time_speed(TimeManager.Speed.PAUSED)
+	
+	_event_popup_count += 1
+	
+	# Restore the pre-event speed only once the last event popup has closed.
+	popup.tree_exited.connect(func():
+		_event_popup_count = max(0, _event_popup_count - 1)
+		if _event_popup_count == 0 and TimeManager.current_speed == TimeManager.Speed.PAUSED:
+			TimeManager.set_time_speed(_speed_before_events)
+	, CONNECT_ONE_SHOT)
 
 func _on_player_succession_required(heir_char_id: String) -> void:
 	var succ_scene = load("res://Scenes/UI/succession_popup.tscn")
