@@ -9,6 +9,9 @@ func _ready() -> void:
 	%BtnLoadGame.pressed.connect(_on_load_game_pressed)
 	%BtnQuit.pressed.connect(_on_quit_pressed)
 	
+	# Quick Start is a debug-only feature — hide it in exported/release builds.
+	%BtnQuickStart.visible = OS.is_debug_build()
+	
 	# Make sure the game is fully reset when returning here
 	SceneManager.reset_game_state()
 
