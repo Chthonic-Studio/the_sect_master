@@ -292,7 +292,8 @@ func _generate_sect_name(sect: SectData) -> String:
 	if pool_prefixes.is_empty(): pool_prefixes.append("Mystic")
 	if pool_nouns.is_empty():    pool_nouns.append("Lotus")
 	if pool_suffixes.is_empty():
-		# Use an org-type appropriate default suffix if the name pools have nothing
+		# Fallback ensures every generated name has a recognisable organisational suffix
+		# even when no tenet/culture/alignment pools contribute suffix entries.
 		match sect.org_type:
 			Definitions.OrgType.CLAN: pool_suffixes.append("Clan")
 			Definitions.OrgType.CULT: pool_suffixes.append("Cult")

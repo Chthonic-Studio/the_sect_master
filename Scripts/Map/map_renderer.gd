@@ -224,7 +224,7 @@ func _build_province_labels() -> void:
 
 ## Computes centroid for every region by sampling region_map.png, then
 ## creates a label for each region name.
-## Labels are only shown when the REGIONS layer is active (and not PROVINCES).
+## Labels are shown when the REGIONS layer is active.
 func _build_region_labels() -> void:
 	_region_label_node = Node2D.new()
 	_region_label_node.name = "RegionLabels"
