@@ -8,7 +8,8 @@ class_name MapRenderer
 ##
 ## Hover detection is done by pixel-colour sampling (no polygon maths).
 ## A shader overlay highlights the currently hovered region or province.
-## Province name labels are placed at the computed centroid of each province's area.
+## Province and region name labels are placed at the computed centroid of each
+## area. The hovered label receives an outline to make it stand out clearly.
 
 # ── CONFIGURATION ────────────────────────────────────────────────
 @export var region_alpha:   float = 0.55
@@ -55,8 +56,17 @@ var _province_tex: ImageTexture
 
 var _sample_timer: float = 0.0
 
-# Container node for all province name labels
+# Container nodes for name labels
 var _province_label_node: Node2D
+var _region_label_node: Node2D
+
+# ID → Label maps for hover-outline effect
+var _province_label_map: Dictionary = {}  # province_id → Label
+var _region_label_map: Dictionary = {}    # region_id   → Label
+
+# Track which label currently has the hover outline so we can clear it
+var _hovered_province_label: Label = null
+var _hovered_region_label: Label = null
 
 # ── READY ─────────────────────────────────────────────────────────
 
@@ -65,6 +75,7 @@ func _ready() -> void:
 	_setup_sprites()
 	_apply_layer_visibility()
 	_build_province_labels()
+	_build_region_labels()
 
 	MapManager.map_layer_changed.connect(_on_map_layer_changed)
 	MapManager.hovered_province_changed.connect(_on_hovered_province_changed)
@@ -127,6 +138,52 @@ func _make_highlight_sprite() -> Sprite2D:
 	add_child(s)
 	return s
 
+# ── LABEL HELPERS ─────────────────────────────────────────────────
+
+## Shared helper: creates a styled Label at the centroid position and registers
+## it in the provided map dictionary keyed by id.
+func _create_label(id: String, display_name: String, cx: float, cy: float,
+		parent: Node2D, label_map: Dictionary, font_size: int) -> void:
+	var lbl := Label.new()
+	lbl.name = "Label_" + id
+	lbl.text = display_name
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	lbl.add_theme_font_size_override("font_size", font_size)
+	lbl.add_theme_color_override("font_color", Color(1.0, 1.0, 0.9))
+	lbl.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.85))
+	lbl.add_theme_constant_override("shadow_offset_x", 1)
+	lbl.add_theme_constant_override("shadow_offset_y", 1)
+	# Outline is added/removed dynamically on hover; start at 0
+	lbl.add_theme_constant_override("outline_size", 0)
+	lbl.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
+	var label_size: Vector2 = lbl.get_combined_minimum_size()
+	lbl.size = label_size
+	lbl.position = Vector2(cx - label_size.x * 0.5, cy - label_size.y * 0.5)
+	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	parent.add_child(lbl)
+	label_map[id] = lbl
+
+## Samples the given image at the given stride and builds a centroid_data dict.
+func _compute_centroids(img: Image, hex_to_id: Dictionary) -> Dictionary:
+	var centroid_data: Dictionary = {}
+	var img_w: int = img.get_width()
+	var img_h: int = img.get_height()
+	var stride: int = max(1, centroid_sample_stride)
+
+	for y in range(0, img_h, stride):
+		for x in range(0, img_w, stride):
+			var c: Color = img.get_pixel(x, y)
+			var hex: String = _pixel_to_hex(c)
+			if hex_to_id.has(hex):
+				var id: String = hex_to_id[hex]
+				if not centroid_data.has(id):
+					centroid_data[id] = {"sum_x": 0.0, "sum_y": 0.0, "count": 0}
+				centroid_data[id]["sum_x"] += x
+				centroid_data[id]["sum_y"] += y
+				centroid_data[id]["count"]  += 1
+	return centroid_data
+
 # ── PROVINCE NAME LABELS ──────────────────────────────────────────
 
 ## Computes centroid for every province by sampling province_map.png, then
@@ -140,7 +197,6 @@ func _build_province_labels() -> void:
 	if not _province_img:
 		return
 
-	# Build a hex → province_id reverse map for fast per-pixel lookup
 	var hex_to_id: Dictionary = {}
 	for p_id in DataManager.provinces_registry:
 		var hex: String = DataManager.provinces_registry[p_id].get("mask_color", "").to_lower()
@@ -150,59 +206,56 @@ func _build_province_labels() -> void:
 	if hex_to_id.is_empty():
 		return
 
-	# Accumulate centroid data: province_id → {sum_x, sum_y, count}
-	var centroid_data: Dictionary = {}
+	var centroid_data: Dictionary = _compute_centroids(_province_img, hex_to_id)
 
-	var img_w: int = _province_img.get_width()
-	var img_h: int = _province_img.get_height()
-	var stride: int = max(1, centroid_sample_stride)
-	if stride != centroid_sample_stride:
-		push_warning("centroid_sample_stride must be >= 1; using %d instead of %d." % [stride, centroid_sample_stride])
-
-	for y in range(0, img_h, stride):
-		for x in range(0, img_w, stride):
-			var c: Color = _province_img.get_pixel(x, y)
-			var hex: String = _pixel_to_hex(c)
-			if hex_to_id.has(hex):
-				var p_id: String = hex_to_id[hex]
-				if not centroid_data.has(p_id):
-					centroid_data[p_id] = {"sum_x": 0.0, "sum_y": 0.0, "count": 0}
-				centroid_data[p_id]["sum_x"] += x
-				centroid_data[p_id]["sum_y"] += y
-				centroid_data[p_id]["count"]  += 1
-
-	# Create one label per province at its computed centroid
 	for p_id in centroid_data:
 		var d: Dictionary = centroid_data[p_id]
 		if d["count"] == 0:
 			continue
 		var cx: float = d["sum_x"] / d["count"]
 		var cy: float = d["sum_y"] / d["count"]
-
 		var prov_data: Dictionary = DataManager.provinces_registry.get(p_id, {})
 		var prov_name: String = prov_data.get("name", p_id)
-
-		var lbl := Label.new()
-		lbl.name = "Label_" + p_id
-		lbl.text = prov_name
-		# Centre the label over the centroid
-		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		# Small, readable font size; the camera zoom will scale it naturally
-		lbl.add_theme_font_size_override("font_size", 18)
-		lbl.add_theme_color_override("font_color", Color(1.0, 1.0, 0.9))
-		lbl.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.8))
-		lbl.add_theme_constant_override("shadow_offset_x", 1)
-		lbl.add_theme_constant_override("shadow_offset_y", 1)
-		var label_size: Vector2 = lbl.get_combined_minimum_size()
-		lbl.size = label_size
-		# Position so that the label is centred on the centroid using its actual size
-		lbl.position = Vector2(cx - label_size.x * 0.5,
-							   cy - label_size.y * 0.5)
-		lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		_province_label_node.add_child(lbl)
+		_create_label(p_id, prov_name, cx, cy, _province_label_node, _province_label_map, 18)
 
 	_province_label_node.visible = (MapManager.current_layer == MapManager.MapLayer.PROVINCES)
+
+# ── REGION NAME LABELS ────────────────────────────────────────────
+
+## Computes centroid for every region by sampling region_map.png, then
+## creates a label for each region name.
+## Labels are only shown when the REGIONS layer is active (and not PROVINCES).
+func _build_region_labels() -> void:
+	_region_label_node = Node2D.new()
+	_region_label_node.name = "RegionLabels"
+	add_child(_region_label_node)
+
+	if not _region_img:
+		return
+
+	var hex_to_id: Dictionary = {}
+	for r_id in DataManager.regions_registry:
+		var hex: String = DataManager.regions_registry[r_id].get("mask_color", "").to_lower()
+		if hex != "":
+			hex_to_id[hex] = r_id
+
+	if hex_to_id.is_empty():
+		return
+
+	var centroid_data: Dictionary = _compute_centroids(_region_img, hex_to_id)
+
+	for r_id in centroid_data:
+		var d: Dictionary = centroid_data[r_id]
+		if d["count"] == 0:
+			continue
+		var cx: float = d["sum_x"] / d["count"]
+		var cy: float = d["sum_y"] / d["count"]
+		var region_data: Dictionary = DataManager.regions_registry.get(r_id, {})
+		var region_name: String = region_data.get("name", r_id)
+		# Larger font for region labels since they cover a bigger area
+		_create_label(r_id, region_name, cx, cy, _region_label_node, _region_label_map, 26)
+
+	_region_label_node.visible = (MapManager.current_layer == MapManager.MapLayer.REGIONS)
 
 # ── LAYER VISIBILITY ──────────────────────────────────────────────
 
@@ -220,6 +273,8 @@ func _apply_layer_visibility() -> void:
 
 	if is_instance_valid(_province_label_node):
 		_province_label_node.visible = (MapManager.current_layer == MapManager.MapLayer.PROVINCES)
+	if is_instance_valid(_region_label_node):
+		_region_label_node.visible = (MapManager.current_layer == MapManager.MapLayer.REGIONS)
 
 func _on_map_layer_changed(_layer: int) -> void:
 	_apply_layer_visibility()
@@ -292,20 +347,44 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_hovered_province_changed(province_id: String) -> void:
 	if MapManager.current_layer != MapManager.MapLayer.PROVINCES:
 		return
+	# Clear the outline on the previously hovered label
+	if is_instance_valid(_hovered_province_label):
+		_hovered_province_label.add_theme_constant_override("outline_size", 0)
+		_hovered_province_label = null
+
 	if province_id == "":
 		_clear_highlight()
 		return
+
 	var hex: String = DataManager.provinces_registry.get(province_id, {}).get("mask_color", "")
 	_set_highlight(_province_tex, hex)
+
+	# Add outline to the label for this province
+	if _province_label_map.has(province_id):
+		var lbl: Label = _province_label_map[province_id]
+		lbl.add_theme_constant_override("outline_size", 3)
+		_hovered_province_label = lbl
 
 func _on_hovered_region_changed(region_id: String) -> void:
 	if MapManager.current_layer != MapManager.MapLayer.REGIONS:
 		return
+	# Clear the outline on the previously hovered label
+	if is_instance_valid(_hovered_region_label):
+		_hovered_region_label.add_theme_constant_override("outline_size", 0)
+		_hovered_region_label = null
+
 	if region_id == "":
 		_clear_highlight()
 		return
+
 	var hex: String = DataManager.regions_registry.get(region_id, {}).get("mask_color", "")
 	_set_highlight(_region_tex, hex)
+
+	# Add outline to the label for this region
+	if _region_label_map.has(region_id):
+		var lbl: Label = _region_label_map[region_id]
+		lbl.add_theme_constant_override("outline_size", 4)
+		_hovered_region_label = lbl
 
 func _set_highlight(tex: ImageTexture, hex: String) -> void:
 	if not tex or hex == "":

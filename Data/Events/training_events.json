@@ -44,6 +44,9 @@
 			{ "condition": ["has_trait", "initiator", "curious"], "multiplier": 3.0 },
 			{ "condition": ["stat_greater_than", "initiator", "intelligence", 65], "multiplier": 2.0 }
 		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"]
+		],
 		"description": "[initiator_name] discovers a hidden compartment in the sect library containing a scroll written in an archaic cipher. The title reads: 'Seven-Step Soul Shattering Palm'.",
 		"options": {
 			"opt_study_immediately": {
@@ -62,8 +65,7 @@
 					{ "condition": ["has_trait", "initiator", "righteous"], "multiplier": 2.0 }
 				],
 				"effects": [
-					{ "type": "add_personal_log", "target": "initiator", "text": "I turned the hidden scroll over to the Sect Master. Honor before power." },
-					{ "type": "add_world_log", "log_type": "positive", "text": "A loyal disciple of [initiator_sect_name] reported a forbidden scroll to their master." }
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned the hidden scroll over to the Sect Master. Honor before power." }
 				]
 			}
 		}
@@ -76,6 +78,9 @@
 		"weight_modifiers": [
 			{ "condition": ["has_trait", "initiator", "impulsive"], "multiplier": 2.5 },
 			{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"]
 		],
 		"description": "During a supervised sparring match, [initiator_name]'s technique slipped and they struck their partner with real force. The partner is injured, the match has ended, and the training ground is silent.",
 		"options": {

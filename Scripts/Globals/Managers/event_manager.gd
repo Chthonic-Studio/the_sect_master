@@ -4,22 +4,38 @@ signal player_event_triggered(event_id: String, context: Dictionary)
 
 var _delayed_events: Array[Dictionary] = []
 
+# --- PERFORMANCE CACHE ---
+# Pre-filtered list of monthly_character pulse events.
+# Rebuilt once when data loads; avoids scanning the full registry every pulse.
+var _pulse_events_cache: Array[Dictionary] = []
+var _pulse_cache_dirty: bool = true
+
 func _ready() -> void:
 	TimeManager.day_passed.connect(_process_delayed_events)
+
+## Rebuilds the pulse events cache from the full registry.
+## Called after DataManager finishes loading all events.
+func rebuild_pulse_cache() -> void:
+	_pulse_events_cache.clear()
+	for event_id in DataManager.events_registry:
+		var event_data = DataManager.events_registry[event_id]
+		if event_data.get("pulse", "") == "monthly_character":
+			_pulse_events_cache.append(event_data)
+	_pulse_cache_dirty = false
 
 # --- THE PULSE ENGINE ---
 
 ## Called organically by CharacterData based on their jittered offset.
 func evaluate_character_pulse(character: CharacterData) -> void:
+	# Lazy rebuild of cache if flagged dirty (e.g. first run or after mod reload)
+	if _pulse_cache_dirty:
+		rebuild_pulse_cache()
+
 	var valid_events = []
 	var context = { "initiator": character.char_id }
 	
-	# 1. Filter by Pulse type and Trigger Conditions
-	for event_id in DataManager.events_registry:
-		var event_data = DataManager.events_registry[event_id]
-		if event_data.get("pulse", "") != "monthly_character":
-			continue
-			
+	# 1. Filter by Trigger Conditions using the pre-cached pulse event list
+	for event_data in _pulse_events_cache:
 		if _check_condition(event_data.get("trigger_conditions", []), context):
 			valid_events.append(event_data)
 			
@@ -202,6 +218,22 @@ func _check_condition(condition: Array, context: Dictionary) -> bool:
 		"has_memory_matching":
 			var char_obj = SimulationManager.get_character(context.get(condition[1], ""))
 			return char_obj and char_obj.has_memory_matching(condition[2], condition[3], condition[4])
+		"is_player":
+			# True if the referenced character is the player
+			var char_id = context.get(condition[1], "")
+			return GameManager.is_player(char_id)
+		"not_is_player":
+			# True if the referenced character is NOT the player
+			var char_id = context.get(condition[1], "")
+			return not GameManager.is_player(char_id)
+		"is_player_sect":
+			# True if the referenced character belongs to the player's sect
+			var char_obj = SimulationManager.get_character(context.get(condition[1], ""))
+			return char_obj and char_obj.sect_id == GameManager.player_sect_id
+		"not_is_player_sect":
+			# True if the referenced character does NOT belong to the player's sect
+			var char_obj = SimulationManager.get_character(context.get(condition[1], ""))
+			return char_obj and char_obj.sect_id != GameManager.player_sect_id
 		"stat_greater_than":
 			var char_obj = SimulationManager.get_character(context.get(condition[1], ""))
 			if not char_obj: return false

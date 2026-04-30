@@ -40,6 +40,13 @@ const ALIGNMENT_ORDER: Array = [
 ]
 const ALIGNMENT_LABELS: Array = ["Orthodox", "Neutral", "Unorthodox", "Demonic", "Evil"]
 
+const ORG_TYPE_ORDER: Array = [
+	Definitions.OrgType.SECT,
+	Definitions.OrgType.CLAN,
+	Definitions.OrgType.CULT
+]
+const ORG_TYPE_LABELS: Array = ["Sect", "Clan", "Cult"]
+
 const APTITUDE_ORDER: Array = [
 	Definitions.Aptitude.GENIUS,
 	Definitions.Aptitude.MEDIOCRE,
@@ -103,10 +110,15 @@ func _populate_page1_trait_buttons() -> void:
 func _populate_page2_dropdowns() -> void:
 	for lbl in ALIGNMENT_LABELS:
 		%AlignmentDropdown.add_item(lbl)
+	for i in ORG_TYPE_LABELS.size():
+		%OrgTypeDropdown.add_item(ORG_TYPE_LABELS[i], i)
 	for lbl in LAW_PRESET_LABELS:
 		%LawPresetDropdown.add_item(lbl)
 	for lbl in SECT_TIER_LABELS:
 		%SectTierDropdown.add_item(lbl)
+
+	# Show description for first org type
+	_on_org_type_changed(0)
 
 	# Populate region dropdown - culture is derived, not user-selected
 	for i in REGION_LABELS.size():
@@ -129,6 +141,7 @@ func _connect_signals() -> void:
 	%BtnPage3Back.pressed.connect(_on_page3_back)
 	%BtnStart.pressed.connect(_on_start_pressed)
 	%AlignmentDropdown.item_selected.connect(_repopulate_tenets)
+	%OrgTypeDropdown.item_selected.connect(_on_org_type_changed)
 	%SectRegionDropdown.item_selected.connect(_on_region_changed)
 
 # ---- AVATAR SELECTION ----
@@ -164,6 +177,11 @@ func _repopulate_tenets(align_index: int) -> void:
 		%TenetDropdown.add_item("(None available)")
 		%TenetDropdown.set_item_metadata(0, "")
 	%TenetDropdown.selected = 0
+
+# ---- ORG TYPE CASCADE ----
+func _on_org_type_changed(org_index: int) -> void:
+	var org_key: String = Definitions.OrgType.keys()[ORG_TYPE_ORDER[org_index]]
+	%OrgTypeDescLabel.text = Definitions.ORG_TYPE_DESCRIPTIONS.get(org_key, "")
 
 # ---- REGION / PROVINCE / CULTURE CASCADE ----
 func _on_region_changed(region_index: int) -> void:
@@ -230,6 +248,7 @@ func _on_start_pressed() -> void:
 
 	var sect_name  = %SectNameInput.text.strip_edges()
 	var alignment  = ALIGNMENT_ORDER[%AlignmentDropdown.selected]
+	var org_type   = ORG_TYPE_ORDER[%OrgTypeDropdown.selected]
 	var tenet_id   = %TenetDropdown.get_item_metadata(%TenetDropdown.selected) if %TenetDropdown.item_count > 0 else ""
 	var law_preset = LAW_PRESETS[%LawPresetDropdown.selected]
 	var sect_tier  = SECT_TIER_ORDER[%SectTierDropdown.selected]
@@ -260,7 +279,7 @@ func _on_start_pressed() -> void:
 
 	_generate_game(
 		first_name, last_name, gender, char_culture, aptitude, avatar_idx, starting_trait,
-		sect_name, alignment, sect_culture, province_id, tenet_id, law_preset, sect_tier,
+		sect_name, alignment, org_type, sect_culture, province_id, tenet_id, law_preset, sect_tier,
 		pop_scale, start_year
 	)
 
@@ -289,7 +308,7 @@ func _create_loading_overlay() -> Control:
 func _generate_game(
 	first_name: String, last_name: String, gender: int, char_culture: int,
 	aptitude: int, avatar_idx: int, starting_trait: String,
-	sect_name: String, alignment: int, sect_culture: int, province_id: String,
+	sect_name: String, alignment: int, org_type: int, sect_culture: int, province_id: String,
 	tenet_id: String, law_preset: String, sect_tier: SectGenerator.SectTier,
 	pop_scale: int, start_year: int
 ) -> void:
@@ -312,6 +331,7 @@ func _generate_game(
 	var player_sect = SectGenerator.generate_custom_sect(sect_tier, {
 		"name":          sect_name,
 		"alignment":     alignment,
+		"org_type":      org_type,
 		"culture":       sect_culture,
 		"province_id":   province_id,
 		"tenets":        sect_tenets,

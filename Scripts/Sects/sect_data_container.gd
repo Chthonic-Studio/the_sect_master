@@ -13,6 +13,7 @@ var sect_id: String = ""
 var sect_name: String = "Unnamed Sect"
 var alignment: int = Definitions.SectAlignment.NEUTRAL
 var culture: int = Definitions.Culture.CENTRAL_PLAINS
+var org_type: int = Definitions.OrgType.SECT  # SECT, CLAN, or CULT
 var rival_sect_id: String = ""
 var province_id: String = ""  # Geographic location on the world map
 
@@ -537,6 +538,7 @@ func to_dictionary() -> Dictionary:
 		"sect_name": sect_name,
 		"alignment": alignment,
 		"culture": culture,
+		"org_type": org_type,
 		"rival_sect_id": rival_sect_id,
 		"province_id": province_id,
 		"resources": resources,
@@ -559,6 +561,7 @@ func from_dictionary(data: Dictionary) -> void:
 	sect_name = data.get("sect_name", "Unnamed Sect")
 	alignment = data.get("alignment", Definitions.SectAlignment.NEUTRAL)
 	culture = data.get("culture", Definitions.Culture.CENTRAL_PLAINS)
+	org_type = data.get("org_type", Definitions.OrgType.SECT)
 	rival_sect_id = data.get("rival_sect_id", "")
 	province_id = data.get("province_id", "")
 	cached_sect_strength = data.get("cached_sect_strength", 0)
