@@ -246,7 +246,11 @@ func _execute_effects(effects: Array, context: Dictionary) -> void:
 				if targ_sect == "" and context.has("target"):
 					var tc = SimulationManager.get_character(context["target"])
 					if tc: targ_sect = tc.sect_id
-				if init_sect != "" and targ_sect != "" and init_sect != targ_sect:
+				if init_sect == "" or targ_sect == "":
+					printerr("EventManager: modify_sect_relationship — could not resolve sect IDs from context: ", context)
+				elif init_sect == targ_sect:
+					printerr("EventManager: modify_sect_relationship — initiator and target resolve to the same sect '", init_sect, "'")
+				else:
 					SimulationManager.modify_sect_relationship(init_sect, targ_sect, effect.get("amount", 0))
 			"add_world_log":
 				var log_type = effect.get("log_type", "Event")

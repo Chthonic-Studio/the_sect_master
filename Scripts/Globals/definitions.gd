@@ -244,7 +244,7 @@ const MAX_TRAITS_PER_CHARACTER = 5
 # INTERNAL_FORCE value required to *attempt* a breakthrough to the next realm.
 # Characters below this value will not fire the breakthrough event.
 const REALM_THRESHOLDS: Dictionary = {
-	MartialRealm.UNINITIATED:  30,   # Must train before first breakthrough
+	MartialRealm.UNINITIATED:  30,   # Requires 30 Internal Force before first breakthrough attempt
 	MartialRealm.THIRD_RATE:   200,  # Above generated starting IF of ~150
 	MartialRealm.SECOND_RATE:  600,  # Above generated starting IF of ~500
 	MartialRealm.FIRST_RATE:   1400, # Above generated starting IF of ~1050
