@@ -446,7 +446,10 @@ func process_daily_tick(current_total_days: int) -> void:
 				# Reset chance back to base after firing
 				event_chance_accumulator = 0.10
 			else:
-				# No event this month: increase chance (cap at 0.90 so there's always a small skip chance)
+				# No event this month: increase chance for next month.
+				# Capped at 0.90 so there is always a 10% chance to skip even after many quiet months,
+				# keeping characters from feeling "scheduled". With 10% base and +10% per miss,
+				# the expected wait is ~5 months and probability reaches 90% by month 9.
 				event_chance_accumulator = minf(event_chance_accumulator + 0.10, 0.90)
 			# Schedule next monthly evaluation with slight jitter
 			next_event_pulse_day = current_total_days + 25 + randi_range(0, 10)

@@ -298,9 +298,10 @@ func get_projected_monthly_deltas() -> Dictionary:
 		
 		deltas[Definitions.ResourceType.WEALTH] -= (cost_per_elder * num_elders)
 		
-	# 3. Base income: disciples contribute dues to the sect each month
-	# Elders and masters are not counted here since their upkeep is handled by elder_stipends law.
-	# Each regular member (outer, inner, core disciple) contributes 3 gold per month.
+	# 3. Base income: disciples contribute monthly dues to the sect.
+	# Elders and masters are excluded here — their costs are covered by the elder_stipends law.
+	# Value: 3 gold/month per disciple is calibrated so a sect of 20 members (with ~2 elders and
+	# 17 disciples) earns ~51 gold/month before upkeep, covering basic operational costs.
 	const DISCIPLE_MONTHLY_DUES: int = 3
 	var disciple_ranks: Array = [
 		Definitions.SectRank.OUTER_DISCIPLE,
