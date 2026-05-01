@@ -24,7 +24,7 @@ func reset_game_state() -> void:
 	GameManager.player_sect_id = ""
 	EventManager._delayed_events.clear()
 	WorldLogManager.clear_logs()
-	UIManager.close_all_panels()
+	UIManager.free_registered_panels()
 	
 	print("SceneManager: Game state fully reset.")
 
@@ -34,5 +34,7 @@ func goto_main_menu() -> void:
 	scene_changed.emit("main_menu")
 
 func goto_game_scene() -> void:
+	# Free any panels registered from the previous session before the new scene registers its own.
+	UIManager.free_registered_panels()
 	get_tree().change_scene_to_file(GAME_SCENE_PATH)
 	scene_changed.emit("main_game")

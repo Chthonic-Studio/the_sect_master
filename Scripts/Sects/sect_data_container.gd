@@ -298,7 +298,19 @@ func get_projected_monthly_deltas() -> Dictionary:
 		
 		deltas[Definitions.ResourceType.WEALTH] -= (cost_per_elder * num_elders)
 		
-	# 3. (Future Expansion) Base Taxes from controlled territory, tributary sects, etc.
+	# 3. Base income: disciples contribute dues to the sect each month
+	# Elders and masters are not counted here since their upkeep is handled by elder_stipends law.
+	# Each regular member (outer, inner, core disciple) contributes 3 gold per month.
+	const DISCIPLE_MONTHLY_DUES: int = 3
+	var disciple_ranks: Array = [
+		Definitions.SectRank.OUTER_DISCIPLE,
+		Definitions.SectRank.INNER_DISCIPLE,
+		Definitions.SectRank.CORE_DISCIPLE,
+	]
+	var total_disciples: int = 0
+	for rank in disciple_ranks:
+		total_disciples += members_by_rank.get(rank, []).size()
+	deltas[Definitions.ResourceType.WEALTH] += total_disciples * DISCIPLE_MONTHLY_DUES
 		
 	return deltas
 
@@ -310,8 +322,8 @@ func _process_ai_monthly_tick() -> void:
 	# 1. desire_macro_expand: recruit from world population
 	# TODO: spawn a new CharacterData and add them once world population API is available
 
-	# 2. desire_macro_raid_rival: if relationship is -50 or worse, chance to raid (~15% monthly)
-	if randf() < 0.15:
+	# 2. desire_macro_raid_rival: if relationship is -75 or worse, chance to raid (~5% monthly)
+	if randf() < 0.05:
 		var worst_rel = 0
 		var worst_id = ""
 		for s_id in all_sect_ids:
@@ -320,7 +332,7 @@ func _process_ai_monthly_tick() -> void:
 			if rel < worst_rel:
 				worst_rel = rel
 				worst_id = s_id
-		if worst_id != "" and worst_rel <= -50:
+		if worst_id != "" and worst_rel <= -75:
 			var target_sect = SimulationManager.get_sect(worst_id)
 			if target_sect:
 				# Raid outcome: compare member count as a simple strength proxy

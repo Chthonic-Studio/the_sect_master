@@ -75,7 +75,8 @@ var traits: Array[String] = []
 
 # --- EVENT MEMORY & PULSE ---
 var event_memory: Dictionary = {} # Maps event/flag ID -> Array[Dictionary] of payloads
-var next_event_pulse_day: int = -1 # -1 means uninitialized
+var next_event_pulse_day: int = -1 # -1 means uninitialized; tracks the next monthly evaluation day
+var event_chance_accumulator: float = 0.10 # Probability of firing an event at next pulse (10% base, accumulates monthly)
 var death_day: int = -1 # Day this character died; -1 while alive
 
 # --- CACHED DATA CONTAINERS (The final effective values) ---
@@ -429,16 +430,26 @@ func process_daily_tick(current_total_days: int) -> void:
 		elif current_sim_tier == SimTier.MACRO:
 			_process_macro_daily(current_total_days)
 	
-	# 2.5. EVENT ENGINE PULSE
+	# 2.5. EVENT ENGINE PULSE — Monthly accumulating chance system.
+	# Each character evaluates events once per in-game month (~30 days).
+	# If no event fires, the probability increases by 10% each month,
+	# ensuring an event will almost certainly happen within a year.
 	if current_sim_tier != SimTier.FROZEN:
 		if next_event_pulse_day <= 0:
-			# Initialize with a random stagger so the world doesn't evaluate everyone on Day 1
+			# Stagger first pulse so the world doesn't all evaluate on Day 1.
 			next_event_pulse_day = current_total_days + randi_range(1, 30)
 			
 		if current_total_days >= next_event_pulse_day:
-			EventManager.evaluate_character_pulse(self)
-			# Jitter - Next evaluation happens randomly between 20 and 40 days from now
-			next_event_pulse_day = current_total_days + randi_range(20, 40)
+			# Roll against the current accumulated chance
+			if randf() < event_chance_accumulator:
+				EventManager.evaluate_character_pulse(self)
+				# Reset chance back to base after firing
+				event_chance_accumulator = 0.10
+			else:
+				# No event this month: increase chance (cap at 0.90 so there's always a small skip chance)
+				event_chance_accumulator = minf(event_chance_accumulator + 0.10, 0.90)
+			# Schedule next monthly evaluation with slight jitter
+			next_event_pulse_day = current_total_days + 25 + randi_range(0, 10)
 	
 	# 3. Master State Calculation (Only necessary for on-screen UI feedback)
 	if current_sim_tier == SimTier.MICRO:
@@ -598,6 +609,7 @@ func to_dictionary() -> Dictionary:
 		# Event status
 		"event_memory": event_memory,
 		"next_event_pulse_day": next_event_pulse_day,
+		"event_chance_accumulator": event_chance_accumulator,
 		"death_day": death_day,
 	}
 
@@ -667,6 +679,7 @@ func from_dictionary(data: Dictionary) -> void:
 	if data.has("event_memory"):
 		event_memory.merge(data["event_memory"], true)
 	next_event_pulse_day = data.get("next_event_pulse_day", -1)
+	event_chance_accumulator = data.get("event_chance_accumulator", 0.10)
 	death_day = data.get("death_day", -1)
 		
 	# Reconstruct the AI's current action immediately

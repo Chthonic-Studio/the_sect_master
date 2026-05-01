@@ -87,11 +87,11 @@ func open_panel(panel_id: String, payload: Variant = null) -> void:
 	if not panel.is_inside_tree():
 		await panel.ready
 	
-	# Route payload to dashboard-style setup.
+	# Route payload to dashboard-style setup (requires a non-null entity to display).
 	if payload != null and panel.has_method("setup_dashboard"):
 		panel.setup_dashboard(payload)
-	# Route payload to generic panel-style setup.
-	elif payload != null and panel.has_method("setup_panel"):
+	# Route payload to generic panel-style setup (always called so panels can refresh on open).
+	elif panel.has_method("setup_panel"):
 		panel.setup_panel(payload)
 		
 	panel.show()
@@ -119,6 +119,16 @@ func close_panel(panel_id: String) -> void:
 func close_all_panels() -> void:
 	for id in _registered_panels:
 		close_panel(id)
+
+## Frees all registered panel nodes and clears the registry.
+## Call this before reloading the game scene so that new panel instances can register fresh.
+func free_registered_panels() -> void:
+	for panel_id in _registered_panels:
+		var panel = _registered_panels[panel_id]
+		if is_instance_valid(panel):
+			panel.queue_free()
+	_registered_panels.clear()
+	_ui_stack.clear()
 
 func is_panel_open(panel_id: String) -> bool:
 	if not _registered_panels.has(panel_id):
