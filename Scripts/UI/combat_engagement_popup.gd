@@ -108,19 +108,30 @@ func _finish_combat() -> void:
 	_set_options_visible(false)
 	%OptionsLabel.text = "The clash is decided."
 
-	# Determine winner/loser
+	# Determine winner/loser using the same remaining-HP ratio rule as duel auto-resolve.
 	var draw: bool = _player_hp <= 0.0 and _opponent_hp <= 0.0
 	var winner_id: String = ""
 	var loser_id: String = ""
 
 	if not draw:
-		if _opponent_hp <= 0.0 or (_player_hp > 0.0 and _player_hp >= _opponent_hp):
+		if _opponent_hp <= 0.0 and _player_hp > 0.0:
 			winner_id = _player_id
 			loser_id  = _opponent_id
-		else:
+		elif _player_hp <= 0.0 and _opponent_hp > 0.0:
 			winner_id = _opponent_id
 			loser_id  = _player_id
+		else:
+			var player_ratio: float = _player_hp / _player_max_hp if _player_max_hp > 0.0 else 0.0
+			var opponent_ratio: float = _opponent_hp / _opponent_max_hp if _opponent_max_hp > 0.0 else 0.0
 
+			if player_ratio > opponent_ratio:
+				winner_id = _player_id
+				loser_id  = _opponent_id
+			elif opponent_ratio > player_ratio:
+				winner_id = _opponent_id
+				loser_id  = _player_id
+			else:
+				draw = true
 	# Build summary
 	var summary: String = ""
 	if draw:
