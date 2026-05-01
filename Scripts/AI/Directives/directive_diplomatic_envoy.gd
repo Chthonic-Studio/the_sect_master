@@ -41,5 +41,3 @@ func on_complete(character: CharacterData) -> void:
 		var t_sect = SimulationManager.get_sect(t_id)
 		if t_sect:
 			WorldLogManager.add_log("diplomacy", my_sect.sect_name + " has improved relations with " + t_sect.sect_name + " through diplomacy.")
-
-	EventManager.trigger_event("directive_envoy_complete", {"initiator": character.char_id})

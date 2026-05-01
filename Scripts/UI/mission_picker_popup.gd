@@ -79,7 +79,8 @@ func _on_drag_input(event: InputEvent) -> void:
 
 func setup_popup(character: CharacterData) -> void:
 	_target_char = character
-	await ready
+	if not is_node_ready():
+		await ready
 	_refresh_title()
 
 func _refresh_title() -> void:

@@ -110,7 +110,8 @@ func _build_ui() -> void:
 	btn_row.add_child(dismiss_btn)
 
 func setup_popup(result: Dictionary) -> void:
-	await ready  # Ensure _build_ui ran first
+	if not is_node_ready():
+		await ready  # Ensure _build_ui ran first
 	var narration_vbox: VBoxContainer = get_meta("narration_vbox")
 	var summary_lbl: RichTextLabel = get_meta("summary_lbl")
 

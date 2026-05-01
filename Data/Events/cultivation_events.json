@@ -2,16 +2,6 @@
 	"cultivation_breakthrough_attempt": {
 		"id": "cultivation_breakthrough_attempt",
 		"title": "On the Cusp of Enlightenment",
-		"pulse": "monthly_character",
-		"base_weight": 3.0,
-		"weight_modifiers": [
-			{ "condition": ["stat_greater_than", "initiator", "discipline", 70], "multiplier": 2.0 },
-			{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 2.5 },
-			{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 1.5 }
-		],
-		"trigger_conditions": [
-			["stat_greater_than", "initiator", "discipline", 50]
-		],
 		"description": "[initiator_name] senses their internal energy reaching a critical juncture. A breakthrough may be at hand — or a dangerous Qi Deviation.",
 		"options": {
 			"opt_push_through": {

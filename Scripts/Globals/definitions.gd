@@ -244,13 +244,13 @@ const MAX_TRAITS_PER_CHARACTER = 5
 # INTERNAL_FORCE value required to *attempt* a breakthrough to the next realm.
 # Characters below this value will not fire the breakthrough event.
 const REALM_THRESHOLDS: Dictionary = {
-	MartialRealm.UNINITIATED:  0,    # Always eligible to reach THIRD_RATE
-	MartialRealm.THIRD_RATE:   50,   # Need 50 IF to break to SECOND_RATE
-	MartialRealm.SECOND_RATE:  150,  # Need 150 IF to break to FIRST_RATE
-	MartialRealm.FIRST_RATE:   400,  # Need 400 IF to break to PEAK_MASTER
-	MartialRealm.PEAK_MASTER:  900,  # Need 900 IF to break to GRANDMASTER
-	MartialRealm.GRANDMASTER:  1800, # Need 1800 IF to break to TRANSCENDENT
-	MartialRealm.TRANSCENDENT: 3500, # Need 3500 IF to break to SUMMIT
+	MartialRealm.UNINITIATED:  30,   # Requires 30 Internal Force before first breakthrough attempt
+	MartialRealm.THIRD_RATE:   200,  # Above generated starting IF of ~150
+	MartialRealm.SECOND_RATE:  600,  # Above generated starting IF of ~500
+	MartialRealm.FIRST_RATE:   1400, # Above generated starting IF of ~1050
+	MartialRealm.PEAK_MASTER:  2500, # Above generated starting IF of ~1800
+	MartialRealm.GRANDMASTER:  4500, # Above generated starting IF of ~2750
+	MartialRealm.TRANSCENDENT: 7500, # Above generated starting IF of ~3900
 	MartialRealm.SUMMIT:       9999, # No further advancement
 }
 

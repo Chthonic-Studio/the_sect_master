@@ -239,7 +239,18 @@ func _execute_effects(effects: Array, context: Dictionary) -> void:
 			"modify_sect_relationship":
 				var init_sect = context.get("initiator_sect", "")
 				var targ_sect = context.get("target_sect", "")
-				if init_sect != "" and targ_sect != "":
+				# Auto-derive sect IDs from character context when not explicitly provided
+				if init_sect == "" and context.has("initiator"):
+					var ic = SimulationManager.get_character(context["initiator"])
+					if ic: init_sect = ic.sect_id
+				if targ_sect == "" and context.has("target"):
+					var tc = SimulationManager.get_character(context["target"])
+					if tc: targ_sect = tc.sect_id
+				if init_sect == "" or targ_sect == "":
+					printerr("EventManager: modify_sect_relationship — could not resolve sect IDs from context: ", context)
+				elif init_sect == targ_sect:
+					printerr("EventManager: modify_sect_relationship — initiator and target resolve to the same sect '", init_sect, "'")
+				else:
 					SimulationManager.modify_sect_relationship(init_sect, targ_sect, effect.get("amount", 0))
 			"add_world_log":
 				var log_type = effect.get("log_type", "Event")
@@ -314,12 +325,6 @@ func _check_condition(condition: Array, context: Dictionary) -> bool:
 			elif Definitions.get_martial_enum(stat_name) != -1: val = char_obj.get_martial_stat(Definitions.get_martial_enum(stat_name))
 			elif stat_name == "realm": val = char_obj.current_realm
 			return val > threshold
-		"is_player":
-			var char_obj = SimulationManager.get_character(context.get(condition[1], ""))
-			return char_obj != null and GameManager.is_player(char_obj.char_id)
-		"not_is_player":
-			var char_obj = SimulationManager.get_character(context.get(condition[1], ""))
-			return char_obj == null or not GameManager.is_player(char_obj.char_id)
 		"sect_has_building":
 			var char_obj = SimulationManager.get_character(context.get(condition[1], ""))
 			if not char_obj or char_obj.sect_id == "": return false

@@ -367,8 +367,12 @@ func advance_realm(amount: int = 1) -> void:
 		event_memory.erase("pending_breakthrough")
 		var realm_keys = Definitions.MartialRealm.keys()
 		var realm_name: String = realm_keys[current_realm] if current_realm < realm_keys.size() else "Unknown"
-		WorldLogManager.add_log("cultivation", get_full_name() + " has broken through to " +
-			realm_name.capitalize() + " realm!")
+		var msg: String = get_full_name() + " has broken through to " + realm_name.capitalize() + " realm!"
+		# Only write to the global world log for the player character.
+		# NPC advancements are internal milestones, not world news.
+		if GameManager.is_player(char_id):
+			WorldLogManager.add_log("cultivation", msg)
+		add_log(msg)
 		recalculate_all_stats()
 
 ## Called by DataManager's daily tick
