@@ -47,7 +47,7 @@ func _gui_input(event: InputEvent) -> void:
 		move_to_front()
 
 func _build_filter_bar() -> void:
-	var row: HBoxContainer = %FilterRow
+	var row: HFlowContainer = %FilterRow
 	
 	var lbl := Label.new()
 	lbl.text = "Filter:"
