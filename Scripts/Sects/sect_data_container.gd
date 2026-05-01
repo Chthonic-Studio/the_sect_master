@@ -387,12 +387,14 @@ func _evaluate_yearly_raid() -> void:
 		var player_char_id = GameManager.player_char_id
 		var attacker_master_ids: Array = members_by_rank.get(Definitions.SectRank.SECT_MASTER, [])
 		var attacker_master_id: String = attacker_master_ids[0] if not attacker_master_ids.is_empty() else ""
-		EventManager.trigger_event("raid_incoming", {
+		var event_context := {
 			"initiator": player_char_id,
-			"target": attacker_master_id if attacker_master_id != "" else player_char_id,
 			"initiator_sect": worst_id,
 			"target_sect": sect_id
-		})
+		}
+		if attacker_master_id != "":
+			event_context["target"] = attacker_master_id
+		EventManager.trigger_event("raid_incoming", event_context)
 		return
 
 	# AI-vs-AI raid: resolve based on strength comparison
