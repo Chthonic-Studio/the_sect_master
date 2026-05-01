@@ -134,25 +134,37 @@ func _finish_combat() -> void:
 		if w and l:
 			summary = "%s has prevailed! %s concedes defeat." % [w.get_full_name(), l.get_full_name()]
 
-	# Apply consequences via CombatManager
+	# Apply consequences via CombatManager using a public API when available.
 	var winner_delta: Dictionary = {}
 	var loser_delta: Dictionary  = {}
-	CombatManager._apply_duel_consequences(
-		_initiator_id, _target_id, winner_id, loser_id, draw, winner_delta, loser_delta)
-	CombatManager.duel_resolved.emit({
-		"winner_id": winner_id, "loser_id": loser_id, "draw": draw,
-		"round_narrations": _accumulated_narrations,
-		"final_summary": summary,
-		"winner_delta": winner_delta, "loser_delta": loser_delta
-	})
-
-	# Show the final result popup
 	var result: Dictionary = {
 		"winner_id": winner_id, "loser_id": loser_id, "draw": draw,
 		"round_narrations": _accumulated_narrations,
 		"final_summary": summary,
 		"winner_delta": winner_delta, "loser_delta": loser_delta
 	}
+
+	if CombatManager.has_method("resolve_interactive_duel"):
+		CombatManager.resolve_interactive_duel(
+			_initiator_id,
+			_target_id,
+			winner_id,
+			loser_id,
+			draw,
+			_accumulated_narrations,
+			summary
+		)
+	elif CombatManager.has_method("apply_duel_consequences"):
+		CombatManager.apply_duel_consequences(
+			_initiator_id, _target_id, winner_id, loser_id, draw, winner_delta, loser_delta)
+		CombatManager.duel_resolved.emit(result)
+	else:
+		# Backward-compatible fallback for older CombatManager implementations.
+		CombatManager._apply_duel_consequences(
+			_initiator_id, _target_id, winner_id, loser_id, draw, winner_delta, loser_delta)
+		CombatManager.duel_resolved.emit(result)
+
+	# Show the final result popup
 	UIManager.spawn_popup(COMBAT_RESULT_POPUP, result)
 	queue_free()
 
