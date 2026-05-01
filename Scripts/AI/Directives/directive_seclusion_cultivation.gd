@@ -34,18 +34,23 @@ func on_complete(character: CharacterData) -> void:
 	var breakthrough_chance: float = clampf(0.25 * apt_mult, 0.05, 0.80)
 	var qi_deviation_chance: float = clampf(0.1 * (1.0 / max(0.3, apt_mult)), 0.02, 0.25)
 
+	# Threshold-based check: fires the breakthrough event if IF meets the realm threshold.
 	character.check_realm_advancement()
 
-	if randf() < breakthrough_chance:
-		character.add_log("Emerged from seclusion with a sudden, profound breakthrough!")
-		EventManager.trigger_event("cultivation_breakthrough_attempt", {"initiator": character.char_id})
-	elif randf() < qi_deviation_chance:
-		character.is_hurt = true
-		character.add_trait("internal_injury")
-		character.add_log("Qi Deviation occurred during deep seclusion. Internal injuries sustained.")
-		WorldLogManager.add_log("cultivation", character.get_full_name() + " suffered a Qi Deviation during secluded cultivation.")
-	else:
-		character.add_log("Emerged from seclusion. The long meditation has refined the Qi channels.")
+	# Probability-based path: only fires if the threshold check didn't already set a pending
+	# breakthrough (avoids spawning two simultaneous cultivation_breakthrough_attempt events).
+	if not character.has_memory("pending_breakthrough"):
+		if randf() < breakthrough_chance:
+			character.add_log("Emerged from seclusion with a sudden, profound breakthrough!")
+			character.add_memory("pending_breakthrough", {"realm": character.current_realm})
+			EventManager.trigger_event("cultivation_breakthrough_attempt", {"initiator": character.char_id})
+		elif randf() < qi_deviation_chance:
+			character.is_hurt = true
+			character.add_trait("internal_injury")
+			character.add_log("Qi Deviation occurred during deep seclusion. Internal injuries sustained.")
+			WorldLogManager.add_log("cultivation", character.get_full_name() + " suffered a Qi Deviation during secluded cultivation.")
+		else:
+			character.add_log("Emerged from seclusion. The long meditation has refined the Qi channels.")
 
 	if GameManager.is_player(character.char_id):
 		WorldLogManager.add_log("cultivation", character.get_full_name() + " has ended their secluded cultivation.")
