@@ -44,6 +44,12 @@ var active_proposals: Array[SectProposal] = []
 # Format: {"building_id": String, "days_remaining": int}
 var construction_queue: Array[Dictionary] = []
 
+# --- AI RAID SCHEDULING ---
+# Absolute day on which this sect will next evaluate a raid against its worst rival.
+# -1 = uninitialized; will be staggered on the first daily tick to avoid all sects
+# evaluating on the same day. After each evaluation the next day is set ~1 year later.
+var next_raid_day: int = -1
+
 func _init() -> void:
 	_setup_default_dictionaries()
 
@@ -168,6 +174,18 @@ func process_daily_tick(current_total_days: int) -> void:
 			proposal.process_daily_tick(self)
 			if proposal.days_remaining <= 0:
 				active_proposals.remove_at(i)
+
+	# 4. Yearly AI raid evaluation for non-player sects
+	if GameManager.player_sect_id != sect_id:
+		if next_raid_day < 0:
+			# First-time stagger: spread all sects across the first year so they don't
+			# all evaluate on the same day.
+			next_raid_day = current_total_days + randi_range(1, 360)
+		elif current_total_days >= next_raid_day:
+			_evaluate_yearly_raid()
+			# Schedule next raid evaluation approximately one year from now, with jitter
+			# so raids feel organic and never cluster on the 1st of a month.
+			next_raid_day = current_total_days + randi_range(320, 400)
 
 ## Adds a predefined temporary macro-modifier (e.g. "+20% pill production for 30 days").
 func add_temporary_modifier(modifier_id: String, duration_days: int) -> void:
@@ -298,7 +316,20 @@ func get_projected_monthly_deltas() -> Dictionary:
 		
 		deltas[Definitions.ResourceType.WEALTH] -= (cost_per_elder * num_elders)
 		
-	# 3. (Future Expansion) Base Taxes from controlled territory, tributary sects, etc.
+	# 3. Base income: disciples contribute monthly dues to the sect.
+	# Elders and masters are excluded here — their costs are covered by the elder_stipends law.
+	# Value: 3 gold/month per disciple is calibrated so a sect of 20 members (with ~2 elders and
+	# 17 disciples) earns ~51 gold/month before upkeep, covering basic operational costs.
+	const DISCIPLE_MONTHLY_DUES: int = 3
+	var disciple_ranks: Array = [
+		Definitions.SectRank.OUTER_DISCIPLE,
+		Definitions.SectRank.INNER_DISCIPLE,
+		Definitions.SectRank.CORE_DISCIPLE,
+	]
+	var total_disciples: int = 0
+	for rank in disciple_ranks:
+		total_disciples += members_by_rank.get(rank, []).size()
+	deltas[Definitions.ResourceType.WEALTH] += total_disciples * DISCIPLE_MONTHLY_DUES
 		
 	return deltas
 
@@ -310,33 +341,7 @@ func _process_ai_monthly_tick() -> void:
 	# 1. desire_macro_expand: recruit from world population
 	# TODO: spawn a new CharacterData and add them once world population API is available
 
-	# 2. desire_macro_raid_rival: if relationship is -50 or worse, chance to raid (~15% monthly)
-	if randf() < 0.15:
-		var worst_rel = 0
-		var worst_id = ""
-		for s_id in all_sect_ids:
-			if s_id == sect_id: continue
-			var rel = SimulationManager.get_sect_relationship(sect_id, s_id)
-			if rel < worst_rel:
-				worst_rel = rel
-				worst_id = s_id
-		if worst_id != "" and worst_rel <= -50:
-			var target_sect = SimulationManager.get_sect(worst_id)
-			if target_sect:
-				# Raid outcome: compare member count as a simple strength proxy
-				var attacker_str = all_members.size() + stats.get(Definitions.SectStat.REPUTATION, 0)
-				var defender_str = target_sect.all_members.size() + target_sect.stats.get(Definitions.SectStat.REPUTATION, 0)
-				if attacker_str > defender_str * 0.8:
-					# Attacker wins: gain Face, target loses
-					stats[Definitions.SectStat.FACE] = clampi(stats.get(Definitions.SectStat.FACE, 0) + 8, 0, 100)
-					target_sect.stats[Definitions.SectStat.FACE] = clampi(target_sect.stats.get(Definitions.SectStat.FACE, 0) - 8, 0, 100)
-					WorldLogManager.add_log("war", sect_name + " launched a raid on " + target_sect.sect_name + " and emerged victorious!")
-				else:
-					# Attacker repelled
-					stats[Definitions.SectStat.FACE] = clampi(stats.get(Definitions.SectStat.FACE, 0) - 5, 0, 100)
-					WorldLogManager.add_log("war", sect_name + " launched a raid on " + target_sect.sect_name + " but was repelled.")
-
-	# 3. desire_macro_seek_alliance: improve relation with neutral neighbour (~10% monthly)
+	# 2. desire_macro_seek_alliance: improve relation with neutral neighbour (~10% monthly)
 	if randf() < 0.10:
 		var neutral_id = ""
 		for s_id in all_sect_ids:
@@ -347,6 +352,43 @@ func _process_ai_monthly_tick() -> void:
 				break
 		if neutral_id != "":
 			SimulationManager.modify_sect_relationship(sect_id, neutral_id, randi_range(3, 8))
+
+## Yearly AI raid evaluation — called from process_daily_tick on the pre-scheduled raid day.
+## Checks whether this sect has a clear rival to strike, then resolves the raid outcome.
+func _evaluate_yearly_raid() -> void:
+	# Minimum relationship score required for a sect to consider raiding.
+	# Must be hostile enough to justify the risk (-75 or worse on a -100..100 scale).
+	const RAID_RELATIONSHIP_THRESHOLD: int = -75
+
+	var all_sect_ids = SimulationManager.sect_repo.keys()
+	var worst_rel = 0
+	var worst_id = ""
+	for s_id in all_sect_ids:
+		if s_id == sect_id: continue
+		var rel = SimulationManager.get_sect_relationship(sect_id, s_id)
+		if rel < worst_rel:
+			worst_rel = rel
+			worst_id = s_id
+
+	if worst_id == "" or worst_rel > RAID_RELATIONSHIP_THRESHOLD:
+		return  # No sufficiently hostile rival to raid this year
+
+	var target_sect = SimulationManager.get_sect(worst_id)
+	if not target_sect:
+		return
+
+	# Raid outcome: compare member count + reputation as a simple strength proxy
+	var attacker_str = all_members.size() + stats.get(Definitions.SectStat.REPUTATION, 0)
+	var defender_str = target_sect.all_members.size() + target_sect.stats.get(Definitions.SectStat.REPUTATION, 0)
+	if attacker_str > defender_str * 0.8:
+		# Attacker wins: gain Face, target loses
+		stats[Definitions.SectStat.FACE] = clampi(stats.get(Definitions.SectStat.FACE, 0) + 8, 0, 100)
+		target_sect.stats[Definitions.SectStat.FACE] = clampi(target_sect.stats.get(Definitions.SectStat.FACE, 0) - 8, 0, 100)
+		WorldLogManager.add_log("war", sect_name + " launched a raid on " + target_sect.sect_name + " and emerged victorious!")
+	else:
+		# Attacker repelled
+		stats[Definitions.SectStat.FACE] = clampi(stats.get(Definitions.SectStat.FACE, 0) - 5, 0, 100)
+		WorldLogManager.add_log("war", sect_name + " launched a raid on " + target_sect.sect_name + " but was repelled.")
 
 #endregion
 
@@ -602,7 +644,8 @@ func to_dictionary() -> Dictionary:
 		"completed_buildings": completed_buildings,
 		"active_modifiers": active_modifiers,
 		"construction_queue": construction_queue,
-		"active_proposals": _serialize_active_proposals()
+		"active_proposals": _serialize_active_proposals(),
+		"next_raid_day": next_raid_day
 	}
 
 func from_dictionary(data: Dictionary) -> void:
@@ -695,6 +738,8 @@ func from_dictionary(data: Dictionary) -> void:
 
 			restored.proposal_resolved.connect(_on_proposal_resolved)
 			active_proposals.append(restored)
+
+	next_raid_day = data.get("next_raid_day", -1)
 
 func _serialize_active_proposals() -> Array[Dictionary]:
 	var serialized: Array[Dictionary] = []

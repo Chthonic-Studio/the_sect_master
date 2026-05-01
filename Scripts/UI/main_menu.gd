@@ -36,7 +36,7 @@ func _on_quick_start_pressed() -> void:
 			"name":          "Iron Hammer Sect",
 			"alignment":     Definitions.SectAlignment.NEUTRAL,
 			"culture":       Definitions.Culture.CENTRAL_PLAINS,
-			"province_id":   "luoyang",
+			"province_id":   "kaifeng",
 			"tenets":        [],
 			"laws":          {"sect_authority": "council_rule"},
 			"members_count": 20
@@ -64,6 +64,7 @@ func _on_load_game_pressed() -> void:
 		print("MainMenu: No saves found!")
 	else:
 		SaveManager.load_game(headers[0].get("filename", "save_1"))
+		SceneManager.goto_game_scene()
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()
