@@ -168,7 +168,7 @@ func _refresh_status_labels() -> void:
 	%AttackerHP.text   = "Qi: %d / %d" % [maxi(0, int(_player_hp)),   int(_player_max_hp)]
 	%DefenderHP.text   = "Qi: %d / %d" % [maxi(0, int(_opponent_hp)), int(_opponent_max_hp)]
 
-	# Colour attacker HP: green when healthy, yellow when hurt, red when critical
+	# Color attacker HP: green when healthy, yellow when hurt, red when critical
 	var p_ratio: float = _player_hp / max(1.0, _player_max_hp)
 	if p_ratio > 0.5:
 		%AttackerHP.add_theme_color_override("font_color", Color(0.4, 0.9, 0.5))

@@ -408,7 +408,7 @@ func _evaluate_yearly_raid() -> void:
 		var honor: float = defender_master.get_personality_value("honor")
 		var ruthlessness: float = defender_master.get_personality_value("ruthlessness")
 		var cunning: float = defender_master.get_personality_value("cunning")
-		# Diplomatic/cunning masters prefer negotiation over direct defence
+		# Diplomatic/cunning masters prefer negotiation over direct defense
 		if cunning > 65 and honor < 50:
 			defender_fights_back = false
 		elif honor > 70:

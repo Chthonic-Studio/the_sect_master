@@ -24,7 +24,7 @@ func _ready() -> void:
 	%BtnChronicle.pressed.connect(_on_chronicle_pressed)
 	%BtnMenu.pressed.connect(_on_menu_pressed)
 
-## Initialises the HUD with current data right when it's opened.
+## Initializes the HUD with current data right when it's opened.
 func setup_panel(_payload: Variant = null) -> void:
 	_update_date_label(TimeManager.day)
 	_on_speed_changed(TimeManager.current_speed)

@@ -223,7 +223,7 @@ func ai_choose_tactic(character: CharacterData, own_hp: float, own_max_hp: float
 
 	return "measured"
 
-
+func _get_effective_hp(character: CharacterData) -> float:
 	var constitution: float = character.get_stat(Definitions.Stat.CONSTITUTION)
 	var realm_bonus: float = character.current_realm * 50.0
 	return 100.0 + constitution * 2.0 + realm_bonus
