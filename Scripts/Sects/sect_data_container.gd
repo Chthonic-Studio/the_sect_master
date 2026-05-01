@@ -356,6 +356,10 @@ func _process_ai_monthly_tick() -> void:
 ## Yearly AI raid evaluation — called from process_daily_tick on the pre-scheduled raid day.
 ## Checks whether this sect has a clear rival to strike, then resolves the raid outcome.
 func _evaluate_yearly_raid() -> void:
+	# Minimum relationship score required for a sect to consider raiding.
+	# Must be hostile enough to justify the risk (-75 or worse on a -100..100 scale).
+	const RAID_RELATIONSHIP_THRESHOLD: int = -75
+
 	var all_sect_ids = SimulationManager.sect_repo.keys()
 	var worst_rel = 0
 	var worst_id = ""
@@ -366,8 +370,8 @@ func _evaluate_yearly_raid() -> void:
 			worst_rel = rel
 			worst_id = s_id
 
-	if worst_id == "" or worst_rel > -75:
-		return  # No valid rival to raid this year
+	if worst_id == "" or worst_rel > RAID_RELATIONSHIP_THRESHOLD:
+		return  # No sufficiently hostile rival to raid this year
 
 	var target_sect = SimulationManager.get_sect(worst_id)
 	if not target_sect:
