@@ -183,7 +183,7 @@ func resolve_single_round(attacker: CharacterData, defender: CharacterData,
 		["strike_hard", "defend"]:
 			narration = "%s hammers at %s's defences but cannot break through cleanly." % [a_name, d_name]
 		["feint", "feint"]:
-			narration = "Both warriors attempt feints simultaneously — a moment of tense standoff." % []
+			narration = "Both warriors attempt feints simultaneously — a moment of tense standoff."
 		_:
 			if a_hit and d_hit:
 				narration = "Both combatants exchange fierce blows, neither yielding ground."
