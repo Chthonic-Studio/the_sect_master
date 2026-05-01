@@ -129,6 +129,8 @@ func free_registered_panels() -> void:
 			panel.queue_free()
 	_registered_panels.clear()
 	_ui_stack.clear()
+	_last_character_id = ""
+	_last_sect_id = ""
 
 func is_panel_open(panel_id: String) -> bool:
 	if not _registered_panels.has(panel_id):
