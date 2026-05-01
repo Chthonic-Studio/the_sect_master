@@ -82,4 +82,3 @@ func _refresh_panel() -> void:
 			value_label.text = current_option_name
 			value_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			row.add_child(value_label)
-
