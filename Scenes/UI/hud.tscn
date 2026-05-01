@@ -48,6 +48,12 @@ custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
 text = "Chronicle"
 
+[node name="BtnMenu" type="Button" parent="TopBar/HBoxContainer/LeftControls" unique_id=1613452447]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 40)
+layout_mode = 2
+text = "Menu"
+
 [node name="RightControls" type="HBoxContainer" parent="TopBar/HBoxContainer" unique_id=1442538226]
 layout_mode = 2
 theme_override_constants/separation = 10
@@ -86,3 +92,64 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 text = "x3"
+
+[node name="ResourceBar" type="HBoxContainer" parent="." unique_id=1613452450]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 55.0
+offset_bottom = 78.0
+offset_left = 15.0
+offset_right = -15.0
+grow_horizontal = 2
+theme_override_constants/separation = 20
+mouse_filter = 2
+
+[node name="LblWealth" type="Label" parent="ResourceBar" unique_id=1613452451]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.95, 0.85, 0.3, 1)
+text = "Gold: —"
+mouse_filter = 2
+
+[node name="LblMaterials" type="Label" parent="ResourceBar" unique_id=1613452452]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.7, 0.85, 0.6, 1)
+text = "Materials: —"
+mouse_filter = 2
+
+[node name="LblMedicine" type="Label" parent="ResourceBar" unique_id=1613452453]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.5, 0.9, 0.7, 1)
+text = "Medicine: —"
+mouse_filter = 2
+
+[node name="LblElixirs" type="Label" parent="ResourceBar" unique_id=1613452454]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.7, 0.5, 0.95, 1)
+text = "Elixirs: —"
+mouse_filter = 2
+
+[node name="LblFace" type="Label" parent="ResourceBar" unique_id=1613452455]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.9, 0.6, 0.4, 1)
+text = "Face: —"
+mouse_filter = 2
+
+[node name="LblReputation" type="Label" parent="ResourceBar" unique_id=1613452456]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.8, 0.8, 0.9, 1)
+text = "Reputation: —"
+mouse_filter = 2

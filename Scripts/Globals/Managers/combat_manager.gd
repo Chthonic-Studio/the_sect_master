@@ -121,6 +121,108 @@ func resolve_duel(initiator_id: String, target_id: String) -> Dictionary:
 	duel_resolved.emit(result)
 	return result
 
+## Resolves a single combat round given tactic choices.
+## a_tactic / d_tactic: "strike_hard", "measured", "defend", "feint"
+## Returns a Dictionary with "a_dmg", "d_dmg", "narration".
+func resolve_single_round(attacker: CharacterData, defender: CharacterData,
+		a_tactic: String, d_tactic: String) -> Dictionary:
+	if not attacker or not defender:
+		return {}
+
+	var a_name: String = attacker.get_full_name()
+	var d_name: String = defender.get_full_name()
+
+	# Tactic multipliers: [atk_mult, def_mult]
+	const TACTIC_MULTS: Dictionary = {
+		"strike_hard": [1.5, 0.5],
+		"measured":    [1.0, 1.0],
+		"defend":      [0.5, 1.8],
+		"feint":       [0.6, 0.9],
+	}
+
+	var a_mults: Array = TACTIC_MULTS.get(a_tactic, [1.0, 1.0])
+	var d_mults: Array = TACTIC_MULTS.get(d_tactic, [1.0, 1.0])
+
+	var a_atk_mult: float = a_mults[0]
+	var d_atk_mult: float = d_mults[0]
+	var a_def_mult: float = a_mults[1]
+	var d_def_mult: float = d_mults[1]
+
+	# Feint counters Strike Hard: the reckless attacker is disrupted
+	if a_tactic == "feint" and d_tactic == "strike_hard":
+		d_atk_mult = 0.0  # Defender's reckless strike is completely disrupted
+	if d_tactic == "feint" and a_tactic == "strike_hard":
+		a_atk_mult = 0.0  # Attacker's reckless strike is completely disrupted
+
+	var a_base_dmg: float = _calc_damage(attacker, defender)
+	var d_base_dmg: float = _calc_damage(defender, attacker)
+
+	# Apply dodge chance
+	var a_dodge: float = defender.get_martial_stat(Definitions.MartialStat.QINGGONG) / 300.0
+	var d_dodge: float = attacker.get_martial_stat(Definitions.MartialStat.QINGGONG) / 300.0
+
+	var a_hit: bool = randf() > a_dodge
+	var d_hit: bool = randf() > d_dodge
+
+	# Effective damage after tactic modifiers
+	var a_dmg: float = (a_base_dmg * a_atk_mult / d_def_mult) if a_hit else 0.0
+	var d_dmg: float = (d_base_dmg * d_atk_mult / a_def_mult) if d_hit else 0.0
+
+	a_dmg = maxf(0.0, a_dmg)
+	d_dmg = maxf(0.0, d_dmg)
+
+	# Build narration
+	var narration: String = ""
+	match [a_tactic, d_tactic]:
+		["strike_hard", "feint"]:
+			narration = "%s surges forward recklessly — %s sidesteps and disrupts the assault!" % [a_name, d_name]
+		["feint", "strike_hard"]:
+			narration = "%s feints brilliantly, redirecting %s's wild charge into empty air!" % [a_name, d_name]
+		["defend", "strike_hard"]:
+			narration = "%s weathers %s's ferocious assault with a solid defensive form." % [a_name, d_name]
+		["strike_hard", "defend"]:
+			narration = "%s hammers at %s's defences but cannot break through cleanly." % [a_name, d_name]
+		["feint", "feint"]:
+			narration = "Both warriors attempt feints simultaneously — a moment of tense standoff."
+		_:
+			if a_hit and d_hit:
+				narration = "Both combatants exchange fierce blows, neither yielding ground."
+			elif a_hit and not d_hit:
+				narration = "%s lands a decisive strike as %s narrowly evades." % [a_name, d_name]
+			elif not a_hit and d_hit:
+				narration = "%s manoeuvres past the attack and strikes back at %s." % [d_name, a_name]
+			else:
+				narration = "Both warriors circle and probe — no decisive exchange this round."
+
+	return {"a_dmg": a_dmg, "d_dmg": d_dmg, "narration": narration}
+
+## Chooses a tactic for an AI combatant based on personality and current HP ratio.
+func ai_choose_tactic(character: CharacterData, own_hp: float, own_max_hp: float,
+		opponent_hp: float, _opponent_max_hp: float) -> String:
+	var insight: float      = character.get_martial_stat(Definitions.MartialStat.INSIGHT)
+	var ferocity_stat: float = character.get_martial_stat(Definitions.MartialStat.FEROCITY)
+	var ruthlessness: float = character.get_personality_value("ruthlessness")
+	var hp_ratio: float     = own_hp / max(1.0, own_max_hp)
+
+	# Desperate: defend or feint when badly wounded
+	if hp_ratio < 0.3 and randf() < 0.6:
+		return "defend" if randf() < 0.5 else "feint"
+
+	# Insight-heavy characters favour feints to exploit openings
+	if insight > 70 and randf() < 0.4:
+		return "feint"
+
+	# High ferocity / ruthlessness characters favour aggressive strikes
+	if (ferocity_stat > 60 or ruthlessness > 65) and randf() < 0.5:
+		return "strike_hard"
+
+	# Winning decisively? Press the advantage
+	var opp_ratio: float = opponent_hp / max(1.0, _opponent_max_hp)
+	if opp_ratio < 0.5 and hp_ratio > 0.6 and randf() < 0.5:
+		return "strike_hard"
+
+	return "measured"
+
 func _get_effective_hp(character: CharacterData) -> float:
 	var constitution: float = character.get_stat(Definitions.Stat.CONSTITUTION)
 	var realm_bonus: float = character.current_realm * 50.0

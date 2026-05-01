@@ -97,9 +97,11 @@ func open_panel(panel_id: String, payload: Variant = null) -> void:
 	panel.show()
 	panel.move_to_front()
 	
-	if _ui_stack.has(panel):
-		_ui_stack.erase(panel)
-	_ui_stack.append(panel)
+	# The HUD is a persistent always-visible element — never add it to the closeable stack.
+	if panel_id != "hud":
+		if _ui_stack.has(panel):
+			_ui_stack.erase(panel)
+		_ui_stack.append(panel)
 	
 	# Track last-opened character and sect for keyboard shortcut recall
 	if panel_id == "character_dashboard" and payload != null:

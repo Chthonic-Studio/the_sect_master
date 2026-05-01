@@ -1,0 +1,162 @@
+[gd_scene format=3 uid="uid://bq7dn1r2a8c5e"]
+
+[ext_resource type="Script" path="res://Scripts/UI/combat_engagement_popup.gd" id="1_engage"]
+
+[node name="CombatEngagementPopup" type="Control"]
+custom_minimum_size = Vector2(580, 560)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -290.0
+offset_top = -280.0
+offset_right = 290.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+script = ExtResource("1_engage")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0.06, 0.06, 0.09, 0.98)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TitleRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer/TitleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "⚔  Clash of the Jianghu"
+
+[node name="RoundLabel" type="Label" parent="MarginContainer/VBoxContainer/TitleRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+text = "Round 1"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="StatusRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="AttackerStatus" type="VBoxContainer" parent="MarginContainer/VBoxContainer/StatusRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="AttackerName" type="Label" parent="MarginContainer/VBoxContainer/StatusRow/AttackerStatus"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Attacker"
+
+[node name="AttackerHP" type="Label" parent="MarginContainer/VBoxContainer/StatusRow/AttackerStatus"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
+text = "Qi: 100 / 100"
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/StatusRow"]
+layout_mode = 2
+
+[node name="DefenderStatus" type="VBoxContainer" parent="MarginContainer/VBoxContainer/StatusRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="DefenderName" type="Label" parent="MarginContainer/VBoxContainer/StatusRow/DefenderStatus"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Defender"
+horizontal_alignment = 2
+
+[node name="DefenderHP" type="Label" parent="MarginContainer/VBoxContainer/StatusRow/DefenderStatus"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.4, 0.4, 1)
+text = "Qi: 100 / 100"
+horizontal_alignment = 2
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="NarrationScroll" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="NarrationVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/NarrationScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="OptionsLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.85, 0.6, 1)
+text = "Choose your approach:"
+
+[node name="OptionsContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="BtnStrikeHard" type="Button" parent="MarginContainer/VBoxContainer/OptionsContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Strike Hard — Attack aggressively; high damage, low guard"
+
+[node name="BtnMeasured" type="Button" parent="MarginContainer/VBoxContainer/OptionsContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Measured Strike — Balanced attack and defence"
+
+[node name="BtnDefend" type="Button" parent="MarginContainer/VBoxContainer/OptionsContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Defensive Form — Hold ground; reduce damage taken"
+
+[node name="BtnFeint" type="Button" parent="MarginContainer/VBoxContainer/OptionsContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Deceptive Feint — Disrupt the opponent's next strike"
