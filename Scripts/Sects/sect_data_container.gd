@@ -360,6 +360,10 @@ func _evaluate_yearly_raid() -> void:
 	# Must be hostile enough to justify the risk (-75 or worse on a -100..100 scale).
 	const RAID_RELATIONSHIP_THRESHOLD: int = -75
 
+	# 75% chance to skip this evaluation entirely — raids should be rare, not constant.
+	if randf() > 0.25:
+		return
+
 	var all_sect_ids = SimulationManager.sect_repo.keys()
 	var worst_rel = 0
 	var worst_id = ""
@@ -377,14 +381,51 @@ func _evaluate_yearly_raid() -> void:
 	if not target_sect:
 		return
 
+	# If the target is the player's sect, present the player with a decision event.
+	# initiator = player character (the responder), target = attacker's sect master.
+	if worst_id == GameManager.player_sect_id:
+		var player_char_id = GameManager.player_char_id
+		var attacker_master_ids: Array = members_by_rank.get(Definitions.SectRank.SECT_MASTER, [])
+		var attacker_master_id: String = attacker_master_ids[0] if not attacker_master_ids.is_empty() else ""
+		EventManager.trigger_event("raid_incoming", {
+			"initiator": player_char_id,
+			"target": attacker_master_id if attacker_master_id != "" else player_char_id,
+			"initiator_sect": worst_id,
+			"target_sect": sect_id
+		})
+		return
+
+	# AI-vs-AI raid: resolve based on strength comparison
+	# The defending sect master's personality determines how they respond.
+	var defender_master_ids: Array = target_sect.members_by_rank.get(Definitions.SectRank.SECT_MASTER, [])
+	var defender_master: CharacterData = null
+	if not defender_master_ids.is_empty():
+		defender_master = SimulationManager.get_character(defender_master_ids[0])
+
+	# Determine defender response based on personality if a master exists
+	var defender_fights_back: bool = true
+	if defender_master:
+		var honor: float = defender_master.get_personality_value("honor")
+		var ruthlessness: float = defender_master.get_personality_value("ruthlessness")
+		var cunning: float = defender_master.get_personality_value("cunning")
+		# Diplomatic/cunning masters prefer negotiation over direct defence
+		if cunning > 65 and honor < 50:
+			defender_fights_back = false
+		elif honor > 70:
+			defender_fights_back = true
+
 	# Raid outcome: compare member count + reputation as a simple strength proxy
 	var attacker_str = all_members.size() + stats.get(Definitions.SectStat.REPUTATION, 0)
 	var defender_str = target_sect.all_members.size() + target_sect.stats.get(Definitions.SectStat.REPUTATION, 0)
-	if attacker_str > defender_str * 0.8:
+	if defender_fights_back and attacker_str > defender_str * 0.8:
 		# Attacker wins: gain Face, target loses
 		stats[Definitions.SectStat.FACE] = clampi(stats.get(Definitions.SectStat.FACE, 0) + 8, 0, 100)
 		target_sect.stats[Definitions.SectStat.FACE] = clampi(target_sect.stats.get(Definitions.SectStat.FACE, 0) - 8, 0, 100)
 		WorldLogManager.add_log("war", sect_name + " launched a raid on " + target_sect.sect_name + " and emerged victorious!")
+	elif not defender_fights_back:
+		# Defender chose to negotiate or stand down
+		SimulationManager.modify_sect_relationship(sect_id, worst_id, 5)
+		WorldLogManager.add_log("war", target_sect.sect_name + " negotiated a swift resolution to " + sect_name + "'s raid, avoiding full conflict.")
 	else:
 		# Attacker repelled
 		stats[Definitions.SectStat.FACE] = clampi(stats.get(Definitions.SectStat.FACE, 0) - 5, 0, 100)

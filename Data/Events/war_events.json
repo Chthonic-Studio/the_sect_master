@@ -1,4 +1,65 @@
 {
+	"raid_incoming": {
+		"id": "raid_incoming",
+		"title": "A Rival Sect Descends on Us",
+		"description": "[target_sect_name] has dispatched a raiding party against our sect. Their warriors are at our gates. How do you respond?",
+		"requires_pause": true,
+		"options": {
+			"opt_full_defense": {
+				"text": "Muster every disciple. Drive them back with overwhelming force.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "ruthlessness", 55], "multiplier": 2.0 },
+					{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": -20 },
+					{ "type": "add_world_log", "log_type": "war", "text": "[initiator_sect_name] repelled [target_sect_name]'s raid with fierce resistance. The attackers retreated bloodied." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "We met their raid with iron and drove them back. They will think twice before returning." }
+				]
+			},
+			"opt_negotiate": {
+				"text": "Send a messenger. Perhaps this can be resolved without further bloodshed.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "honor", 60], "multiplier": 2.0 },
+					{ "condition": ["has_trait", "initiator", "diplomatic"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": 15 },
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] sought a peaceful resolution to [target_sect_name]'s raid. Talks are under way." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I stayed their blades with words. A temporary peace costs less than blood." }
+				]
+			},
+			"opt_pay_off": {
+				"text": "Offer them tribute to withdraw. The sect cannot afford a prolonged war right now.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "greed", 60], "multiplier": 0.5 },
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 55], "add": 20.0 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -200 },
+					{ "type": "modify_sect_relationship", "amount": 10 },
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] paid off [target_sect_name]'s raiders to withdraw." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I bought peace with silver. A pragmatic choice, though it stings the pride." }
+				]
+			},
+			"opt_counterattack": {
+				"text": "Let them raid — then strike their home while their warriors are away.",
+				"ai_base_weight": 20.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "scheming"], "multiplier": 3.0 },
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 65], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": -30 },
+					{ "type": "add_world_log", "log_type": "war", "text": "[initiator_sect_name] launched a devastating counter-raid against [target_sect_name]'s unguarded home ground!" },
+					{ "type": "add_personal_log", "target": "initiator", "text": "While they raided us, I hit their home. Let them learn the cost of leaving their nest unguarded." }
+				]
+			}
+		}
+	},
 	"sect_war_declaration": {
 		"id": "sect_war_declaration",
 		"title": "Declaration of War",

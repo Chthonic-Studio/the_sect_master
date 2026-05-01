@@ -1,6 +1,7 @@
 extends PlayerAction
 
-const COMBAT_RESULT_POPUP = preload("res://Scenes/UI/combat_result_popup.tscn")
+const COMBAT_RESULT_POPUP     = preload("res://Scenes/UI/combat_result_popup.tscn")
+const COMBAT_ENGAGEMENT_POPUP = preload("res://Scenes/UI/combat_engagement_popup.tscn")
 
 func _init() -> void:
 	id = "action_challenge_duel"
@@ -17,10 +18,19 @@ func can_execute(initiator: CharacterData, target: CharacterData) -> bool:
 	return true
 
 func execute(initiator: CharacterData, target: CharacterData) -> void:
-	# Fire the combat manager and spawn the result popup
+	# If the player is one of the combatants, use the interactive round-by-round popup.
+	var player_id: String = GameManager.player_char_id
+	if initiator.char_id == player_id or target.char_id == player_id:
+		UIManager.spawn_popup(COMBAT_ENGAGEMENT_POPUP, {
+			"initiator_id": initiator.char_id,
+			"target_id":    target.char_id
+		})
+		return
+
+	# AI-vs-AI duel: resolve immediately and show the narrated result.
 	var result: Dictionary = CombatManager.resolve_duel(initiator.char_id, target.char_id)
 	if result.is_empty():
 		return
 
-	# Spawn the combat result popup
 	UIManager.spawn_popup(COMBAT_RESULT_POPUP, result)
+

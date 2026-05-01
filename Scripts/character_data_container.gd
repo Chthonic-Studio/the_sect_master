@@ -76,7 +76,7 @@ var traits: Array[String] = []
 # --- EVENT MEMORY & PULSE ---
 var event_memory: Dictionary = {} # Maps event/flag ID -> Array[Dictionary] of payloads
 var next_event_pulse_day: int = -1 # -1 means uninitialized; tracks the next monthly evaluation day
-var event_chance_accumulator: float = 0.10 # Probability of firing an event at next pulse (10% base, accumulates monthly)
+var event_chance_accumulator: float = 0.05 # Probability of firing an event at next pulse (5% base, accumulates monthly)
 var death_day: int = -1 # Day this character died; -1 while alive
 
 # --- CACHED DATA CONTAINERS (The final effective values) ---
@@ -444,14 +444,14 @@ func process_daily_tick(current_total_days: int) -> void:
 			if randf() < event_chance_accumulator:
 				EventManager.evaluate_character_pulse(self)
 				# Reset chance back to base after firing
-				event_chance_accumulator = 0.10
+				event_chance_accumulator = 0.05
 			else:
 				# No event this month: increase chance for next month.
 				# Capped at 0.90: there is always a minimum 10% chance the event will not fire,
-				# keeping characters from feeling rigidly scheduled. With 10% base and +10% per
-				# missed month, the expected wait is ~5 months and the firing chance reaches
-				# 90% (maximum) by month 9.
-				event_chance_accumulator = minf(event_chance_accumulator + 0.10, 0.90)
+				# keeping characters from feeling rigidly scheduled. With 5% base and +5% per
+				# missed month, the expected wait is ~10 months and the firing chance reaches
+				# 90% (maximum) by month 17.
+				event_chance_accumulator = minf(event_chance_accumulator + 0.05, 0.90)
 			# Schedule next monthly evaluation with slight jitter
 			next_event_pulse_day = current_total_days + 25 + randi_range(0, 10)
 	

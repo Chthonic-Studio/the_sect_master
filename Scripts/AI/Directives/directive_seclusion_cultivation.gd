@@ -22,11 +22,20 @@ func process_tick(character: CharacterData) -> void:
 	#  so we just apply the cultivation gains here)
 	var apt_mult: float = Definitions.APTITUDE_TRAINING_MULT.get(character.aptitude, 1.0)
 
+	# Probabilistic gain: seclusion is more focused than normal training so chance is higher.
+	# Insight accumulates slowly; only chance-roll for the main Qi stats.
+	var gain_chance: float = (0.25 * apt_mult)
+	if randf() > gain_chance:
+		return  # No gain today; no recalculate needed.
+
 	# Seclusion is more efficient than normal training
-	character.base_martial[Definitions.MartialStat.INTERNAL_FORCE] += clampi(int(randf_range(2.0, 4.0) * apt_mult), 1, 7)
-	character.base_martial[Definitions.MartialStat.QI_FLOW] += clampi(int(randf_range(1.0, 2.5) * apt_mult), 1, 4)
-	character.base_martial[Definitions.MartialStat.INSIGHT] += 1 if randf() < 0.3 * apt_mult else 0
-	character.recalculate_all_stats()
+	character.base_martial[Definitions.MartialStat.INTERNAL_FORCE] += clampi(int(randf_range(1.5, 4.0) * apt_mult), 1, 5)
+	character.base_martial[Definitions.MartialStat.QI_FLOW] += clampi(int(randf_range(1.0, 2.5) * apt_mult), 1, 3)
+	character.base_martial[Definitions.MartialStat.INSIGHT] += 1 if randf() < 0.15 * apt_mult else 0
+
+	# Batch recalculation to once per week to avoid hammering the stat cache every day.
+	if TimeManager.get_total_days_elapsed() % 7 == 0:
+		character.recalculate_all_stats()
 
 func on_complete(character: CharacterData) -> void:
 	# Check for breakthrough or Qi Deviation
