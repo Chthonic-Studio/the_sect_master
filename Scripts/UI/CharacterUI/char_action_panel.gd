@@ -1,5 +1,7 @@
 extends MarginContainer
 
+const MISSION_PICKER_POPUP = preload("res://Scenes/UI/mission_picker_popup.tscn")
+
 var _actions_vbox: VBoxContainer
 
 func _ready() -> void:
@@ -68,3 +70,29 @@ func refresh_panel(character: CharacterData, dashboard: CharacterDashboard) -> v
 				dashboard._refresh_ui()
 			)
 			_actions_vbox.add_child(btn)
+
+	# Assign Mission button — only for members of the player's own sect
+	var player_sect_id: String = GameManager.player_sect_id
+	if character.sect_id == player_sect_id and player_sect_id != "" and player_char and player_char != character:
+		_actions_vbox.add_child(HSeparator.new())
+
+		var directive_status_lbl := Label.new()
+		if character.current_directive != null:
+			directive_status_lbl.text = "On mission: " + character.current_directive.id.replace("_", " ").capitalize() + \
+				"  (" + str(character.current_directive.duration_remaining) + " days left)"
+			directive_status_lbl.add_theme_color_override("font_color", Color(0.8, 0.7, 0.3))
+		else:
+			directive_status_lbl.text = "No active mission."
+			directive_status_lbl.add_theme_color_override("font_color", Color(0.55, 0.55, 0.55))
+		_actions_vbox.add_child(directive_status_lbl)
+
+		if character.current_directive == null:
+			var mission_btn := Button.new()
+			mission_btn.text = "Assign Mission…"
+			mission_btn.tooltip_text = "Dispatch this member on a mission directive."
+			mission_btn.custom_minimum_size = Vector2(0, 40)
+			var char_capture: CharacterData = character
+			mission_btn.pressed.connect(func():
+				UIManager.spawn_popup(MISSION_PICKER_POPUP, char_capture)
+			)
+			_actions_vbox.add_child(mission_btn)

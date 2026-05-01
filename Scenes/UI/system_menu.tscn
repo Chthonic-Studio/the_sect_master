@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://o52erp7bdrq9k"]
+
+[ext_resource type="Script" path="res://Scripts/UI/system_menu.gd" id="1_sysmenu"]
+
+[node name="SystemMenu" type="Control"]
+script = ExtResource("1_sysmenu")

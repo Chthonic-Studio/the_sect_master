@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://sm52q3pmabhzv"]
+
+[ext_resource type="Script" path="res://Scripts/UI/combat_result_popup.gd" id="1_combat"]
+
+[node name="CombatResultPopup" type="Control"]
+script = ExtResource("1_combat")

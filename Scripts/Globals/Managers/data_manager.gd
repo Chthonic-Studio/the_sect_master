@@ -496,6 +496,13 @@ func get_weapon_matchup_multiplier(attacker_weapon_id: String, defender_weapon_i
 const _KNOWN_EVENT_EFFECT_TYPES := {
 	"add_trait": true,
 	"modify_wealth": true,
+	"modify_sect_wealth": true,
+	"modify_stat": true,
+	"modify_realm": true,
+	"kill_character": true,
+	"recruit_member": true,
+	"assign_directive": true,
+	"set_war_state": true,
 	"add_memory": true,
 	"trigger_event": true,
 	"add_personal_log": true,

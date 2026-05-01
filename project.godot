@@ -37,6 +37,7 @@ WorldLogManager="*uid://cllqrvj7o51v8"
 SceneManager="*uid://doyvyy6smdjtc"
 UIManager="*uid://bhnycd8v475v1"
 MapManager="*res://Scripts/Map/map_manager.gd"
+CombatManager="*res://Scripts/Globals/Managers/combat_manager.gd"
 
 [display]
 

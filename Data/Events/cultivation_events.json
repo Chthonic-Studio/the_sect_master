@@ -50,7 +50,9 @@
 				"text": "The Dao rewards patience.",
 				"ai_base_weight": 100.0,
 				"effects": [
-					{ "type": "add_personal_log", "target": "initiator", "text": "My patient cultivation has borne fruit." },
+					{ "type": "modify_realm", "target": "initiator", "amount": 1 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "QI_FLOW", "amount": 10 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "My patient cultivation has borne fruit. I have advanced to a higher realm." },
 					{ "type": "add_memory", "target": "initiator", "memory_id": "breakthrough_safe", "payload": {} }
 				]
 			}
@@ -68,7 +70,9 @@
 					{ "condition": ["stat_greater_than", "initiator", "discipline", 70], "multiplier": 2.0 }
 				],
 				"effects": [
-					{ "type": "add_personal_log", "target": "initiator", "text": "The breakthrough was agonizing, but I endured." },
+					{ "type": "modify_realm", "target": "initiator", "amount": 1 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "INTERNAL_FORCE", "amount": 20 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "The breakthrough was agonizing, but I endured. My power has grown." },
 					{ "type": "add_memory", "target": "initiator", "memory_id": "breakthrough_risky", "payload": {} }
 				]
 			},
@@ -81,6 +85,8 @@
 				],
 				"effects": [
 					{ "type": "add_trait", "target": "initiator", "trait": "qi_deviation_survivor" },
+					{ "type": "add_trait", "target": "initiator", "trait": "internal_injury" },
+					{ "type": "modify_stat", "target": "initiator", "stat": "QI_FLOW", "amount": -15 },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I suffered a Qi Deviation. My foundation is damaged." }
 				]
 			}

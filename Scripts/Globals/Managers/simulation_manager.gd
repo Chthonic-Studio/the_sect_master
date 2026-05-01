@@ -81,6 +81,10 @@ func _on_month_passed(_month: int) -> void:
 		if sect_repo.has(s_id):
 			sect_repo[s_id].process_monthly_tick()
 
+	# Age all living characters once per in-game year (12 months)
+	if TimeManager.month == 1:
+		_process_annual_aging()
+
 #region Character Management
 func register_character(char_data: CharacterData) -> void:
 	if char_data.char_id == "":
@@ -175,6 +179,32 @@ func clear_simulation() -> void:
 	_process_index = 0
 	_current_processing_day = 0
 
+## Increments age for every living character and applies mortality checks.
+## Called once per in-game year (when month == 1 in _on_month_passed).
+func _process_annual_aging() -> void:
+	var char_keys = character_repo.keys().duplicate()
+	for c_id in char_keys:
+		var character: CharacterData = character_repo.get(c_id)
+		if not character or not character.is_alive:
+			continue
+
+		character.age += 1
+
+		# Natural death chance: scales up steeply after age 70
+		if character.age >= 70:
+			var constitution: float = character.get_stat(Definitions.Stat.CONSTITUTION)
+			# Base 2% at 70, +3% per year over 70, reduced by constitution
+			var base_chance: float = 0.02 + (character.age - 70) * 0.03
+			base_chance -= (constitution / 255.0) * 0.10 # High constitution reduces chance
+			base_chance = clampf(base_chance, 0.01, 0.60)
+
+			if randf() < base_chance:
+				character.die("old age")
+				WorldLogManager.add_log("social", character.get_full_name() + " has passed away at the age of " + str(character.age) + ".")
+
+	# Periodic cleanup: remove characters dead 10+ years with no living relatives from the repo
+	_prune_old_dead_characters()
+
 ## Called when a sect completes a building. Injects AI tags into members so new desires become available.
 func _on_building_completed(sect: SectData, building_id: String) -> void:
 	var b_data = DataManager.buildings_registry.get(building_id, {})
@@ -208,3 +238,23 @@ func _on_building_completed(sect: SectData, building_id: String) -> void:
 			for tag in new_member_tags:
 				if not character.ai_tags.has(tag):
 					character.ai_tags.append(tag)
+
+## Removes very old dead characters from memory to prevent unbounded repo growth.
+## Only prunes characters dead 10+ in-game years with no active dependencies.
+func _prune_old_dead_characters() -> void:
+	var keys_to_remove: Array[String] = []
+	var today: int = TimeManager.get_total_days_elapsed()
+	for c_id in character_repo:
+		var c: CharacterData = character_repo[c_id]
+		if c.is_alive:
+			continue
+		if GameManager.is_player(c_id):
+			continue
+		# Only prune once we know the precise death day (death_day >= 0)
+		if c.death_day < 0:
+			continue
+		if today - c.death_day > 3650: # ~10 in-game years
+			keys_to_remove.append(c_id)
+
+	for c_id in keys_to_remove:
+		character_repo.erase(c_id)
