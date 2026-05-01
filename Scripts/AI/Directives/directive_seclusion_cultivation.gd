@@ -47,5 +47,5 @@ func on_complete(character: CharacterData) -> void:
 	else:
 		character.add_log("Emerged from seclusion. The long meditation has refined the Qi channels.")
 
-	WorldLogManager.add_log("cultivation", character.get_full_name() + " has ended their secluded cultivation.")
-	EventManager.trigger_event("directive_seclusion_complete", {"initiator": character.char_id})
+	if GameManager.is_player(character.char_id):
+		WorldLogManager.add_log("cultivation", character.get_full_name() + " has ended their secluded cultivation.")

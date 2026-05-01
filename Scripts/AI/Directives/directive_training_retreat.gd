@@ -26,5 +26,5 @@ func process_tick(character: CharacterData) -> void:
 func on_complete(character: CharacterData) -> void:
 	character.add_log("Completed an intensive training retreat. The results are palpable.")
 	character.check_realm_advancement()
-	WorldLogManager.add_log("cultivation", character.get_full_name() + " has returned from a training retreat.")
-	EventManager.trigger_event("directive_training_complete", {"initiator": character.char_id})
+	if GameManager.is_player(character.char_id):
+		WorldLogManager.add_log("cultivation", character.get_full_name() + " has returned from a training retreat.")

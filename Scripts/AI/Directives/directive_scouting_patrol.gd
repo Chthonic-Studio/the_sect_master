@@ -28,6 +28,3 @@ func on_complete(character: CharacterData) -> void:
 	if sect:
 		sect.stats[Definitions.SectStat.FACE] = clampi(
 			sect.stats.get(Definitions.SectStat.FACE, 0) + 5, 0, 100)
-
-	# Fire a directive_complete event so the event system can elaborate
-	EventManager.trigger_event("directive_scouting_complete", {"initiator": character.char_id})
