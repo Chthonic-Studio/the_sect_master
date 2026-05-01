@@ -435,7 +435,7 @@ func process_daily_tick(current_total_days: int) -> void:
 	# If no event fires, the probability increases by 10% each month,
 	# ensuring an event will almost certainly happen within a year.
 	if current_sim_tier != SimTier.FROZEN:
-		if next_event_pulse_day <= 0:
+		if next_event_pulse_day < 0:
 			# Stagger first pulse so the world doesn't all evaluate on Day 1.
 			next_event_pulse_day = current_total_days + randi_range(1, 30)
 			
