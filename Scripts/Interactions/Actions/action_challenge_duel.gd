@@ -1,5 +1,7 @@
 extends PlayerAction
 
+const COMBAT_RESULT_POPUP = preload("res://Scenes/UI/combat_result_popup.tscn")
+
 func _init() -> void:
 	id = "action_challenge_duel"
 	display_name = "Challenge to Duel"
@@ -21,6 +23,4 @@ func execute(initiator: CharacterData, target: CharacterData) -> void:
 		return
 
 	# Spawn the combat result popup
-	var popup_scene: PackedScene = load("res://Scenes/UI/combat_result_popup.tscn")
-	if popup_scene:
-		UIManager.spawn_popup(popup_scene, result)
+	UIManager.spawn_popup(COMBAT_RESULT_POPUP, result)

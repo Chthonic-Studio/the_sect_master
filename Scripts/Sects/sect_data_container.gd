@@ -306,11 +306,8 @@ func get_projected_monthly_deltas() -> Dictionary:
 func _process_ai_monthly_tick() -> void:
 	var all_sect_ids = SimulationManager.sect_repo.keys()
 
-	# 1. desire_macro_expand: attempt to recruit from world population (~20% chance)
-	if randf() < 0.20 and all_members.size() < 100:
-		# Simulate gaining 1-3 new members (no real character created — abstract)
-		# In future: spawn a new CharacterData and add them
-		pass  # Placeholder until full recruit world population is implemented
+	# 1. desire_macro_expand: recruit from world population
+	# TODO: spawn a new CharacterData and add them once world population API is available
 
 	# 2. desire_macro_raid_rival: if relationship is -50 or worse, chance to raid (~15% monthly)
 	if randf() < 0.15:

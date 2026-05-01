@@ -243,19 +243,17 @@ func _on_building_completed(sect: SectData, building_id: String) -> void:
 ## Only prunes characters dead 10+ in-game years with no active dependencies.
 func _prune_old_dead_characters() -> void:
 	var keys_to_remove: Array[String] = []
+	var today: int = TimeManager.get_total_days_elapsed()
 	for c_id in character_repo:
 		var c: CharacterData = character_repo[c_id]
 		if c.is_alive:
 			continue
-		# Estimate death year from the last log entry date (approximate)
-		# Use age as proxy: if dead and age implies they died long ago
-		# Since we don't store the death year directly, skip pruning any player-related chars
 		if GameManager.is_player(c_id):
 			continue
-		# Prune: character is dead and has been in the repo a long time
-		# We use next_event_pulse_day as a proxy for "when they last interacted"
-		var days_since_pulse = TimeManager.get_total_days_elapsed() - c.next_event_pulse_day
-		if days_since_pulse > 3650: # ~10 years
+		# Only prune once we know the precise death day (death_day >= 0)
+		if c.death_day < 0:
+			continue
+		if today - c.death_day > 3650: # ~10 in-game years
 			keys_to_remove.append(c_id)
 
 	for c_id in keys_to_remove:

@@ -44,7 +44,9 @@ func resolve_duel(initiator_id: String, target_id: String) -> Dictionary:
 		if a_hit: d_hp -= a_dmg
 		if d_hit: a_hp -= d_dmg
 
-		# Counter-attack opportunity from Insight
+		# Counter-attack opportunity from Insight.
+		# Note: counter damage is a fresh _calc_damage() roll (intentional — counters
+		# represent improvised strikes, distinct from the standard exchange above).
 		if d_insight > 60 and randf() < d_insight / 500.0:
 			var counter: float = _calc_damage(defender, attacker) * 0.5
 			a_hp -= counter

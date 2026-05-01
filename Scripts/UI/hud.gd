@@ -3,7 +3,7 @@ extends Control
 ## The primary Heads-Up Display. Registered to the HUD layer.
 ## Handles time controls and quick-access panel buttons.
 
-var _resource_labels: Dictionary = {}  # resource_enum -> Label
+var _resource_labels: Dictionary = {}  # string key -> Label (e.g. "wealth", "face")
 
 func _ready() -> void:
 	UIManager.register_panel("hud", self, UIManager.Layer.HUD)
@@ -60,14 +60,14 @@ func _build_resource_bar() -> void:
 
 	# Resource labels
 	const RES_DEFS = [
-		[Definitions.ResourceType.WEALTH,    "Gold",      Color(0.95, 0.85, 0.3)],
-		[Definitions.ResourceType.MATERIALS, "Materials", Color(0.7, 0.85, 0.6)],
-		[Definitions.ResourceType.MEDICINE,  "Medicine",  Color(0.5, 0.9, 0.7)],
-		[Definitions.ResourceType.ELIXIRS,   "Elixirs",   Color(0.7, 0.5, 0.95)],
+		["wealth",    "Gold",      Color(0.95, 0.85, 0.3)],
+		["materials", "Materials", Color(0.7, 0.85, 0.6)],
+		["medicine",  "Medicine",  Color(0.5, 0.9, 0.7)],
+		["elixirs",   "Elixirs",   Color(0.7, 0.5, 0.95)],
 	]
 
 	for res_def in RES_DEFS:
-		var r_enum = res_def[0]
+		var r_key: String = res_def[0]
 		var r_name: String = res_def[1]
 		var r_color: Color = res_def[2]
 
@@ -77,16 +77,16 @@ func _build_resource_bar() -> void:
 		lbl.text = r_name + ": —"
 		lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		resource_bar.add_child(lbl)
-		_resource_labels[r_enum] = lbl
+		_resource_labels[r_key] = lbl
 
 	# Sect stats: FACE and REPUTATION
 	const STAT_DEFS = [
-		[Definitions.SectStat.FACE,       "Face",       Color(0.9, 0.6, 0.4)],
-		[Definitions.SectStat.REPUTATION, "Reputation", Color(0.8, 0.8, 0.9)],
+		["face",       "Face",       Color(0.9, 0.6, 0.4)],
+		["reputation", "Reputation", Color(0.8, 0.8, 0.9)],
 	]
 
 	for stat_def in STAT_DEFS:
-		var s_enum = stat_def[0]
+		var s_key: String = stat_def[0]
 		var s_name: String = stat_def[1]
 		var s_color: Color = stat_def[2]
 
@@ -96,13 +96,13 @@ func _build_resource_bar() -> void:
 		lbl.text = s_name + ": —"
 		lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		resource_bar.add_child(lbl)
-		# Store with negative key to differentiate from ResourceType enums
-		_resource_labels[-(s_enum + 1)] = lbl
+		_resource_labels[s_key] = lbl
 
 func _refresh_resource_bar() -> void:
 	var sect = SimulationManager.get_sect(GameManager.player_sect_id)
 	if not sect: return
 
+	var res_keys = ["wealth", "materials", "medicine", "elixirs"]
 	var res_names = ["Gold", "Materials", "Medicine", "Elixirs"]
 	var r_enums = [
 		Definitions.ResourceType.WEALTH,
@@ -111,16 +111,15 @@ func _refresh_resource_bar() -> void:
 		Definitions.ResourceType.ELIXIRS,
 	]
 	for i in range(r_enums.size()):
-		var r_enum = r_enums[i]
-		if _resource_labels.has(r_enum):
-			_resource_labels[r_enum].text = res_names[i] + ": " + str(sect.resources.get(r_enum, 0))
+		if _resource_labels.has(res_keys[i]):
+			_resource_labels[res_keys[i]].text = res_names[i] + ": " + str(sect.resources.get(r_enums[i], 0))
 
+	var stat_keys = ["face", "reputation"]
 	var stat_names = ["Face", "Reputation"]
 	var s_enums = [Definitions.SectStat.FACE, Definitions.SectStat.REPUTATION]
 	for i in range(s_enums.size()):
-		var key = -(s_enums[i] + 1)
-		if _resource_labels.has(key):
-			_resource_labels[key].text = stat_names[i] + ": " + str(sect.stats.get(s_enums[i], 0))
+		if _resource_labels.has(stat_keys[i]):
+			_resource_labels[stat_keys[i]].text = stat_names[i] + ": " + str(sect.stats.get(s_enums[i], 0))
 
 func _update_date_label(_day: int) -> void:
 	%DateLabel.text = TimeManager.get_date_string()

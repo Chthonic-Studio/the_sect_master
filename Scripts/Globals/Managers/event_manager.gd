@@ -199,11 +199,14 @@ func _execute_effects(effects: Array, context: Dictionary) -> void:
 					var tc = SimulationManager.get_character(context["target"])
 					if tc: targ_sect_id = tc.sect_id
 				if init_sect_id != "" and targ_sect_id != "" and init_sect_id != targ_sect_id:
+					# Guard: only log if not already at war to prevent duplicate "declared war" entries
+					var existing_rel = SimulationManager.get_sect_relationship(init_sect_id, targ_sect_id)
 					SimulationManager.set_sect_relationship(init_sect_id, targ_sect_id, -100)
-					var si = SimulationManager.get_sect(init_sect_id)
-					var st = SimulationManager.get_sect(targ_sect_id)
-					if si and st:
-						WorldLogManager.add_log("war", si.sect_name + " has declared war upon " + st.sect_name + "!")
+					if existing_rel > -100:
+						var si = SimulationManager.get_sect(init_sect_id)
+						var st = SimulationManager.get_sect(targ_sect_id)
+						if si and st:
+							WorldLogManager.add_log("war", si.sect_name + " has declared war upon " + st.sect_name + "!")
 			"add_memory":
 				var char_obj = SimulationManager.get_character(actual_id)
 				if char_obj: char_obj.add_memory(effect["memory_id"], effect.get("payload", {}))

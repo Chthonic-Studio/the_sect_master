@@ -1,5 +1,7 @@
 extends MarginContainer
 
+const MISSION_PICKER_POPUP = preload("res://Scenes/UI/mission_picker_popup.tscn")
+
 var _actions_vbox: VBoxContainer
 
 func _ready() -> void:
@@ -91,7 +93,6 @@ func refresh_panel(character: CharacterData, dashboard: CharacterDashboard) -> v
 			mission_btn.custom_minimum_size = Vector2(0, 40)
 			var char_capture: CharacterData = character
 			mission_btn.pressed.connect(func():
-				var popup_scene = load("res://Scenes/UI/mission_picker_popup.tscn")
-				UIManager.spawn_popup(popup_scene, char_capture)
+				UIManager.spawn_popup(MISSION_PICKER_POPUP, char_capture)
 			)
 			_actions_vbox.add_child(mission_btn)
