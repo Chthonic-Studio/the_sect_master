@@ -223,7 +223,7 @@
 				"ai_base_weight": 75.0,
 				"effects": [
 					{ "type": "recruit_member", "target": "initiator" },
-					{ "type": "modify_wealth", "target": "initiator", "amount": -100 },
+					{ "type": "modify_sect_wealth", "amount": -100 },
 					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] successfully recruited a legendary child prodigy from the farmlands." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I recruited the prodigy personally. This child will either elevate the sect or destroy it — but they will not be wasted in a field." },
 					{ "type": "add_memory", "target": "initiator", "memory_id": "recruited_prodigy", "payload": {} }

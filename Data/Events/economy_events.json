@@ -59,7 +59,7 @@
 					{ "condition": ["has_trait", "initiator", "righteous"], "multiplier": 2.5 }
 				],
 				"effects": [
-					{ "type": "modify_wealth", "target": "initiator", "amount": -80 },
+					{ "type": "modify_sect_wealth", "amount": -80 },
 					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] cleared organized bandits from the mountain roads, restoring safe passage for merchants." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "We cleared the roads. The merchants paid us in gratitude and silver. Both were welcome." },
 					{ "type": "add_memory", "target": "initiator", "memory_id": "cleared_bandit_threat", "payload": {} }

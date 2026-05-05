@@ -78,7 +78,6 @@
 			{ "condition": ["has_memory", "initiator", "discovered_ancient_ruins"], "multiplier": 4.0 }
 		],
 		"trigger_conditions": [
-			["is_player_sect", "initiator"],
 			["is_player", "initiator"]
 		],
 		"requires_pause": true,
@@ -232,7 +231,6 @@
 		"pulse": "monthly_character",
 		"base_weight": 0.7,
 		"trigger_conditions": [
-			["is_player_sect", "initiator"],
 			["is_player", "initiator"]
 		],
 		"requires_pause": true,
@@ -342,7 +340,6 @@
 		"pulse": "monthly_character",
 		"base_weight": 0.8,
 		"trigger_conditions": [
-			["is_player_sect", "initiator"],
 			["is_player", "initiator"]
 		],
 		"requires_pause": true,
@@ -385,7 +382,6 @@
 			{ "condition": ["stat_greater_than", "initiator", "reputation", 45], "multiplier": 2.0 }
 		],
 		"trigger_conditions": [
-			["is_player_sect", "initiator"],
 			["is_player", "initiator"]
 		],
 		"requires_pause": true,

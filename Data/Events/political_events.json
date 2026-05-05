@@ -303,7 +303,7 @@
 				"text": "Issue a public refutation. Silence invites belief in lies.",
 				"ai_base_weight": 50.0,
 				"effects": [
-					{ "type": "modify_wealth", "target": "initiator", "amount": -100 },
+					{ "type": "modify_sect_wealth", "amount": -100 },
 					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] publicly refuted spreading rumors, appealing to the Jianghu's sense of honor." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I refuted the rumor publicly. Some will believe me; some will not." }
 				]
@@ -364,7 +364,7 @@
 					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 3.0 }
 				],
 				"effects": [
-					{ "type": "modify_wealth", "target": "initiator", "amount": -150 },
+					{ "type": "modify_sect_wealth", "amount": -150 },
 					{ "type": "modify_sect_relationship", "amount": 10 },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I sent a generous gift to remind our ally of what we have shared. Some doors are kept open with gifts." }
 				]
@@ -440,7 +440,7 @@
 					{ "condition": ["stat_greater_than", "initiator", "sociability", 55], "multiplier": 2.5 }
 				],
 				"effects": [
-					{ "type": "modify_wealth", "target": "initiator", "amount": -100 },
+					{ "type": "modify_sect_wealth", "amount": -100 },
 					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] urgently sought allies to counter a joint tribute demand from a coalition of rival sects." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I spent silver finding allies rather than paying enemies. The coalition will find resistance it did not expect." }
 				]

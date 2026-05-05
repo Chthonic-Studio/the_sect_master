@@ -206,7 +206,6 @@
 		"pulse": "monthly_character",
 		"base_weight": 1.2,
 		"trigger_conditions": [
-			["is_player_sect", "initiator"],
 			["is_player", "initiator"]
 		],
 		"requires_pause": true,
@@ -290,7 +289,6 @@
 		"pulse": "monthly_character",
 		"base_weight": 1.2,
 		"trigger_conditions": [
-			["is_player_sect", "initiator"],
 			["is_player", "initiator"]
 		],
 		"requires_pause": true,
@@ -345,7 +343,7 @@
 					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 3.0 }
 				],
 				"effects": [
-					{ "type": "modify_wealth", "target": "initiator", "amount": -100 },
+					{ "type": "modify_sect_wealth", "amount": -100 },
 					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] mobilized to help protect downstream villages from spring flooding." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I sent disciples to help build flood barriers. The villages downstream remember who helped them." },
 					{ "type": "add_memory", "target": "initiator", "memory_id": "helped_flood_villages", "payload": {} }
@@ -355,7 +353,7 @@
 				"text": "Focus on protecting the sect's own lower buildings first.",
 				"ai_base_weight": 40.0,
 				"effects": [
-					{ "type": "modify_wealth", "target": "initiator", "amount": -80 },
+					{ "type": "modify_sect_wealth", "amount": -80 },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I focused on protecting our own structures. The sect's continuity comes before external goodwill." }
 				]
 			},
