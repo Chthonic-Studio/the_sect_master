@@ -28,6 +28,25 @@ func process_daily_tick(character: CharacterData) -> void:
 	if current_action == null:
 		_choose_new_action(character)
 
+## Compute-only brain tick: runs action logic but defers on_complete to
+## CharacterData._pending_effects so it runs on the main thread.
+## Safe to call from any worker thread.
+func compute_tick(character: CharacterData) -> void:
+	if current_action != null:
+		if _should_interrupt_for_urgency(character):
+			current_action = null
+		else:
+			current_action.duration_remaining -= 1
+			current_action.process_tick(character)
+
+			if current_action.duration_remaining <= 0:
+				# Defer on_complete to the apply phase (main thread)
+				character._pending_effects.append({"type": "action_complete", "action": current_action})
+				current_action = null
+
+	if current_action == null:
+		_choose_new_action(character)
+
 ## Returns true if a critical need exceeds the threshold and should preempt the current action.
 func _should_interrupt_for_urgency(character: CharacterData) -> bool:
 	# Critical rest need: if fatigue is above 90, rest overrides everything

@@ -5,6 +5,9 @@ extends Node
 ## is populated with a big sect (if absent), 2-5 medium sects, and 3-7 small sects.
 ## Counts are inversely proportional to the dominant regional reputation.
 
+## Emitted at major world-generation milestones so a loading screen can display progress.
+signal generation_progress(stage: String, percent: float)
+
 enum SectTier { MINOR = 1, AVERAGE = 2, MAJOR = 3, HEGEMON = 4 }
 
 # Reputation thresholds used to classify sects by effective tier
@@ -13,9 +16,19 @@ const REP_AVERAGE_THRESHOLD := 40
 
 func generate_world_sects() -> void:
 	print("SectGenerator: Beginning World Generation...")
+	generation_progress.emit("Loading historical sects...", 0.0)
+	await Engine.get_main_loop().process_frame
 	_load_premade_sects()
+
+	generation_progress.emit("Populating the realm...", 0.25)
+	await Engine.get_main_loop().process_frame
 	var dynamic_sects := _populate_all_provinces()
+
+	generation_progress.emit("Weaving the web of rivalries...", 0.85)
+	await Engine.get_main_loop().process_frame
 	_run_rival_matchmaker(dynamic_sects)
+
+	generation_progress.emit("World generation complete.", 1.0)
 	print("SectGenerator: World Generation Complete. Generated ",
 		SimulationManager.sect_repo.size(), " active sects.")
 

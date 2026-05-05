@@ -35,7 +35,7 @@ func process_tick(character: CharacterData) -> void:
 
 	# Batch recalculation to once per week to avoid hammering the stat cache every day.
 	if TimeManager.get_total_days_elapsed() % 7 == 0:
-		character.recalculate_all_stats()
+		character._stats_dirty = true  # Deferred — applied at start of next apply phase
 
 func on_complete(character: CharacterData) -> void:
 	# Check for breakthrough or Qi Deviation

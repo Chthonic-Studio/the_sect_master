@@ -6,6 +6,11 @@ signal scene_changed(new_scene_name: String)
 
 const MAIN_MENU_PATH = "res://Scenes/main_menu.tscn"
 const GAME_SCENE_PATH = "res://Scenes/main_game.tscn"
+const LOADING_SCREEN_PATH = "res://Scenes/loading_screen.tscn"
+
+## Stores the setup parameters collected from the setup/main-menu screen so the
+## loading screen can retrieve them without a direct scene reference.
+var _pending_game_params: Dictionary = {}
 
 ## Performs a hard reset of all simulation data. Crucial before starting a new game or loading.
 func reset_game_state() -> void:
@@ -38,3 +43,11 @@ func goto_game_scene() -> void:
 	UIManager.free_registered_panels()
 	get_tree().change_scene_to_file(GAME_SCENE_PATH)
 	scene_changed.emit("main_game")
+
+## Stores the generation parameters and transitions to the loading screen.
+## The loading screen reads _pending_game_params in its _ready() callback.
+func goto_loading_screen(params: Dictionary) -> void:
+	reset_game_state()
+	_pending_game_params = params
+	get_tree().change_scene_to_file(LOADING_SCREEN_PATH)
+	scene_changed.emit("loading_screen")

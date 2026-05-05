@@ -21,6 +21,9 @@ func rebuild_pulse_cache() -> void:
 		var event_data = DataManager.events_registry[event_id]
 		if event_data.get("pulse", "") == "monthly_character":
 			_pulse_events_cache.append(event_data)
+	# Sort descending by base_weight so the weighted-lottery loop hits high-weight
+	# events first, satisfying the roll earlier and skipping the long tail.
+	_pulse_events_cache.sort_custom(func(a, b): return a.get("base_weight", 1.0) > b.get("base_weight", 1.0))
 	_pulse_cache_dirty = false
 
 # --- THE PULSE ENGINE ---

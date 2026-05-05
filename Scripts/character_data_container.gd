@@ -79,6 +79,16 @@ var next_event_pulse_day: int = -1 # -1 means uninitialized; tracks the next mon
 var event_chance_accumulator: float = 0.05 # Probability of firing an event at next pulse (5% base, accumulates monthly)
 var death_day: int = -1 # Day this character died; -1 while alive
 
+# --- PERFORMANCE OPTIMISATION ---
+## True when base_stats / base_martial changed in compute_daily_tick and
+## recalculate_all_stats() should be called in the apply phase.
+var _stats_dirty: bool = false
+## Side-effects (signals, EventManager calls) queued in compute_daily_tick
+## and drained in apply_daily_effects on the main thread.
+var _pending_effects: Array[Dictionary] = []
+## Last in-game day the mood was computed; mood is throttled to every 5 days.
+var _mood_last_computed_day: int = -1
+
 # --- CACHED DATA CONTAINERS (The final effective values) ---
 # These are strictly for fast O(1) reading during the simulation loop.
 var current_stats = {}
@@ -276,7 +286,7 @@ func _process_macro_monthly_tick() -> void:
 		var chance = 0.03 + (insight / 2000.0) + (discipline / 5000.0)
 		if randf() < chance:
 			base_martial[Definitions.MartialStat.INTERNAL_FORCE] += randi_range(1, 2)
-			recalculate_all_stats()
+			_stats_dirty = true  # Deferred recalculation — avoids per-tick signal churn
 	
 	# 3) Recovery pressure release so macro actors do not spiral to 100 on all tracks forever.
 	state_vars["fatigue"] = maxf(0.0, state_vars.get("fatigue", 0.0) - randf_range(8.0, 18.0))
@@ -376,28 +386,36 @@ func advance_realm(amount: int = 1) -> void:
 		add_log(msg)
 		recalculate_all_stats()
 
-## Called by DataManager's daily tick
+## Main-thread convenience wrapper: runs both phases in sequence.
+## Used by SimulationManager._flush_remaining_characters() and the debug path.
 func process_daily_tick(current_total_days: int) -> void:
+	compute_daily_tick(current_total_days)
+	apply_daily_effects()
+
+## COMPUTE PHASE — safe to call from any thread.
+## Reads only this character's own data and read-only DataManager registries.
+## All side-effects (signals, EventManager calls) are appended to _pending_effects
+## and flushed by apply_daily_effects() on the main thread.
+func compute_daily_tick(current_total_days: int) -> void:
 	# If frozen (dead, deep secluded meditation), completely skip the loop
 	if current_sim_tier == SimTier.FROZEN:
 		return
-		
+
 	# 1. Process Modifiers Expiration
 	if not active_modifiers.is_empty():
 		var expired_ids: Array[String] = []
 		var needs_recalculation = false
-		
+
 		for i in range(active_modifiers.size() - 1, -1, -1):
 			if active_modifiers[i]["expiration_day"] <= current_total_days:
 				expired_ids.append(active_modifiers[i]["id"])
 				active_modifiers.remove_at(i)
 				needs_recalculation = true
-				
+
 		if needs_recalculation:
-			recalculate_all_stats()
-			for mod_id in expired_ids:
-				modifier_expired.emit(self, mod_id)
-				
+			_stats_dirty = true
+			_pending_effects.append({"type": "mod_expired", "ids": expired_ids.duplicate()})
+
 	# 1.5. Process Directed Opinions Expiration
 	if not directed_opinions.is_empty():
 		var empty_targets: Array[String] = []
@@ -408,28 +426,27 @@ func process_daily_tick(current_total_days: int) -> void:
 					ops.remove_at(i)
 			if ops.is_empty():
 				empty_targets.append(target_id)
-				
+
 		for t_id in empty_targets:
 			directed_opinions.erase(t_id)
-	
+
 	# 2. AI & Overrides
 	if current_directive != null:
 		# Directives bypass normal AI and decay
 		_apply_daily_decay(current_directive.decay_modifiers)
 		current_directive.process_tick(self)
 		current_directive.duration_remaining -= 1
-		
+
 		if current_directive.is_complete():
-			current_directive.on_complete(self)
-			current_directive = null
+			_pending_effects.append({"type": "directive_complete", "directive": current_directive})
 	else:
 		# ONLY process intensive Utility AI if the character is active on-screen
 		if current_sim_tier == SimTier.MICRO:
 			_apply_daily_decay()
-			brain.process_daily_tick(self)
+			brain.compute_tick(self)
 		elif current_sim_tier == SimTier.MACRO:
 			_process_macro_daily(current_total_days)
-	
+
 	# 2.5. EVENT ENGINE PULSE — Monthly accumulating chance system.
 	# Each character evaluates events once per in-game month (~30 days).
 	# If no event fires, the probability increases by 10% each month,
@@ -438,30 +455,77 @@ func process_daily_tick(current_total_days: int) -> void:
 		if next_event_pulse_day < 0:
 			# Stagger first pulse so the world doesn't all evaluate on Day 1.
 			next_event_pulse_day = current_total_days + randi_range(1, 30)
-			
+
 		if current_total_days >= next_event_pulse_day:
 			# Roll against the current accumulated chance
 			if randf() < event_chance_accumulator:
-				EventManager.evaluate_character_pulse(self)
+				_pending_effects.append({"type": "evaluate_pulse"})
 				# Reset chance back to base after firing
 				event_chance_accumulator = 0.05
 			else:
 				# No event this month: increase chance for next month.
-				# Capped at 0.90: there is always a minimum 10% chance the event will not fire,
-				# keeping characters from feeling rigidly scheduled. With 5% base and +5% per
-				# missed month, the expected wait is ~10 months and the firing chance reaches
-				# 90% (maximum) by month 17.
 				event_chance_accumulator = minf(event_chance_accumulator + 0.05, 0.90)
 			# Schedule next monthly evaluation with slight jitter
 			next_event_pulse_day = current_total_days + 25 + randi_range(0, 10)
-	
+
 	# 3. Master State Calculation (Only necessary for on-screen UI feedback)
+	# Throttled to every 5 in-game days — mood is purely cosmetic and
+	# does not affect AI decisions, so daily precision is unnecessary.
 	if current_sim_tier == SimTier.MICRO:
-		_calculate_mood()
+		if _mood_last_computed_day < 0 or (current_total_days - _mood_last_computed_day) >= 5:
+			_calculate_mood()
+			_mood_last_computed_day = current_total_days
 
 	# 4. Daily realm advancement check (martial artists only, low-frequency)
 	if is_martial_artist and current_total_days % 7 == 0:
-		check_realm_advancement()
+		_pending_effects.append({"type": "check_realm"})
+
+## APPLY PHASE — MUST run on the main thread.
+## Drains _pending_effects queued by compute_daily_tick, firing signals and
+## calling into EventManager / WorldLogManager which are main-thread-only.
+func apply_daily_effects() -> void:
+	# 1. Flush deferred stat recalculation
+	if _stats_dirty:
+		recalculate_all_stats()
+		_stats_dirty = false
+
+	# 2. Drain pending effects
+	if _pending_effects.is_empty():
+		return
+
+	var effects: Array[Dictionary] = []
+	effects.assign(_pending_effects)
+	_pending_effects.clear()
+
+	for effect in effects:
+		match effect["type"]:
+			"mod_expired":
+				for mod_id in effect["ids"]:
+					modifier_expired.emit(self, mod_id)
+
+			"action_complete":
+				var completed_action := effect.get("action") as ActionPlan
+				if completed_action:
+					completed_action.on_complete(self)
+				# brain already chose a new action in compute_tick when it cleared
+				# current_action; if on_complete nulled it (e.g. urgency), pick again.
+				if brain.current_action == null and current_sim_tier == SimTier.MICRO:
+					brain._choose_new_action(self)
+
+			"directive_complete":
+				var completed_directive := effect.get("directive") as Directive
+				current_directive = null
+				if completed_directive:
+					completed_directive.on_complete(self)
+				# Restart action selection after seclusion / directive ends
+				if brain.current_action == null and current_sim_tier == SimTier.MICRO:
+					brain._choose_new_action(self)
+
+			"evaluate_pulse":
+				EventManager.evaluate_character_pulse(self)
+
+			"check_realm":
+				check_realm_advancement()
 
 ## Applies baseline creeping of needs and state variables simply from existing.
 ## Can be overridden by Directives to simulate arduous missions or deep rest.

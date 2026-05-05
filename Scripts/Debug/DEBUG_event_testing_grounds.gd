@@ -31,7 +31,7 @@ func _process(_delta: float) -> void:
 func _on_generate_world_pressed() -> void:
 	SimulationManager.clear_simulation()
 	# Generate a small world for testing purposes
-	SectGenerator.generate_world_sects(2, 1, 0)
+	await SectGenerator.generate_world_sects()
 	
 	_populate_dropdowns()
 	_add_log_entry("System", "World Generated with " + str(SimulationManager.sect_repo.size()) + " Sects and " + str(SimulationManager.character_repo.size()) + " Characters.")

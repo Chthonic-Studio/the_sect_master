@@ -83,7 +83,13 @@ func add_member(char_id: String, rank: int, position: String = "") -> void:
 		
 	if position != "":
 		assign_position(char_id, position)
-		
+
+	# Promote to MICRO when joining the player's sect
+	if GameManager.player_sect_id != "" and sect_id == GameManager.player_sect_id:
+		var c: CharacterData = SimulationManager.get_character(char_id)
+		if c and c.is_alive and c.current_sim_tier != CharacterData.SimTier.FROZEN:
+			c.transition_to_micro()
+
 	flag_strength_dirty()
 
 ## Completely removes a character from the sect, clearing them from all categorized arrays.
@@ -95,7 +101,13 @@ func remove_member(char_id: String) -> void:
 		
 	for pos in members_by_position.keys():
 		members_by_position[pos].erase(char_id)
-		
+
+	# Demote to MACRO when leaving the player's sect
+	if GameManager.player_sect_id != "" and sect_id == GameManager.player_sect_id:
+		var c: CharacterData = SimulationManager.get_character(char_id)
+		if c and c.is_alive and c.current_sim_tier != CharacterData.SimTier.FROZEN:
+			c.transition_to_macro()
+
 	flag_strength_dirty()
 
 ## Assigns a sect job to a character. Removes them from their old job if they had one.

@@ -11,8 +11,6 @@ var next_sect_id: int = 1
 
 var sect_relationships: Dictionary = {} # Maps "sect_a|sect_b" -> int (-100 to 100)
 
-var _chars_to_process: Array = []
-var _is_processing_day: bool = false
 const MAX_CHARACTERS_PER_FRAME: int = 200
 
 # Tracks the day-snapshot of character IDs currently being processed
@@ -20,9 +18,17 @@ var _active_char_ids: Array[String] = []
 var _process_index: int = 0
 var _current_processing_day: int = 0
 
+# --- WORKER THREAD POOL INTEGRATION ---
+# Holds CharacterData references for the batch currently being computed in parallel.
+# Replaced each frame; safe because we never modify it while the group task is running.
+var _batch_chars: Array = []
+# Group task ID returned by WorkerThreadPool.add_group_task(). -1 = no pending tasks.
+var _batch_task_group_id: int = -1
+
 func _ready() -> void:
 	TimeManager.day_passed.connect(_on_day_passed)
 	TimeManager.month_passed.connect(_on_month_passed)
+	GameManager.player_character_changed.connect(_on_player_changed)
 
 ## Broadcasts the daily tick to all active characters and sects in the simulation
 func _on_day_passed(_day: int) -> void:
@@ -50,6 +56,12 @@ func _on_day_passed(_day: int) -> void:
 
 ## Processes all remaining characters from the previous day's batch immediately.
 func _flush_remaining_characters() -> void:
+	# Wait for any in-flight worker batch before running the main-thread fallback.
+	if _batch_task_group_id >= 0:
+		WorkerThreadPool.wait_for_group_task_completion(_batch_task_group_id)
+		_apply_batch_effects()
+		_batch_task_group_id = -1
+
 	while _process_index < _active_char_ids.size():
 		var char_id = _active_char_ids[_process_index]
 		var character = character_repo.get(char_id)
@@ -60,19 +72,52 @@ func _flush_remaining_characters() -> void:
 		_process_index += 1
 
 func _process(_delta: float) -> void:
-	if _process_index >= _active_char_ids.size():
-		return # Done for the day
+	# --- PHASE B: Apply effects once the current compute batch finishes ---
+	if _batch_task_group_id >= 0:
+		if WorkerThreadPool.is_group_task_completed(_batch_task_group_id):
+			_apply_batch_effects()
+			_batch_task_group_id = -1
+		else:
+			return  # Threads still working; retry next frame
 
-	var processed_count = 0
-	while processed_count < MAX_CHARACTERS_PER_FRAME and _process_index < _active_char_ids.size():
+	if _process_index >= _active_char_ids.size():
+		return  # All characters processed for today
+
+	# --- PHASE A: Collect next batch and dispatch to WorkerThreadPool ---
+	_batch_chars.clear()
+	var count = 0
+	while count < MAX_CHARACTERS_PER_FRAME and _process_index < _active_char_ids.size():
 		var char_id = _active_char_ids[_process_index]
 		var character = character_repo.get(char_id)
-
 		if character and character.is_alive:
-			character.process_daily_tick(_current_processing_day)
-
+			_batch_chars.append(character)
 		_process_index += 1
-		processed_count += 1
+		count += 1
+
+	if _batch_chars.is_empty():
+		return
+
+	# Capture a local snapshot so the lambda closure is self-contained and the
+	# main thread can safely refill _batch_chars on the next dispatch.
+	var snapshot: Array = _batch_chars.duplicate()
+	var day: int = _current_processing_day
+
+	_batch_task_group_id = WorkerThreadPool.add_group_task(
+		func(i: int): snapshot[i].compute_daily_tick(day),
+		snapshot.size()
+	)
+	# Store snapshot so _apply_batch_effects() can iterate the same chars.
+	_batch_chars = snapshot
+
+## Drain the pending side-effects for every character in the last completed batch.
+## Called on the main thread after WorkerThreadPool confirms all tasks are done.
+func _apply_batch_effects() -> void:
+	for character in _batch_chars:
+		# A character could have died during this same apply cycle (e.g. killed by an event
+		# triggered for another character in the batch). Skip to avoid redundant effects.
+		if character and character.is_alive:
+			character.apply_daily_effects()
+	_batch_chars.clear()
 
 ## Broadcasts the macro monthly tick to all active sects
 func _on_month_passed(_month: int) -> void:
@@ -178,6 +223,27 @@ func clear_simulation() -> void:
 	_active_char_ids.clear()
 	_process_index = 0
 	_current_processing_day = 0
+	_batch_chars.clear()
+	_batch_task_group_id = -1
+
+## Sweeps the entire character repo and assigns each living character the correct
+## SimTier: MICRO for player-sect members, MACRO for everyone else.
+## Called once after world generation and whenever the player changes character.
+func sync_all_sim_tiers() -> void:
+	var player_sect: String = GameManager.player_sect_id
+	for char_id in character_repo:
+		var c: CharacterData = character_repo[char_id]
+		if not c.is_alive or c.current_sim_tier == CharacterData.SimTier.FROZEN:
+			continue
+		if player_sect != "" and c.sect_id == player_sect:
+			if c.current_sim_tier != CharacterData.SimTier.MICRO:
+				c.transition_to_micro()
+		else:
+			if c.current_sim_tier != CharacterData.SimTier.MACRO:
+				c.transition_to_macro()
+
+func _on_player_changed(_char_id: String) -> void:
+	sync_all_sim_tiers()
 
 ## Increments age for every living character and applies mortality checks.
 ## Called once per in-game year (when month == 1 in _on_month_passed).
