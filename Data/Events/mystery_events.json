@@ -33,7 +33,7 @@
 				"text": "Invite external scholars to interpret the inscriptions before anyone goes inside.",
 				"ai_base_weight": 10.0,
 				"effects": [
-					{ "type": "modify_wealth", "target": "initiator", "amount": -150 },
+					{ "type": "modify_sect_wealth", "amount": -150 },
 					{ "type": "add_world_log", "log_type": "positive", "text": "Scholars arrived at [initiator_sect_name] to study ancient ruins discovered on their grounds." },
 					{ "type": "add_memory", "target": "initiator", "memory_id": "invited_scholars_to_ruins", "payload": {} }
 				]
@@ -87,7 +87,7 @@
 				"text": "Commission the appropriate rites to put the spirit at rest.",
 				"ai_base_weight": 60.0,
 				"effects": [
-					{ "type": "modify_wealth", "target": "initiator", "amount": -80 },
+					{ "type": "modify_sect_wealth", "amount": -80 },
 					{ "type": "add_world_log", "log_type": "event", "text": "[initiator_sect_name] performed rites after disciples reported a spectral presence on the grounds." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I commissioned the appropriate rites. Whether the spirit was real or imagined, the disciples needed the reassurance." }
 				]
@@ -135,7 +135,7 @@
 				"text": "Increase perimeter guards. Ill omens have a way of preceding real dangers.",
 				"ai_base_weight": 40.0,
 				"effects": [
-					{ "type": "modify_wealth", "target": "initiator", "amount": -50 },
+					{ "type": "modify_sect_wealth", "amount": -50 },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I doubled the perimeter watch. Omens are nature's warnings for those willing to listen." }
 				]
 			},
@@ -274,7 +274,7 @@
 				"text": "Send scouts to verify the reports. Hearsay and truth wear the same coat.",
 				"ai_base_weight": 60.0,
 				"effects": [
-					{ "type": "modify_wealth", "target": "initiator", "amount": -80 },
+					{ "type": "modify_sect_wealth", "amount": -80 },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I dispatched scouts to verify the demon cultivator rumors. Knowledge of a threat is the first defense." }
 				]
 			},
@@ -290,7 +290,7 @@
 				"text": "Pay caravan networks for reliable ongoing intelligence.",
 				"ai_base_weight": 10.0,
 				"effects": [
-					{ "type": "modify_wealth", "target": "initiator", "amount": -150 },
+					{ "type": "modify_sect_wealth", "amount": -150 },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I opened the purse strings for intelligence. Knowing an enemy's position is worth any silver." }
 				]
 			}
@@ -366,7 +366,7 @@
 				"text": "Double the night watch and reinforce all entry points immediately.",
 				"ai_base_weight": 20.0,
 				"effects": [
-					{ "type": "modify_wealth", "target": "initiator", "amount": -60 },
+					{ "type": "modify_sect_wealth", "amount": -60 },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I doubled the perimeter guards. Unseen visitors with unknown intentions are threats by definition." }
 				]
 			}
@@ -391,7 +391,7 @@
 				"text": "Buy the pages immediately. Delay invites competitors.",
 				"ai_base_weight": 50.0,
 				"effects": [
-					{ "type": "modify_wealth", "target": "initiator", "amount": -250 },
+					{ "type": "modify_sect_wealth", "amount": -250 },
 					{ "type": "modify_stat", "target": "initiator", "stat": "TECHNIQUE", "amount": 12 },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I bought the fragments at the dealer's price. Whether complete or not, what is here is invaluable." },
 					{ "type": "add_memory", "target": "initiator", "memory_id": "purchased_manual_fragments", "payload": {} }
@@ -404,7 +404,7 @@
 					{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 2.5 }
 				],
 				"effects": [
-					{ "type": "modify_wealth", "target": "initiator", "amount": -150 },
+					{ "type": "modify_sect_wealth", "amount": -150 },
 					{ "type": "modify_stat", "target": "initiator", "stat": "TECHNIQUE", "amount": 12 },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I talked the dealer down to a fair price. The fragments are ours." }
 				]
