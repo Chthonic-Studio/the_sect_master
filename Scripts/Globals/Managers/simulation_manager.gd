@@ -102,6 +102,10 @@ func _process(_delta: float) -> void:
 	var snapshot: Array = _batch_chars.duplicate()
 	var day: int = _current_processing_day
 
+	# `snapshot` is a *copy* of the array references captured by the lambda closure.
+	# We then assign `snapshot` back to `_batch_chars` so `_apply_batch_effects()` can
+	# iterate the same char list.  The lambda closure retains its own reference to the
+	# original snapshot array, so re-assigning `_batch_chars` on line below is safe.
 	_batch_task_group_id = WorkerThreadPool.add_group_task(
 		func(i: int): snapshot[i].compute_daily_tick(day),
 		snapshot.size()

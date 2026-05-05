@@ -25,8 +25,7 @@ func process_daily_tick(character: CharacterData) -> void:
 				current_action.on_complete(character)
 				current_action = null
 			
-	if current_action == null:
-		_choose_new_action(character)
+	_pick_action_if_idle(character)
 
 ## Compute-only brain tick: runs action logic but defers on_complete to
 ## CharacterData._pending_effects so it runs on the main thread.
@@ -44,6 +43,10 @@ func compute_tick(character: CharacterData) -> void:
 				character._pending_effects.append({"type": "action_complete", "action": current_action})
 				current_action = null
 
+	_pick_action_if_idle(character)
+
+## Chooses a new action when the brain is idle. Shared by both tick variants.
+func _pick_action_if_idle(character: CharacterData) -> void:
 	if current_action == null:
 		_choose_new_action(character)
 

@@ -439,6 +439,8 @@ func compute_daily_tick(current_total_days: int) -> void:
 
 		if current_directive.is_complete():
 			_pending_effects.append({"type": "directive_complete", "directive": current_directive})
+			# Null here so a second compute call (e.g. during flush) cannot re-queue this
+			current_directive = null
 	else:
 		# ONLY process intensive Utility AI if the character is active on-screen
 		if current_sim_tier == SimTier.MICRO:
