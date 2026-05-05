@@ -351,7 +351,7 @@
 			["not_is_player", "initiator"],
 			["stat_greater_than", "initiator", "loyalty", 50]
 		],
-		"requires_pause": true,
+		"requires_pause": false,
 		"description": "[initiator_name] kneels before the Sect Master, forehead pressed to the ground. They have committed a serious error — broken a sect rule, shamed themselves in public, or failed an important task — and now they beg forgiveness.",
 		"options": {
 			"opt_forgive_openly": {
