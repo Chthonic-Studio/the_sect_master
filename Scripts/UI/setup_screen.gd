@@ -237,6 +237,9 @@ func _on_page3_back() -> void:
 
 # ---- GAME START ----
 func _on_start_pressed() -> void:
+	# Disable immediately to prevent double-click/multiple scene transitions.
+	%BtnStart.disabled = true
+
 	# Collect all form data and pack into a params dict for the loading screen
 	var first_name     = %FirstNameInput.text.strip_edges()
 	var last_name      = %LastNameInput.text.strip_edges()

@@ -14,12 +14,9 @@ func _init(duration: int = 90, custom_mods: Dictionary = {}) -> void:
 	super(duration, applied_mods)
 	id = "directive_seclusion_cultivation"
 
-func process_tick(character: CharacterData) -> void:
+func process_tick(character: CharacterData, current_total_days: int = 0) -> void:
 	if not character.is_martial_artist: return
 
-	# Freeze social simulation while in seclusion
-	# (CharacterData already handles directive bypass of normal AI,
-	#  so we just apply the cultivation gains here)
 	var apt_mult: float = Definitions.APTITUDE_TRAINING_MULT.get(character.aptitude, 1.0)
 
 	# Probabilistic gain: seclusion is more focused than normal training so chance is higher.
@@ -34,7 +31,8 @@ func process_tick(character: CharacterData) -> void:
 	character.base_martial[Definitions.MartialStat.INSIGHT] += 1 if randf() < 0.15 * apt_mult else 0
 
 	# Batch recalculation to once per week to avoid hammering the stat cache every day.
-	if TimeManager.get_total_days_elapsed() % 7 == 0:
+	# Uses the day passed in from compute_daily_tick (thread-safe; no TimeManager call).
+	if current_total_days % 7 == 0:
 		character._stats_dirty = true  # Deferred — applied at start of next apply phase
 
 func on_complete(character: CharacterData) -> void:

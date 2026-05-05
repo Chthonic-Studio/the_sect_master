@@ -118,8 +118,6 @@ func _generate_game_from_params(params: Dictionary) -> void:
 		starting_laws = {"sect_authority": law_preset}
 
 	var sect_tier: SectGenerator.SectTier = params.get("sect_tier", SectGenerator.SectTier.AVERAGE)
-	# Pass members_count only if explicitly provided; generate_custom_sect() has its own
-	# tier-based fallback (randi_range(10 * tier, 20 * tier)) which is preferred.
 	var overrides: Dictionary = {
 		"name":       params.get("sect_name", ""),
 		"alignment":  params.get("alignment",  Definitions.SectAlignment.NEUTRAL),
@@ -128,9 +126,11 @@ func _generate_game_from_params(params: Dictionary) -> void:
 		"province_id": params.get("province_id", ""),
 		"tenets":     sect_tenets,
 		"laws":       starting_laws,
+		# members_count: explicit value from params when provided, otherwise fall back
+		# to the generator's tier-based formula (randi_range(10*tier, 20*tier)).
+		"members_count": params.get("members_count",
+			randi_range(10 * int(sect_tier), 20 * int(sect_tier))),
 	}
-	if params.has("members_count"):
-		overrides["members_count"] = params["members_count"]
 	var player_sect: SectData = SectGenerator.generate_custom_sect(sect_tier, overrides)
 
 	# --- Player Character Setup ---

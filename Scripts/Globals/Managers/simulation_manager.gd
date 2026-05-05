@@ -25,6 +25,13 @@ var _batch_chars: Array = []
 # Group task ID returned by WorkerThreadPool.add_group_task(). -1 = no pending tasks.
 var _batch_task_group_id: int = -1
 
+# --- DEFERRED SIM-TIER CHANGES ---
+# Tier transitions requested while a WorkerThreadPool batch is in-flight are
+# stored here and applied after the batch completes, preventing races with
+# compute_daily_tick() that is running in worker threads.
+var _pending_tier_changes: Dictionary = {}  # char_id -> CharacterData.SimTier
+var _pending_tier_sync: bool = false        # true = full sweep needed after next batch
+
 func _ready() -> void:
 	TimeManager.day_passed.connect(_on_day_passed)
 	TimeManager.month_passed.connect(_on_month_passed)
@@ -123,6 +130,38 @@ func _apply_batch_effects() -> void:
 			character.apply_daily_effects()
 	_batch_chars.clear()
 
+	# Apply any sim-tier changes that were deferred while the batch was in-flight.
+	if not _pending_tier_changes.is_empty():
+		_flush_pending_tier_changes()
+	# A full-sweep sync was requested (e.g. player changed character mid-batch).
+	if _pending_tier_sync:
+		_pending_tier_sync = false
+		sync_all_sim_tiers()
+
+## Requests a sim-tier change for a character.  If a compute batch is currently
+## in-flight the request is queued and applied once the batch completes, preventing
+## data races with compute_daily_tick() running in WorkerThreadPool threads.
+func request_sim_tier_change(char_id: String, tier: CharacterData.SimTier) -> void:
+	if _batch_task_group_id >= 0:
+		_pending_tier_changes[char_id] = tier
+	else:
+		_apply_tier_change(char_id, tier)
+
+## Immediately applies a single tier transition (called on the main thread).
+func _apply_tier_change(char_id: String, tier: CharacterData.SimTier) -> void:
+	var c: CharacterData = get_character(char_id)
+	if c and c.is_alive and c.current_sim_tier != CharacterData.SimTier.FROZEN:
+		if tier == CharacterData.SimTier.MICRO:
+			c.transition_to_micro()
+		else:
+			c.transition_to_macro()
+
+## Drains all queued per-character tier changes.
+func _flush_pending_tier_changes() -> void:
+	for char_id in _pending_tier_changes:
+		_apply_tier_change(char_id, _pending_tier_changes[char_id])
+	_pending_tier_changes.clear()
+
 ## Broadcasts the macro monthly tick to all active sects
 func _on_month_passed(_month: int) -> void:
 	var active_sect_keys = sect_repo.keys().duplicate()
@@ -219,6 +258,16 @@ func handle_character_death(character: CharacterData) -> void:
 #endregion
 
 func clear_simulation() -> void:
+	# Flush any in-flight WorkerThreadPool batch before wiping repos.
+	# Without this, worker threads can keep reading/writing CharacterData
+	# objects that are about to be freed during a scene reset or save/load.
+	if _batch_task_group_id >= 0:
+		WorkerThreadPool.wait_for_group_task_completion(_batch_task_group_id)
+		_batch_task_group_id = -1
+	_batch_chars.clear()
+	_pending_tier_changes.clear()
+	_pending_tier_sync = false
+
 	character_repo.clear()
 	sect_repo.clear()
 	sect_relationships.clear()
@@ -227,8 +276,6 @@ func clear_simulation() -> void:
 	_active_char_ids.clear()
 	_process_index = 0
 	_current_processing_day = 0
-	_batch_chars.clear()
-	_batch_task_group_id = -1
 
 ## Sweeps the entire character repo and assigns each living character the correct
 ## SimTier: MICRO for player-sect members, MACRO for everyone else.
@@ -247,7 +294,11 @@ func sync_all_sim_tiers() -> void:
 				c.transition_to_macro()
 
 func _on_player_changed(_char_id: String) -> void:
-	sync_all_sim_tiers()
+	if _batch_task_group_id >= 0:
+		# A compute batch is in-flight; defer the full sweep until it completes.
+		_pending_tier_sync = true
+	else:
+		sync_all_sim_tiers()
 
 ## Increments age for every living character and applies mortality checks.
 ## Called once per in-game year (when month == 1 in _on_month_passed).

@@ -12,7 +12,7 @@ func _init(duration: int = 30, custom_mods: Dictionary = {}) -> void:
 	super(duration, applied_mods)
 	id = "directive_training_retreat"
 
-func process_tick(character: CharacterData) -> void:
+func process_tick(character: CharacterData, current_total_days: int = 0) -> void:
 	if not character.is_martial_artist: return
 
 	var apt_mult: float = Definitions.APTITUDE_TRAINING_MULT.get(character.aptitude, 1.0)
@@ -30,7 +30,8 @@ func process_tick(character: CharacterData) -> void:
 	character.base_martial[Definitions.MartialStat.QI_FLOW] += clampi(int(randf_range(0.5, 1.5) * apt_mult), 0, 2)
 
 	# Batch recalculation to once per week to avoid hammering the stat cache every day.
-	if TimeManager.get_total_days_elapsed() % 7 == 0:
+	# Uses the day passed in from compute_daily_tick (thread-safe; no TimeManager call).
+	if current_total_days % 7 == 0:
 		character._stats_dirty = true  # Deferred — applied at start of next apply phase
 
 func on_complete(character: CharacterData) -> void:

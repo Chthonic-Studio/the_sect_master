@@ -434,7 +434,8 @@ func compute_daily_tick(current_total_days: int) -> void:
 	if current_directive != null:
 		# Directives bypass normal AI and decay
 		_apply_daily_decay(current_directive.decay_modifiers)
-		current_directive.process_tick(self)
+		# Pass current_total_days so directives avoid calling TimeManager (not thread-safe)
+		current_directive.process_tick(self, current_total_days)
 		current_directive.duration_remaining -= 1
 
 		if current_directive.is_complete():

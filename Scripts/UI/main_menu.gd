@@ -20,6 +20,8 @@ func _on_new_game_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/setup_screen.tscn")
 
 func _on_quick_start_pressed() -> void:
+	# Disable immediately to prevent multiple rapid presses triggering repeated resets.
+	%BtnQuickStart.disabled = true
 	# Skip setup and dive straight into the game with sensible debug defaults.
 	SceneManager.goto_loading_screen({
 		"start_year":    740,
