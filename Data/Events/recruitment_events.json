@@ -1,0 +1,408 @@
+{
+	"orphan_at_the_gates": {
+		"id": "orphan_at_the_gates",
+		"title": "A Child at the Gates",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 3.0 },
+			{ "condition": ["has_trait", "initiator", "cruel"], "multiplier": 0.3 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A child of perhaps ten years stands at the sect's outer gates, alone and ragged. The gate guardian reports that the child has been there since before dawn, refusing to leave. They say they want to be a disciple.",
+		"options": {
+			"opt_accept": {
+				"text": "Take them in. Every great master was once a penniless child.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "recruit_member", "target": "initiator" },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] accepted an orphaned child as a junior disciple." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I took in the orphan at the gate. Something in their eyes reminded me of myself." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "accepted_orphan_disciple", "payload": {} }
+				]
+			},
+			"opt_test_first": {
+				"text": "Set them a task first. The sect cannot afford to carry passengers.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I set the child a task before accepting them. We shall see what they are made of." }
+				]
+			},
+			"opt_turn_away": {
+				"text": "Turn them away. The sect is not a charity house.",
+				"ai_base_weight": 10.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "ruthlessness", 65], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned the child away. The Jianghu is no place for sentiment." }
+				]
+			}
+		}
+	},
+
+	"disgraced_warrior_seeks_refuge": {
+		"id": "disgraced_warrior_seeks_refuge",
+		"title": "A Blade Without a Scabbard",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A weathered warrior kneels at your threshold — a former soldier or guard captain who has lost everything: their unit, their lord, their honor. They are asking for a place to rebuild, to find purpose again in the cultivation path.",
+		"options": {
+			"opt_accept_warrior": {
+				"text": "Accept them. Experience forged in real battle is rare and worth more than youth.",
+				"ai_base_weight": 55.0,
+				"effects": [
+					{ "type": "recruit_member", "target": "initiator" },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted the disgraced warrior. Their scars are credentials enough." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "recruited_disgraced_warrior", "payload": {} }
+				]
+			},
+			"opt_offer_trial": {
+				"text": "Offer a trial period. Trust is not given — it is earned.",
+				"ai_base_weight": 35.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I offered the warrior a trial period. Their past is uncertain, but their future may yet be worthy." }
+				]
+			},
+			"opt_decline": {
+				"text": "Decline. Disgraced soldiers carry the enemies of their past with them.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned away the disgraced warrior. A man with dangerous enemies is a dangerous friend." }
+				]
+			}
+		}
+	},
+
+	"talented_youth_spotted": {
+		"id": "talented_youth_spotted",
+		"title": "A Jewel in the Mud",
+		"pulse": "monthly_character",
+		"base_weight": 1.8,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 50], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A senior disciple returns from the market town with urgent news: they witnessed a young commoner break up a street brawl between three grown men using improvised technique of startling precision. The youth is completely unaware of their own gift.",
+		"options": {
+			"opt_send_invitation": {
+				"text": "Send a formal invitation to the sect. Such talent should not be wasted on the streets.",
+				"ai_base_weight": 80.0,
+				"effects": [
+					{ "type": "recruit_member", "target": "initiator" },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] recruited a naturally gifted youth from the market district." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sent for the talented youth. Raw talent such as this appears once in a generation." }
+				]
+			},
+			"opt_observe_further": {
+				"text": "Observe them for a month before approaching. Verify the claim.",
+				"ai_base_weight": 20.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I ordered the youth observed for a month. Enthusiasm can be mistaken for talent." }
+				]
+			}
+		}
+	},
+
+	"merchant_son_enrolls": {
+		"id": "merchant_son_enrolls",
+		"title": "Silver and Silk",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A wealthy merchant family from the nearest city seeks an audience. They wish to enroll their third son as a disciple — and they have brought a 'donation' of five hundred silver pieces to help facilitate the decision.",
+		"options": {
+			"opt_accept_with_silver": {
+				"text": "Accept both the son and the donation. Resources are always welcome.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "greed", 55], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": 500 },
+					{ "type": "recruit_member", "target": "initiator" },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted the merchant's son and the donation. The funds help the sect, and the boy may yet surprise us." }
+				]
+			},
+			"opt_accept_no_silver": {
+				"text": "Accept the son on merit, but return the donation. The sect cannot be bought.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "righteous"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "recruit_member", "target": "initiator" },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] returned a merchant's donation, accepting the applicant purely on merit." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I returned the silver and accepted the son on his own worth. The sect's honor is worth more than coin." }
+				]
+			},
+			"opt_decline": {
+				"text": "Decline. The path of cultivation is not for sale, and we do not need the silver.",
+				"ai_base_weight": 20.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned away both the silver and the boy. Our gates open on merit alone." }
+				]
+			}
+		}
+	},
+
+	"rival_sect_refugee": {
+		"id": "rival_sect_refugee",
+		"title": "The Sect Without a Home",
+		"pulse": "monthly_character",
+		"base_weight": 1.0,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "Three individuals arrive at your gates claiming to be survivors of a sect recently destroyed by a powerful hegemon. Their cultivation is solid, their eyes haunted. They ask only for a new home.",
+		"options": {
+			"opt_welcome_all": {
+				"text": "Welcome all three. Those who have survived destruction are battle-tempered.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "recruit_member", "target": "initiator" },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] offered shelter to survivors of a destroyed sect." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I gave refuge to the survivors. The Jianghu can be merciless; sometimes a kindness costs nothing but fear." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "sheltered_sect_refugees", "payload": {} }
+				]
+			},
+			"opt_test_loyalty": {
+				"text": "Test their loyalty rigorously before allowing them to stay. Desperation can curdle into treachery.",
+				"ai_base_weight": 40.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I put the refugees through a loyalty trial before committing to any shelter." }
+				]
+			},
+			"opt_refuse": {
+				"text": "Refuse. Their misfortune may become ours if their enemies follow.",
+				"ai_base_weight": 10.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "ruthlessness", 60], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned the refugees away. Whoever destroyed their sect has long arms." }
+				]
+			}
+		}
+	},
+
+	"prodigy_recruit": {
+		"id": "prodigy_recruit",
+		"title": "Once in a Generation",
+		"pulse": "monthly_character",
+		"base_weight": 0.5,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 60], "multiplier": 3.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"],
+			["stat_greater_than", "initiator", "reputation", 40]
+		],
+		"requires_pause": true,
+		"description": "A senior disciple brings extraordinary news: a twelve-year-old from a farming village has reportedly entered the Third Rate realm through self-study alone, without instruction. Such a thing has not been heard of in generations.",
+		"options": {
+			"opt_recruit_immediately": {
+				"text": "Travel personally to recruit them. Such talent belongs in this sect.",
+				"ai_base_weight": 75.0,
+				"effects": [
+					{ "type": "recruit_member", "target": "initiator" },
+					{ "type": "modify_wealth", "target": "initiator", "amount": -100 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] successfully recruited a legendary child prodigy from the farmlands." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I recruited the prodigy personally. This child will either elevate the sect or destroy it — but they will not be wasted in a field." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "recruited_prodigy", "payload": {} }
+				]
+			},
+			"opt_send_representative": {
+				"text": "Send a senior disciple to make the offer. No need to travel personally.",
+				"ai_base_weight": 25.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sent a senior disciple to approach the child prodigy. Time will tell if the offer is accepted." }
+				]
+			}
+		}
+	},
+
+	"failed_disciple_returns": {
+		"id": "failed_disciple_returns",
+		"title": "The One Who Left",
+		"pulse": "monthly_character",
+		"base_weight": 0.8,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A former disciple stands at the gate — one who was expelled years ago or who chose to leave of their own accord. They have changed: scarred, older, with new calluses and a different weight to their gaze. They ask to be readmitted.",
+		"options": {
+			"opt_readmit": {
+				"text": "Readmit them fully. The years have been their punishment.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "recruit_member", "target": "initiator" },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I readmitted the former disciple. The person who returned is not the person who left." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "readmitted_expelled_disciple", "payload": {} }
+				]
+			},
+			"opt_readmit_as_outer": {
+				"text": "Accept them as an outer disciple only. Trust must be rebuilt from the ground up.",
+				"ai_base_weight": 40.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I took back the former disciple as an outer member only. They will have to earn their way back in." }
+				]
+			},
+			"opt_refuse": {
+				"text": "Refuse. A door that closes once should not be reopened.",
+				"ai_base_weight": 20.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "ruthlessness", 60], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned away the returning disciple. Some departures must be final." }
+				]
+			}
+		}
+	},
+
+	"foreign_cultivator_arrives": {
+		"id": "foreign_cultivator_arrives",
+		"title": "Beyond the Western Pass",
+		"pulse": "monthly_character",
+		"base_weight": 0.7,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 55], "multiplier": 2.5 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A cultivator from lands beyond the western passes has arrived — their techniques are different, their terminology unfamiliar, their breathing patterns unlike any local school. They speak of a great teacher who told them to seek out your sect specifically.",
+		"options": {
+			"opt_welcome_and_learn": {
+				"text": "Welcome them warmly. Exchange of foreign knowledge is invaluable.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "curious"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "recruit_member", "target": "initiator" },
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 10 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] welcomed a cultivator from the western territories, broadening the sect's martial knowledge." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I welcomed the foreign cultivator. Their methods are strange — and strangeness is where growth hides." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "welcomed_foreign_cultivator", "payload": {} }
+				]
+			},
+			"opt_cautious_acceptance": {
+				"text": "Accept them provisionally. Foreign techniques carry unknown risks.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted the foreign cultivator with conditions. Their techniques need careful study before we trust them fully." }
+				]
+			},
+			"opt_refuse": {
+				"text": "Decline. The sect's methods are sufficient unto themselves.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sent the foreign cultivator away. Our traditions are not diluted by outside influence." }
+				]
+			}
+		}
+	},
+
+	"sect_trial_day": {
+		"id": "sect_trial_day",
+		"title": "The Open Gates",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "It is time for the sect's biannual open trials — a public examination where any who wish may demonstrate their potential. Dozens of hopefuls have gathered at the outer grounds since before dawn.",
+		"options": {
+			"opt_rigorous_standard": {
+				"text": "Maintain rigorous standards. Quality over quantity; only the best enter.",
+				"ai_base_weight": 50.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I held the trials to the highest standard. Few passed, but those who did are exceptional." }
+				]
+			},
+			"opt_inclusive_standard": {
+				"text": "Lower the barrier slightly. A larger sect has greater strength in numbers.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "recruit_member", "target": "initiator" },
+					{ "type": "recruit_member", "target": "initiator" },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I opened the trials broadly. New blood brings new strength — and new problems." }
+				]
+			},
+			"opt_cancel_trials": {
+				"text": "Cancel this cycle. The sect is not ready to absorb new disciples right now.",
+				"ai_base_weight": 20.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I cancelled the open trials this cycle. We have enough disciples to train for now." }
+				]
+			}
+		}
+	},
+
+	"secret_heir_arrives": {
+		"id": "secret_heir_arrives",
+		"title": "The Hidden Line",
+		"pulse": "monthly_character",
+		"base_weight": 0.5,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 65], "multiplier": 3.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"],
+			["stat_greater_than", "initiator", "reputation", 50]
+		],
+		"requires_pause": true,
+		"description": "A young person arrives with a sealed letter from a long-dead sect patriarch — a letter to be delivered to a sect worthy of carrying the lineage forward. They claim to be the last heir of that ancient school, and the letter seems to confirm it.",
+		"options": {
+			"opt_accept_as_lineage": {
+				"text": "Accept them and the lineage. The old master chose wisely.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "recruit_member", "target": "initiator" },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] accepted custody of an ancient lineage, binding a forgotten legacy to their sect." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted the last heir of an ancient school. With lineage comes responsibility — and potential." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "accepted_ancient_lineage", "payload": {} }
+				]
+			},
+			"opt_verify_first": {
+				"text": "Investigate the letter's authenticity before committing. Hidden heirs attract hidden enemies.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I ordered the letter authenticated before taking any commitment." }
+				]
+			},
+			"opt_decline": {
+				"text": "Decline. Ancient lineages carry ancient feuds.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned away the claimed heir. Old blood brings old enemies." }
+				]
+			}
+		}
+	}
+}

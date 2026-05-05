@@ -1,0 +1,512 @@
+{
+	"alliance_proposal_received": {
+		"id": "alliance_proposal_received",
+		"title": "An Offer of Brotherhood",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 50], "multiplier": 2.5 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"],
+			["stat_greater_than", "initiator", "reputation", 35]
+		],
+		"requires_pause": true,
+		"description": "An emissary from a neighboring sect arrives bearing a formal alliance proposal. Their sect master writes of mutual benefit, shared intelligence, and a united front against common threats. The seal on the letter is genuine.",
+		"options": {
+			"opt_accept_alliance": {
+				"text": "Accept. Two peaks standing together are harder to bring down.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "sociability", 55], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": 30 },
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] formally accepted an alliance proposal, forging a new bond in the Jianghu." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted the alliance. New allies are new eyes on roads we cannot watch ourselves." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "formed_alliance", "payload": {} }
+				]
+			},
+			"opt_negotiate_terms": {
+				"text": "Negotiate specific terms. Alliances are only as strong as their conditions.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 55], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I counter-proposed terms on the alliance. We will see if they value partnership enough to compromise." }
+				]
+			},
+			"opt_decline": {
+				"text": "Decline. Entangling alliances create entangling obligations.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I declined the alliance offer. Every bond is also a chain." }
+				]
+			}
+		}
+	},
+
+	"hegemony_invitation": {
+		"id": "hegemony_invitation",
+		"title": "The Shadow of the Mountain",
+		"pulse": "monthly_character",
+		"base_weight": 0.8,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 55], "multiplier": 2.5 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A magnificently appointed emissary arrives from the dominant sect of the region. Their master extends an invitation: join their network as an affiliate, receive their protection and resources, and acknowledge their pre-eminence. The alternative is left unstated but clearly implied.",
+		"options": {
+			"opt_accept_affiliate": {
+				"text": "Accept affiliate status. Pragmatism over pride — for now.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": 25 },
+					{ "type": "modify_sect_wealth", "amount": 200 },
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] accepted a position within the regional hegemony network." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted their offer of affiliation. Shelter from a great tree has a cost — but so does standing in open ground." }
+				]
+			},
+			"opt_counter_proposal": {
+				"text": "Propose equal partnership rather than subordination.",
+				"ai_base_weight": 35.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "honor", 60], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I proposed equal standing rather than subordination. The emissary's expression suggested that word had not reached them recently." }
+				]
+			},
+			"opt_refuse_independence": {
+				"text": "Refuse. This sect answers to no one.",
+				"ai_base_weight": 25.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "righteous"], "multiplier": 2.5 },
+					{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": -15 },
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] publicly refused an offer of affiliation from the regional hegemony." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I refused the hegemony's offer. Let them mark us as proud. We are." }
+				]
+			}
+		}
+	},
+
+	"diplomatic_marriage_proposal": {
+		"id": "diplomatic_marriage_proposal",
+		"title": "Silk and Strategy",
+		"pulse": "monthly_character",
+		"base_weight": 0.8,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 50], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A messenger arrives bearing a personal letter: a neighboring sect master proposes a martial union between their eldest disciple and a member of your sect. The arrangement would bind the sects in a formal relationship that goes beyond alliance.",
+		"options": {
+			"opt_accept_proposal": {
+				"text": "Accept. Political bonds sealed by personal ones are the strongest.",
+				"ai_base_weight": 45.0,
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": 40 },
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] entered a martial union arrangement with a neighboring sect, binding the two schools together." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I agreed to the union. Families who share blood do not lightly raise blades against each other." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "arranged_martial_union", "payload": {} }
+				]
+			},
+			"opt_politely_decline": {
+				"text": "Decline with courtesy. The timing is not right.",
+				"ai_base_weight": 40.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I declined the proposal politely. No insult was intended; the timing simply was not right." }
+				]
+			},
+			"opt_reject_concept": {
+				"text": "Reject the concept entirely. Cultivators should not be political pawns.",
+				"ai_base_weight": 15.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "righteous"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I rejected the proposal on principle. The disciples of this sect are not bargaining chips." }
+				]
+			}
+		}
+	},
+
+	"peace_treaty_offer": {
+		"id": "peace_treaty_offer",
+		"title": "The White Banner",
+		"pulse": "monthly_character",
+		"base_weight": 1.2,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "An emissary approaches under a flag of negotiation from a sect with which relations have been strained. They bring a formal proposal: end hostilities, normalize relations, and exchange a token of good faith.",
+		"options": {
+			"opt_accept_peace": {
+				"text": "Accept the offer. Sustained conflict exhausts both sides.",
+				"ai_base_weight": 55.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "honor", 55], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": 35 },
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] accepted a peace overture, ending a period of strained relations." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted the peace terms. The energy spent in conflict is better spent in cultivation." }
+				]
+			},
+			"opt_demand_better_terms": {
+				"text": "Demand better terms. We negotiated from a position of strength.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sent back counter-demands. If they want peace more than we do, let them pay for it." }
+				]
+			},
+			"opt_reject_proposal": {
+				"text": "Reject the offer. This is not the moment for forgiveness.",
+				"ai_base_weight": 15.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "vengeful"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": -10 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I rejected their white banner. The wounds are still fresh." }
+				]
+			}
+		}
+	},
+
+	"neighboring_sect_collapses": {
+		"id": "neighboring_sect_collapses",
+		"title": "The Fallen Peak",
+		"pulse": "monthly_character",
+		"base_weight": 0.8,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "News arrives from the road: a nearby sect has collapsed — dissolved by internal conflict, crushed by a stronger rival, or simply abandoned by its members. Their territory, disciples, and resources are now unclaimed.",
+		"options": {
+			"opt_absorb_disciples": {
+				"text": "Send envoys to offer shelter to their scattered disciples.",
+				"ai_base_weight": 55.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "recruit_member", "target": "initiator" },
+					{ "type": "recruit_member", "target": "initiator" },
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] offered shelter to disciples of a newly collapsed sect, absorbing them into their ranks." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I opened our gates to the refugees. Experienced cultivators, whatever their origin, are valuable." }
+				]
+			},
+			"opt_claim_territory": {
+				"text": "Move to claim their abandoned territory before rivals do.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "ambition", 60], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": 150 },
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] moved quickly to claim territory left vacant by a collapsed neighboring sect." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I claimed their abandoned grounds before anyone else could. The Jianghu abhors a vacuum." }
+				]
+			},
+			"opt_observe_only": {
+				"text": "Observe from a distance. Do not draw attention or make enemies of their former rivals.",
+				"ai_base_weight": 15.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I watched the collapse from a distance. Whatever destroyed them may still be looking for more prey." }
+				]
+			}
+		}
+	},
+
+	"proxy_war_request": {
+		"id": "proxy_war_request",
+		"title": "Another's War",
+		"pulse": "monthly_character",
+		"base_weight": 0.7,
+		"weight_modifiers": [
+			{ "condition": ["has_memory", "initiator", "formed_alliance"], "multiplier": 3.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "An ally sends an urgent message: they are locked in conflict with a powerful enemy and need military support — or at least for you to create a distraction by pressing their enemy's borders from another direction.",
+		"options": {
+			"opt_send_forces": {
+				"text": "Honor the alliance. Send a strike force to support our ally.",
+				"ai_base_weight": 45.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "honor", 65], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -150 },
+					{ "type": "modify_sect_relationship", "amount": 20 },
+					{ "type": "add_world_log", "log_type": "war", "text": "[initiator_sect_name] committed forces to support an allied sect's conflict." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I honored our alliance and sent support. Alliances that crumble under pressure are not worth the paper they're sealed on." }
+				]
+			},
+			"opt_limited_support": {
+				"text": "Offer limited support — intelligence or resources, but not disciples.",
+				"ai_base_weight": 35.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -80 },
+					{ "type": "modify_sect_relationship", "amount": 10 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I offered our ally resources and intelligence, but kept my disciples out of another sect's war." }
+				]
+			},
+			"opt_decline": {
+				"text": "Decline. This is not our conflict and we cannot afford the losses.",
+				"ai_base_weight": 20.0,
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": -20 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I declined the request. Our ally will remember this — and so will I." }
+				]
+			}
+		}
+	},
+
+	"political_rumor_spreads": {
+		"id": "political_rumor_spreads",
+		"title": "Whispers in the Wind",
+		"pulse": "monthly_character",
+		"base_weight": 1.0,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 55], "multiplier": 2.0 },
+			{ "condition": ["has_trait", "initiator", "paranoid"], "multiplier": 2.5 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A damaging rumor about your sect is spreading through the Jianghu's gossip channels: that you mistreat disciples, that your techniques are stolen, or that you consort with dark powers. The source is unknown. The damage is real.",
+		"options": {
+			"opt_public_refutation": {
+				"text": "Issue a public refutation. Silence invites belief in lies.",
+				"ai_base_weight": 50.0,
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": -100 },
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] publicly refuted spreading rumors, appealing to the Jianghu's sense of honor." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I refuted the rumor publicly. Some will believe me; some will not." }
+				]
+			},
+			"opt_investigate_source": {
+				"text": "Investigate who is spreading this and why before responding.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I set my most trusted disciples to uncover the rumor's origin before doing anything visible." }
+				]
+			},
+			"opt_ignore": {
+				"text": "Ignore it. Responding gives it more weight than it deserves.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I chose not to respond. A river is not troubled by rumors of its own existence." }
+				]
+			}
+		}
+	},
+
+	"old_ally_turns_cold": {
+		"id": "old_ally_turns_cold",
+		"title": "The Fading Warmth",
+		"pulse": "monthly_character",
+		"base_weight": 0.8,
+		"weight_modifiers": [
+			{ "condition": ["has_memory", "initiator", "formed_alliance"], "multiplier": 3.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A sect that once stood beside yours has been increasingly cold: cancelled meetings, slow responses to messages, and rumors of private talks with your rivals. Something has changed, and you do not yet know what.",
+		"options": {
+			"opt_send_envoy": {
+				"text": "Send a trusted envoy to ask plainly what has changed.",
+				"ai_base_weight": 65.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sent an envoy to our cooling ally. If something has offended them, I would rather know it openly." }
+				]
+			},
+			"opt_reciprocate_coldness": {
+				"text": "Withdraw our warmth in kind. If they wish distance, we give it.",
+				"ai_base_weight": 25.0,
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": -15 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I pulled back our attention from them. Let them feel the absence of our friendship." }
+				]
+			},
+			"opt_offer_gift": {
+				"text": "Send a generous gift with no conditions. Remind them of old warmth.",
+				"ai_base_weight": 10.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": -150 },
+					{ "type": "modify_sect_relationship", "amount": 10 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sent a generous gift to remind our ally of what we have shared. Some doors are kept open with gifts." }
+				]
+			}
+		}
+	},
+
+	"sect_succession_crisis": {
+		"id": "sect_succession_crisis",
+		"title": "An Empty Throne",
+		"pulse": "monthly_character",
+		"base_weight": 0.7,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A neighboring sect has fallen into open succession conflict after their sect master died without naming an heir. Two powerful candidates are gathering supporters and the Jianghu watches anxiously. Both sides have sent you letters.",
+		"options": {
+			"opt_back_first_candidate": {
+				"text": "Back the older, more established candidate. Stability over dynamism.",
+				"ai_base_weight": 35.0,
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": 15 },
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] publicly backed a candidate in a neighboring sect's succession dispute." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I backed the established candidate. Stable neighbors are more valuable than powerful ones." }
+				]
+			},
+			"opt_back_second_candidate": {
+				"text": "Back the younger, ambitious candidate. Their gratitude will be worth more.",
+				"ai_base_weight": 35.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 55], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": 15 },
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] chose a side in the neighboring sect's succession crisis, backing the younger candidate." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I backed the younger candidate. Those who owe their throne to you do not forget it." }
+				]
+			},
+			"opt_remain_neutral": {
+				"text": "Remain strictly neutral. Whoever wins will need our friendship.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I declared our neutrality in the succession conflict. Whoever prevails will know we did not work against them." }
+				]
+			}
+		}
+	},
+
+	"tribute_coalition_demand": {
+		"id": "tribute_coalition_demand",
+		"title": "The Weight of Many Hands",
+		"pulse": "monthly_character",
+		"base_weight": 0.8,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "Not one sect, but three have jointly sent an ultimatum: pay combined tribute of five hundred silver within the month, or face a coordinated military response. Separately you might challenge any one of them. Together they are formidable.",
+		"options": {
+			"opt_pay_tribute": {
+				"text": "Pay the tribute. Preserve the sect to fight on a better day.",
+				"ai_base_weight": 40.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -500 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I paid the coalition tribute. The sect endures. Humiliation is temporary; destruction is permanent." }
+				]
+			},
+			"opt_seek_counter_alliance": {
+				"text": "Seek allies of our own to counter the coalition's threat.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "sociability", 55], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_wealth", "target": "initiator", "amount": -100 },
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] urgently sought allies to counter a joint tribute demand from a coalition of rival sects." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I spent silver finding allies rather than paying enemies. The coalition will find resistance it did not expect." }
+				]
+			},
+			"opt_refuse_and_prepare": {
+				"text": "Refuse. Begin war preparations immediately.",
+				"ai_base_weight": 20.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 3.0 },
+					{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": -40 },
+					{ "type": "add_world_log", "log_type": "war", "text": "[initiator_sect_name] refused a coalition tribute demand, declaring readiness for open conflict." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I refused. Let three sects come. We will show the Jianghu what we are made of." }
+				]
+			}
+		}
+	},
+
+	"secret_alliance_exposed": {
+		"id": "secret_alliance_exposed",
+		"title": "The Curtain Torn",
+		"pulse": "monthly_character",
+		"base_weight": 0.6,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 60], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A traveling merchant let slip, perhaps carelessly, that two sects you believed to be rivals have been secretly coordinating against you for months. The source is reliable. The betrayal is real.",
+		"options": {
+			"opt_confront_directly": {
+				"text": "Confront both sects with what you know. Let them explain themselves.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "honor", 65], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_sect_relationship", "amount": -25 },
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] publicly confronted two sects over a secret conspiracy, sending shockwaves through the Jianghu." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I confronted them openly. Conspiracies exposed lose half their power." }
+				]
+			},
+			"opt_turn_tables": {
+				"text": "Use the knowledge secretly. Drive a wedge between the two conspirators.",
+				"ai_base_weight": 45.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 65], "multiplier": 3.0 },
+					{ "condition": ["has_trait", "initiator", "scheming"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I revealed nothing outwardly, but began working to turn the conspirators against each other. Let their alliance break from within." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "uncovered_conspiracy", "payload": {} }
+				]
+			},
+			"opt_prepare_defenses": {
+				"text": "Say nothing, but quietly reinforce all defenses and prepare for the coming move.",
+				"ai_base_weight": 15.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -120 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I kept my knowledge hidden and used it to prepare. When they make their move, we will be ready." }
+				]
+			}
+		}
+	}
+}
