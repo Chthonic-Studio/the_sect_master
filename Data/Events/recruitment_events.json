@@ -18,7 +18,6 @@
 				"text": "Take them in. Every great master was once a penniless child.",
 				"ai_base_weight": 60.0,
 				"effects": [
-					{ "type": "recruit_member", "target": "initiator" },
 					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] accepted an orphaned child as a junior disciple." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I took in the orphan at the gate. Something in their eyes reminded me of myself." },
 					{ "type": "add_memory", "target": "initiator", "memory_id": "accepted_orphan_disciple", "payload": {} }
@@ -59,7 +58,6 @@
 				"text": "Accept them. Experience forged in real battle is rare and worth more than youth.",
 				"ai_base_weight": 55.0,
 				"effects": [
-					{ "type": "recruit_member", "target": "initiator" },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted the disgraced warrior. Their scars are credentials enough." },
 					{ "type": "add_memory", "target": "initiator", "memory_id": "recruited_disgraced_warrior", "payload": {} }
 				]
@@ -99,7 +97,6 @@
 				"text": "Send a formal invitation to the sect. Such talent should not be wasted on the streets.",
 				"ai_base_weight": 80.0,
 				"effects": [
-					{ "type": "recruit_member", "target": "initiator" },
 					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] recruited a naturally gifted youth from the market district." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I sent for the talented youth. Raw talent such as this appears once in a generation." }
 				]
@@ -133,7 +130,6 @@
 				],
 				"effects": [
 					{ "type": "modify_sect_wealth", "amount": 500 },
-					{ "type": "recruit_member", "target": "initiator" },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted the merchant's son and the donation. The funds help the sect, and the boy may yet surprise us." }
 				]
 			},
@@ -144,7 +140,6 @@
 					{ "condition": ["has_trait", "initiator", "righteous"], "multiplier": 3.0 }
 				],
 				"effects": [
-					{ "type": "recruit_member", "target": "initiator" },
 					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] returned a merchant's donation, accepting the applicant purely on merit." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I returned the silver and accepted the son on his own worth. The sect's honor is worth more than coin." }
 				]
@@ -177,7 +172,6 @@
 					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 2.5 }
 				],
 				"effects": [
-					{ "type": "recruit_member", "target": "initiator" },
 					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] offered shelter to survivors of a destroyed sect." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I gave refuge to the survivors. The Jianghu can be merciless; sometimes a kindness costs nothing but fear." },
 					{ "type": "add_memory", "target": "initiator", "memory_id": "sheltered_sect_refugees", "payload": {} }
@@ -222,7 +216,6 @@
 				"text": "Travel personally to recruit them. Such talent belongs in this sect.",
 				"ai_base_weight": 75.0,
 				"effects": [
-					{ "type": "recruit_member", "target": "initiator" },
 					{ "type": "modify_sect_wealth", "amount": -100 },
 					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] successfully recruited a legendary child prodigy from the farmlands." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I recruited the prodigy personally. This child will either elevate the sect or destroy it — but they will not be wasted in a field." },
