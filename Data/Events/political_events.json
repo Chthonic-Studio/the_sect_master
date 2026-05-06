@@ -21,7 +21,6 @@
 					{ "condition": ["stat_greater_than", "initiator", "sociability", 55], "multiplier": 2.0 }
 				],
 				"effects": [
-					{ "type": "modify_sect_relationship", "amount": 30 },
 					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] formally accepted an alliance proposal, forging a new bond in the Jianghu." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted the alliance. New allies are new eyes on roads we cannot watch ourselves." },
 					{ "type": "add_memory", "target": "initiator", "memory_id": "formed_alliance", "payload": {} }
@@ -68,7 +67,6 @@
 					{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 2.0 }
 				],
 				"effects": [
-					{ "type": "modify_sect_relationship", "amount": 25 },
 					{ "type": "modify_sect_wealth", "amount": 200 },
 					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] accepted a position within the regional hegemony network." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted their offer of affiliation. Shelter from a great tree has a cost — but so does standing in open ground." }
@@ -92,7 +90,6 @@
 					{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 2.0 }
 				],
 				"effects": [
-					{ "type": "modify_sect_relationship", "amount": -15 },
 					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] publicly refused an offer of affiliation from the regional hegemony." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I refused the hegemony's offer. Let them mark us as proud. We are." }
 				]
@@ -118,7 +115,6 @@
 				"text": "Accept. Political bonds sealed by personal ones are the strongest.",
 				"ai_base_weight": 45.0,
 				"effects": [
-					{ "type": "modify_sect_relationship", "amount": 40 },
 					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] entered a martial union arrangement with a neighboring sect, binding the two schools together." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I agreed to the union. Families who share blood do not lightly raise blades against each other." },
 					{ "type": "add_memory", "target": "initiator", "memory_id": "arranged_martial_union", "payload": {} }
@@ -162,7 +158,6 @@
 					{ "condition": ["stat_greater_than", "initiator", "honor", 55], "multiplier": 2.0 }
 				],
 				"effects": [
-					{ "type": "modify_sect_relationship", "amount": 35 },
 					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] accepted a peace overture, ending a period of strained relations." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted the peace terms. The energy spent in conflict is better spent in cultivation." }
 				]
@@ -184,7 +179,6 @@
 					{ "condition": ["has_trait", "initiator", "vengeful"], "multiplier": 3.0 }
 				],
 				"effects": [
-					{ "type": "modify_sect_relationship", "amount": -10 },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I rejected their white banner. The wounds are still fresh." }
 				]
 			}
@@ -209,8 +203,6 @@
 					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 2.5 }
 				],
 				"effects": [
-					{ "type": "recruit_member", "target": "initiator" },
-					{ "type": "recruit_member", "target": "initiator" },
 					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] offered shelter to disciples of a newly collapsed sect, absorbing them into their ranks." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I opened our gates to the refugees. Experienced cultivators, whatever their origin, are valuable." }
 				]
@@ -259,7 +251,6 @@
 				],
 				"effects": [
 					{ "type": "modify_sect_wealth", "amount": -150 },
-					{ "type": "modify_sect_relationship", "amount": 20 },
 					{ "type": "add_world_log", "log_type": "war", "text": "[initiator_sect_name] committed forces to support an allied sect's conflict." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I honored our alliance and sent support. Alliances that crumble under pressure are not worth the paper they're sealed on." }
 				]
@@ -269,7 +260,6 @@
 				"ai_base_weight": 35.0,
 				"effects": [
 					{ "type": "modify_sect_wealth", "amount": -80 },
-					{ "type": "modify_sect_relationship", "amount": 10 },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I offered our ally resources and intelligence, but kept my disciples out of another sect's war." }
 				]
 			},
@@ -277,7 +267,6 @@
 				"text": "Decline. This is not our conflict and we cannot afford the losses.",
 				"ai_base_weight": 20.0,
 				"effects": [
-					{ "type": "modify_sect_relationship", "amount": -20 },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I declined the request. Our ally will remember this — and so will I." }
 				]
 			}
@@ -353,7 +342,6 @@
 				"text": "Withdraw our warmth in kind. If they wish distance, we give it.",
 				"ai_base_weight": 25.0,
 				"effects": [
-					{ "type": "modify_sect_relationship", "amount": -15 },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I pulled back our attention from them. Let them feel the absence of our friendship." }
 				]
 			},
@@ -365,7 +353,6 @@
 				],
 				"effects": [
 					{ "type": "modify_sect_wealth", "amount": -150 },
-					{ "type": "modify_sect_relationship", "amount": 10 },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I sent a generous gift to remind our ally of what we have shared. Some doors are kept open with gifts." }
 				]
 			}
@@ -387,7 +374,6 @@
 				"text": "Back the older, more established candidate. Stability over dynamism.",
 				"ai_base_weight": 35.0,
 				"effects": [
-					{ "type": "modify_sect_relationship", "amount": 15 },
 					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] publicly backed a candidate in a neighboring sect's succession dispute." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I backed the established candidate. Stable neighbors are more valuable than powerful ones." }
 				]
@@ -399,7 +385,6 @@
 					{ "condition": ["stat_greater_than", "initiator", "cunning", 55], "multiplier": 2.0 }
 				],
 				"effects": [
-					{ "type": "modify_sect_relationship", "amount": 15 },
 					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] chose a side in the neighboring sect's succession crisis, backing the younger candidate." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I backed the younger candidate. Those who owe their throne to you do not forget it." }
 				]
@@ -453,7 +438,6 @@
 					{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 2.0 }
 				],
 				"effects": [
-					{ "type": "modify_sect_relationship", "amount": -40 },
 					{ "type": "add_world_log", "log_type": "war", "text": "[initiator_sect_name] refused a coalition tribute demand, declaring readiness for open conflict." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I refused. Let three sects come. We will show the Jianghu what we are made of." }
 				]
@@ -482,7 +466,6 @@
 					{ "condition": ["stat_greater_than", "initiator", "honor", 65], "multiplier": 2.5 }
 				],
 				"effects": [
-					{ "type": "modify_sect_relationship", "amount": -25 },
 					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] publicly confronted two sects over a secret conspiracy, sending shockwaves through the Jianghu." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I confronted them openly. Conspiracies exposed lose half their power." }
 				]

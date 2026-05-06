@@ -250,7 +250,6 @@
 					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 2.5 }
 				],
 				"effects": [
-					{ "type": "recruit_member", "target": "initiator" },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I readmitted the former disciple. The person who returned is not the person who left." },
 					{ "type": "add_memory", "target": "initiator", "memory_id": "readmitted_expelled_disciple", "payload": {} }
 				]
@@ -296,7 +295,6 @@
 					{ "condition": ["has_trait", "initiator", "curious"], "multiplier": 3.0 }
 				],
 				"effects": [
-					{ "type": "recruit_member", "target": "initiator" },
 					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 10 },
 					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] welcomed a cultivator from the western territories, broadening the sect's martial knowledge." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I welcomed the foreign cultivator. Their methods are strange — and strangeness is where growth hides." },
@@ -342,8 +340,6 @@
 				"text": "Lower the barrier slightly. A larger sect has greater strength in numbers.",
 				"ai_base_weight": 30.0,
 				"effects": [
-					{ "type": "recruit_member", "target": "initiator" },
-					{ "type": "recruit_member", "target": "initiator" },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I opened the trials broadly. New blood brings new strength — and new problems." }
 				]
 			},
@@ -376,7 +372,6 @@
 				"text": "Accept them and the lineage. The old master chose wisely.",
 				"ai_base_weight": 60.0,
 				"effects": [
-					{ "type": "recruit_member", "target": "initiator" },
 					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] accepted custody of an ancient lineage, binding a forgotten legacy to their sect." },
 					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted the last heir of an ancient school. With lineage comes responsibility — and potential." },
 					{ "type": "add_memory", "target": "initiator", "memory_id": "accepted_ancient_lineage", "payload": {} }
