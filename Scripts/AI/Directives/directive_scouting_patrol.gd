@@ -14,7 +14,7 @@ func _init(duration: int = 20, custom_mods: Dictionary = {}) -> void:
 	super(duration, applied_mods)
 	id = "directive_scouting_patrol"
 
-func process_tick(_character: CharacterData) -> void:
+func process_tick(_character: CharacterData, _current_total_days: int = 0) -> void:
 	# Small chance of a random encounter during patrol
 	if randf() < 0.02:
 		_character.state_vars["stress"] = minf(100.0, _character.state_vars.get("stress", 0.0) + 10.0)

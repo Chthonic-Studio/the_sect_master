@@ -126,8 +126,8 @@ func _generate_game_from_params(params: Dictionary) -> void:
 		"province_id": params.get("province_id", ""),
 		"tenets":     sect_tenets,
 		"laws":       starting_laws,
-		# members_count: explicit value from params when provided, otherwise fall back
-		# to the generator's tier-based formula (randi_range(10*tier, 20*tier)).
+		# members_count: setup_screen and main_menu always supply this value explicitly.
+		# The randi_range fallback acts as a safety net for any caller that omits it.
 		"members_count": params.get("members_count",
 			randi_range(10 * int(sect_tier), 20 * int(sect_tier))),
 	}
