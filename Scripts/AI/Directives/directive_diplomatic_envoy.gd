@@ -14,7 +14,7 @@ func _init(duration: int = 30, custom_mods: Dictionary = {}) -> void:
 	super(duration, applied_mods)
 	id = "directive_diplomatic_envoy"
 
-func process_tick(_character: CharacterData) -> void:
+func process_tick(_character: CharacterData, _current_total_days: int = 0) -> void:
 	pass
 
 func on_complete(character: CharacterData) -> void:
