@@ -29,10 +29,15 @@ func create_character(context: GenerationContext, overrides: Dictionary = {}) ->
 	
 	if overrides.has("sect_id"):
 		character.sect_id = overrides["sect_id"]
-		
+
+	# Default all newly generated characters to MACRO (background simulation).
+	# The player's sect members are promoted to MICRO by sync_all_sim_tiers()
+	# which fires whenever GameManager.player_character_changed is emitted.
+	character.current_sim_tier = CharacterData.SimTier.MACRO
+
 	# Calculate all stats and cache them once
 	character.recalculate_all_stats()
-	
+
 	SimulationManager.register_character(character)
 	return character
 

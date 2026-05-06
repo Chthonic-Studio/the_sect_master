@@ -14,8 +14,7 @@ extends Control
 
 func _ready() -> void:
 	# Run World Gen immediately for debugging purposes
-	# Spawns 3 Minor, 2 Average, 1 Major + Premades
-	SectGenerator.generate_world_sects(3, 2, 1) 
+	await SectGenerator.generate_world_sects()
 	
 	_refresh_sect_list()
 	

@@ -20,41 +20,29 @@ func _on_new_game_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/setup_screen.tscn")
 
 func _on_quick_start_pressed() -> void:
-	# Skip setup and dive straight into the game with sensible debug defaults.
+	# Disable immediately to prevent multiple rapid presses triggering repeated resets.
 	%BtnQuickStart.disabled = true
-	
-	TimeManager.year = 740
-	WorldManager.target_world_population = 3000
-	
-	# Generate the world
-	SectGenerator.generate_world_sects()
-	
-	# Generate the player's sect
-	var player_sect: SectData = SectGenerator.generate_custom_sect(
-		SectGenerator.SectTier.AVERAGE,
-		{
-			"name":          "Iron Hammer Sect",
-			"alignment":     Definitions.SectAlignment.NEUTRAL,
-			"culture":       Definitions.Culture.CENTRAL_PLAINS,
-			"province_id":   "kaifeng",
-			"tenets":        [],
-			"laws":          {"sect_authority": "council_rule"},
-			"members_count": 20
-		}
-	)
-	
-	# Set up the player character
-	var masters: Array = player_sect.members_by_rank.get(Definitions.SectRank.SECT_MASTER, [])
-	if not masters.is_empty():
-		var master_char: CharacterData = SimulationManager.get_character(masters[0])
-		if master_char:
-			master_char.first_name = "Wei"
-			master_char.last_name = "Chen"
-			master_char.add_trait("disciplined")
-			master_char.recalculate_all_stats()
-			GameManager.set_player_character(master_char.char_id)
-	
-	SceneManager.goto_game_scene()
+	# Skip setup and dive straight into the game with sensible debug defaults.
+	SceneManager.goto_loading_screen({
+		"start_year":    740,
+		"pop_scale":     3000,
+		"first_name":    "Wei",
+		"last_name":     "Chen",
+		"gender":        -1,
+		"char_culture":  -1,
+		"aptitude":      -1,
+		"avatar_idx":    0,
+		"starting_trait": "disciplined",
+		"sect_name":     "Iron Hammer Sect",
+		"alignment":     Definitions.SectAlignment.NEUTRAL,
+		"org_type":      Definitions.OrgType.SECT,
+		"sect_culture":  Definitions.Culture.CENTRAL_PLAINS,
+		"province_id":   "kaifeng",
+		"tenet_id":      "",
+		"law_preset":    "council_rule",
+		"sect_tier":     SectGenerator.SectTier.AVERAGE,
+		"members_count": 20,
+	})
 
 func _on_load_game_pressed() -> void:
 	# For the MVP, we just load the first available save slot for testing.

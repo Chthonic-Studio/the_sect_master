@@ -67,7 +67,9 @@ func load_all_data() -> void:
 	_scan_directory_for_scripts("res://Scripts/AI/Actions", _load_action_script)
 	_scan_directory_for_scripts("res://Scripts/AI/Directives", _load_directive_script)
 	
-	_validate_loaded_data()
+	# Validation is expensive (iterates every registry) and only meaningful during development.
+	if OS.is_debug_build():
+		_validate_loaded_data()
 	# Rebuild the EventManager pulse cache now that all events are loaded
 	EventManager.rebuild_pulse_cache()
 

@@ -11,7 +11,7 @@ func _init(duration: int = 1, modifiers: Dictionary = {}) -> void:
 	duration_remaining = duration
 	decay_modifiers = modifiers
 
-func process_tick(_character: CharacterData) -> void:
+func process_tick(_character: CharacterData, _current_total_days: int = 0) -> void:
 	# Overridden by specific directives
 	pass
 

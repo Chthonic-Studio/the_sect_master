@@ -60,7 +60,7 @@ func _on_generate_world() -> void:
 		child.queue_free()
 		
 	# Generate sects and populate the world
-	SectGenerator.generate_world_sects(3, 2, 1)
+	await SectGenerator.generate_world_sects()
 	
 	# Automatically assign the player character to a random Sect Master so constraints work
 	_assign_random_player()

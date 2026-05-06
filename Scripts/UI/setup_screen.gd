@@ -237,7 +237,10 @@ func _on_page3_back() -> void:
 
 # ---- GAME START ----
 func _on_start_pressed() -> void:
-	# Collect all form data first
+	# Disable immediately to prevent double-click/multiple scene transitions.
+	%BtnStart.disabled = true
+
+	# Collect all form data and pack into a params dict for the loading screen
 	var first_name     = %FirstNameInput.text.strip_edges()
 	var last_name      = %LastNameInput.text.strip_edges()
 	var gender         = Definitions.Gender.values()[%GenderDropdown.selected]
@@ -267,93 +270,25 @@ func _on_start_pressed() -> void:
 	var pop_scale   = POP_SCALE_VALUES[%PopScaleDropdown.selected]
 	var start_year  = int(%StartYearSpinBox.value)
 
-	# Disable the start button to prevent double-clicks during generation
-	%BtnStart.disabled = true
-
-	# Show the loading overlay and wait one frame so it actually renders before
-	# the heavy generation work begins.
-	var overlay = _create_loading_overlay()
-	add_child(overlay)
-	await get_tree().process_frame
-	await get_tree().process_frame
-
-	_generate_game(
-		first_name, last_name, gender, char_culture, aptitude, avatar_idx, starting_trait,
-		sect_name, alignment, org_type, sect_culture, province_id, tenet_id, law_preset, sect_tier,
-		pop_scale, start_year
-	)
-
-## Builds a fullscreen dark overlay with a "Generating World…" message.
-func _create_loading_overlay() -> Control:
-	var overlay := Control.new()
-	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
-	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
-
-	var bg := ColorRect.new()
-	bg.color = Color(0.04, 0.04, 0.07, 0.92)
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	overlay.add_child(bg)
-
-	var lbl := Label.new()
-	lbl.text = "Generating World…\nPlease wait."
-	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	lbl.set_anchors_preset(Control.PRESET_FULL_RECT)
-	lbl.add_theme_font_size_override("font_size", 28)
-	lbl.add_theme_color_override("font_color", Color(0.9, 0.85, 0.6))
-	overlay.add_child(lbl)
-
-	return overlay
-
-func _generate_game(
-	first_name: String, last_name: String, gender: int, char_culture: int,
-	aptitude: int, avatar_idx: int, starting_trait: String,
-	sect_name: String, alignment: int, org_type: int, sect_culture: int, province_id: String,
-	tenet_id: String, law_preset: String, sect_tier: SectGenerator.SectTier,
-	pop_scale: int, start_year: int
-) -> void:
-
-	# 1. Apply world settings
-	TimeManager.year = start_year
-	WorldManager.target_world_population = pop_scale
-
-	# 2. Generate the world's rival sects.
-	SectGenerator.generate_world_sects()
-
-	# 3. Generate the player's sect with full overrides
-	var sect_tenets: Array[String] = []
-	if tenet_id != "":
-		sect_tenets.append(tenet_id)
-
-	var starting_laws: Dictionary = { "sect_authority": law_preset }
 	var members_count: int = 10 if sect_tier == SectGenerator.SectTier.MINOR else 20
 
-	var player_sect = SectGenerator.generate_custom_sect(sect_tier, {
-		"name":          sect_name,
+	SceneManager.goto_loading_screen({
+		"first_name":    first_name,
+		"last_name":     last_name,
+		"gender":        gender,
+		"char_culture":  char_culture,
+		"aptitude":      aptitude,
+		"avatar_idx":    avatar_idx,
+		"starting_trait": starting_trait,
+		"sect_name":     sect_name,
 		"alignment":     alignment,
 		"org_type":      org_type,
-		"culture":       sect_culture,
+		"sect_culture":  sect_culture,
 		"province_id":   province_id,
-		"tenets":        sect_tenets,
-		"laws":          starting_laws,
-		"members_count": members_count
+		"tenet_id":      tenet_id,
+		"law_preset":    law_preset,
+		"sect_tier":     sect_tier,
+		"members_count": members_count,
+		"pop_scale":     pop_scale,
+		"start_year":    start_year,
 	})
-
-	# 4. Locate the Sect Master and apply player customisations
-	var masters: Array = player_sect.members_by_rank.get(Definitions.SectRank.SECT_MASTER, [])
-	if not masters.is_empty():
-		var master_char: CharacterData = SimulationManager.get_character(masters[0])
-		if master_char:
-			master_char.first_name   = first_name
-			master_char.last_name    = last_name
-			master_char.gender       = gender
-			master_char.culture      = char_culture
-			master_char.avatar_index = avatar_idx
-			master_char.aptitude     = aptitude
-			if starting_trait != "":
-				master_char.add_trait(starting_trait)
-			master_char.recalculate_all_stats()
-			GameManager.set_player_character(master_char.char_id)
-
-	# 5. Transition to the game
-	SceneManager.goto_game_scene()
