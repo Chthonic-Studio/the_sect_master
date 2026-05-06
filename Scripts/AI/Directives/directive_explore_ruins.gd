@@ -16,7 +16,7 @@ func _init(duration: int = 5, custom_mods: Dictionary = {}) -> void:
 	super(duration, applied_mods)
 	id = "directive_explore_ruins"
 
-func process_tick(character: CharacterData) -> void:
+func process_tick(character: CharacterData, _current_total_days: int = 0) -> void:
 	# Note: Baseline need decay is handled automatically by CharacterData._apply_daily_decay()
 	# This function is strictly for custom, unique events that happen during the mission.
 	
