@@ -1,0 +1,444 @@
+{
+	"winter_hardship_sets_in": {
+		"id": "winter_hardship_sets_in",
+		"title": "Iron Season",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "The mountain winter has arrived with unusual ferocity this year — heavy snowfall, frozen water supplies, and a sharp increase in fuel consumption. Several younger disciples are struggling with the cold. Management of the sect's resources through this season will matter.",
+		"options": {
+			"opt_distribute_resources": {
+				"text": "Distribute additional fuel and rations to all disciples. None suffer while the sect has resources.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -200 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name]'s leadership distributed additional rations to all disciples during an exceptionally harsh winter." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I ordered full distribution. A leader who hoards comforts while disciples suffer is not worthy of the title." }
+				]
+			},
+			"opt_endurance_training": {
+				"text": "Use the hardship as endurance training. Cold is a teacher too.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "discipline", 65], "multiplier": 2.5 },
+					{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I ordered the winter's hardship treated as training. Disciples who survive this will be forged harder." }
+				]
+			},
+			"opt_reduce_training": {
+				"text": "Reduce training intensity and wait out the worst. Preserve strength for spring.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -80 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I scaled back training for the worst weeks of winter. Spring will make up for the lost time." }
+				]
+			}
+		}
+	},
+
+	"spring_cultivation_surge": {
+		"id": "spring_cultivation_surge",
+		"title": "When the Ice Breaks",
+		"pulse": "monthly_character",
+		"base_weight": 2.5,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 2.0 },
+			{ "condition": ["stat_greater_than", "initiator", "discipline", 60], "multiplier": 1.5 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"]
+		],
+		"description": "With the arrival of spring, [initiator_name] has felt a noticeable improvement in their Qi circulation — the world seems more alive, more responsive. Training feels easier, and the morning forms flow with unusual grace.",
+		"options": {
+			"opt_push_cultivation": {
+				"text": "Push cultivation hard while the energy is favorable.",
+				"ai_base_weight": 65.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "INTERNAL_FORCE", "amount": 10 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "QI_FLOW", "amount": 8 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I pushed my cultivation hard in spring's favorable energy. The results were notable." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "spring_cultivation_surge", "payload": {} }
+				]
+			},
+			"opt_enjoy_balance": {
+				"text": "Simply enjoy the natural balance. Not everything requires pushing.",
+				"ai_base_weight": 35.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "QI_FLOW", "amount": 5 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I moved with the spring's energy rather than forcing it. The Dao responds to harmony, not just effort." }
+				]
+			}
+		}
+	},
+
+	"summer_heat_exhaustion": {
+		"id": "summer_heat_exhaustion",
+		"title": "The Burning Season",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "overexerted"], "multiplier": 3.0 },
+			{ "condition": ["stat_greater_than", "initiator", "discipline", 70], "multiplier": 1.5 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"]
+		],
+		"description": "Midsummer heat has descended on the sect's mountain. [initiator_name] collapsed briefly during afternoon forms today, their body overcome by the combination of heat and training intensity. Their face is flushed; their hands shake.",
+		"options": {
+			"opt_rest_through_heat": {
+				"text": "Rest through the worst heat of the day and train in the cooler mornings.",
+				"ai_base_weight": 70.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I adjusted my training schedule around the summer heat. Wisdom is knowing when to yield to nature." }
+				]
+			},
+			"opt_train_through": {
+				"text": "Train through it. Heat is just another form of pressure.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_trait", "target": "initiator", "trait": "overexerted" },
+					{ "type": "modify_stat", "target": "initiator", "stat": "FEROCITY", "amount": 5 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I trained through the heat. Pain now becomes armor later." }
+				]
+			}
+		}
+	},
+
+	"autumn_harvest_ceremony": {
+		"id": "autumn_harvest_ceremony",
+		"title": "The Turning of the Year",
+		"pulse": "monthly_character",
+		"base_weight": 3.0,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "Autumn has arrived, and with it the local villages' harvest festival — a three-day celebration of the year's bounty. The sect is traditionally expected to participate, sending disciples to help with the harvest and sharing a communal feast with the villagers.",
+		"options": {
+			"opt_full_participation": {
+				"text": "Send disciples to help with the harvest and sponsor the evening feast.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -100 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] participated fully in the autumn harvest festival, earning the deep gratitude of local villages." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "We joined the harvest festival. The common people are the root; the sect is the tree. We do not forget this." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "participated_harvest_festival", "payload": {} }
+				]
+			},
+			"opt_token_participation": {
+				"text": "Send a few disciples and a modest gift. Honor the tradition without overcommitting.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -30 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sent a small delegation to the harvest festival. The tradition is honored; the commitment is modest." }
+				]
+			},
+			"opt_decline": {
+				"text": "Decline entirely. The sect's training schedule cannot accommodate festivals.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I kept our disciples at their training. Festivals are for those without greater purposes to pursue." }
+				]
+			}
+		}
+	},
+
+	"drought_dries_herb_garden": {
+		"id": "drought_dries_herb_garden",
+		"title": "Cracked Earth",
+		"pulse": "monthly_character",
+		"base_weight": 1.0,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A prolonged dry spell has parched the mountain's streams to a trickle. The sect's herb gardens are suffering, and the forecast from local weather-readers is bleak: no meaningful rain for another month, perhaps two.",
+		"options": {
+			"opt_emergency_water": {
+				"text": "Organize water relay teams from the lower spring. An expensive emergency measure.",
+				"ai_base_weight": 55.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -150 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I organized water relays to save the herb gardens. It costs us; losing the garden costs more." }
+				]
+			},
+			"opt_accept_partial_loss": {
+				"text": "Accept partial loss of the garden. Salvage what can be saved.",
+				"ai_base_weight": 35.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -80 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I triaged the garden — saved the rarest plants, let the common ones go. A hard choice made without sentiment." }
+				]
+			},
+			"opt_use_as_lesson": {
+				"text": "Use the drought as a lesson in resource planning for all disciples.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned the drought into a lesson. The disciples now understand why we plant and plan years in advance." }
+				]
+			}
+		}
+	},
+
+	"winter_fever_spreads": {
+		"id": "winter_fever_spreads",
+		"title": "The Sickness Passes Through",
+		"pulse": "monthly_character",
+		"base_weight": 1.2,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A winter fever has begun spreading through the sect's lower dormitories. Twelve disciples are bedridden; the sect healer reports that without proper medicine and quarantine, it could spread significantly further.",
+		"options": {
+			"opt_full_quarantine": {
+				"text": "Enforce a full quarantine and purchase all needed medicine. Contain it immediately.",
+				"ai_base_weight": 65.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -180 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I ordered a full quarantine and spent heavily on medicine. The cost is significant; the alternative is worse." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "managed_winter_sickness", "payload": {} }
+				]
+			},
+			"opt_isolate_sick_only": {
+				"text": "Isolate only the confirmed sick and ration medicine carefully.",
+				"ai_base_weight": 25.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -80 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I isolated the sick and rationed medicine carefully. It may not be enough, but it is what we can afford." }
+				]
+			},
+			"opt_push_through": {
+				"text": "Continue normal training. Isolation breeds weakness in healthy disciples.",
+				"ai_base_weight": 10.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I ordered normal training to continue. We cannot quarantine ourselves every winter." }
+				]
+			}
+		}
+	},
+
+	"meteor_shower_omen": {
+		"id": "meteor_shower_omen",
+		"title": "Fire and Silence",
+		"pulse": "monthly_character",
+		"base_weight": 0.8,
+		"weight_modifiers": [
+			{ "condition": ["is_player", "initiator"], "multiplier": 3.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A spectacular meteor shower illuminates the night sky — hundreds of burning trails overhead, silent and overwhelming. The disciples who stayed awake to watch were struck motionless. Local soothsayers have been busy with interpretations since dawn.",
+		"options": {
+			"opt_mass_night_meditation": {
+				"text": "Lead the sect in night meditation beneath the shooting stars.",
+				"ai_base_weight": 65.0,
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "QI_FLOW", "amount": 10 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 8 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] held a night meditation during the meteor shower, drawing on the unusual heavenly energy." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "We meditated under the meteor shower. The heavens were generous that night." }
+				]
+			},
+			"opt_declare_auspicious": {
+				"text": "Declare the shower an auspicious sign from heaven. Boost morale.",
+				"ai_base_weight": 25.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] declared a spectacular meteor shower a heavenly blessing on the sect." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I declared the meteor shower a blessing. Belief, properly directed, is its own kind of power." }
+				]
+			},
+			"opt_ignore": {
+				"text": "Ignore the spectacle entirely. Stars, however beautiful, are just stars.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I ordered the disciples to bed. Beautiful lights do not improve their sword forms." }
+				]
+			}
+		}
+	},
+
+	"unexpected_snowstorm": {
+		"id": "unexpected_snowstorm",
+		"title": "White Walls",
+		"pulse": "monthly_character",
+		"base_weight": 1.2,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "An unseasonable snowstorm has buried the mountain paths in three feet of snow overnight, trapping the sect in near-complete isolation. Supply caravans cannot arrive; the gate cannot be opened; the world has gone white and silent.",
+		"options": {
+			"opt_intensive_training": {
+				"text": "Turn the isolation into an intensive closed-door training session.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "discipline", 65], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "TECHNIQUE", "amount": 8 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "INTERNAL_FORCE", "amount": 6 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I converted the storm's isolation into a closed-door training session. The world could not reach us; we reached inward instead." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "snowstorm_seclusion", "payload": {} }
+				]
+			},
+			"opt_community_time": {
+				"text": "Allow informal gathering and rest. Forced confinement is a chance for fellowship.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I let the disciples rest and gather informally during the storm. Some bonds form only in stillness." }
+				]
+			},
+			"opt_clear_paths": {
+				"text": "Put disciples to work clearing the paths. Idleness benefits no one.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": 50 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I put everyone to work clearing snow. Labor is training of a different kind." }
+				]
+			}
+		}
+	},
+
+	"spring_flood_warning": {
+		"id": "spring_flood_warning",
+		"title": "The River Remembers",
+		"pulse": "monthly_character",
+		"base_weight": 1.0,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "Spring snowmelt has filled the mountain river to dangerous levels. Village farmers downstream are warning of flood risk. The sect's lower buildings, including the outer training grounds, may be threatened if the river breaches.",
+		"options": {
+			"opt_help_villages": {
+				"text": "Send disciples to help build flood barriers for the villages below.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -100 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] mobilized to help protect downstream villages from spring flooding." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sent disciples to help build flood barriers. The villages downstream remember who helped them." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "helped_flood_villages", "payload": {} }
+				]
+			},
+			"opt_protect_own_buildings": {
+				"text": "Focus on protecting the sect's own lower buildings first.",
+				"ai_base_weight": 40.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -80 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I focused on protecting our own structures. The sect's continuity comes before external goodwill." }
+				]
+			},
+			"opt_relocate_temporarily": {
+				"text": "Temporarily relocate vulnerable disciples and supplies to the upper mountain.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I ordered temporary relocation to higher ground. When the river rises, argue with it from above." }
+				]
+			}
+		}
+	},
+
+	"autumn_clear_sky_seclusion": {
+		"id": "autumn_clear_sky_seclusion",
+		"title": "The Crisp and Empty Sky",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 3.0 },
+			{ "condition": ["stat_greater_than", "initiator", "discipline", 65], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"],
+			["stat_greater_than", "initiator", "discipline", 50]
+		],
+		"description": "The cool, clear days of deep autumn — when the air is sharp and the mind is bright — have inspired [initiator_name] to enter a brief personal seclusion. The season seems to call for consolidation and reflection.",
+		"options": {
+			"opt_enter_seclusion": {
+				"text": "Enter a week of seclusion. Let the season's clarity serve the cultivation.",
+				"ai_base_weight": 75.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "QI_FLOW", "amount": 12 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 6 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I took a week of autumn seclusion. The cold air and clear sky were the finest meditation tools I have used." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "autumn_seclusion", "payload": {} }
+				]
+			},
+			"opt_keep_training": {
+				"text": "Continue the normal training schedule. The season is irrelevant to the blade.",
+				"ai_base_weight": 25.0,
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "TECHNIQUE", "amount": 6 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I kept to my normal schedule. The sky changes; the forms do not." }
+				]
+			}
+		}
+	},
+
+	"cicada_summer_plague": {
+		"id": "cicada_summer_plague",
+		"title": "The Sound That Drowns Thought",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "stress", 55], "multiplier": 2.5 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"]
+		],
+		"description": "This summer the cicadas are worse than any elder can remember — a deafening wall of sound from dawn to dusk that makes concentration nearly impossible. [initiator_name] has found meditation nearly impossible and is beginning to feel the strain.",
+		"options": {
+			"opt_learn_to_tune_out": {
+				"text": "Use the distraction as a training tool. Learn to find stillness inside chaos.",
+				"ai_base_weight": 55.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 3.0 },
+					{ "condition": ["stat_greater_than", "initiator", "discipline", 65], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 10 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned the cicadas' noise into a teacher. Finding stillness inside a storm is worth ten quiet weeks." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "trained_through_chaos", "payload": {} }
+				]
+			},
+			"opt_move_training_indoors": {
+				"text": "Move meditation practice indoors where the sound is muffled.",
+				"ai_base_weight": 45.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I moved my meditation indoors away from the noise. Some concessions to circumstance are simply practical." }
+				]
+			}
+		}
+	}
+}

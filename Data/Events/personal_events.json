@@ -1,0 +1,542 @@
+{
+	"dream_of_ancestors": {
+		"id": "dream_of_ancestors",
+		"title": "A Message from the Departed",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 2.5 },
+			{ "condition": ["stat_greater_than", "initiator", "stress", 60], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"]
+		],
+		"description": "[initiator_name] dreamed of their ancestors last night — a procession of stern-faced elders pointing toward a distant peak, their mouths moving in silence. The impression lingered past dawn and into the morning forms.",
+		"options": {
+			"opt_meditate_on_dream": {
+				"text": "Meditate on the dream's meaning.",
+				"ai_base_weight": 70.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "QI_FLOW", "amount": 5 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I dreamed of my ancestors. Their silent message guides my cultivation." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "dreamed_of_ancestors", "payload": {} }
+				]
+			},
+			"opt_dismiss_dream": {
+				"text": "Dismiss it as an idle dream. There is training to be done.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "stoic"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "A strange dream. I set it aside and returned to my training." }
+				]
+			}
+		}
+	},
+
+	"longing_for_home": {
+		"id": "longing_for_home",
+		"title": "The Road Not Taken",
+		"pulse": "monthly_character",
+		"base_weight": 1.2,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "stress", 55], "multiplier": 2.5 },
+			{ "condition": ["has_trait", "initiator", "stoic"], "multiplier": 0.4 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"],
+			["stat_greater_than", "initiator", "stress", 40]
+		],
+		"description": "[initiator_name] has been staring at the horizon more often than usual. Tonight, by the light of a single candle, they wrote a letter home — though they are not certain it will ever arrive.",
+		"options": {
+			"opt_send_letter": {
+				"text": "Send the letter regardless. The act matters more than the arrival.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sent a letter home. Whether it arrives does not change its meaning." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "sent_letter_home", "payload": {} }
+				]
+			},
+			"opt_burn_letter": {
+				"text": "Burn it. Sentiment is a chain.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 2.5 },
+					{ "condition": ["has_trait", "initiator", "stoic"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I burned the letter. The path forward requires no anchors to the past." }
+				]
+			}
+		}
+	},
+
+	"old_grudge_resurfaces": {
+		"id": "old_grudge_resurfaces",
+		"title": "An Old Wound Reopened",
+		"pulse": "monthly_character",
+		"base_weight": 1.0,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "vengeful"], "multiplier": 3.5 },
+			{ "condition": ["has_memory", "initiator", "renewed_old_grudge"], "multiplier": 0.3 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"],
+			["stat_greater_than", "initiator", "ambition", 45]
+		],
+		"description": "A careless word from a sect brother struck a buried nerve today. [initiator_name] has been reminded of an old shame — or an old enemy — that time has not fully erased.",
+		"options": {
+			"opt_channel_into_training": {
+				"text": "Let the memory sharpen resolve. Anger forged properly becomes strength.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 2.0 },
+					{ "condition": ["has_trait", "initiator", "vengeful"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "FEROCITY", "amount": 5 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I let the old wound fuel my training. Hatred is a blade that cuts both ways — but it cuts." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "renewed_old_grudge", "payload": {} }
+				]
+			},
+			"opt_release_grudge": {
+				"text": "Release the grudge. Carrying old debts weighs on the spirit.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "righteous"], "multiplier": 2.5 },
+					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "QI_FLOW", "amount": 8 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I released the old grudge. What remains is a cleaner heart and clearer meridians." }
+				]
+			}
+		}
+	},
+
+	"moment_of_clarity": {
+		"id": "moment_of_clarity",
+		"title": "The Still Point",
+		"pulse": "monthly_character",
+		"base_weight": 1.8,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 3.0 },
+			{ "condition": ["stat_greater_than", "initiator", "discipline", 65], "multiplier": 2.0 },
+			{ "condition": ["stat_greater_than", "initiator", "stress", 70], "multiplier": 0.2 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"],
+			["stat_greater_than", "initiator", "discipline", 50]
+		],
+		"description": "In the middle of morning forms, [initiator_name] stopped completely. For three full breaths, the world held still — and something in the pattern of movement suddenly made sense in a way it never had before.",
+		"options": {
+			"opt_capture_insight": {
+				"text": "Immediately record the insight before it fades.",
+				"ai_base_weight": 70.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "intelligence", 60], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "TECHNIQUE", "amount": 12 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 8 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "A moment of perfect clarity during training. I committed the sensation to memory immediately." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "experienced_clarity", "payload": {} }
+				]
+			},
+			"opt_continue_training": {
+				"text": "Continue training without pause. The insight will deepen through practice.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "INTERNAL_FORCE", "amount": 10 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "A moment of clarity came and went. I trusted my body to remember what my mind had grasped." }
+				]
+			}
+		}
+	},
+
+	"unexpected_illness": {
+		"id": "unexpected_illness",
+		"title": "The Body Betrays",
+		"pulse": "monthly_character",
+		"base_weight": 1.2,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "overexerted"], "multiplier": 4.0 },
+			{ "condition": ["has_trait", "initiator", "internal_injury"], "multiplier": 3.0 },
+			{ "condition": ["stat_greater_than", "initiator", "stress", 80], "multiplier": 2.5 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"]
+		],
+		"description": "[initiator_name] woke with a burning fever and limbs like soaked wood. Their Qi flows sluggishly, and the thought of training feels distant.",
+		"options": {
+			"opt_rest_fully": {
+				"text": "Rest fully. The body demands it.",
+				"ai_base_weight": 65.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "Illness struck me down. I rested for several days against my will." },
+					{ "type": "trigger_event", "event_id": "recovery_from_illness", "delay_days": 7 },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "suffered_illness", "payload": {} }
+				]
+			},
+			"opt_train_through": {
+				"text": "Train through it. Weakness is merely discomfort with a name.",
+				"ai_base_weight": 35.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 2.5 },
+					{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_trait", "target": "initiator", "trait": "overexerted" },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I refused to let illness stop my training. The price may come later." }
+				]
+			}
+		}
+	},
+
+	"recovery_from_illness": {
+		"id": "recovery_from_illness",
+		"title": "The Return of Strength",
+		"description": "[initiator_name] has recovered from their illness. They rise from their bed to find the world sharp and vivid again — and their hunger for the Dao renewed.",
+		"options": {
+			"acknowledge": {
+				"text": "Return to training. There is much lost time to reclaim.",
+				"ai_base_weight": 100.0,
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "QI_FLOW", "amount": 8 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I am recovered. Strange — the illness seems to have clarified something in my Qi flow." }
+				]
+			}
+		}
+	},
+
+	"night_terrors": {
+		"id": "night_terrors",
+		"title": "What Waits in the Dark",
+		"pulse": "monthly_character",
+		"base_weight": 1.0,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "stress", 75], "multiplier": 4.0 },
+			{ "condition": ["has_trait", "initiator", "qi_deviation_survivor"], "multiplier": 3.0 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"],
+			["stat_greater_than", "initiator", "stress", 65]
+		],
+		"description": "[initiator_name] has been screaming in their sleep for three nights in a row. Their sect brothers avoid the corridor outside their room. The shadows in their eyes grow deeper each morning.",
+		"options": {
+			"opt_seek_counsel": {
+				"text": "Seek counsel from a senior disciple or elder.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "loyalty", 55], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I spoke to an elder about my nightmares. The conversation helped more than I expected." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "sought_counsel_for_terrors", "payload": {} }
+				]
+			},
+			"opt_suppress_alone": {
+				"text": "Suppress the fear through sheer will. Show nothing.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "stoic"], "multiplier": 3.0 },
+					{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "FEROCITY", "amount": 3 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "The nightmares cannot touch what I refuse to show. I train through the dark thoughts." }
+				]
+			}
+		}
+	},
+
+	"quiet_contemplation": {
+		"id": "quiet_contemplation",
+		"title": "A Moment of Peace",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 2.5 },
+			{ "condition": ["stat_greater_than", "initiator", "stress", 50], "multiplier": 0.3 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"]
+		],
+		"description": "[initiator_name] has found a secluded spot near the cliff's edge where no one else goes. For an afternoon there are no forms, no words, no duties — only the sound of wind and the distant mountains.",
+		"options": {
+			"opt_spend_time_here": {
+				"text": "Sit a while longer. The stillness is itself a teaching.",
+				"ai_base_weight": 80.0,
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "QI_FLOW", "amount": 5 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I found peace today in stillness. The Dao revealed itself in the space between thoughts." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "found_quiet_place", "payload": {} }
+				]
+			},
+			"opt_return_to_duties": {
+				"text": "Return to duties. Indulgence serves no one.",
+				"ai_base_weight": 20.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I cut short my idle sitting and returned to training. Duty first." }
+				]
+			}
+		}
+	},
+
+	"jealousy_in_ranks": {
+		"id": "jealousy_in_ranks",
+		"title": "The Green Serpent",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "ambition", 65], "multiplier": 2.5 },
+			{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 2.0 },
+			{ "condition": ["stat_greater_than", "initiator", "honor", 70], "multiplier": 0.3 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"],
+			["stat_greater_than", "initiator", "ambition", 50]
+		],
+		"description": "A fellow disciple received praise today that [initiator_name] believed was rightfully theirs. The bitterness sits sour in their chest, and they have been watching their rival with calculating eyes.",
+		"options": {
+			"opt_channel_envy": {
+				"text": "Use the envy to drive harder training. Let them eat your dust.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "discipline", 60], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "TECHNIQUE", "amount": 8 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "Jealousy is a blade. I am sharpening myself against it." }
+				]
+			},
+			"opt_spread_rumors": {
+				"text": "Whisper doubts about the rival's character to others.",
+				"ai_base_weight": 25.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 2.5 },
+					{ "condition": ["has_trait", "initiator", "scheming"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_trait", "target": "initiator", "trait": "scheming" },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I planted seeds of doubt about my rival. Let reputation wither from within." }
+				]
+			},
+			"opt_acknowledge_merit": {
+				"text": "Acknowledge their merit openly. Strength respects strength.",
+				"ai_base_weight": 25.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "righteous"], "multiplier": 3.0 },
+					{ "condition": ["stat_greater_than", "initiator", "honor", 60], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "QI_FLOW", "amount": 5 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I congratulated my rival openly. The words were difficult, but they were right." }
+				]
+			}
+		}
+	},
+
+	"disciple_begs_forgiveness": {
+		"id": "disciple_begs_forgiveness",
+		"title": "A Disciple Kneels",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"trigger_conditions": [
+			["is_player_sect", "initiator"],
+			["not_is_player", "initiator"],
+			["stat_greater_than", "initiator", "loyalty", 50]
+		],
+		"requires_pause": false,
+		"description": "[initiator_name] kneels before the Sect Master, forehead pressed to the ground. They have committed a serious error — broken a sect rule, shamed themselves in public, or failed an important task — and now they beg forgiveness.",
+		"options": {
+			"opt_forgive_openly": {
+				"text": "Forgive them before the assembled disciples. Grace builds loyalty.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_world_log", "log_type": "positive", "text": "The Sect Master of [initiator_sect_name] publicly forgave a disciple's error, demonstrating magnanimity." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "The Sect Master forgave my failure before everyone. I will not waste that mercy." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "was_forgiven_publicly", "payload": {} }
+				]
+			},
+			"opt_assign_penance": {
+				"text": "Assign a penance. Forgiveness must be earned, not given.",
+				"ai_base_weight": 40.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I was assigned a penance for my failure. It is harsh but fair." }
+				]
+			},
+			"opt_expel": {
+				"text": "Expel them. Failure of this magnitude cannot be overlooked.",
+				"ai_base_weight": 10.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "cruel"], "multiplier": 3.0 },
+					{ "condition": ["stat_greater_than", "initiator", "ruthlessness", 70], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "The Sect Master expelled me for my failure. There is no return from this." }
+				]
+			}
+		}
+	},
+
+	"bond_between_disciples": {
+		"id": "bond_between_disciples",
+		"title": "Iron Sharpens Iron",
+		"pulse": "monthly_character",
+		"base_weight": 1.8,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "sociability", 60], "multiplier": 2.5 },
+			{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"],
+			["stat_greater_than", "initiator", "sociability", 40]
+		],
+		"description": "[initiator_name] and a sect brother have been spending long evenings comparing notes on technique and theory. What began as informal exchange has become something deeper — a bond forged in shared struggle.",
+		"options": {
+			"opt_deepen_bond": {
+				"text": "Commit to a formal martial brotherhood pact.",
+				"ai_base_weight": 65.0,
+				"effects": [
+					{ "type": "add_memory", "target": "initiator", "memory_id": "formed_brotherhood_bond", "payload": {} },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I forged a sworn brotherhood with a sect brother. Some bonds are worth more than technique." }
+				]
+			},
+			"opt_keep_distance": {
+				"text": "Maintain professional distance. Deep bonds breed weakness.",
+				"ai_base_weight": 35.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "stoic"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I kept my distance. The Dao demands solitude. Attachments are chains." }
+				]
+			}
+		}
+	},
+
+	"fear_of_death": {
+		"id": "fear_of_death",
+		"title": "When the Lamp Gutters",
+		"pulse": "monthly_character",
+		"base_weight": 0.8,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "internal_injury"], "multiplier": 4.0 },
+			{ "condition": ["stat_greater_than", "initiator", "stress", 75], "multiplier": 3.0 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"],
+			["stat_greater_than", "initiator", "stress", 60]
+		],
+		"description": "[initiator_name] lay awake until the third watch, staring at the ceiling. They are not sick — but they are acutely aware that they could die on any given day. The thought will not leave.",
+		"options": {
+			"opt_embrace_mortality": {
+				"text": "Embrace mortality as a teacher. What matters if each day might be the last?",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 10 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sat with the fear of death until it became a strange calm. The Dao cares nothing for our preferences." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "confronted_mortality", "payload": {} }
+				]
+			},
+			"opt_bury_fear": {
+				"text": "Bury the fear under training. Motion banishes thought.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "fierce"], "multiplier": 2.0 },
+					{ "condition": ["has_trait", "initiator", "disciplined"], "multiplier": 1.5 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "FEROCITY", "amount": 5 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I buried the dark thoughts under exhaustion. Better to burn out in motion than rot in stillness." }
+				]
+			}
+		}
+	},
+
+	"personal_milestone": {
+		"id": "personal_milestone",
+		"title": "A Wall Broken Through",
+		"pulse": "monthly_character",
+		"base_weight": 2.0,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "discipline", 70], "multiplier": 2.5 },
+			{ "condition": ["has_memory", "initiator", "chose_recovery_over_strain"], "multiplier": 1.5 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"],
+			["stat_greater_than", "initiator", "discipline", 55]
+		],
+		"description": "After months of grinding effort, [initiator_name] finally broke through a stubborn technical barrier — a form that has resisted mastery, a stance that never quite felt right. Today it clicked, perfectly, as if it had always been there.",
+		"options": {
+			"opt_celebrate_quietly": {
+				"text": "Mark the moment in silence. Growth needs no audience.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "TECHNIQUE", "amount": 10 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 5 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I broke through a long-standing barrier today. The Dao is patient with those who are patient with themselves." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "achieved_personal_milestone", "payload": {} }
+				]
+			},
+			"opt_share_insight": {
+				"text": "Share the discovery with a fellow disciple. Teaching reinforces learning.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "sociability", 55], "multiplier": 2.5 },
+					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "TECHNIQUE", "amount": 8 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I shared my breakthrough with a sect brother. Teaching reinforces learning." }
+				]
+			}
+		}
+	},
+
+	"master_remembers_a_lesson": {
+		"id": "master_remembers_a_lesson",
+		"title": "The Teacher's Shadow",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 2.0 },
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 40], "multiplier": 1.5 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"description": "A moment from your own training days surfaces unbidden: your teacher's voice, a specific correction to your stance, a lesson you half-understood then and only now fully grasp.",
+		"options": {
+			"opt_apply_lesson": {
+				"text": "Apply the lesson to your current cultivation immediately.",
+				"ai_base_weight": 70.0,
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 8 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "QI_FLOW", "amount": 5 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I remembered a teaching from my own master today. Some lessons are seeds that only bloom decades later." }
+				]
+			},
+			"opt_pass_on_lesson": {
+				"text": "Pass the lesson to a disciple who needs it. The chain of teaching must continue.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name]'s leader was seen personally instructing a disciple in the courtyard this morning." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I passed on my master's teaching to one of my own disciples. The chain continues." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "passed_on_masters_lesson", "payload": {} }
+				]
+			}
+		}
+	}
+}

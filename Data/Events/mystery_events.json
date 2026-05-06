@@ -1,0 +1,458 @@
+{
+	"ancient_ruins_discovered": {
+		"id": "ancient_ruins_discovered",
+		"title": "Beneath the Mountain's Roots",
+		"pulse": "monthly_character",
+		"base_weight": 0.8,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 50], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "Disciples expanding the lower training grounds struck worked stone bearing unfamiliar inscriptions. Deeper investigation reveals a chamber complex of considerable age, sealed by a mechanism no one can identify.",
+		"options": {
+			"opt_explore_carefully": {
+				"text": "Organize a careful expedition. Knowledge is worth the risk.",
+				"ai_base_weight": 65.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "event", "text": "[initiator_sect_name] discovered ancient ruins beneath their training grounds." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "discovered_ancient_ruins", "payload": {} },
+					{ "type": "trigger_event", "event_id": "ruins_interior_revealed", "delay_days": 10 }
+				]
+			},
+			"opt_seal_and_ignore": {
+				"text": "Seal the entrance. Ancient places carry ancient dangers.",
+				"ai_base_weight": 25.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sealed the ruins. Curiosity is not worth the unknown cost." }
+				]
+			},
+			"opt_invite_scholars": {
+				"text": "Invite external scholars to interpret the inscriptions before anyone goes inside.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -150 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "Scholars arrived at [initiator_sect_name] to study ancient ruins discovered on their grounds." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "invited_scholars_to_ruins", "payload": {} }
+				]
+			}
+		}
+	},
+
+	"ruins_interior_revealed": {
+		"id": "ruins_interior_revealed",
+		"title": "What Lies Within",
+		"requires_pause": true,
+		"description": "Your disciples have broken through the inner seal of the ruins. Inside: meditation niches, collapsed bookshelves, and at the chamber's center — a stone pedestal holding a jade slip of intact cultivation records. The air still hums faintly.",
+		"options": {
+			"opt_claim_jade_slip": {
+				"text": "Claim the jade slip for the sect. This knowledge belongs to us now.",
+				"ai_base_weight": 70.0,
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 15 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "TECHNIQUE", "amount": 10 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] recovered an ancient jade cultivation slip from rediscovered ruins." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "The jade slip holds techniques I have never encountered. This discovery may change everything." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "recovered_jade_slip", "payload": {} }
+				]
+			},
+			"opt_study_in_place": {
+				"text": "Study the records in place, disturbing nothing. Knowledge need not be possessed to be learned.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 8 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I studied the ruins without disturbing them. Knowledge has value beyond possession." }
+				]
+			}
+		}
+	},
+
+	"ghost_sighting": {
+		"id": "ghost_sighting",
+		"title": "The Shape That Watches",
+		"pulse": "monthly_character",
+		"base_weight": 0.6,
+		"weight_modifiers": [
+			{ "condition": ["has_memory", "initiator", "discovered_ancient_ruins"], "multiplier": 4.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "Three disciples independently report the same vision: a translucent figure in ancient robes standing at the edge of the training ground at midnight. By morning, the grass where it stood is frost-burned despite the warm season.",
+		"options": {
+			"opt_conduct_ritual": {
+				"text": "Commission the appropriate rites to put the spirit at rest.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -80 },
+					{ "type": "add_world_log", "log_type": "event", "text": "[initiator_sect_name] performed rites after disciples reported a spectral presence on the grounds." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I commissioned the appropriate rites. Whether the spirit was real or imagined, the disciples needed the reassurance." }
+				]
+			},
+			"opt_investigate": {
+				"text": "Investigate the sighting yourself. There may be a rational explanation.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "intelligence", 60], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I investigated the sightings personally. The frost marks are real. The explanation may not be mundane." }
+				]
+			},
+			"opt_dismiss": {
+				"text": "Dismiss it as superstition. Strained minds conjure strange visions.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I declared the sightings a case of strained minds and overactive imagination." }
+				]
+			}
+		}
+	},
+
+	"strange_weather_omen": {
+		"id": "strange_weather_omen",
+		"title": "Heaven Speaks in Strange Tongues",
+		"pulse": "monthly_character",
+		"base_weight": 1.0,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "For three consecutive mornings, blood-red clouds have gathered above the sect's mountain, dispersing by noon without rain. The elders disagree on the interpretation: some call it an auspicious blessing, others a dire omen of conflict to come.",
+		"options": {
+			"opt_take_as_auspicious": {
+				"text": "Declare it an auspicious sign. Rally the sect's spirits with a public blessing ceremony.",
+				"ai_base_weight": 50.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name]'s leader declared the crimson dawn clouds an auspicious omen." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I called the strange clouds a blessing. Whether it is true, the disciples needed hope." }
+				]
+			},
+			"opt_increase_guard": {
+				"text": "Increase perimeter guards. Ill omens have a way of preceding real dangers.",
+				"ai_base_weight": 40.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -50 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I doubled the perimeter watch. Omens are nature's warnings for those willing to listen." }
+				]
+			},
+			"opt_ignore": {
+				"text": "Ignore it entirely. Weather is weather.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "Red clouds. I assigned no meaning to them. The Dao does not send weather reports." }
+				]
+			}
+		}
+	},
+
+	"forbidden_book_found": {
+		"id": "forbidden_book_found",
+		"title": "The Locked Page",
+		"pulse": "monthly_character",
+		"base_weight": 1.2,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "curious"], "multiplier": 3.0 },
+			{ "condition": ["stat_greater_than", "initiator", "intelligence", 65], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"]
+		],
+		"description": "[initiator_name] was reorganizing the sect library when a loose board shifted beneath a reading alcove. Hidden there was a slim book wrapped in oilskin, its contents in cipher. The decoded title on its spine: 'Records of the Hollow Dao.'",
+		"options": {
+			"opt_study_secretly": {
+				"text": "Study it in secret. Some knowledge is too dangerous to share openly.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "curious"], "multiplier": 2.5 },
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 55], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 10 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I found a forbidden record and studied it alone. What I read has changed something in my understanding." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "studied_forbidden_book", "payload": {} }
+				]
+			},
+			"opt_report_to_master": {
+				"text": "Report the discovery to the Sect Master immediately. Such things need oversight.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "loyalty", 70], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I handed the hidden book to the Sect Master. What they do with it is their responsibility, not mine." }
+				]
+			}
+		}
+	},
+
+	"celestial_phenomenon": {
+		"id": "celestial_phenomenon",
+		"title": "When the Sky Bows",
+		"pulse": "monthly_character",
+		"base_weight": 0.5,
+		"weight_modifiers": [
+			{ "condition": ["is_player", "initiator"], "multiplier": 4.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "On a cloudless night, the stars align in a configuration that appears in no almanac and matches no known celestial chart. Senior cultivators report their Qi flows easier than it has in years. The phenomenon lasts three hours before the stars return to normal.",
+		"options": {
+			"opt_meditate_through_event": {
+				"text": "Lead the entire sect in meditation during the phenomenon. Do not waste this window.",
+				"ai_base_weight": 70.0,
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "QI_FLOW", "amount": 15 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "INTERNAL_FORCE", "amount": 10 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] held a mass meditation during the rare celestial alignment." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I led the sect in meditation under the strange sky. The Qi that night flowed like water in full flood." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "meditated_celestial_event", "payload": {} }
+				]
+			},
+			"opt_observe_and_record": {
+				"text": "Observe and record the phenomenon carefully for future study.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 12 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I recorded the celestial event in detail. Future generations may understand its significance better than we do." }
+				]
+			}
+		}
+	},
+
+	"hidden_chamber_revealed": {
+		"id": "hidden_chamber_revealed",
+		"title": "Behind the Wall",
+		"pulse": "monthly_character",
+		"base_weight": 0.7,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "Renovation work on the inner hall has revealed a false wall — behind it, a cramped chamber with a writing table, an oil lamp, and rows of carefully preserved scroll tubes. Someone lived and worked here in secret, possibly for years.",
+		"options": {
+			"opt_read_scrolls": {
+				"text": "Read the scrolls. Someone who hid here wanted eventually to be found.",
+				"ai_base_weight": 70.0,
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 12 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I read through the hidden chamber's scrolls. The author was either a genius or a madman — perhaps both." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "discovered_hidden_chamber", "payload": {} }
+				]
+			},
+			"opt_preserve_intact": {
+				"text": "Preserve the chamber intact. Its history is part of the sect's history.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "positive", "text": "A hidden chamber was discovered during renovations at [initiator_sect_name], preserved as a historical site." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sealed the chamber and declared it historical. The scrolls can wait for the right person to read them." }
+				]
+			}
+		}
+	},
+
+	"demon_cultivator_rumor": {
+		"id": "demon_cultivator_rumor",
+		"title": "The Name That Carries Fear",
+		"pulse": "monthly_character",
+		"base_weight": 1.0,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 50], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "Three separate merchant caravans have described the same figure on the northern road: a lone cultivator in grey, leaving collapsed village markets and shattered bones in their wake. The Jianghu has begun whispering a name associated with a forbidden cultivation path.",
+		"options": {
+			"opt_send_investigation": {
+				"text": "Send scouts to verify the reports. Hearsay and truth wear the same coat.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -80 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I dispatched scouts to verify the demon cultivator rumors. Knowledge of a threat is the first defense." }
+				]
+			},
+			"opt_alert_allies": {
+				"text": "Alert allied sects to the threat immediately.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] issued a warning to allied sects regarding a reported demon cultivator in the north." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "warned_of_demon_cultivator", "payload": {} }
+				]
+			},
+			"opt_recruit_informants": {
+				"text": "Pay caravan networks for reliable ongoing intelligence.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -150 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I opened the purse strings for intelligence. Knowing an enemy's position is worth any silver." }
+				]
+			}
+		}
+	},
+
+	"prophetic_vision": {
+		"id": "prophetic_vision",
+		"title": "The Dream That Would Not Fade",
+		"pulse": "monthly_character",
+		"base_weight": 0.7,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 3.5 },
+			{ "condition": ["stat_greater_than", "initiator", "discipline", 70], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"],
+			["stat_greater_than", "initiator", "discipline", 60]
+		],
+		"description": "[initiator_name] experienced something during deep meditation that defied categorization: a vision of events that had not yet occurred. The imagery was specific and vivid — a burning hall, a familiar face in shadow, a choice that changed everything.",
+		"options": {
+			"opt_act_on_vision": {
+				"text": "Act on the vision's warning. Trust what the Dao revealed.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "dao_seeker"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_memory", "target": "initiator", "memory_id": "received_prophetic_vision", "payload": {} },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I dreamed of things that have not yet happened. I have begun to prepare accordingly." }
+				]
+			},
+			"opt_record_and_wait": {
+				"text": "Record the vision precisely and wait to see if it manifests.",
+				"ai_base_weight": 50.0,
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 8 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I wrote down every detail before it faded. Time will tell if it was prophecy or dream-noise." }
+				]
+			}
+		}
+	},
+
+	"mysterious_visitor_at_night": {
+		"id": "mysterious_visitor_at_night",
+		"title": "A Shadow in the Garden",
+		"pulse": "monthly_character",
+		"base_weight": 0.8,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "The night watch reports finding signs of intrusion in the inner garden — footprints leading to and from the sect's well, but no disturbance of any locked building or theft of any kind. Whoever entered, they came only to look.",
+		"options": {
+			"opt_set_trap": {
+				"text": "Set a concealed trap for the next visit. Patient hunters catch cautious prey.",
+				"ai_base_weight": 60.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I set a carefully concealed trap for our uninvited guest. Patient hunters catch cautious prey." }
+				]
+			},
+			"opt_leave_message": {
+				"text": "Leave a message at the well. Invite the visitor to come in openly by daylight.",
+				"ai_base_weight": 20.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I left an open invitation at the well. If they mean no harm, they should come in daylight." }
+				]
+			},
+			"opt_double_guards": {
+				"text": "Double the night watch and reinforce all entry points immediately.",
+				"ai_base_weight": 20.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -60 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I doubled the perimeter guards. Unseen visitors with unknown intentions are threats by definition." }
+				]
+			}
+		}
+	},
+
+	"lost_manual_fragments": {
+		"id": "lost_manual_fragments",
+		"title": "The Scattered Leaves",
+		"pulse": "monthly_character",
+		"base_weight": 1.2,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 45], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A traveling book dealer arrived at the sect's gate with seventeen torn pages of what appears to be a long-lost technique manual. He is asking a high price, claiming other sects are already interested.",
+		"options": {
+			"opt_buy_immediately": {
+				"text": "Buy the pages immediately. Delay invites competitors.",
+				"ai_base_weight": 50.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -250 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "TECHNIQUE", "amount": 12 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I bought the fragments at the dealer's price. Whether complete or not, what is here is invaluable." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "purchased_manual_fragments", "payload": {} }
+				]
+			},
+			"opt_haggle": {
+				"text": "Haggle the price down. The dealer needs a buyer more than we need the pages.",
+				"ai_base_weight": 35.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -150 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "TECHNIQUE", "amount": 12 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I talked the dealer down to a fair price. The fragments are ours." }
+				]
+			},
+			"opt_decline": {
+				"text": "Decline. Incomplete manuals lead to incomplete practitioners.",
+				"ai_base_weight": 15.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned down the fragments. Half a map leads you in circles." }
+				]
+			}
+		}
+	},
+
+	"ancient_inscription_decoded": {
+		"id": "ancient_inscription_decoded",
+		"title": "Words from the Void",
+		"pulse": "monthly_character",
+		"base_weight": 1.0,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "intelligence", 65], "multiplier": 3.0 },
+			{ "condition": ["has_trait", "initiator", "curious"], "multiplier": 2.5 }
+		],
+		"trigger_conditions": [
+			["not_is_player", "initiator"],
+			["stat_greater_than", "initiator", "intelligence", 55]
+		],
+		"description": "[initiator_name] spent three weeks painstakingly decoding an inscription on a stone stele in the lower grounds. The text is a cultivation philosophy — ancient, unusual, and entirely at odds with the sect's current doctrine.",
+		"options": {
+			"opt_incorporate_findings": {
+				"text": "Incorporate the ancient theory into personal practice. Let it challenge what is known.",
+				"ai_base_weight": 65.0,
+				"effects": [
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 12 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "QI_FLOW", "amount": 6 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I decoded the old inscription. The philosophy it contains challenges everything I thought I understood about the Dao." }
+				]
+			},
+			"opt_report_findings": {
+				"text": "Report the discovery to the sect leadership. Such things are above one disciple's authority.",
+				"ai_base_weight": 35.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "loyalty", 65], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I brought my decoded findings to the sect elders. The choice of what to do is above my station." }
+				]
+			}
+		}
+	}
+}

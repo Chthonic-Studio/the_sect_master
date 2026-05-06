@@ -1,0 +1,438 @@
+{
+	"trade_route_opportunity": {
+		"id": "trade_route_opportunity",
+		"title": "The Silver Road",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 45], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A merchant consortium has approached the sect with an unusual proposition: use your sect's territory and reputation as a guarantee for a new trade corridor. In exchange for occasional protection duties, the sect receives a share of every caravan's goods.",
+		"options": {
+			"opt_accept_full": {
+				"text": "Accept fully. Steady income is the foundation of long-term strength.",
+				"ai_base_weight": 60.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": 300 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] established a formal partnership with a merchant consortium, opening a new trade route." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted the trade arrangement. Commerce is not beneath us; it fuels everything that rises above it." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "established_trade_route", "payload": {} }
+				]
+			},
+			"opt_accept_limited": {
+				"text": "Accept limited involvement — endorsement only, no protection duties.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": 120 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I lent our name to the trade route but committed no disciples as escorts. A modest arrangement with modest returns." }
+				]
+			},
+			"opt_decline": {
+				"text": "Decline. Commerce entangles the sect in worldly affairs we wish to avoid.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned down the merchant proposal. The Dao is not served by counting silver." }
+				]
+			}
+		}
+	},
+
+	"bandit_toll_on_routes": {
+		"id": "bandit_toll_on_routes",
+		"title": "Wolves on the Road",
+		"pulse": "monthly_character",
+		"base_weight": 1.8,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A gang of organized bandits has begun extorting caravans along the mountain roads near the sect's territory. Several merchants have appealed for protection. The bandits are better-armed and better-organized than ordinary brigands.",
+		"options": {
+			"opt_clear_bandits": {
+				"text": "Clear the bandits out. Lawlessness near our gates reflects on us.",
+				"ai_base_weight": 55.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "righteous"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -80 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] cleared organized bandits from the mountain roads, restoring safe passage for merchants." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "We cleared the roads. The merchants paid us in gratitude and silver. Both were welcome." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "cleared_bandit_threat", "payload": {} }
+				]
+			},
+			"opt_charge_for_escort": {
+				"text": "Offer paid escort services. Let the problem fund its own solution.",
+				"ai_base_weight": 35.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 55], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": 200 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I offered the merchants paid escort rather than charity. Problems that pay for themselves are the best kind." }
+				]
+			},
+			"opt_ignore": {
+				"text": "Ignore it. The bandits are not our concern unless they threaten the sect itself.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I declined to involve the sect. The road outside our walls is not ours to police." }
+				]
+			}
+		}
+	},
+
+	"generous_patron_donation": {
+		"id": "generous_patron_donation",
+		"title": "A Benefactor Emerges",
+		"pulse": "monthly_character",
+		"base_weight": 1.2,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 55], "multiplier": 2.5 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"],
+			["stat_greater_than", "initiator", "reputation", 40]
+		],
+		"requires_pause": true,
+		"description": "A retired official — once a minor warlord, now a wealthy recluse — has sent a message along with a substantial donation. He admires the sect's reputation and asks for nothing in return except a modest inscription on the new pavilion bearing his family name.",
+		"options": {
+			"opt_accept_with_inscription": {
+				"text": "Accept the donation and honor the request for the inscription.",
+				"ai_base_weight": 70.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": 600 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] received a generous private donation, acknowledging their growing reputation." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted the patron's gift and granted the inscription. Stone does not remember its sponsors; reputations do." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "received_patron_donation", "payload": {} }
+				]
+			},
+			"opt_accept_no_inscription": {
+				"text": "Accept the donation but decline the inscription. The sect owes no one its walls.",
+				"ai_base_weight": 20.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "arrogant"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": 400 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I took the silver but returned the inscription request. Our walls bear no sponsors." }
+				]
+			},
+			"opt_decline_entirely": {
+				"text": "Decline entirely. The sect does not accept gifts from unknown parties.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I returned the donation. Gifts from strangers come with invisible strings." }
+				]
+			}
+		}
+	},
+
+	"stolen_sect_supplies": {
+		"id": "stolen_sect_supplies",
+		"title": "Empty Shelves",
+		"pulse": "monthly_character",
+		"base_weight": 1.0,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "The quartermaster's morning report brings grim news: a substantial portion of the sect's medicinal herb stores and silver reserves are missing. There are no signs of forced entry. The thief was someone who knew the location and had access.",
+		"options": {
+			"opt_investigate_internally": {
+				"text": "Lock the sect down and investigate every disciple. Find the thief.",
+				"ai_base_weight": 55.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] entered an internal lockdown after a significant theft from its supply stores." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I ordered a full internal investigation. Someone within these walls is a thief — or worse, a spy." }
+				]
+			},
+			"opt_post_reward": {
+				"text": "Post a substantial reward for information. Let greed solve what investigation cannot.",
+				"ai_base_weight": 30.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -100 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I posted a reward for the thief's identity. In a sect of this size, secrets are hard to keep." }
+				]
+			},
+			"opt_absorb_loss": {
+				"text": "Accept the loss and increase security measures going forward.",
+				"ai_base_weight": 15.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -80 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I wrote off the loss and ordered tightened protocols. The damage is done; preventing the next incident is what matters." }
+				]
+			}
+		}
+	},
+
+	"herb_harvest_failure": {
+		"id": "herb_harvest_failure",
+		"title": "The Withered Garden",
+		"pulse": "monthly_character",
+		"base_weight": 1.2,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "The sect's cultivated herb garden — years of patient tending — has been struck by an unknown blight. Half this season's harvest is ruined, and the rare spirit herbs at the garden's heart show signs of contamination.",
+		"options": {
+			"opt_buy_replacement": {
+				"text": "Purchase replacement supplies from outside merchants immediately.",
+				"ai_base_weight": 55.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -350 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I paid market price for replacement herbs. The garden will recover; we cannot wait for it." }
+				]
+			},
+			"opt_conserve_and_ration": {
+				"text": "Ration what remains carefully and wait for the next growing season.",
+				"ai_base_weight": 35.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I ordered strict rationing of our remaining herb stores. We will endure the shortage with discipline." }
+				]
+			},
+			"opt_investigate_blight": {
+				"text": "Investigate the blight's cause before doing anything else. Natural, or sabotage?",
+				"ai_base_weight": 10.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I ordered the blight investigated before purchasing anything. When something goes wrong at the root, look for a hand that planted it." }
+				]
+			}
+		}
+	},
+
+	"medicine_demand_from_villages": {
+		"id": "medicine_demand_from_villages",
+		"title": "The Healer's Burden",
+		"pulse": "monthly_character",
+		"base_weight": 1.5,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "Several villages in the surrounding area have been struck by a seasonal sickness. Village elders have come to the sect gates begging for medicinal herbs — enough to treat hundreds. Fulfilling the request would cost the sect dearly.",
+		"options": {
+			"opt_donate_freely": {
+				"text": "Donate the herbs without charge. The sect serves more than its own walls.",
+				"ai_base_weight": 50.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "altruistic"], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -200 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] donated medicinal herbs to treat the sick of surrounding villages, earning immense goodwill." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I gave freely. What we gave in herbs, we gained tenfold in the loyalty of the common people." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "aided_sick_villages", "payload": {} }
+				]
+			},
+			"opt_sell_at_cost": {
+				"text": "Provide the herbs at cost price. The sect cannot sustain charity indefinitely.",
+				"ai_base_weight": 35.0,
+				"effects": [
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] sold medicine to sick villages at cost, providing relief without straining sect resources." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sold the medicine at cost. We helped them without emptying our own stores." }
+				]
+			},
+			"opt_decline": {
+				"text": "Decline. The sect's reserves cannot be spent on every village hardship.",
+				"ai_base_weight": 15.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned the village elders away. Our resources are not a public fund." }
+				]
+			}
+		}
+	},
+
+	"black_market_contact": {
+		"id": "black_market_contact",
+		"title": "An Offer in the Dark",
+		"pulse": "monthly_character",
+		"base_weight": 0.8,
+		"weight_modifiers": [
+			{ "condition": ["has_trait", "initiator", "scheming"], "multiplier": 3.0 },
+			{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A mysterious contact — clearly a broker for less reputable trade — has reached out through an intermediary. They claim to have access to rare spirit herbs, banned technique manuals, and other items that legitimate merchants cannot supply. The risk is obvious.",
+		"options": {
+			"opt_engage_carefully": {
+				"text": "Engage the contact but take precautions. Useful resources have uncomfortable origins sometimes.",
+				"ai_base_weight": 45.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 65], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -180 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "TECHNIQUE", "amount": 10 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I dealt with the shadow contact, carefully. What I received was worth the discomfort." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "used_black_market", "payload": {} }
+				]
+			},
+			"opt_report_to_authorities": {
+				"text": "Report the contact to the local martial authorities. Let them handle it.",
+				"ai_base_weight": 25.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "righteous"], "multiplier": 4.0 }
+				],
+				"effects": [
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] reported a black market contact to martial authorities, demonstrating the sect's integrity." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I reported the shadow contact. The Jianghu's good opinion is worth more than their goods." }
+				]
+			},
+			"opt_decline_and_ignore": {
+				"text": "Decline and ignore the approach entirely.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I left the contact without a response. Silence is the cleanest refusal." }
+				]
+			}
+		}
+	},
+
+	"mining_vein_discovered": {
+		"id": "mining_vein_discovered",
+		"title": "Stone That Sings",
+		"pulse": "monthly_character",
+		"base_weight": 0.6,
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "Disciples clearing a rockfall on the sect's back mountain discovered a seam of qi-infused ore — a rare mineral that experienced smiths can use to craft training implements of unusual quality. The deposit appears substantial.",
+		"options": {
+			"opt_mine_and_use": {
+				"text": "Mine the vein and use the ore to improve the sect's equipment.",
+				"ai_base_weight": 55.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": 250 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "TECHNIQUE", "amount": 8 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] discovered a vein of qi-infused ore and began mining operations." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I ordered the vein mined. The ore will become the finest training equipment we have ever used." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "discovered_mineral_vein", "payload": {} }
+				]
+			},
+			"opt_sell_rights": {
+				"text": "Sell the mining rights to a skilled smith clan. Cash now over long-term value.",
+				"ai_base_weight": 30.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": 500 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I sold the mining rights for a lump sum. Immediate silver builds things faster than promised future ore." }
+				]
+			},
+			"opt_keep_secret": {
+				"text": "Keep the discovery secret. Announce nothing; mine quietly over years.",
+				"ai_base_weight": 15.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "cunning", 60], "multiplier": 3.0 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": 150 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I ordered the discovery concealed. What no one knows about cannot be coveted or stolen." }
+				]
+			}
+		}
+	},
+
+	"financial_discrepancy_found": {
+		"id": "financial_discrepancy_found",
+		"title": "The Numbers Do Not Lie",
+		"pulse": "monthly_character",
+		"base_weight": 0.8,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "cunning", 55], "multiplier": 2.0 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "The sect's accounts have been audited, and a discrepancy of several hundred silver has been found — not the dramatic theft of a single night, but a slow, careful drain over many months. Someone in the sect's administration is skimming.",
+		"options": {
+			"opt_expose_publicly": {
+				"text": "Expose the culprit publicly once identified. Theft has a price.",
+				"ai_base_weight": 40.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["stat_greater_than", "initiator", "honor", 60], "multiplier": 2.0 }
+				],
+				"effects": [
+					{ "type": "add_world_log", "log_type": "politics", "text": "[initiator_sect_name] uncovered and publicly expelled an administrator caught stealing from sect funds." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I exposed the thief before the entire sect. Corruption dies in the light." }
+				]
+			},
+			"opt_quiet_dismissal": {
+				"text": "Quietly dismiss the responsible party. Public exposure creates instability.",
+				"ai_base_weight": 45.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I removed the thief quietly. A clean cut heals faster than a public spectacle." }
+				]
+			},
+			"opt_double_down_on_audit": {
+				"text": "Audit everything from the last three years before acting. Know the full extent.",
+				"ai_base_weight": 15.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": -80 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I ordered a full three-year audit before taking any visible action. Know the depth of the wound before treating it." }
+				]
+			}
+		}
+	},
+
+	"foreign_merchant_partnership": {
+		"id": "foreign_merchant_partnership",
+		"title": "Silk Road Whispers",
+		"pulse": "monthly_character",
+		"base_weight": 0.7,
+		"weight_modifiers": [
+			{ "condition": ["stat_greater_than", "initiator", "reputation", 50], "multiplier": 2.5 }
+		],
+		"trigger_conditions": [
+			["is_player", "initiator"]
+		],
+		"requires_pause": true,
+		"description": "A merchant from distant foreign lands — far beyond the western passes — proposes a long-term partnership: exclusive access to exotic materials and rare foreign techniques in exchange for the sect's protection of their caravans through dangerous mountain territory.",
+		"options": {
+			"opt_accept_partnership": {
+				"text": "Accept the partnership. Foreign materials expand what we can build.",
+				"ai_base_weight": 55.0,
+				"ai_weight_modifiers": [
+					{ "condition": ["has_trait", "initiator", "curious"], "multiplier": 2.5 }
+				],
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": 400 },
+					{ "type": "modify_stat", "target": "initiator", "stat": "INSIGHT", "amount": 8 },
+					{ "type": "add_world_log", "log_type": "positive", "text": "[initiator_sect_name] established a trade partnership with a foreign merchant, gaining access to rare exotic materials." },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I accepted the foreign merchant's terms. What comes from distant lands carries knowledge that cannot be found locally." },
+					{ "type": "add_memory", "target": "initiator", "memory_id": "foreign_merchant_partner", "payload": {} }
+				]
+			},
+			"opt_accept_limited": {
+				"text": "Accept a limited arrangement — protection for materials, but no exclusive ties.",
+				"ai_base_weight": 35.0,
+				"effects": [
+					{ "type": "modify_sect_wealth", "amount": 200 },
+					{ "type": "add_personal_log", "target": "initiator", "text": "I arranged a limited deal with the foreign merchant — protection in exchange for materials, no long-term exclusivity." }
+				]
+			},
+			"opt_decline": {
+				"text": "Decline. Foreign entanglements bring foreign complications.",
+				"ai_base_weight": 10.0,
+				"effects": [
+					{ "type": "add_personal_log", "target": "initiator", "text": "I turned away the foreign merchant's proposal. Distant trade routes are also distant vulnerabilities." }
+				]
+			}
+		}
+	}
+}
